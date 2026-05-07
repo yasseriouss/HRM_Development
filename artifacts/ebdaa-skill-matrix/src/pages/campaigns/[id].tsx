@@ -4,8 +4,8 @@ import {
   useGetCampaign,
   useGetCampaignSummaries,
   useGetCampaignMatrix,
-} from "@workspace/api-client-react";
-import type { Campaign, EvaluationSummary, SkillMatrix } from "@workspace/api-client-react";
+} from "@hrm-development/api-client-react";
+import type { Campaign, EvaluationSummary, SkillMatrix } from "@hrm-development/api-client-react";
 import { getAuthHeaders, getAuthUser } from "@/lib/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";

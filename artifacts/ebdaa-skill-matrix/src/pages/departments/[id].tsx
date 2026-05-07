@@ -4,8 +4,8 @@ import {
   useGetDepartmentStats,
   useListEmployees,
   useListSkills,
-} from "@workspace/api-client-react";
-import type { DepartmentStats } from "@workspace/api-client-react";
+} from "@hrm-development/api-client-react";
+import type { DepartmentStats } from "@hrm-development/api-client-react";
 import { getAuthHeaders } from "@/lib/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";

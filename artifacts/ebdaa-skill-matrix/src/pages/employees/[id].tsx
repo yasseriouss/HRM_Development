@@ -1,6 +1,6 @@
 import { useRoute, Link } from "wouter";
-import { useGetEmployeeProfile } from "@workspace/api-client-react";
-import type { EmployeeProfile, EvaluationSummary } from "@workspace/api-client-react";
+import { useGetEmployeeProfile } from "@hrm-development/api-client-react";
+import type { EmployeeProfile, EvaluationSummary } from "@hrm-development/api-client-react";
 import { getAuthHeaders } from "@/lib/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
