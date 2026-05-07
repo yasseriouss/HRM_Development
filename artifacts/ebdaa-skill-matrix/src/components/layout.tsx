@@ -6,8 +6,80 @@ import { Button } from "@/components/ui/button";
 import { useLang } from "@/contexts/LangContext";
 import { useT } from "@/i18n";
 import { NotificationBell } from "./notification-bell";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+  DropdownMenuLabel,
+} from "@/components/ui/dropdown-menu";
+import {
+  LayoutGrid,
+  BarChart3,
+  FileText,
+  Presentation,
+  Table,
+  FlaskConical,
+  ExternalLink,
+} from "lucide-react";
+
+interface SuiteApp {
+  id: string;
+  labelKey: string;
+  href: string;
+  icon: React.ElementType;
+  description: string;
+  active?: boolean;
+}
 
 type Role = "super_admin" | "dept_head" | "hr_coordinator" | "employee";
+
+const SUITE_APPS: SuiteApp[] = [
+  {
+    id: "matrix",
+    labelKey: "login_title",
+    href: "/",
+    icon: LayoutGrid,
+    description: "Core skill management system",
+    active: true,
+  },
+  {
+    id: "dashboard",
+    labelKey: "suite_dashboard",
+    href: "/ebdaa-dashboard",
+    icon: BarChart3,
+    description: "Enterprise analytics & reporting",
+  },
+  {
+    id: "docs",
+    labelKey: "suite_docs",
+    href: "/ebdaa-docs",
+    icon: FileText,
+    description: "System documentation & help",
+  },
+  {
+    id: "pitch",
+    labelKey: "suite_pitch_deck",
+    href: "/ebdaa-pitch-deck",
+    icon: Presentation,
+    description: "Project overview & vision",
+  },
+  {
+    id: "spreadsheet",
+    labelKey: "suite_spreadsheet",
+    href: "/ebdaa-spreadsheet",
+    icon: Table,
+    description: "Interactive data analysis",
+  },
+  {
+    id: "sandbox",
+    labelKey: "suite_sandbox",
+    href: "/mockup-sandbox",
+    icon: FlaskConical,
+    description: "UI experimentation environment",
+  },
+] as const;
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const [location, setLocation] = useLocation();
@@ -55,7 +127,71 @@ export function Layout({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       <header className="border-b border-border bg-card px-4 md:px-6 py-3 flex items-center justify-between gap-4">
         <div className="flex items-center gap-4 md:gap-6 min-w-0">
-          <h1 className="text-lg font-bold text-primary tracking-wider uppercase shrink-0">Ebdaa Matrix</h1>
+          <div className="flex items-center gap-2">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8 text-primary hover:bg-primary/10 transition-all active:scale-95"
+                >
+                  <LayoutGrid className="h-5 w-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="start"
+                className="w-80 p-2 bg-card border-border shadow-2xl animate-in fade-in zoom-in-95 duration-200"
+              >
+                <div className="px-2 py-2 mb-2">
+                  <DropdownMenuLabel className="text-xs font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+                    <span className="w-1 h-1 bg-primary rounded-full" />
+                    {t("suite_title")}
+                  </DropdownMenuLabel>
+                </div>
+                <div className="grid grid-cols-1 gap-1">
+                  {SUITE_APPS.map((app) => (
+                    <DropdownMenuItem
+                      key={app.id}
+                      asChild
+                      className={`flex items-start gap-3 p-3 rounded-md cursor-pointer transition-all ${
+                        app.active
+                          ? "bg-primary/10 border border-primary/20"
+                          : "hover:bg-muted/50 border border-transparent"
+                      }`}
+                    >
+                      <a href={app.href} className="flex items-start gap-3 w-full">
+                        <div
+                          className={`p-2 rounded-lg ${
+                            app.active ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                          }`}
+                        >
+                          <app.icon className="h-4 w-4" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between gap-2">
+                            <span className={`text-sm font-semibold ${app.active ? "text-primary" : "text-foreground"}`}>
+                              {t(app.labelKey as any)}
+                            </span>
+                            {!app.active && <ExternalLink className="h-3 w-3 text-muted-foreground/40" />}
+                          </div>
+                          <p className="text-[10px] text-muted-foreground leading-tight mt-0.5 truncate">
+                            {app.description}
+                          </p>
+                        </div>
+                      </a>
+                    </DropdownMenuItem>
+                  ))}
+                </div>
+                <DropdownMenuSeparator className="my-2 bg-border/50" />
+                <div className="px-2 py-1">
+                  <p className="text-[9px] text-center text-muted-foreground/60 font-mono tracking-tighter">
+                    EBDAA INDUSTRIAL ECOSYSTEM V2.0.4
+                  </p>
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <h1 className="text-lg font-bold text-primary tracking-wider uppercase shrink-0">Ebdaa Matrix</h1>
+          </div>
           <nav className="hidden md:flex items-center gap-1 flex-wrap">
             {navItems.map((item) => (
               <Link

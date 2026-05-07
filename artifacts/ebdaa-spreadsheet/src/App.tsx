@@ -458,6 +458,13 @@ function AppInner() {
               <span className="font-bold text-foreground text-sm">{t('app_title')}</span>
               <span className="text-muted-foreground text-xs ms-2">{t('app_subtitle')}</span>
             </div>
+            <a
+              href="/"
+              className="ms-2 px-2.5 py-1 rounded border border-amber-500/30 bg-amber-500/5 text-amber-500 hover:bg-amber-500 hover:text-slate-950 transition-all text-[10px] font-bold uppercase tracking-wider flex items-center gap-1"
+            >
+              <span>←</span>
+              <span>Skill Matrix</span>
+            </a>
           </div>
 
           <div className="flex items-center gap-2">

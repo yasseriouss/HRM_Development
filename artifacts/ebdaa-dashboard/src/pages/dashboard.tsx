@@ -116,7 +116,10 @@ export default function Dashboard({ onLogout }: { onLogout: () => void }) {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <a href="/ebdaa-skill-matrix/" className="text-xs text-muted-foreground hover:text-primary transition-colors">{t("open_app")}</a>
+            <a href="/" className="text-xs font-bold text-primary hover:text-primary/80 transition-colors uppercase tracking-widest border border-primary/20 px-3 py-1.5 rounded-lg bg-primary/5 flex items-center gap-2">
+              <span>←</span>
+              {t("open_app")}
+            </a>
             <button onClick={handleLogout} className="text-xs text-muted-foreground hover:text-foreground transition-colors">{t("sign_out")}</button>
           </div>
         </div>

@@ -4,10 +4,11 @@ import { useListCampaigns, useGetCampaignSummaries } from "@workspace/api-client
 import type { Campaign, EvaluationSummary } from "@workspace/api-client-react";
 import { getAuthHeaders } from "@/lib/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ClipboardList, Users, TrendingUp } from "lucide-react";
+import { ClipboardList, Users, TrendingUp, FileText, ExternalLink, Table } from "lucide-react";
 import { useT } from "@/i18n";
 
 type EmployeeClass = "A" | "B" | "C" | null | undefined;
@@ -169,89 +170,144 @@ export default function EvaluationsPage() {
         </div>
       )}
 
-      <div className="flex items-center gap-4">
-        <Select value={selectedCampaignId} onValueChange={setSelectedCampaignId}>
-          <SelectTrigger className="max-w-sm bg-card border-border">
-            <SelectValue placeholder={t("evaluations_select_prompt_short")} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">{t("evaluations_select_prompt_short")}</SelectItem>
-            {activeCampaigns.length > 0 && (
-              <>
-                <SelectItem value="group-active" disabled>Active</SelectItem>
-                {activeCampaigns.map((c) => <SelectItem key={c.id} value={c.id}>{c.title}</SelectItem>)}
-              </>
+      <div className="grid gap-6 lg:grid-cols-4">
+        <div className="lg:col-span-3 space-y-6">
+          <div className="flex items-center gap-4">
+            <Select value={selectedCampaignId} onValueChange={setSelectedCampaignId}>
+              <SelectTrigger className="max-w-sm bg-card border-border">
+                <SelectValue placeholder={t("evaluations_select_prompt_short")} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">{t("evaluations_select_prompt_short")}</SelectItem>
+                {activeCampaigns.length > 0 && (
+                  <>
+                    <SelectItem value="group-active" disabled>Active</SelectItem>
+                    {activeCampaigns.map((c) => <SelectItem key={c.id} value={c.id}>{c.title}</SelectItem>)}
+                  </>
+                )}
+                {completedCampaigns.length > 0 && (
+                  <>
+                    <SelectItem value="group-completed" disabled>Completed</SelectItem>
+                    {completedCampaigns.map((c) => <SelectItem key={c.id} value={c.id}>{c.title}</SelectItem>)}
+                  </>
+                )}
+              </SelectContent>
+            </Select>
+            {selectedCampaign && (
+              <Link href={`/campaigns/${selectedCampaign.id}`} className="text-sm text-primary hover:underline">
+                {t("evaluations_open_campaign")}
+              </Link>
             )}
-            {completedCampaigns.length > 0 && (
-              <>
-                <SelectItem value="group-completed" disabled>Completed</SelectItem>
-                {completedCampaigns.map((c) => <SelectItem key={c.id} value={c.id}>{c.title}</SelectItem>)}
-              </>
-            )}
-          </SelectContent>
-        </Select>
-        {selectedCampaign && (
-          <Link href={`/campaigns/${selectedCampaign.id}`} className="text-sm text-primary hover:underline">
-            {t("evaluations_open_campaign")}
-          </Link>
-        )}
-      </div>
+          </div>
 
-      {selectedCampaign ? (
-        <Card className="border-border">
-          <CardHeader className="pb-3">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <CardTitle className="text-base">{selectedCampaign.title}</CardTitle>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  {selectedCampaign.type} · {new Date(selectedCampaign.start_date).toLocaleDateString()} —{" "}
-                  {new Date(selectedCampaign.end_date).toLocaleDateString()}
+          {selectedCampaign ? (
+            <Card className="border-border">
+              <CardHeader className="pb-3">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <CardTitle className="text-base">{selectedCampaign.title}</CardTitle>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      {selectedCampaign.type} · {new Date(selectedCampaign.start_date).toLocaleDateString()} —{" "}
+                      {new Date(selectedCampaign.end_date).toLocaleDateString()}
+                    </p>
+                  </div>
+                  {statusBadge(selectedCampaign.status)}
+                </div>
+              </CardHeader>
+              <CardContent>
+                <SummaryTable campaignId={selectedCampaign.id} />
+              </CardContent>
+            </Card>
+          ) : selectedCampaignId !== "all" ? null : (
+            <Card className="border-border">
+              <CardContent className="py-12 text-center">
+                <ClipboardList className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
+                <p className="text-muted-foreground">{t("evaluations_select_prompt")}</p>
+              </CardContent>
+            </Card>
+          )}
+
+          {selectedCampaignId === "all" && allCampaigns.length > 0 && (
+            <div className="space-y-3">
+              <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
+                {t("evaluations_all_campaigns")}
+              </h3>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {allCampaigns.map((c) => (
+                  <Card
+                    key={c.id}
+                    className="border-border hover:border-primary/40 transition-colors cursor-pointer"
+                    onClick={() => setSelectedCampaignId(c.id)}
+                  >
+                    <CardContent className="pt-4 pb-4">
+                      <div className="flex items-start justify-between gap-2">
+                        <div>
+                          <p className="font-medium text-sm">{c.title}</p>
+                          <p className="text-xs text-muted-foreground mt-0.5">
+                            {t("evaluations_evaluated_count", { evaluated: c.evaluated_count, total: c.total_employees })}
+                          </p>
+                        </div>
+                        {statusBadge(c.status)}
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="space-y-6">
+          <Card className="border-primary/20 bg-primary/5">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm font-bold flex items-center gap-2 text-primary">
+                <Table className="h-4 w-4" />
+                {t("evaluations_bulk_tools")}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <p className="text-[10px] text-muted-foreground uppercase font-semibold tracking-wider">Spreadsheet Mode</p>
+                <Button asChild variant="outline" className="w-full justify-start gap-2 border-primary/30 hover:bg-primary/10">
+                  <a href="/ebdaa-spreadsheet">
+                    <Table className="h-4 w-4" />
+                    <span className="truncate">{t("evaluations_spreadsheet_tool")}</span>
+                  </a>
+                </Button>
+                <p className="text-[10px] text-muted-foreground leading-tight italic">
+                  {t("evaluations_spreadsheet_desc")}
                 </p>
               </div>
-              {statusBadge(selectedCampaign.status)}
-            </div>
-          </CardHeader>
-          <CardContent>
-            <SummaryTable campaignId={selectedCampaign.id} />
-          </CardContent>
-        </Card>
-      ) : selectedCampaignId !== "all" ? null : (
-        <Card className="border-border">
-          <CardContent className="py-12 text-center">
-            <ClipboardList className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
-            <p className="text-muted-foreground">{t("evaluations_select_prompt")}</p>
-          </CardContent>
-        </Card>
-      )}
+              
+              <div className="space-y-2 pt-2 border-t border-primary/10">
+                <p className="text-[10px] text-muted-foreground uppercase font-semibold tracking-wider">Offline Templates</p>
+                <Button asChild variant="ghost" className="w-full justify-start gap-2 text-primary hover:bg-primary/10">
+                  <a href="/ebdaa-skill-matrix-template.xlsx" download>
+                    <FileText className="h-4 w-4" />
+                    <span className="truncate">{t("evaluations_download_template")}</span>
+                  </a>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
 
-      {selectedCampaignId === "all" && allCampaigns.length > 0 && (
-        <div className="space-y-3">
-          <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
-            {t("evaluations_all_campaigns")}
-          </h3>
-          <div className="grid gap-3 sm:grid-cols-2">
-            {allCampaigns.map((c) => (
-              <Card
-                key={c.id}
-                className="border-border hover:border-primary/40 transition-colors cursor-pointer"
-                onClick={() => setSelectedCampaignId(c.id)}
-              >
-                <CardContent className="pt-4 pb-4">
-                  <div className="flex items-start justify-between gap-2">
-                    <div>
-                      <p className="font-medium text-sm">{c.title}</p>
-                      <p className="text-xs text-muted-foreground mt-0.5">
-                        {t("evaluations_evaluated_count", { evaluated: c.evaluated_count, total: c.total_employees })}
-                      </p>
-                    </div>
-                    {statusBadge(c.status)}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          <Card className="border-emerald-500/20 bg-emerald-500/5">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-xs font-bold uppercase tracking-widest text-emerald-500">System Intelligence</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <p className="text-[11px] text-muted-foreground">
+                Ebdaa Suite connects evaluation data directly to the analytics engine for real-time factory intelligence.
+              </p>
+              <Button asChild variant="link" className="p-0 h-auto text-[11px] text-emerald-500 hover:text-emerald-400">
+                <a href="/ebdaa-dashboard" className="flex items-center gap-1">
+                  View Enterprise Analytics <ExternalLink className="h-2 w-2" />
+                </a>
+              </Button>
+            </CardContent>
+          </Card>
         </div>
-      )}
+      </div>
     </div>
   );
 }

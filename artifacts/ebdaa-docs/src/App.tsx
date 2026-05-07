@@ -210,6 +210,33 @@ export default function App() {
           </div>
         </div>
 
+        <div style={{ padding: '0 1rem 1rem 1rem' }}>
+          <a
+            href="/"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              padding: '0.6rem 0.8rem',
+              background: 'rgba(212,150,10,0.1)',
+              border: '1px solid rgba(212,150,10,0.2)',
+              borderRadius: '6px',
+              color: 'var(--brand-accent)',
+              fontSize: '0.75rem',
+              fontWeight: '600',
+              textDecoration: 'none',
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
+              transition: 'all 0.2s ease'
+            }}
+            onMouseOver={(e) => (e.currentTarget.style.background = 'rgba(212,150,10,0.2)')}
+            onMouseOut={(e) => (e.currentTarget.style.background = 'rgba(212,150,10,0.1)')}
+          >
+            <span>←</span>
+            <span>Back to Skill Matrix</span>
+          </a>
+        </div>
+
         <div className="search-wrap">
           <div className="search-container">
             <input

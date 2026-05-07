@@ -336,6 +336,16 @@ const ar = {
   campaign_eval_results: "نتائج التقييم",
 
   created_by: "تصميم yasserious.com",
+  suite_title: "مجموعة إبداع",
+  suite_dashboard: "لوحة التحليلات",
+  suite_docs: "الوثائق التقنية",
+  suite_pitch_deck: "عرض المشروع",
+  suite_spreadsheet: "الجداول التفاعلية",
+  suite_sandbox: "بيئة تجريبية (Sandbox)",
+  evaluations_bulk_tools: "أدوات التقييم الجماعي",
+  evaluations_spreadsheet_tool: "أداة الجدول التفاعلي",
+  evaluations_download_template: "تحميل نموذج XLSX",
+  evaluations_spreadsheet_desc: "استخدم الأداة القائمة على الشبكة لتقييم المهارات الجماعي.",
 } as const;
 
 export default ar;

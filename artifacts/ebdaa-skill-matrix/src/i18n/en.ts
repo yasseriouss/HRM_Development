@@ -336,6 +336,16 @@ const en = {
   campaign_eval_results: "Evaluation Results",
 
   created_by: "Created by yasserious.com",
+  suite_title: "Ebdaa Suite",
+  suite_dashboard: "Analytics Dashboard",
+  suite_docs: "Technical Docs",
+  suite_pitch_deck: "Pitch Deck",
+  suite_spreadsheet: "Interactive Spreadsheet",
+  suite_sandbox: "Mockup Sandbox",
+  evaluations_bulk_tools: "Bulk Evaluation Tools",
+  evaluations_spreadsheet_tool: "Interactive Spreadsheet Tool",
+  evaluations_download_template: "Download XLSX Template",
+  evaluations_spreadsheet_desc: "Use the grid-based tool for mass skill evaluation.",
 } as const;
 
 export default en;
