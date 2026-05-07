@@ -3,12 +3,16 @@ import cors from "cors";
 import pinoHttp from "pino-http";
 import path from "path";
 import { fileURLToPath } from "url";
+import { injectSpeedInsights } from "@vercel/speed-insights";
 import router from "./routes";
 import { logger } from "./lib/logger";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app: Express = express();
+
+// Initialize Vercel Speed Insights
+injectSpeedInsights();
 
 app.use(
   pinoHttp({
