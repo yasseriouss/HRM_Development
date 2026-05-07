@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLocation } from "wouter";
 import { useTheme } from "next-themes";
 import { Sun, Moon } from "lucide-react";
-import { useLogin } from "@workspace/api-client-react";
+import { useLogin } from "@hrm-development/api-client-react";
 import { setAuthToken, setAuthUser } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

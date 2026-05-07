@@ -1,4 +1,4 @@
-import type { UserWithDepartment } from "@workspace/api-client-react";
+import type { UserWithDepartment } from "@hrm-development/api-client-react";
 
 export const getAuthToken = () => localStorage.getItem("ebdaa_user_token");
 export const setAuthToken = (token: string) => localStorage.setItem("ebdaa_user_token", token);

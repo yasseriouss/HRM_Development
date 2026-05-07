@@ -1,5 +1,5 @@
 {
-  "name": "@workspace/api-spec",
+  "name": "@hrm-development/api-spec",
   "version": "0.0.0",
   "private": true,
   "scripts": {

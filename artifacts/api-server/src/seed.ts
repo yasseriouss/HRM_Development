@@ -1,13 +1,13 @@
 /**
  * Ebdaa Skill Matrix System — Demo Data Seed Script
  *
- * Usage: pnpm --filter @workspace/api-server run seed
+ * Usage: pnpm --filter @hrm-development/api-server run seed
  *
  * Idempotent: uses ON CONFLICT DO NOTHING throughout.
  * Guarantees: 9 departments, 4 demo users, 50+ employees, 66+ skills.
  */
 
-import { db } from "@workspace/db";
+import { db } from "@hrm-development/db";
 import {
   departmentsTable,
   usersTable,
@@ -17,7 +17,7 @@ import {
   evaluationsTable,
   evaluationSummariesTable,
   trainingRecommendationsTable,
-} from "@workspace/db/schema";
+} from "@hrm-development/db/schema";
 import { eq, count, and } from "drizzle-orm";
 
 // ── DEPARTMENTS ──────────────────────────────────────────────────────────────

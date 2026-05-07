@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { db } from "@workspace/db";
+import { db } from "@hrm-development/db";
 import {
   campaignsTable,
   departmentsTable,
@@ -7,7 +7,7 @@ import {
   skillsTable,
   evaluationsTable,
   evaluationSummariesTable,
-} from "@workspace/db/schema";
+} from "@hrm-development/db/schema";
 import { eq, and, count } from "drizzle-orm";
 import { requireAuth, requireRole } from "../lib/auth";
 

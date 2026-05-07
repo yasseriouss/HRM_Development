@@ -1,10 +1,10 @@
-import { useGetMyProfile } from "@workspace/api-client-react";
+import { useGetMyProfile } from "@hrm-development/api-client-react";
 import { getAuthHeaders } from "@/lib/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Briefcase, CalendarDays, Building2 } from "lucide-react";
-import type { EvaluationSummary } from "@workspace/api-client-react";
+import type { EvaluationSummary } from "@hrm-development/api-client-react";
 import { useT } from "@/i18n";
 
 type EmployeeClass = "A" | "B" | "C" | null | undefined;

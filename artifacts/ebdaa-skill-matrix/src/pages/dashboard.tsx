@@ -1,4 +1,4 @@
-import { useGetDashboardMetrics, useGetDepartmentPerformance } from "@workspace/api-client-react";
+import { useGetDashboardMetrics, useGetDepartmentPerformance } from "@hrm-development/api-client-react";
 import { getAuthHeaders } from "@/lib/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";

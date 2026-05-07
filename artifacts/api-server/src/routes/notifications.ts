@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { db } from "@workspace/db";
-import { workflowNotificationsTable } from "@workspace/db/schema";
+import { db } from "@hrm-development/db";
+import { workflowNotificationsTable } from "@hrm-development/db/schema";
 import { eq, and, desc } from "drizzle-orm";
 import { requireAuth } from "../lib/auth";
 

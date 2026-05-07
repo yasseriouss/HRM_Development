@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { db } from "@workspace/db";
-import { trainingRecommendationsTable, employeesTable, skillsTable, usersTable } from "@workspace/db/schema";
+import { db } from "@hrm-development/db";
+import { trainingRecommendationsTable, employeesTable, skillsTable, usersTable } from "@hrm-development/db/schema";
 import { eq, and } from "drizzle-orm";
 import { requireAuth, requireRole } from "../lib/auth";
 

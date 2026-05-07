@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "wouter";
-import { useListEmployees, useListDepartments } from "@workspace/api-client-react";
-import type { Employee, ListEmployeesCurrentClass } from "@workspace/api-client-react";
+import { useListEmployees, useListDepartments } from "@hrm-development/api-client-react";
+import type { Employee, ListEmployeesCurrentClass } from "@hrm-development/api-client-react";
 import { getAuthHeaders, getAuthUser } from "@/lib/auth";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";

@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { db } from "@workspace/db";
-import { usersTable, departmentsTable, userSessionsTable } from "@workspace/db/schema";
+import { db } from "@hrm-development/db";
+import { usersTable, departmentsTable, userSessionsTable } from "@hrm-development/db/schema";
 import { eq } from "drizzle-orm";
 import { getUserFromToken } from "../lib/auth";
 import { randomUUID } from "crypto";

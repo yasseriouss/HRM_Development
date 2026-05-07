@@ -1,10 +1,10 @@
 {
-  "name": "@workspace/api-server",
+  "name": "@hrm-development/api-server",
   "version": "0.0.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "BASE_PATH=/ebdaa-dashboard/ pnpm --filter @workspace/ebdaa-dashboard run build && export NODE_ENV=development && pnpm run build && pnpm run start",
+    "dev": "BASE_PATH=/ebdaa-dashboard/ pnpm --filter @hrm-development/ebdaa-dashboard run build && export NODE_ENV=development && pnpm run build && pnpm run start",
     "build": "node ./build.mjs",
     "start": "node --enable-source-maps ./dist/index.mjs",
     "typecheck": "tsc -p tsconfig.check.json",
@@ -12,8 +12,8 @@
     "seed": "pnpm run seed:build && node ./dist/seed.mjs"
   },
   "dependencies": {
-    "@workspace/api-zod": "workspace:*",
-    "@workspace/db": "workspace:*",
+    "@hrm-development/api-zod": "workspace:*",
+    "@hrm-development/db": "workspace:*",
     "cookie-parser": "^1.4.7",
     "cors": "^2",
     "drizzle-orm": "catalog:",

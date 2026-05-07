@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { db } from "@workspace/db";
+import { db } from "@hrm-development/db";
 import {
   workflowInstancesTable,
   workflowAssignmentsTable,
@@ -11,7 +11,7 @@ import {
   campaignsTable,
   skillsTable,
   employeesTable,
-} from "@workspace/db/schema";
+} from "@hrm-development/db/schema";
 import { eq, and, inArray, or } from "drizzle-orm";
 import { alias } from "drizzle-orm/pg-core";
 import { requireAuth } from "../lib/auth";

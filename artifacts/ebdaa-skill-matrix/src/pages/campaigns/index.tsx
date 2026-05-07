@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "wouter";
-import { useListCampaigns, useListDepartments } from "@workspace/api-client-react";
-import type { Campaign } from "@workspace/api-client-react";
+import { useListCampaigns, useListDepartments } from "@hrm-development/api-client-react";
+import type { Campaign } from "@hrm-development/api-client-react";
 import { getAuthHeaders, getAuthUser } from "@/lib/auth";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";

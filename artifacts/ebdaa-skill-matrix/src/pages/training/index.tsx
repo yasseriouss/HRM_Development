@@ -4,11 +4,11 @@ import {
   useListTrainingRecommendations,
   useListEmployees,
   useListSkills,
-} from "@workspace/api-client-react";
+} from "@hrm-development/api-client-react";
 import type {
   TrainingRecommendation,
   ListTrainingRecommendationsStatus,
-} from "@workspace/api-client-react";
+} from "@hrm-development/api-client-react";
 import { getAuthHeaders, getAuthUser } from "@/lib/auth";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";

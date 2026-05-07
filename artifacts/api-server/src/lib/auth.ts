@@ -1,5 +1,5 @@
-import { db } from "@workspace/db";
-import { usersTable, userSessionsTable } from "@workspace/db/schema";
+import { db } from "@hrm-development/db";
+import { usersTable, userSessionsTable } from "@hrm-development/db/schema";
 import { eq } from "drizzle-orm";
 import type { Request, Response, NextFunction } from "express";
 
