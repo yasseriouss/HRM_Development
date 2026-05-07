@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { ThemeProvider, useTheme } from 'next-themes';
-import { EbdaaSystemSheet } from './pages/EbdaaSystemSheet';
+import { HrmSystemSheet } from './pages/HrmSystemSheet';
 import { InstructionsSheet } from './pages/InstructionsSheet';
 import { DepartmentsSheet } from './pages/DepartmentsSheet';
 import { SkillsLibrarySheet } from './pages/SkillsLibrarySheet';
@@ -50,18 +50,18 @@ const TABS = [
 type TabId = typeof TABS[number]['id'];
 
 const STORAGE_KEYS = {
-  upholstery:  'ebdaa_scores_upholstery',
-  painting:    'ebdaa_scores_painting',
-  naturalwood: 'ebdaa_scores_naturalwood',
-  assembly:    'ebdaa_scores_assembly',
-  cutting:     'ebdaa_scores_cutting',
-  qc:          'ebdaa_scores_qc',
-  logistics:   'ebdaa_scores_logistics',
-  maintenance: 'ebdaa_scores_maintenance',
-  admin:       'ebdaa_scores_admin',
+  upholstery:  'hrm_scores_upholstery',
+  painting:    'hrm_scores_painting',
+  naturalwood: 'hrm_scores_naturalwood',
+  assembly:    'hrm_scores_assembly',
+  cutting:     'hrm_scores_cutting',
+  qc:          'hrm_scores_qc',
+  logistics:   'hrm_scores_logistics',
+  maintenance: 'hrm_scores_maintenance',
+  admin:       'hrm_scores_admin',
 };
 
-const LAST_SAVED_KEY = 'ebdaa_scores_last_saved';
+const LAST_SAVED_KEY = 'hrm_scores_last_saved';
 
 function loadScores(key: string, fallback: ScoreMap): ScoreMap {
   try {
@@ -286,7 +286,7 @@ function AppInner() {
 
   const renderContent = () => {
     switch (activeTab) {
-      case 'system': return <EbdaaSystemSheet />;
+      case 'system': return <HrmSystemSheet />;
       case 'instructions': return <InstructionsSheet />;
       case 'departments': return <DepartmentsSheet />;
       case 'skills': return <SkillsLibrarySheet />;
@@ -463,7 +463,7 @@ function AppInner() {
               className="ms-2 px-2.5 py-1 rounded border border-amber-500/30 bg-amber-500/5 text-amber-500 hover:bg-amber-500 hover:text-slate-950 transition-all text-[10px] font-bold uppercase tracking-wider flex items-center gap-1"
             >
               <span>←</span>
-              <span>Skill Matrix</span>
+              <span>HRM Development</span>
             </a>
           </div>
 

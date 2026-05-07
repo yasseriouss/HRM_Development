@@ -8,7 +8,7 @@ interface LoginProps {
 
 export default function Login({ onLogin }: LoginProps) {
   const t = useT();
-  const [email, setEmail] = useState("super_admin@ebdaa.com");
+  const [email, setEmail] = useState("super_admin@hrm-dev.com");
   const [password, setPassword] = useState("admin123");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -32,7 +32,7 @@ export default function Login({ onLogin }: LoginProps) {
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-primary tracking-tight">EBDAA</h1>
+          <h1 className="text-3xl font-bold text-primary tracking-tight">HRM</h1>
           <p className="text-muted-foreground mt-1">{t("login_title")}</p>
         </div>
 
@@ -71,8 +71,8 @@ export default function Login({ onLogin }: LoginProps) {
 
           <div className="mt-4 p-3 bg-muted rounded-lg">
             <p className="text-xs text-muted-foreground font-medium mb-1">{t("login_demo_creds")}</p>
-            <p className="text-xs text-muted-foreground">super_admin@ebdaa.com / admin123</p>
-            <p className="text-xs text-muted-foreground">hr@ebdaa.com / hr123</p>
+            <p className="text-xs text-muted-foreground">super_admin@hrm-dev.com / admin123</p>
+            <p className="text-xs text-muted-foreground">hr@hrm-dev.com / hr123</p>
           </div>
         </div>
 

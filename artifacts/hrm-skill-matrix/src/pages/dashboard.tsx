@@ -191,7 +191,7 @@ export default function Dashboard() {
             <LayoutGrid className="h-5 w-5" />
             {t("suite_title")}
           </h3>
-          <p className="text-sm text-muted-foreground">Access specialized tools and documentation across the Ebdaa ecosystem.</p>
+          <p className="text-sm text-muted-foreground">Access specialized tools and documentation across the HRM ecosystem.</p>
         </div>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
           {SUITE_APPS.map((app) => (

@@ -1,12 +1,12 @@
 const en = {
-  app_title: "Ebdaa Skill Matrix",
+  app_title: "HRM Development",
   app_subtitle: "Interactive Spreadsheet",
-  app_footer: "Ebdaa Skill Matrix System — Wood Manufacturing | 9 Departments | 146 Employees",
+  app_footer: "HRM Development System — Wood Manufacturing | 9 Departments | 146 Employees",
   created_by: "Created by yasserious.com",
   export_excel: "Export Excel",
   exporting: "Exporting...",
 
-  tab_system: "Ebdaa System",
+  tab_system: "HRM System",
   tab_system_short: "System",
   tab_instructions: "Instructions",
   tab_instructions_short: "Guide",

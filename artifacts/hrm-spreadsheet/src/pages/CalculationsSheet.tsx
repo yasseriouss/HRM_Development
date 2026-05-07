@@ -155,7 +155,7 @@ export function CalculationsSheet({ departments }: Props) {
     <div className="p-6 space-y-8 max-w-5xl">
       <div>
         <h1 className="text-2xl font-bold text-white mb-2">📊 Calculations Reference</h1>
-        <p className="text-white/60">Step-by-step guide to the Ebdaa weighted scoring methodology.</p>
+        <p className="text-white/60">Step-by-step guide to the HRM weighted scoring methodology.</p>
       </div>
 
       {/* ── Department Score Summary ─────────────────────────────────────────── */}

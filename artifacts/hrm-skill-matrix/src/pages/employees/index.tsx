@@ -17,10 +17,11 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { ChevronLeft, ChevronRight, Plus, Pencil, Trash2, ExternalLink } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus, Pencil, Trash2, ExternalLink, Download } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { useT } from "@/i18n";
+import { exportToPDF, exportToExcel } from "@/lib/export-utils";
 
 interface EmpForm {
   full_name: string;
@@ -162,11 +163,29 @@ export default function EmployeesPage() {
           <h2 className="text-3xl font-bold tracking-tight">{t("employees_title")}</h2>
           <p className="text-muted-foreground">{t("employees_subtitle")}</p>
         </div>
-        {isAdmin && (
-          <Button size="sm" className="bg-primary text-primary-foreground gap-1 shrink-0" onClick={openCreate}>
-            <Plus className="h-3.5 w-3.5" /> {t("employees_new")}
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" className="gap-1 border-border" onClick={() => exportToPDF({
+            title: t("employees_title"),
+            filename: "Employees_List",
+            headers: [t("field_name"), t("field_code"), t("field_department"), t("field_job_title"), t("field_class")],
+            rows: (employees ?? []).map(e => [e.full_name, e.code ?? "—", e.department_name ?? "—", e.job_title ?? "—", e.current_class ?? "—"])
+          })}>
+            <Download className="h-3.5 w-3.5" /> PDF
           </Button>
-        )}
+          <Button variant="outline" size="sm" className="gap-1 border-border" onClick={() => exportToExcel({
+            title: t("employees_title"),
+            filename: "Employees_List",
+            headers: [t("field_name"), t("field_code"), t("field_department"), t("field_job_title"), t("field_class")],
+            rows: (employees ?? []).map(e => [e.full_name, e.code ?? "—", e.department_name ?? "—", e.job_title ?? "—", e.current_class ?? "—"])
+          })}>
+            <Download className="h-3.5 w-3.5" /> EXCEL
+          </Button>
+          {isAdmin && (
+            <Button size="sm" className="bg-primary text-primary-foreground gap-1 shrink-0" onClick={openCreate}>
+              <Plus className="h-3.5 w-3.5" /> {t("employees_new")}
+            </Button>
+          )}
+        </div>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
@@ -322,7 +341,7 @@ export default function EmployeesPage() {
             </div>
             <div className="space-y-1.5">
               <Label className="text-xs">{t("field_email")}</Label>
-              <Input type="email" placeholder="ahmed@ebdaa.com" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="bg-background border-border" />
+              <Input type="email" placeholder="ahmed@hrm-dev.com" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="bg-background border-border" />
             </div>
             <div className="space-y-1.5">
               <Label className="text-xs">{t("field_phone")}</Label>

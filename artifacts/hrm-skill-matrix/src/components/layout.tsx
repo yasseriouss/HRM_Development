@@ -108,6 +108,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     { href: "/my-tasks", labelKey: "nav_my_tasks" as const, roles: ["super_admin", "hr_coordinator", "dept_head", "employee"] },
     { href: "/training", labelKey: "nav_training" as const, roles: ["super_admin", "hr_coordinator", "dept_head"] },
     { href: "/settings", labelKey: "nav_settings" as const, roles: ["super_admin", "hr_coordinator", "dept_head", "employee"] },
+    { href: "/manual", labelKey: "nav_manual" as const, roles: ["super_admin", "hr_coordinator", "dept_head", "employee"] },
   ];
 
   const navItems = ALL_NAV.filter((item) => item.roles.includes(role));
@@ -185,12 +186,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <DropdownMenuSeparator className="my-2 bg-border/50" />
                 <div className="px-2 py-1">
                   <p className="text-[9px] text-center text-muted-foreground/60 font-mono tracking-tighter">
-                    EBDAA INDUSTRIAL ECOSYSTEM V2.0.4
+                    HRM INDUSTRIAL ECOSYSTEM V2.0.4
                   </p>
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
-            <h1 className="text-lg font-bold text-primary tracking-wider uppercase shrink-0">Ebdaa Matrix</h1>
+            <h1 className="text-lg font-bold text-primary tracking-wider uppercase shrink-0">HRM Development</h1>
           </div>
           <nav className="hidden md:flex items-center gap-1 flex-wrap">
             {navItems.map((item) => (

@@ -14,7 +14,7 @@ export function InstructionsSheet() {
     <div className="p-6 space-y-8 max-w-4xl">
       <div>
         <h1 className="text-2xl font-bold text-white mb-2">📖 Instructions & User Guide</h1>
-        <p className="text-white/60">Everything you need to know to use the Ebdaa Skill Matrix System effectively.</p>
+        <p className="text-white/60">Everything you need to know to use the HRM Development System effectively.</p>
       </div>
 
       {/* Scoring Scale */}

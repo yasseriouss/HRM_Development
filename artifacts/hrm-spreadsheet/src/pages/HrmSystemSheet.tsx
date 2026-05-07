@@ -1,7 +1,7 @@
 import React from 'react';
 import { DEPARTMENTS, EMPLOYEES, SKILLS, CAMPAIGNS } from '../data/masterData';
 
-export function EbdaaSystemSheet() {
+export function HrmSystemSheet() {
   const totalA = EMPLOYEES.filter(e => e.currentClass === 'A').length;
   const totalB = EMPLOYEES.filter(e => e.currentClass === 'B').length;
   const totalC = EMPLOYEES.filter(e => e.currentClass === 'C').length;
@@ -15,12 +15,12 @@ export function EbdaaSystemSheet() {
           <div className="flex items-center gap-3 mb-4">
             <span className="text-4xl">🏭</span>
             <div>
-              <h1 className="text-3xl font-bold text-white tracking-tight">EBDAA SKILL MATRIX SYSTEM</h1>
+              <h1 className="text-3xl font-bold text-white tracking-tight">HRM Development SYSTEM</h1>
               <p className="text-amber-400 text-lg font-medium mt-0.5">Interactive Evaluation Spreadsheet Tool</p>
             </div>
           </div>
           <p className="text-white/60 max-w-2xl">
-            A comprehensive skill evaluation and performance management tool for Ebdaa Wood Manufacturing.
+            A comprehensive skill evaluation and performance management tool for HRM Wood Manufacturing.
             Track, evaluate, and classify employee performance across all 9 departments with weighted scoring.
           </p>
           <div className="mt-4">
@@ -97,7 +97,7 @@ export function EbdaaSystemSheet() {
         <h2 className="text-lg font-semibold text-white mb-4">📌 Navigation Guide</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
           {[
-            { tab: '🏭 Ebdaa System', desc: 'This page — overview & metrics' },
+            { tab: '🏭 HRM System', desc: 'This page — overview & metrics' },
             { tab: '📖 Instructions', desc: 'Scoring guide & best practices' },
             { tab: '🏢 Departments', desc: '9 departments with manager info' },
             { tab: '📚 Skills Library', desc: '73 skills with weights & criticality' },

@@ -14,10 +14,11 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Plus, Pencil, Trash2, Users, ExternalLink } from "lucide-react";
+import { Plus, Pencil, Trash2, Users, ExternalLink, Download } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { useT } from "@/i18n";
+import { exportToPDF, exportToExcel } from "@/lib/export-utils";
 
 interface DeptForm {
   name: string;
@@ -109,11 +110,29 @@ export default function DepartmentsPage() {
           <h2 className="text-3xl font-bold tracking-tight">{t("departments_title")}</h2>
           <p className="text-muted-foreground">{t("departments_subtitle")}</p>
         </div>
-        {isAdmin && (
-          <Button size="sm" className="bg-primary text-primary-foreground gap-1 shrink-0" onClick={openCreate}>
-            <Plus className="h-3.5 w-3.5" /> {t("departments_new")}
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" className="gap-1 border-border" onClick={() => exportToPDF({
+            title: t("departments_title"),
+            filename: "Departments_List",
+            headers: [t("field_name"), t("field_code"), t("field_description"), t("field_manager_email"), t("departments_col_employees")],
+            rows: (departments ?? []).map(d => [d.name, d.code ?? "—", d.description ?? "—", d.manager_email ?? "—", d.employee_count ?? 0])
+          })}>
+            <Download className="h-3.5 w-3.5" /> PDF
           </Button>
-        )}
+          <Button variant="outline" size="sm" className="gap-1 border-border" onClick={() => exportToExcel({
+            title: t("departments_title"),
+            filename: "Departments_List",
+            headers: [t("field_name"), t("field_code"), t("field_description"), t("field_manager_email"), t("departments_col_employees")],
+            rows: (departments ?? []).map(d => [d.name, d.code ?? "—", d.description ?? "—", d.manager_email ?? "—", d.employee_count ?? 0])
+          })}>
+            <Download className="h-3.5 w-3.5" /> EXCEL
+          </Button>
+          {isAdmin && (
+            <Button size="sm" className="bg-primary text-primary-foreground gap-1 shrink-0" onClick={openCreate}>
+              <Plus className="h-3.5 w-3.5" /> {t("departments_new")}
+            </Button>
+          )}
+        </div>
       </div>
 
       {isLoading ? (
@@ -213,7 +232,7 @@ export default function DepartmentsPage() {
             </div>
             <div className="space-y-1.5">
               <Label className="text-xs">{t("departments_col_manager_email")}</Label>
-              <Input type="email" placeholder="manager@ebdaa.com" value={form.manager_email} onChange={(e) => setForm({ ...form, manager_email: e.target.value })} className="bg-background border-border" />
+              <Input type="email" placeholder="manager@hrm-dev.com" value={form.manager_email} onChange={(e) => setForm({ ...form, manager_email: e.target.value })} className="bg-background border-border" />
             </div>
           </div>
           <DialogFooter>

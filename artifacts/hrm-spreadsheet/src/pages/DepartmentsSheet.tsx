@@ -6,7 +6,7 @@ export function DepartmentsSheet() {
     <div className="p-6 space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-white mb-2">🏢 Departments</h1>
-        <p className="text-white/60">All 9 operational departments at Ebdaa Wood Manufacturing.</p>
+        <p className="text-white/60">All 9 operational departments at HRM Wood Manufacturing.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">

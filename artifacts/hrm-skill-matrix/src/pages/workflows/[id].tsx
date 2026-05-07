@@ -332,7 +332,7 @@ function ScoreOverrideGrid({
   if (!skills?.length) {
     return (
       <div className="space-y-2 py-2">
-        <p className="text-xs text-muted-foreground">Loading skill matrix…</p>
+        <p className="text-xs text-muted-foreground">Loading HRM Development…</p>
         <div className="flex gap-2">
           <Button size="sm" variant="ghost" onClick={onCancel}>Cancel</Button>
           <Button size="sm" className={confirmClass} onClick={() => onConfirm([], notes)} disabled={disabled}>
@@ -816,7 +816,7 @@ export default function WorkflowDetailPage() {
       doc.setPage(i);
       doc.setFontSize(8);
       doc.setTextColor(160, 160, 160);
-      doc.text(`Page ${i} of ${totalPages}  |  Ebdaa Skill Matrix`, pageWidth / 2, doc.internal.pageSize.getHeight() - 8, { align: "center" });
+      doc.text(`Page ${i} of ${totalPages}  |  HRM Development`, pageWidth / 2, doc.internal.pageSize.getHeight() - 8, { align: "center" });
     }
 
     doc.save(`workflow-${id}-export.pdf`);

@@ -24,7 +24,7 @@ export default function Slide03_Solution() {
           className="font-display font-bold tracking-tight"
           style={{ fontSize: "5.5vw", lineHeight: 1, color: "#F5F0E8" }}
         >
-          EBDAA SKILL
+          HRM SKILL
           <br />
           <span style={{ color: "#D4960A" }}>MATRIX</span>
         </h2>
@@ -84,7 +84,7 @@ export default function Slide03_Solution() {
         >
           <div className="font-display font-bold" style={{ fontSize: "3vw", color: "#D4960A", marginBottom: "1vh" }}>03</div>
           <div className="font-display font-semibold" style={{ fontSize: "1.8vw", color: "#F5F0E8", marginBottom: "0.8vh" }}>
-            Skill Matrix View
+            HRM Development View
           </div>
           <div className="font-body" style={{ fontSize: "1.35vw", color: "#5A6070", lineHeight: 1.5 }}>
             Visual grid showing every employee's competency at a glance

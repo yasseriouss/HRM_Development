@@ -111,7 +111,7 @@ export default function Dashboard({ onLogout }: { onLogout: () => void }) {
           <div className="flex items-center gap-3">
             <div className="w-1 h-6 bg-primary rounded-full" />
             <div>
-              <h1 className="font-bold text-foreground leading-none">EBDAA</h1>
+              <h1 className="font-bold text-foreground leading-none">HRM</h1>
               <p className="text-xs text-muted-foreground">{t("workforce_subtitle")}</p>
             </div>
           </div>

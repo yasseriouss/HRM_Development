@@ -30,13 +30,13 @@ export default function Slide01_Title() {
           className="font-display font-bold tracking-tight text-accent mb-[1.5vh]"
           style={{ fontSize: "7vw", lineHeight: 1, textWrap: "balance", color: "#F5F0E8" }}
         >
-          EBDAA
+          HRM
         </h1>
         <h2
           className="font-display font-semibold tracking-wide"
           style={{ fontSize: "3.5vw", lineHeight: 1.1, color: "#D4960A", textWrap: "balance" }}
         >
-          SKILL MATRIX SYSTEM
+          HRM Development System
         </h2>
         <p
           className="font-body mt-[3vh]"

@@ -37,7 +37,7 @@ app.use("/api", router);
 
 // ── Static artifacts ─────────────────────────────────────────────────────────
 
-// 1. Main skill matrix app
+// 1. Main HRM Development app
 const frontendDist = path.resolve(
   __dirname,
   "../../../artifacts/hrm-skill-matrix/dist/public",

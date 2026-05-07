@@ -26,6 +26,7 @@ import MyProfilePage from "@/pages/my-profile";
 import WorkflowsPage from "@/pages/workflows/index";
 import WorkflowDetailPage from "@/pages/workflows/[id]";
 import MyTasksPage from "@/pages/my-tasks";
+import ManualPage from "@/pages/manual";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -145,6 +146,12 @@ function AppRoutes() {
             path="/settings"
             component={() => (
               <ProtectedRoute component={SettingsPage} roles={ALL_ROLES} />
+            )}
+          />
+          <Route
+            path="/manual"
+            component={() => (
+              <ProtectedRoute component={ManualPage} roles={ALL_ROLES} />
             )}
           />
           <Route component={NotFound} />

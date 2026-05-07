@@ -43,7 +43,7 @@ export default function Slide16_Credits() {
         <div className="cred-2" style={{ marginTop: "3vh" }}>
           <div className="font-body" style={{ fontSize: "1.8vw", color: "#9AA0AE", lineHeight: 1.6, maxWidth: "50vw" }}>
             Digital systems, engineered with precision.<br />
-            Built for Ebdaa's 146 employees across 9 departments.
+            Built for HRM's 146 employees across 9 departments.
           </div>
         </div>
 

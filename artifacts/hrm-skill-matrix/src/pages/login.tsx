@@ -77,7 +77,7 @@ export default function Login() {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="admin@ebdaa.com"
+                  placeholder="admin@hrm-dev.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -107,8 +107,8 @@ export default function Login() {
 
               <div className="text-xs text-muted-foreground text-center space-y-1 pt-4 border-t border-border w-full">
                 <p className="font-medium">{t("login_demo_credentials")}</p>
-                <p>super_admin@ebdaa.com / admin123</p>
-                <p>hr@ebdaa.com / hr123</p>
+                <p>super_admin@hrm-dev.com / admin123</p>
+                <p>hr@hrm-dev.com / hr123</p>
               </div>
             </CardFooter>
           </form>

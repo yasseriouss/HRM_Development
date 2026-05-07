@@ -136,7 +136,7 @@ export function PrintReportSheet({ departments, reportDate }: PrintReportSheetPr
           <div className="flex items-center justify-between flex-wrap gap-3">
             <div>
               <div className="text-xs text-amber-400/70 font-medium tracking-widest uppercase mb-1">
-                Ebdaa Wood Manufacturing
+                HRM Wood Manufacturing
               </div>
               <h2 className="text-xl font-bold text-white">
                 Skill Evaluation Cycle — Summary Report
@@ -293,7 +293,7 @@ export function PrintReportSheet({ departments, reportDate }: PrintReportSheetPr
 
         {/* Footer note */}
         <div className="px-6 py-4 border-t border-white/10 bg-slate-800/20 flex items-center justify-between text-xs text-white/30">
-          <span>Ebdaa Skill Matrix System — Wood Manufacturing | Confidential</span>
+          <span>HRM Development System — Wood Manufacturing | Confidential</span>
           <span>Generated: {today} · yasserious.com</span>
         </div>
       </div>

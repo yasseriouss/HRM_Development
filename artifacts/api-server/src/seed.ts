@@ -1,5 +1,5 @@
 /**
- * Ebdaa Skill Matrix System — Demo Data Seed Script
+ * HRM Development System — Demo Data Seed Script
  *
  * Usage: pnpm --filter @hrm-development/api-server run seed
  *
@@ -38,10 +38,10 @@ const DEPARTMENTS = [
 
 // Passwords are stored as plaintext in this demo system (auth.ts does === comparison)
 const USERS_DEF = [
-  { id: "02cd3916-4d5b-425c-a675-f6d6d124f87f", email: "super_admin@ebdaa.com", role: "super_admin",    password: "admin123", department_id: null,                                    production_role: "manager"    },
-  { id: "1c2b3ac7-96cb-4cee-a9c3-2dcbdca99d7e", email: "hr@ebdaa.com",          role: "hr_coordinator", password: "hr123",    department_id: null,                                    production_role: null         },
-  { id: "bc467dbf-6e48-4ff3-9761-f2dbf34b99cb", email: "dept_head@ebdaa.com",   role: "dept_head",      password: "head123",  department_id: "dec521d4-19b7-41b3-b9d1-9f40ef3567f8", production_role: "supervisor" },
-  { id: "07e01a20-d2fb-40c5-8f79-9e19a86438cd", email: "employee@ebdaa.com",    role: "employee",       password: "emp123",   department_id: "dec521d4-19b7-41b3-b9d1-9f40ef3567f8", production_role: "engineer"   },
+  { id: "02cd3916-4d5b-425c-a675-f6d6d124f87f", email: "super_admin@hrm-dev.com", role: "super_admin",    password: "admin123", department_id: null,                                    production_role: "manager"    },
+  { id: "1c2b3ac7-96cb-4cee-a9c3-2dcbdca99d7e", email: "hr@hrm-dev.com",          role: "hr_coordinator", password: "hr123",    department_id: null,                                    production_role: null         },
+  { id: "bc467dbf-6e48-4ff3-9761-f2dbf34b99cb", email: "dept_head@hrm-dev.com",   role: "dept_head",      password: "head123",  department_id: "dec521d4-19b7-41b3-b9d1-9f40ef3567f8", production_role: "supervisor" },
+  { id: "07e01a20-d2fb-40c5-8f79-9e19a86438cd", email: "employee@hrm-dev.com",    role: "employee",       password: "emp123",   department_id: "dec521d4-19b7-41b3-b9d1-9f40ef3567f8", production_role: "engineer"   },
 ] as const;
 
 // ── SKILLS ───────────────────────────────────────────────────────────────────
@@ -300,10 +300,10 @@ async function seed() {
   console.log(`   Evaluations:  ${evalCount.total}`);
   console.log(`   Training:     ${trainingCount.total}`);
   console.log("\nDemo credentials:");
-  console.log("   super_admin@ebdaa.com / admin123");
-  console.log("   hr@ebdaa.com / hr123");
-  console.log("   dept_head@ebdaa.com / head123  (Assembly dept)");
-  console.log("   employee@ebdaa.com / emp123");
+  console.log("   super_admin@hrm-dev.com / admin123");
+  console.log("   hr@hrm-dev.com / hr123");
+  console.log("   dept_head@hrm-dev.com / head123  (Assembly dept)");
+  console.log("   employee@hrm-dev.com / emp123");
 }
 
 // ── CAMPAIGNS / EVALUATIONS / SUMMARIES / TRAINING ───────────────────────────

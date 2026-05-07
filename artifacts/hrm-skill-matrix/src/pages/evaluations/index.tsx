@@ -8,8 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ClipboardList, Users, TrendingUp, FileText, ExternalLink, Table } from "lucide-react";
+import { ClipboardList, Users, TrendingUp, FileText, ExternalLink, Table, Download } from "lucide-react";
 import { useT } from "@/i18n";
+import { exportToPDF, exportToExcel } from "@/lib/export-utils";
 
 type EmployeeClass = "A" | "B" | "C" | null | undefined;
 
@@ -74,10 +75,40 @@ function SummaryTable({ campaignId }: { campaignId: string }) {
         </div>
       </div>
 
-      <p className="text-sm text-muted-foreground">
-        {t("evaluations_avg_score")}{" "}
-        <span className="font-semibold text-primary">{avgPct.toFixed(1)}%</span>
-      </p>
+      <div className="flex items-center justify-between">
+        <p className="text-sm text-muted-foreground">
+          {t("evaluations_avg_score")}{" "}
+          <span className="font-semibold text-primary">{avgPct.toFixed(1)}%</span>
+        </p>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="xs"
+            className="h-7 text-[10px] gap-1 border-border"
+            onClick={() => exportToPDF({
+              title: `${t("evaluations_title")} - ${campaignId}`,
+              filename: `Evaluation_Report_${campaignId}`,
+              headers: [t("field_employee"), t("field_code"), t("evaluations_col_score"), "%", t("field_class")],
+              rows: items.map(r => [r.employee_name ?? "—", r.employee_code ?? "—", `${Number(r.total_score).toFixed(0)}/${Number(r.max_possible_score).toFixed(0)}`, `${Number(r.percentage).toFixed(1)}%`, r.class ?? "—"])
+            })}
+          >
+            <Download className="h-3 w-3" /> PDF
+          </Button>
+          <Button
+            variant="outline"
+            size="xs"
+            className="h-7 text-[10px] gap-1 border-border"
+            onClick={() => exportToExcel({
+              title: `${t("evaluations_title")} - ${campaignId}`,
+              filename: `Evaluation_Export_${campaignId}`,
+              headers: [t("field_employee"), t("field_code"), t("evaluations_col_score"), "Percentage", t("field_class")],
+              rows: items.map(r => [r.employee_name ?? "—", r.employee_code ?? "—", `${Number(r.total_score).toFixed(0)}/${Number(r.max_possible_score).toFixed(0)}`, Number(r.percentage), r.class ?? "—"])
+            })}
+          >
+            <Download className="h-3 w-3" /> EXCEL
+          </Button>
+        </div>
+      </div>
 
       <div className="overflow-x-auto rounded-lg border border-border">
         <table className="w-full text-sm">
@@ -297,7 +328,7 @@ export default function EvaluationsPage() {
             </CardHeader>
             <CardContent className="space-y-3">
               <p className="text-[11px] text-muted-foreground">
-                Ebdaa Suite connects evaluation data directly to the analytics engine for real-time factory intelligence.
+                HRM Suite connects evaluation data directly to the analytics engine for real-time factory intelligence.
               </p>
               <Button asChild variant="link" className="p-0 h-auto text-[11px] text-emerald-500 hover:text-emerald-400">
                 <a href="/hrm-dashboard" className="flex items-center gap-1">

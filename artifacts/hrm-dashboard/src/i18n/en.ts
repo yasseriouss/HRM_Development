@@ -1,9 +1,9 @@
 const en = {
-  app_title: "Ebdaa Factory OS — Analytics",
-  app_subtitle: "Skill Matrix System · Analytics Dashboard",
+  app_title: "HRM Factory OS — Analytics",
+  app_subtitle: "HRM Development System · Analytics Dashboard",
   app_stats: "146 employees | 9 departments | 67 skills tracked",
   app_created_by: "Created by",
-  app_footer: "Ebdaa Skill Matrix System · Wood Manufacturing · 146 Employees · 9 Departments",
+  app_footer: "HRM Development System · Wood Manufacturing · 146 Employees · 9 Departments",
 
   theme_light: "Light",
   theme_dark: "Dark",
@@ -106,7 +106,7 @@ const en = {
   error_loading: "Error loading data",
   error_sign_out: "Sign out and try again",
   workforce_overview: "Workforce Overview",
-  workforce_subtitle: "Real-time metrics from the Ebdaa Skill Matrix System",
+  workforce_subtitle: "Real-time metrics from the HRM Development System",
   no_eval_data: "No evaluation data yet",
   no_eval_data_sub: "Complete a campaign to see results",
   perf_dist: "Performance Distribution",

@@ -28,7 +28,7 @@ function buildEvalSheet(
   const maxScore = skills.reduce((sum, s) => sum + 4 * s.weight, 0);
   const weightsConst = `{${skills.map(s => s.weight).join(',')}}`;
 
-  ws.addRow([`${deptName} — Skill Matrix Evaluation`, ...Array(nSkills + 4).fill(''), BRAND]);
+  ws.addRow([`${deptName} — HRM Development Evaluation`, ...Array(nSkills + 4).fill(''), BRAND]);
   ws.addRow([
     'Employee Name',
     'Code',
@@ -89,11 +89,11 @@ export async function exportToExcel(
 ): Promise<void> {
   const wb = new ExcelJS.Workbook();
 
-  const systemSheet = wb.addWorksheet('Ebdaa System');
+  const systemSheet = wb.addWorksheet('HRM System');
   const systemData: (string | number)[][] = [
-    ['EBDAA SKILL MATRIX SYSTEM', '', '', BRAND],
+    ['HRM Development System', '', '', BRAND],
     ['', '', '', ''],
-    ['Company', 'Ebdaa Wood Manufacturing', '', ''],
+    ['Company', 'HRM Wood Manufacturing', '', ''],
     ['Total Employees', '146', '', ''],
     ['Departments', '9', '', ''],
     ['Total Skills in Library', `${SKILLS.length}`, '', ''],
@@ -104,7 +104,7 @@ export async function exportToExcel(
     ['Percentage = Σ(Score × Weight) / Σ(4 × Weight) × 100', '', '', ''],
     ['', '', '', ''],
     ['Sheet Navigation:', '', '', ''],
-    ['Sheet 1: Ebdaa System', 'Sheet 2: Instructions', 'Sheet 3: Departments', 'Sheet 4: Skills Library'],
+    ['Sheet 1: HRM System', 'Sheet 2: Instructions', 'Sheet 3: Departments', 'Sheet 4: Skills Library'],
     ['Sheet 5: Employees', 'Sheet 6: Campaigns', 'Sheet 7: Upholstery Eval', 'Sheet 8: Painting Eval'],
     ['Sheet 9: Natural Wood Eval', 'Sheet 10: Assembly Eval', 'Sheet 11: Cutting Eval', 'Sheet 12: QC Eval'],
     ['Sheet 13: Logistics Eval', 'Sheet 14: Maintenance Eval', 'Sheet 15: Administration Eval', 'Sheet 16: Calculations'],
@@ -148,7 +148,7 @@ export async function exportToExcel(
   for (const row of instrData) instrSheet.addRow(row);
 
   const deptSheet = wb.addWorksheet('Departments');
-  deptSheet.addRow(['DEPARTMENTS — EBDAA WOOD MANUFACTURING', '', '', '', '', BRAND]);
+  deptSheet.addRow(['DEPARTMENTS — HRM Wood Manufacturing', '', '', '', '', BRAND]);
   deptSheet.addRow(['Code', 'Department Name', 'Manager', 'Email', 'Employee Count', 'Description']);
   for (const d of DEPARTMENTS) {
     deptSheet.addRow([d.code, d.name, d.manager, d.email, d.employeeCount, d.description]);
@@ -167,7 +167,7 @@ export async function exportToExcel(
   skillSheet.addRow([BRAND]);
 
   const empSheet = wb.addWorksheet('Employees');
-  empSheet.addRow(['EMPLOYEES — EBDAA WOOD MANUFACTURING', '', '', '', '', '', BRAND]);
+  empSheet.addRow(['EMPLOYEES — HRM Wood Manufacturing', '', '', '', '', '', BRAND]);
   empSheet.addRow(['Code', 'Full Name', 'Department', 'Job Title', 'Joined Date', 'Current Class', 'Email']);
   for (const e of EMPLOYEES) {
     const dept = DEPARTMENTS.find((d: Department) => d.id === e.departmentId);
@@ -248,7 +248,7 @@ export async function exportToExcel(
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'Ebdaa_Skill_Matrix_Evaluation.xlsx';
+  a.download = 'HRM_Skill_Matrix_Evaluation.xlsx';
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);

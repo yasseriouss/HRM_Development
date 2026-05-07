@@ -201,8 +201,8 @@ export default function App() {
           <div className="nav-logo">
             <div className="nav-logo-mark">ES</div>
             <div>
-              <div className="nav-logo-text">Ebdaa Docs</div>
-              <div className="nav-sub">Skill Matrix System · v1.0</div>
+              <div className="nav-logo-text">HRM Docs</div>
+              <div className="nav-sub">HRM Development System · v1.0</div>
             </div>
           </div>
           <div className="nav-credit">
@@ -233,7 +233,7 @@ export default function App() {
             onMouseOut={(e) => (e.currentTarget.style.background = 'rgba(212,150,10,0.1)')}
           >
             <span>←</span>
-            <span>Back to Skill Matrix</span>
+            <span>Back to HRM Development</span>
           </a>
         </div>
 
