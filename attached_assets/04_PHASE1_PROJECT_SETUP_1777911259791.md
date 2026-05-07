@@ -6,7 +6,7 @@
 ## 📁 PROJECT STRUCTURE
 
 ```
-ebdaa-skill-matrix/
+hrm-skill-matrix/
 ├── src/
 │   ├── components/
 │   │   ├── Layout/
@@ -72,7 +72,7 @@ ebdaa-skill-matrix/
 
 ```json
 {
-  "name": "ebdaa-skill-matrix",
+  "name": "hrm-skill-matrix",
   "version": "1.0.0",
   "description": "Ebdaa Skill Matrix Management System",
   "type": "module",
@@ -275,8 +275,8 @@ Professional skill matrix management system for Ebdaa Factory (146+ employees, 9
 
 1. Clone repository
 \`\`\`bash
-git clone https://github.com/yourusername/ebdaa-skill-matrix
-cd ebdaa-skill-matrix
+git clone https://github.com/yourusername/hrm-skill-matrix
+cd hrm-skill-matrix
 \`\`\`
 
 2. Install dependencies
@@ -461,10 +461,10 @@ Enhanced by [yasserious.com](https://yasserious.com)
 
 ```bash
 # Create new Vite project
-npm create vite@latest ebdaa-skill-matrix -- --template react-ts
+npm create vite@latest hrm-skill-matrix -- --template react-ts
 
 # Navigate to project
-cd ebdaa-skill-matrix
+cd hrm-skill-matrix
 
 # Install dependencies
 npm install

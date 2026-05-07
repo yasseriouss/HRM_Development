@@ -14,8 +14,8 @@
 
 ```bash
 # Step 1: Create and enter project
-npm create vite@latest ebdaa-skill-matrix -- --template react-ts
-cd ebdaa-skill-matrix
+npm create vite@latest hrm-skill-matrix -- --template react-ts
+cd hrm-skill-matrix
 
 # Step 2: Install all dependencies
 npm install
@@ -43,7 +43,7 @@ npm run dev
 
 1. **Go to https://supabase.com**
    - Create account
-   - Create new project: `ebdaa-skill-matrix`
+   - Create new project: `hrm-skill-matrix`
    - Wait 3-5 minutes for provisioning
 
 2. **Deploy Database Schema**
@@ -433,7 +433,7 @@ You've got all the resources. You've got all the documentation. You've got all t
 **Status:** 🟢 READY TO START  
 **Time to Success:** 10 days to Phase 1  
 **Your Next File:** Open `17_10DAY_EXECUTION_PLAYBOOK.md`  
-**Your First Command:** `npm create vite@latest ebdaa-skill-matrix -- --template react-ts`  
+**Your First Command:** `npm create vite@latest hrm-skill-matrix -- --template react-ts`  
 
 ---
 

@@ -146,7 +146,7 @@ importers:
         specifier: 3.1.0
         version: 3.1.0
 
-  artifacts/ebdaa-dashboard:
+  artifacts/hrm-dashboard:
     devDependencies:
       '@hookform/resolvers':
         specifier: ^3.10.0
@@ -338,7 +338,7 @@ importers:
         specifier: 'catalog:'
         version: 3.25.76
 
-  artifacts/ebdaa-docs:
+  artifacts/hrm-docs:
     devDependencies:
       '@replit/vite-plugin-cartographer':
         specifier: 'catalog:'
@@ -371,7 +371,7 @@ importers:
         specifier: 'catalog:'
         version: 7.3.2(@types/node@25.3.5)(jiti@2.6.1)(lightningcss@1.31.1)(tsx@4.21.0)(yaml@2.8.4)
 
-  artifacts/ebdaa-pitch-deck:
+  artifacts/hrm-pitch-deck:
     dependencies:
       recharts:
         specifier: ^3.8.1
@@ -423,7 +423,7 @@ importers:
         specifier: 'catalog:'
         version: 3.25.76
 
-  artifacts/ebdaa-skill-matrix:
+  artifacts/hrm-skill-matrix:
     dependencies:
       exceljs:
         specifier: ^4.4.0
@@ -625,7 +625,7 @@ importers:
         specifier: 'catalog:'
         version: 3.25.76
 
-  artifacts/ebdaa-spreadsheet:
+  artifacts/hrm-spreadsheet:
     dependencies:
       exceljs:
         specifier: ^4.4.0

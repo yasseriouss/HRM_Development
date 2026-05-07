@@ -29,10 +29,10 @@ DAY 10:   ✅ Verification & Deployment Prep
 #### Setup Phase
 ```bash
 # Step 1: Create project
-npm create vite@latest ebdaa-skill-matrix -- --template react-ts
+npm create vite@latest hrm-skill-matrix -- --template react-ts
 
 # Step 2: Navigate and install
-cd ebdaa-skill-matrix
+cd hrm-skill-matrix
 npm install
 
 # Step 3: Install all dependencies
@@ -60,7 +60,7 @@ mkdir -p src/{components/{Layout,Auth,Common},pages,hooks,services,types,utils,s
 
 #### Supabase Setup
 1. Create account at https://supabase.com
-2. Create new project: `ebdaa-skill-matrix`
+2. Create new project: `hrm-skill-matrix`
 3. Wait for provisioning (3-5 min)
 4. Go to SQL Editor
 5. Copy entire `05_DATABASE_SCHEMA.sql`
@@ -420,7 +420,7 @@ git init
 git add .
 git commit -m "Phase 1: Complete implementation"
 git branch -M main
-git remote add origin https://github.com/yourusername/ebdaa-skill-matrix.git
+git remote add origin https://github.com/yourusername/hrm-skill-matrix.git
 git push -u origin main
 ```
 

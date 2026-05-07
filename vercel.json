@@ -11,27 +11,27 @@
       "destination": "/api/index.ts"
     },
     {
-      "source": "/ebdaa-skill-matrix/(.*)",
+      "source": "/hrm-skill-matrix/(.*)",
       "destination": "/api/index.ts"
     },
     {
-      "source": "/ebdaa-dashboard/(.*)",
+      "source": "/hrm-dashboard/(.*)",
       "destination": "/api/index.ts"
     },
     {
-      "source": "/ebdaa-docs/(.*)",
+      "source": "/hrm-docs/(.*)",
       "destination": "/api/index.ts"
     },
     {
-      "source": "/ebdaa-pitch-deck/(.*)",
+      "source": "/hrm-pitch-deck/(.*)",
       "destination": "/api/index.ts"
     },
     {
-      "source": "/ebdaa-spreadsheet/(.*)",
+      "source": "/hrm-spreadsheet/(.*)",
       "destination": "/api/index.ts"
     },
     {
-      "source": "/ebdaa-skill-matrix-template.xlsx",
+      "source": "/hrm-skill-matrix-template.xlsx",
       "destination": "/api/index.ts"
     }
   ]

@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build artifacts (will be rebuilt during vercel-build)
+**/dist/
+
+# Development files
+.git/
+.cache/
+.local/
+.agents/
+my-app/
+attached_assets/
+
+# IDE
+.vscode/
+.idea/
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Replit
+.replit
+.replitignore
+.config/
+replit.md
+
+# Misc
+*.tsbuildinfo

@@ -40,47 +40,47 @@ app.use("/api", router);
 // 1. Main skill matrix app
 const frontendDist = path.resolve(
   __dirname,
-  "../../../artifacts/ebdaa-skill-matrix/dist/public",
+  "../../../artifacts/hrm-skill-matrix/dist/public",
 );
-app.use("/ebdaa-skill-matrix", express.static(frontendDist));
-app.use("/ebdaa-skill-matrix", (_req, res) => {
+app.use("/hrm-skill-matrix", express.static(frontendDist));
+app.use("/hrm-skill-matrix", (_req, res) => {
   res.sendFile(path.join(frontendDist, "index.html"));
 });
 
 // 2. Analytics dashboard
 const dashboardDist = path.resolve(
   __dirname,
-  "../../../artifacts/ebdaa-dashboard/dist/public",
+  "../../../artifacts/hrm-dashboard/dist/public",
 );
-app.use("/ebdaa-dashboard", express.static(dashboardDist));
-app.use("/ebdaa-dashboard", (_req, res) => {
+app.use("/hrm-dashboard", express.static(dashboardDist));
+app.use("/hrm-dashboard", (_req, res) => {
   res.sendFile(path.join(dashboardDist, "index.html"));
 });
 
 // 3. Pitch deck
 const pitchDeckDist = path.resolve(
   __dirname,
-  "../../../artifacts/ebdaa-pitch-deck/dist/public",
+  "../../../artifacts/hrm-pitch-deck/dist/public",
 );
-app.use("/ebdaa-pitch-deck", express.static(pitchDeckDist));
-app.use("/ebdaa-pitch-deck", (_req, res) => {
+app.use("/hrm-pitch-deck", express.static(pitchDeckDist));
+app.use("/hrm-pitch-deck", (_req, res) => {
   res.sendFile(path.join(pitchDeckDist, "index.html"));
 });
 
 // 4. Technical documentation (React app)
-const docsDist = path.resolve(__dirname, "../../../artifacts/ebdaa-docs/dist/public");
-app.use("/ebdaa-docs", express.static(docsDist));
-app.use("/ebdaa-docs", (_req, res) => {
+const docsDist = path.resolve(__dirname, "../../../artifacts/hrm-docs/dist/public");
+app.use("/hrm-docs", express.static(docsDist));
+app.use("/hrm-docs", (_req, res) => {
   res.sendFile(path.join(docsDist, "index.html"));
 });
 
 // 5. Interactive spreadsheet tool
 const spreadsheetDist = path.resolve(
   __dirname,
-  "../../../artifacts/ebdaa-spreadsheet/dist/public",
+  "../../../artifacts/hrm-spreadsheet/dist/public",
 );
-app.use("/ebdaa-spreadsheet", express.static(spreadsheetDist));
-app.use("/ebdaa-spreadsheet", (_req, res) => {
+app.use("/hrm-spreadsheet", express.static(spreadsheetDist));
+app.use("/hrm-spreadsheet", (_req, res) => {
   res.sendFile(path.join(spreadsheetDist, "index.html"));
 });
 
@@ -95,9 +95,9 @@ app.use("/mockup-sandbox", (_req, res) => {
 });
 
 // 7. Excel spreadsheet download
-app.get("/ebdaa-skill-matrix-template.xlsx", (_req, res) => {
-  const xlsxPath = path.resolve(__dirname, "../../../artifacts/ebdaa-docs/skill-matrix-template.xlsx");
-  res.download(xlsxPath, "Ebdaa-Skill-Matrix-Template.xlsx", (err) => {
+app.get("/hrm-skill-matrix-template.xlsx", (_req, res) => {
+  const xlsxPath = path.resolve(__dirname, "../../../artifacts/hrm-docs/skill-matrix-template.xlsx");
+  res.download(xlsxPath, "hrm-Skill-Matrix-Template.xlsx", (err) => {
     if (err) res.status(404).json({ error: "Spreadsheet not yet generated" });
   });
 });

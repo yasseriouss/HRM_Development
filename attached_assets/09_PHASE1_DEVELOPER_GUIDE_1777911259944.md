@@ -30,8 +30,8 @@ Phase 1 Complete Package Includes:
 ### Step 1: Setup Project (5 min)
 ```bash
 # Create Vite project
-npm create vite@latest ebdaa-skill-matrix -- --template react-ts
-cd ebdaa-skill-matrix
+npm create vite@latest hrm-skill-matrix -- --template react-ts
+cd hrm-skill-matrix
 
 # Copy all provided files to src/
 # (services, hooks, utils, types directories)
