@@ -1,0 +1,31 @@
+kind = "slides"
+previewPath = "/ebdaa-pitch-deck/"
+title = "Ebdaa Skill Matrix - Pitch Deck"
+version = "1.0.0"
+id = "artifacts/ebdaa-pitch-deck"
+router = "path"
+
+[[integratedSkills]]
+name = "slides"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/ebdaa-pitch-deck/" ]
+localPort = 5173
+
+[services.development]
+run = "pnpm --filter @workspace/ebdaa-pitch-deck run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/ebdaa-pitch-deck", "run", "build" ]
+publicDir = "artifacts/ebdaa-pitch-deck/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "5173"
+BASE_PATH = "/ebdaa-pitch-deck/"

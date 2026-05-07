@@ -1,0 +1,38 @@
+{
+  "version": 2,
+  "functions": {
+    "api/index.ts": {
+      "includeFiles": "artifacts/**"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/index.ts"
+    },
+    {
+      "source": "/ebdaa-skill-matrix/(.*)",
+      "destination": "/api/index.ts"
+    },
+    {
+      "source": "/ebdaa-dashboard/(.*)",
+      "destination": "/api/index.ts"
+    },
+    {
+      "source": "/ebdaa-docs/(.*)",
+      "destination": "/api/index.ts"
+    },
+    {
+      "source": "/ebdaa-pitch-deck/(.*)",
+      "destination": "/api/index.ts"
+    },
+    {
+      "source": "/ebdaa-spreadsheet/(.*)",
+      "destination": "/api/index.ts"
+    },
+    {
+      "source": "/ebdaa-skill-matrix-template.xlsx",
+      "destination": "/api/index.ts"
+    }
+  ]
+}

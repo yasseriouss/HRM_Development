@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/ebdaa-docs/"
+title = "Ebdaa Skill Matrix - Technical Docs"
+version = "1.0.0"
+id = "artifacts/ebdaa-docs"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/ebdaa-docs/" ]
+localPort = 8099
+
+[services.development]
+run = "pnpm --filter @workspace/ebdaa-docs run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/ebdaa-docs", "run", "build" ]
+publicDir = "artifacts/ebdaa-docs/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "8099"
+BASE_PATH = "/ebdaa-docs/"

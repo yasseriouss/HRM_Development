@@ -1,0 +1,1680 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: Ebdaa Skill Matrix System API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: auth
+    description: Authentication operations
+  - name: departments
+    description: Department management
+  - name: employees
+    description: Employee management
+  - name: skills
+    description: Skills library
+  - name: campaigns
+    description: Evaluation campaigns
+  - name: evaluations
+    description: Skill evaluations
+  - name: training
+    description: Training recommendations
+  - name: dashboard
+    description: Dashboard metrics and analytics
+
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  # ── AUTH ──────────────────────────────────────────────────────────────────────
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Login with demo credentials
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginBody"
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/me:
+    get:
+      operationId: getMe
+      tags: [auth]
+      summary: Get current user from session token
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserWithDepartment"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # ── DASHBOARD ─────────────────────────────────────────────────────────────────
+  /dashboard/metrics:
+    get:
+      operationId: getDashboardMetrics
+      tags: [dashboard]
+      summary: Get global dashboard KPIs
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Dashboard metrics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardMetrics"
+
+  /dashboard/department-performance:
+    get:
+      operationId: getDepartmentPerformance
+      tags: [dashboard]
+      summary: Class distribution per department
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Department performance list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DepartmentPerformance"
+
+  /dashboard/recent-activity:
+    get:
+      operationId: getRecentActivity
+      tags: [dashboard]
+      summary: Recent evaluation activity feed
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+      responses:
+        "200":
+          description: Recent activity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ActivityItem"
+
+  /dashboard/class-trends:
+    get:
+      operationId: getClassTrends
+      tags: [dashboard]
+      summary: A/B/C class trends over campaigns
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Class trend data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ClassTrendPoint"
+
+  # ── DEPARTMENTS ───────────────────────────────────────────────────────────────
+  /departments:
+    get:
+      operationId: listDepartments
+      tags: [departments]
+      summary: List all departments
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Department list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Department"
+    post:
+      operationId: createDepartment
+      tags: [departments]
+      summary: Create a department
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDepartmentBody"
+      responses:
+        "201":
+          description: Created department
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Department"
+
+  /departments/{id}:
+    get:
+      operationId: getDepartment
+      tags: [departments]
+      summary: Get department by ID
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Department
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Department"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateDepartment
+      tags: [departments]
+      summary: Update department
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDepartmentBody"
+      responses:
+        "200":
+          description: Updated department
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Department"
+
+  /departments/{id}/stats:
+    get:
+      operationId: getDepartmentStats
+      tags: [departments]
+      summary: Get department statistics
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Department stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DepartmentStats"
+
+  # ── EMPLOYEES ─────────────────────────────────────────────────────────────────
+  /employees:
+    get:
+      operationId: listEmployees
+      tags: [employees]
+      summary: List employees with optional filters
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: department_id
+          in: query
+          schema:
+            type: string
+        - name: current_class
+          in: query
+          schema:
+            type: string
+            enum: [A, B, C]
+        - name: is_active
+          in: query
+          schema:
+            type: boolean
+        - name: search
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: page_size
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        "200":
+          description: Employee list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmployeeListResponse"
+    post:
+      operationId: createEmployee
+      tags: [employees]
+      summary: Create employee
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateEmployeeBody"
+      responses:
+        "201":
+          description: Created employee
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Employee"
+
+  /employees/{id}:
+    get:
+      operationId: getEmployee
+      tags: [employees]
+      summary: Get employee by ID
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Employee
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Employee"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateEmployee
+      tags: [employees]
+      summary: Update employee
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateEmployeeBody"
+      responses:
+        "200":
+          description: Updated employee
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Employee"
+    delete:
+      operationId: deleteEmployee
+      tags: [employees]
+      summary: Deactivate employee
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Deactivated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Employee"
+
+  /employees/{id}/profile:
+    get:
+      operationId: getEmployeeProfile
+      tags: [employees]
+      summary: Get full employee profile with evaluations and training
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Employee profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmployeeProfile"
+
+  /employees/me/profile:
+    get:
+      operationId: getMyProfile
+      tags: [employees]
+      summary: Get the authenticated employee's own profile
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Authenticated employee profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmployeeProfile"
+        "403":
+          description: Not an employee account or no linked employee record
+
+  # ── SKILLS ────────────────────────────────────────────────────────────────────
+  /skills:
+    get:
+      operationId: listSkills
+      tags: [skills]
+      summary: List skills with optional filters
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: department_id
+          in: query
+          schema:
+            type: string
+        - name: criticality
+          in: query
+          schema:
+            type: string
+            enum: [Low, Medium, High, Critical]
+        - name: is_active
+          in: query
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Skills list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Skill"
+    post:
+      operationId: createSkill
+      tags: [skills]
+      summary: Create skill
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSkillBody"
+      responses:
+        "201":
+          description: Created skill
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Skill"
+
+  /skills/{id}:
+    get:
+      operationId: getSkill
+      tags: [skills]
+      summary: Get skill by ID
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Skill
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Skill"
+    put:
+      operationId: updateSkill
+      tags: [skills]
+      summary: Update skill
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSkillBody"
+      responses:
+        "200":
+          description: Updated skill
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Skill"
+
+  # ── CAMPAIGNS ─────────────────────────────────────────────────────────────────
+  /campaigns:
+    get:
+      operationId: listCampaigns
+      tags: [campaigns]
+      summary: List evaluation campaigns
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [Draft, Active, Completed, Archived]
+        - name: department_id
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Campaigns list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Campaign"
+    post:
+      operationId: createCampaign
+      tags: [campaigns]
+      summary: Create evaluation campaign
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCampaignBody"
+      responses:
+        "201":
+          description: Created campaign
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Campaign"
+
+  /campaigns/{id}:
+    get:
+      operationId: getCampaign
+      tags: [campaigns]
+      summary: Get campaign by ID
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Campaign
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Campaign"
+    put:
+      operationId: updateCampaign
+      tags: [campaigns]
+      summary: Update campaign
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateCampaignBody"
+      responses:
+        "200":
+          description: Updated campaign
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Campaign"
+
+  /campaigns/{id}/summaries:
+    get:
+      operationId: getCampaignSummaries
+      tags: [campaigns]
+      summary: Get all evaluation summaries for a campaign
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Campaign summaries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/EvaluationSummary"
+
+  /campaigns/{id}/matrix:
+    get:
+      operationId: getCampaignMatrix
+      tags: [campaigns]
+      summary: Get full skill matrix for a campaign (employees x skills)
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: department_id
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Skill matrix
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SkillMatrix"
+
+  # ── EVALUATIONS ───────────────────────────────────────────────────────────────
+  /evaluations:
+    get:
+      operationId: listEvaluations
+      tags: [evaluations]
+      summary: List evaluations
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: campaign_id
+          in: query
+          schema:
+            type: string
+        - name: employee_id
+          in: query
+          schema:
+            type: string
+        - name: skill_id
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Evaluations list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Evaluation"
+    post:
+      operationId: submitEvaluation
+      tags: [evaluations]
+      summary: Submit a single skill evaluation
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateEvaluationBody"
+      responses:
+        "201":
+          description: Created evaluation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Evaluation"
+
+  /evaluations/bulk:
+    post:
+      operationId: submitBulkEvaluations
+      tags: [evaluations]
+      summary: Submit multiple evaluations at once
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BulkEvaluationBody"
+      responses:
+        "201":
+          description: Bulk evaluations submitted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkEvaluationResponse"
+
+  /evaluations/summary/{campaign_id}/{employee_id}:
+    get:
+      operationId: getEvaluationSummary
+      tags: [evaluations]
+      summary: Get score summary for one employee in a campaign
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: campaign_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: employee_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Evaluation summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EvaluationSummary"
+
+  # ── TRAINING ─────────────────────────────────────────────────────────────────
+  /training:
+    get:
+      operationId: listTrainingRecommendations
+      tags: [training]
+      summary: List training recommendations
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: employee_id
+          in: query
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [Pending, "In Progress", Completed, Cancelled]
+        - name: recommendation_type
+          in: query
+          schema:
+            type: string
+            enum: [Immediate, Short-term, Long-term, Promotion]
+      responses:
+        "200":
+          description: Training recommendations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TrainingRecommendation"
+    post:
+      operationId: createTrainingRecommendation
+      tags: [training]
+      summary: Create training recommendation
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTrainingBody"
+      responses:
+        "201":
+          description: Created recommendation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TrainingRecommendation"
+
+  /training/{id}:
+    put:
+      operationId: updateTrainingRecommendation
+      tags: [training]
+      summary: Update training recommendation status
+      parameters:
+        - name: x-user-token
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateTrainingBody"
+      responses:
+        "200":
+          description: Updated recommendation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TrainingRecommendation"
+
+components:
+  schemas:
+    # ── MISC ──────────────────────────────────────────────────────────────────
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required: [status]
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+      required: [error]
+
+    # ── AUTH ──────────────────────────────────────────────────────────────────
+    LoginBody:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required: [email, password]
+
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+        user:
+          $ref: "#/components/schemas/UserWithDepartment"
+      required: [token, user]
+
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        full_name:
+          type: string
+          nullable: true
+        role:
+          type: string
+          enum: [super_admin, dept_head, hr_coordinator, employee]
+        department_id:
+          type: string
+          nullable: true
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+      required: [id, email, role, is_active, created_at]
+
+    UserWithDepartment:
+      allOf:
+        - $ref: "#/components/schemas/User"
+        - type: object
+          properties:
+            department:
+              $ref: "#/components/schemas/Department"
+
+    # ── DEPARTMENTS ───────────────────────────────────────────────────────────
+    Department:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        code:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        manager_id:
+          type: string
+          nullable: true
+        manager_email:
+          type: string
+          nullable: true
+        employee_count:
+          type: integer
+        created_at:
+          type: string
+      required: [id, name, employee_count, created_at]
+
+    CreateDepartmentBody:
+      type: object
+      properties:
+        name:
+          type: string
+        code:
+          type: string
+        description:
+          type: string
+        manager_email:
+          type: string
+      required: [name]
+
+    DepartmentStats:
+      type: object
+      properties:
+        department_id:
+          type: string
+        department_name:
+          type: string
+        employee_count:
+          type: integer
+        class_a_count:
+          type: integer
+        class_b_count:
+          type: integer
+        class_c_count:
+          type: integer
+        average_percentage:
+          type: number
+        skill_count:
+          type: integer
+        active_campaigns:
+          type: integer
+        pending_training:
+          type: integer
+      required: [department_id, department_name, employee_count, class_a_count, class_b_count, class_c_count, average_percentage, skill_count, active_campaigns, pending_training]
+
+    DepartmentPerformance:
+      type: object
+      properties:
+        department_id:
+          type: string
+        department_name:
+          type: string
+        employee_count:
+          type: integer
+        class_a_count:
+          type: integer
+        class_b_count:
+          type: integer
+        class_c_count:
+          type: integer
+        average_percentage:
+          type: number
+      required: [department_id, department_name, employee_count, class_a_count, class_b_count, class_c_count, average_percentage]
+
+    # ── EMPLOYEES ─────────────────────────────────────────────────────────────
+    Employee:
+      type: object
+      properties:
+        id:
+          type: string
+        employee_code:
+          type: string
+          nullable: true
+        full_name:
+          type: string
+        department_id:
+          type: string
+        job_title:
+          type: string
+          nullable: true
+        joined_date:
+          type: string
+          nullable: true
+        birth_date:
+          type: string
+          nullable: true
+        current_class:
+          type: string
+          enum: [A, B, C]
+        email:
+          type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        is_active:
+          type: boolean
+        notes:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+        department:
+          $ref: "#/components/schemas/Department"
+      required: [id, full_name, department_id, current_class, is_active, created_at, department]
+
+    EmployeeListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Employee"
+        total:
+          type: integer
+        page:
+          type: integer
+        page_size:
+          type: integer
+      required: [data, total, page, page_size]
+
+    CreateEmployeeBody:
+      type: object
+      properties:
+        employee_code:
+          type: string
+        full_name:
+          type: string
+        department_id:
+          type: string
+        job_title:
+          type: string
+        joined_date:
+          type: string
+        birth_date:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        notes:
+          type: string
+      required: [full_name, department_id]
+
+    EmployeeProfile:
+      type: object
+      properties:
+        employee:
+          $ref: "#/components/schemas/Employee"
+        latest_summary:
+          $ref: "#/components/schemas/EvaluationSummary"
+          nullable: true
+        historical_summaries:
+          type: array
+          items:
+            $ref: "#/components/schemas/EvaluationSummary"
+        skill_scores:
+          type: array
+          items:
+            $ref: "#/components/schemas/SkillScore"
+        training_recommendations:
+          type: array
+          items:
+            $ref: "#/components/schemas/TrainingRecommendation"
+      required: [employee, historical_summaries, skill_scores, training_recommendations]
+
+    SkillScore:
+      type: object
+      properties:
+        skill_id:
+          type: string
+        skill_name:
+          type: string
+        skill_code:
+          type: string
+          nullable: true
+        category:
+          type: string
+          nullable: true
+        weight:
+          type: integer
+        criticality:
+          type: string
+          enum: [Low, Medium, High, Critical]
+        score:
+          type: integer
+          nullable: true
+        score_label:
+          type: string
+          nullable: true
+      required: [skill_id, skill_name, weight, criticality]
+
+    # ── SKILLS ────────────────────────────────────────────────────────────────
+    Skill:
+      type: object
+      properties:
+        id:
+          type: string
+        code:
+          type: string
+          nullable: true
+        name:
+          type: string
+        department_id:
+          type: string
+        category:
+          type: string
+          nullable: true
+        weight:
+          type: integer
+        criticality:
+          type: string
+          enum: [Low, Medium, High, Critical]
+        description:
+          type: string
+          nullable: true
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+        department:
+          $ref: "#/components/schemas/Department"
+      required: [id, name, department_id, weight, criticality, is_active, created_at, department]
+
+    CreateSkillBody:
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        department_id:
+          type: string
+        category:
+          type: string
+        weight:
+          type: integer
+          minimum: 1
+          maximum: 5
+        criticality:
+          type: string
+          enum: [Low, Medium, High, Critical]
+        description:
+          type: string
+      required: [name, department_id, weight, criticality]
+
+    # ── CAMPAIGNS ─────────────────────────────────────────────────────────────
+    Campaign:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        type:
+          type: string
+          enum: [Monthly, Quarterly, Bi-Annually, Custom]
+        department_id:
+          type: string
+          nullable: true
+        status:
+          type: string
+          enum: [Draft, Active, Completed, Archived]
+        start_date:
+          type: string
+        end_date:
+          type: string
+        notes:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+        department:
+          $ref: "#/components/schemas/Department"
+          nullable: true
+        evaluated_count:
+          type: integer
+        total_employees:
+          type: integer
+      required: [id, title, type, status, start_date, end_date, created_at, evaluated_count, total_employees]
+
+    CreateCampaignBody:
+      type: object
+      properties:
+        title:
+          type: string
+        type:
+          type: string
+          enum: [Monthly, Quarterly, Bi-Annually, Custom]
+        department_id:
+          type: string
+        start_date:
+          type: string
+        end_date:
+          type: string
+        notes:
+          type: string
+      required: [title, type, start_date, end_date]
+
+    UpdateCampaignBody:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: string
+          enum: [Draft, Active, Completed, Archived]
+        notes:
+          type: string
+        end_date:
+          type: string
+
+    # ── EVALUATIONS ───────────────────────────────────────────────────────────
+    Evaluation:
+      type: object
+      properties:
+        id:
+          type: string
+        campaign_id:
+          type: string
+        employee_id:
+          type: string
+        skill_id:
+          type: string
+        score:
+          type: integer
+          minimum: 0
+          maximum: 4
+        notes:
+          type: string
+          nullable: true
+        evaluated_by:
+          type: string
+          nullable: true
+        evaluation_date:
+          type: string
+        created_at:
+          type: string
+        employee_name:
+          type: string
+          nullable: true
+        skill_name:
+          type: string
+          nullable: true
+      required: [id, campaign_id, employee_id, skill_id, score, evaluation_date, created_at]
+
+    CreateEvaluationBody:
+      type: object
+      properties:
+        campaign_id:
+          type: string
+        employee_id:
+          type: string
+        skill_id:
+          type: string
+        score:
+          type: integer
+          minimum: 0
+          maximum: 4
+        notes:
+          type: string
+      required: [campaign_id, employee_id, skill_id, score]
+
+    BulkEvaluationBody:
+      type: object
+      properties:
+        campaign_id:
+          type: string
+        employee_id:
+          type: string
+        skill_scores:
+          type: array
+          items:
+            type: object
+            properties:
+              skill_id:
+                type: string
+              score:
+                type: integer
+                minimum: 0
+                maximum: 4
+              notes:
+                type: string
+            required: [skill_id, score]
+      required: [campaign_id, employee_id, skill_scores]
+
+    BulkEvaluationResponse:
+      type: object
+      properties:
+        inserted:
+          type: integer
+        summary:
+          $ref: "#/components/schemas/EvaluationSummary"
+      required: [inserted, summary]
+
+    EvaluationSummary:
+      type: object
+      properties:
+        id:
+          type: string
+        campaign_id:
+          type: string
+        employee_id:
+          type: string
+        total_score:
+          type: number
+        max_possible_score:
+          type: number
+        percentage:
+          type: number
+        class:
+          type: string
+          enum: [A, B, C]
+        evaluated_skills_count:
+          type: integer
+        updated_at:
+          type: string
+        campaign_title:
+          type: string
+          nullable: true
+        employee_name:
+          type: string
+          nullable: true
+        employee_code:
+          type: string
+          nullable: true
+      required: [id, campaign_id, employee_id, total_score, max_possible_score, percentage, class, evaluated_skills_count, updated_at]
+
+    SkillMatrix:
+      type: object
+      properties:
+        campaign:
+          $ref: "#/components/schemas/Campaign"
+        skills:
+          type: array
+          items:
+            $ref: "#/components/schemas/Skill"
+        rows:
+          type: array
+          items:
+            $ref: "#/components/schemas/MatrixRow"
+      required: [campaign, skills, rows]
+
+    MatrixRow:
+      type: object
+      properties:
+        employee:
+          $ref: "#/components/schemas/Employee"
+        scores:
+          type: object
+          additionalProperties:
+            type: integer
+        total_score:
+          type: number
+          nullable: true
+        max_score:
+          type: number
+          nullable: true
+        percentage:
+          type: number
+          nullable: true
+        class:
+          type: string
+          enum: [A, B, C]
+          nullable: true
+      required: [employee, scores]
+
+    # ── TRAINING ──────────────────────────────────────────────────────────────
+    TrainingRecommendation:
+      type: object
+      properties:
+        id:
+          type: string
+        employee_id:
+          type: string
+        skill_id:
+          type: string
+          nullable: true
+        campaign_id:
+          type: string
+          nullable: true
+        score:
+          type: integer
+          nullable: true
+        recommendation_type:
+          type: string
+          enum: [Immediate, Short-term, Long-term, Promotion]
+        status:
+          type: string
+          enum: [Pending, "In Progress", Completed, Cancelled]
+        assigned_trainer_id:
+          type: string
+          nullable: true
+        target_date:
+          type: string
+          nullable: true
+        notes:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+        employee_name:
+          type: string
+          nullable: true
+        skill_name:
+          type: string
+          nullable: true
+      required: [id, employee_id, recommendation_type, status, created_at]
+
+    CreateTrainingBody:
+      type: object
+      properties:
+        employee_id:
+          type: string
+        skill_id:
+          type: string
+        campaign_id:
+          type: string
+        score:
+          type: integer
+        recommendation_type:
+          type: string
+          enum: [Immediate, Short-term, Long-term, Promotion]
+        target_date:
+          type: string
+        notes:
+          type: string
+      required: [employee_id, recommendation_type]
+
+    UpdateTrainingBody:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [Pending, "In Progress", Completed, Cancelled]
+        assigned_trainer_id:
+          type: string
+        target_date:
+          type: string
+        notes:
+          type: string
+
+    # ── DASHBOARD ─────────────────────────────────────────────────────────────
+    DashboardMetrics:
+      type: object
+      properties:
+        total_employees:
+          type: integer
+        active_employees:
+          type: integer
+        total_departments:
+          type: integer
+        class_a_count:
+          type: integer
+        class_b_count:
+          type: integer
+        class_c_count:
+          type: integer
+        class_a_percentage:
+          type: number
+        class_b_percentage:
+          type: number
+        class_c_percentage:
+          type: number
+        average_skill_percentage:
+          type: number
+        active_campaigns:
+          type: integer
+        completed_campaigns:
+          type: integer
+        total_skills:
+          type: integer
+        pending_training:
+          type: integer
+      required: [total_employees, active_employees, total_departments, class_a_count, class_b_count, class_c_count, class_a_percentage, class_b_percentage, class_c_percentage, average_skill_percentage, active_campaigns, completed_campaigns, total_skills, pending_training]
+
+    ActivityItem:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum: [evaluation_submitted, campaign_activated, campaign_completed, training_assigned]
+        description:
+          type: string
+        employee_name:
+          type: string
+          nullable: true
+        department_name:
+          type: string
+          nullable: true
+        campaign_title:
+          type: string
+          nullable: true
+        timestamp:
+          type: string
+      required: [id, type, description, timestamp]
+
+    ClassTrendPoint:
+      type: object
+      properties:
+        campaign_id:
+          type: string
+        campaign_title:
+          type: string
+        campaign_type:
+          type: string
+        end_date:
+          type: string
+        class_a_count:
+          type: integer
+        class_b_count:
+          type: integer
+        class_c_count:
+          type: integer
+        total:
+          type: integer
+      required: [campaign_id, campaign_title, campaign_type, end_date, class_a_count, class_b_count, class_c_count, total]

@@ -1,0 +1,13 @@
+uploads = []
+
+[[generated]]
+id = "1RbjMQ078JsCXepQhb2wC"
+uri = "file://artifacts/ebdaa-pitch-deck/public/hero-factory.png"
+type = "image"
+title = "generated_image"
+
+[[outputs]]
+id = "mJETl76N4mpZkS0qPsSDv"
+uri = "file://artifacts/ebdaa-docs/skill-matrix-template.xlsx"
+type = "table"
+title = "Ebdaa Skill Matrix — Excel Spreadsheet Tool"

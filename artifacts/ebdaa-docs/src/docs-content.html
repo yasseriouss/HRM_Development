@@ -1,0 +1,1459 @@
+<!-- ════════════════════ INTRODUCTION ════════════════════ -->
+<section id="introduction">
+  <h1>Ebdaa Skill Matrix System</h1>
+  <p class="lead">Full-stack workforce competency management platform purpose-built for Ebdaa wood manufacturing operations. Tracks employee skills, drives structured evaluation campaigns, and auto-generates training recommendations across 146 employees in 9 production departments.</p>
+
+  <div class="grid-4">
+    <div class="card" style="text-align:center">
+      <div style="font-size:1.8rem;font-weight:800;color:var(--primary)">146</div>
+      <div style="font-size:12px;color:var(--muted)">Employees</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div style="font-size:1.8rem;font-weight:800;color:var(--blue)">9</div>
+      <div style="font-size:12px;color:var(--muted)">Departments</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div style="font-size:1.8rem;font-weight:800;color:var(--green)">9</div>
+      <div style="font-size:12px;color:var(--muted)">DB Tables</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div style="font-size:1.8rem;font-weight:800;color:var(--purple)">4</div>
+      <div style="font-size:12px;color:var(--muted)">User Roles</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <p><strong>Created by yasserious.com</strong> — Ebdaa Wood Manufacturing Factory, May 2026. This documentation covers the full technical specification of the Skill Matrix platform including the backend API, database schema, scoring formula, and deployment guide.</p>
+  </div>
+</section>
+
+<!-- ════════════════════ QUICK START ════════════════════ -->
+<h2 id="quick-start">Quick Start</h2>
+<p>The fastest way to explore the live system. No installation needed.</p>
+
+<div class="steps">
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <div class="step-title">Open the main app</div>
+      <div class="step-desc">Navigate to <code>/ebdaa-skill-matrix/</code> in your browser. The login screen loads immediately.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <div class="step-title">Sign in</div>
+      <div class="step-desc">Use <code>super_admin@ebdaa.com</code> / <code>admin123</code> for full-access. See <a href="#demo-credentials">Demo Credentials</a> for all accounts.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body">
+      <div class="step-title">Explore the dashboard</div>
+      <div class="step-desc">KPI cards, department performance, and recent activity are pre-loaded with seed data from all 9 departments.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-body">
+      <div class="step-title">View the analytics dashboard</div>
+      <div class="step-desc">Navigate to <code>/ebdaa-dashboard/</code> for the standalone analytics view — no login required.</div>
+    </div>
+  </div>
+</div>
+
+<h3>Available Interfaces</h3>
+<div class="table-wrap">
+  <table>
+    <tr><th>Path</th><th>Description</th><th>Auth</th></tr>
+    <tr><td><code>/ebdaa-skill-matrix/</code></td><td>Main app — RBAC, employee management, evaluations</td><td>Required</td></tr>
+    <tr><td><code>/ebdaa-dashboard/</code></td><td>Analytics dashboard — charts, heatmaps, trends</td><td>None</td></tr>
+    <tr><td><code>/ebdaa-pitch-deck/</code></td><td>16-slide executive pitch deck</td><td>None</td></tr>
+    <tr><td><code>/ebdaa-docs/</code></td><td>This documentation site</td><td>None</td></tr>
+    <tr><td><code>/api/</code></td><td>REST API base path</td><td>Token-based</td></tr>
+  </table>
+</div>
+
+<!-- ════════════════════ SYSTEM REQUIREMENTS ════════════════════ -->
+<h2 id="system-requirements">System Requirements</h2>
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">Runtime</div>
+    <ul style="margin:8px 0 0 18px">
+      <li>Node.js 20+</li>
+      <li>pnpm 9+</li>
+      <li>PostgreSQL 14+</li>
+    </ul>
+  </div>
+  <div class="card">
+    <div class="card-title">Browser Support</div>
+    <ul style="margin:8px 0 0 18px">
+      <li>Chrome / Edge 100+</li>
+      <li>Firefox 100+</li>
+      <li>Safari 16+</li>
+      <li>Any modern mobile browser</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ════════════════════ ARCHITECTURE ════════════════════ -->
+<h2 id="architecture">System Architecture</h2>
+<p>The system is a pnpm monorepo. All frontend artifacts are built statically and served by the central Express API server on port 8080. A single process handles both API requests and static file delivery.</p>
+
+<pre><span class="pre-label">monorepo</span><code>workspace/
+├── artifacts/
+│   ├── api-server/          # Express 5 API + static file serving (port 8080)
+│   │   └── src/
+│   │       ├── app.ts       # Route registration + static mounts
+│   │       ├── routes/      # One file per resource
+│   │       └── lib/auth.ts  # Token store + RBAC middleware
+│   │
+│   ├── ebdaa-skill-matrix/  # Main React/Vite app  →  /ebdaa-skill-matrix/
+│   ├── ebdaa-dashboard/     # Analytics dashboard   →  /ebdaa-dashboard/
+│   ├── ebdaa-pitch-deck/    # Slides deck           →  /ebdaa-pitch-deck/
+│   └── ebdaa-docs/          # This docs site        →  /ebdaa-docs/
+│
+└── lib/
+    ├── api-spec/            # OpenAPI 3.1 spec (source of truth)
+    ├── api-client-react/    # Generated TanStack Query hooks
+    ├── api-zod/             # Generated Zod validation schemas
+    └── db/                  # Drizzle ORM schema + Postgres client</code></pre>
+
+<div class="callout callout-info">
+  <p><strong>Port routing:</strong> Only ports 8080 and 8081 are exposed. All artifacts are built statically (<code>pnpm run build</code>) with their <code>BASE_PATH</code> baked in, then served from the API server via Express static middleware.</p>
+</div>
+
+<!-- ════════════════════ TECH STACK ════════════════════ -->
+<h2 id="tech-stack">Tech Stack</h2>
+<div class="table-wrap">
+  <table>
+    <tr><th>Layer</th><th>Technology</th><th>Purpose</th></tr>
+    <tr><td>Frontend framework</td><td>React 18 + TypeScript</td><td>UI rendering, component architecture</td></tr>
+    <tr><td>Build tool</td><td>Vite 5</td><td>Fast HMR in dev, optimized static build</td></tr>
+    <tr><td>Routing</td><td>Wouter</td><td>Lightweight client-side routing</td></tr>
+    <tr><td>Styling</td><td>Tailwind CSS 4</td><td>Utility-first, dark industrial theme</td></tr>
+    <tr><td>UI components</td><td>Radix UI</td><td>Accessible headless primitives</td></tr>
+    <tr><td>Data fetching</td><td>TanStack Query v5</td><td>Server state, caching, auto-refetch</td></tr>
+    <tr><td>API client</td><td>Orval codegen (from OpenAPI)</td><td>Type-safe generated hooks</td></tr>
+    <tr><td>Charting</td><td>Recharts v2</td><td>Bar, line, radar, scatter charts</td></tr>
+    <tr><td>Backend</td><td>Node.js + Express 5</td><td>REST API, TypeScript, ESBuild</td></tr>
+    <tr><td>API contract</td><td>OpenAPI 3.1</td><td>Single source of truth for all routes</td></tr>
+    <tr><td>Validation</td><td>Zod</td><td>Runtime schema validation</td></tr>
+    <tr><td>Database</td><td>PostgreSQL (Replit managed)</td><td>Primary data store</td></tr>
+    <tr><td>ORM</td><td>Drizzle ORM</td><td>Type-safe SQL queries, migrations</td></tr>
+    <tr><td>Logging</td><td>Pino + pino-http</td><td>Structured JSON request logging</td></tr>
+  </table>
+</div>
+
+<!-- ════════════════════ DATA FLOW ════════════════════ -->
+<h2 id="data-flow">Data Flow</h2>
+<pre><span class="pre-label">request lifecycle</span><code>Browser
+  │
+  ▼
+Express API server  (port 8080)
+  │
+  ├─ /ebdaa-skill-matrix/*  →  static HTML/JS build
+  ├─ /ebdaa-dashboard/*     →  static HTML/JS build
+  ├─ /ebdaa-pitch-deck/*    →  static HTML/JS build
+  ├─ /ebdaa-docs/*          →  static HTML
+  │
+  └─ /api/*  →  Route handlers
+                │
+                ├─ requireAuth middleware  (validates x-user-token header)
+                ├─ requireRole middleware  (checks user role)
+                │
+                └─ Drizzle ORM  →  PostgreSQL</code></pre>
+
+<p>Authentication uses an in-memory token store (UUID tokens issued at login, stored in a <code>Map</code>). Each protected route requires <code>x-user-token</code> in the request header.</p>
+
+<!-- ════════════════════ DB SCHEMA: USERS ════════════════════ -->
+<h2 id="schema-users">Database — users</h2>
+<p>Authentication and authorization. Each user has exactly one role that controls their access scope.</p>
+<div class="table-wrap">
+  <table>
+    <tr><th>Column</th><th>Type</th><th>Constraint</th><th>Description</th></tr>
+    <tr><td><code>id</code></td><td>uuid</td><td>PK, default gen</td><td>Unique user identifier</td></tr>
+    <tr><td><code>email</code></td><td>varchar(255)</td><td>UNIQUE NOT NULL</td><td>Login identifier</td></tr>
+    <tr><td><code>full_name</code></td><td>varchar(255)</td><td></td><td>Display name in the UI</td></tr>
+    <tr><td><code>role</code></td><td>user_role enum</td><td>default 'employee'</td><td><code>super_admin</code> · <code>dept_head</code> · <code>hr_coordinator</code> · <code>employee</code></td></tr>
+    <tr><td><code>department_id</code></td><td>uuid</td><td>FK → departments</td><td>Required for <code>dept_head</code> role; null otherwise</td></tr>
+    <tr><td><code>is_active</code></td><td>boolean</td><td>default true</td><td>Disabled users cannot log in</td></tr>
+    <tr><td><code>password_hash</code></td><td>text</td><td></td><td>Password (plaintext in demo; hash in production)</td></tr>
+    <tr><td><code>created_at</code></td><td>timestamp</td><td>default now()</td><td>Account creation time</td></tr>
+    <tr><td><code>updated_at</code></td><td>timestamp</td><td>default now()</td><td>Last modification time</td></tr>
+  </table>
+</div>
+<pre><span class="pre-label">sql</span><code><span class="kw">CREATE TYPE</span> user_role <span class="kw">AS ENUM</span> (
+  <span class="str">'super_admin'</span>, <span class="str">'dept_head'</span>, <span class="str">'hr_coordinator'</span>, <span class="str">'employee'</span>
+);
+<span class="kw">CREATE TABLE</span> users (
+  id            UUID <span class="kw">PRIMARY KEY DEFAULT</span> gen_random_uuid(),
+  email         VARCHAR(<span class="num">255</span>) <span class="kw">UNIQUE NOT NULL</span>,
+  full_name     VARCHAR(<span class="num">255</span>),
+  role          user_role <span class="kw">DEFAULT</span> <span class="str">'employee'</span>,
+  department_id UUID <span class="kw">REFERENCES</span> departments(id) <span class="kw">ON DELETE SET NULL</span>,
+  is_active     BOOLEAN <span class="kw">DEFAULT</span> <span class="kw">TRUE</span>,
+  password_hash TEXT,
+  created_at    TIMESTAMP <span class="kw">DEFAULT</span> CURRENT_TIMESTAMP,
+  updated_at    TIMESTAMP <span class="kw">DEFAULT</span> CURRENT_TIMESTAMP
+);</code></pre>
+
+<!-- ════════════════════ DB SCHEMA: DEPARTMENTS ════════════════════ -->
+<h2 id="schema-departments">Database — departments</h2>
+<p>Organisational units. The 9 production departments at Ebdaa are seeded at startup. Each department has an optional manager linked from the users table.</p>
+<div class="table-wrap">
+  <table>
+    <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>id</code></td><td>uuid PK</td><td>Unique department identifier</td></tr>
+    <tr><td><code>name</code></td><td>varchar(255) UNIQUE</td><td>Department display name (e.g. "Upholstery")</td></tr>
+    <tr><td><code>code</code></td><td>varchar(10) UNIQUE</td><td>Short code, e.g. <code>UPH</code></td></tr>
+    <tr><td><code>manager_id</code></td><td>uuid → users</td><td>Department manager account (optional)</td></tr>
+    <tr><td><code>manager_email</code></td><td>varchar(255)</td><td>Denormalized email for quick lookup</td></tr>
+    <tr><td><code>description</code></td><td>text</td><td>Department purpose description</td></tr>
+    <tr><td><code>created_at</code></td><td>timestamp</td><td>Row creation timestamp</td></tr>
+  </table>
+</div>
+<h3>Seeded Departments</h3>
+<div class="grid-3">
+  <div class="card" style="padding:12px 16px"><div class="card-title">Upholstery</div><div style="font-size:12px;color:var(--muted)">Code: UPH</div></div>
+  <div class="card" style="padding:12px 16px"><div class="card-title">CNC Machining</div><div style="font-size:12px;color:var(--muted)">Code: CNC</div></div>
+  <div class="card" style="padding:12px 16px"><div class="card-title">Assembly</div><div style="font-size:12px;color:var(--muted)">Code: ASM</div></div>
+  <div class="card" style="padding:12px 16px"><div class="card-title">Finishing</div><div style="font-size:12px;color:var(--muted)">Code: FIN</div></div>
+  <div class="card" style="padding:12px 16px"><div class="card-title">Carpentry</div><div style="font-size:12px;color:var(--muted)">Code: CAR</div></div>
+  <div class="card" style="padding:12px 16px"><div class="card-title">Painting</div><div style="font-size:12px;color:var(--muted)">Code: PNT</div></div>
+  <div class="card" style="padding:12px 16px"><div class="card-title">Quality Control</div><div style="font-size:12px;color:var(--muted)">Code: QC</div></div>
+  <div class="card" style="padding:12px 16px"><div class="card-title">Warehouse</div><div style="font-size:12px;color:var(--muted)">Code: WH</div></div>
+  <div class="card" style="padding:12px 16px"><div class="card-title">Maintenance</div><div style="font-size:12px;color:var(--muted)">Code: MNT</div></div>
+</div>
+
+<!-- ════════════════════ DB SCHEMA: EMPLOYEES ════════════════════ -->
+<h2 id="schema-employees">Database — employees</h2>
+<p>Master employee records. Each employee belongs to exactly one department and has a performance class updated after each completed evaluation campaign.</p>
+<div class="table-wrap">
+  <table>
+    <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>id</code></td><td>uuid PK</td><td>Unique employee identifier</td></tr>
+    <tr><td><code>employee_code</code></td><td>varchar(20) UNIQUE</td><td>HR code, e.g. <code>EMP-001</code></td></tr>
+    <tr><td><code>full_name</code></td><td>varchar(255) NOT NULL</td><td>Full name for display</td></tr>
+    <tr><td><code>department_id</code></td><td>uuid → departments</td><td>Primary department (NOT NULL)</td></tr>
+    <tr><td><code>job_title</code></td><td>varchar(255)</td><td>Current job role</td></tr>
+    <tr><td><code>joined_date</code></td><td>date</td><td>Start of employment</td></tr>
+    <tr><td><code>birth_date</code></td><td>date</td><td>Used for age verification</td></tr>
+    <tr><td><code>current_class</code></td><td>evaluation_class enum</td><td><code>A</code> / <code>B</code> / <code>C</code> from latest campaign</td></tr>
+    <tr><td><code>email</code></td><td>varchar(255)</td><td>Employee contact email</td></tr>
+    <tr><td><code>user_id</code></td><td>uuid → users (UNIQUE)</td><td>Linked login account (optional)</td></tr>
+    <tr><td><code>is_active</code></td><td>boolean</td><td>Deactivated = excluded from campaigns</td></tr>
+  </table>
+</div>
+
+<!-- ════════════════════ DB SCHEMA: SKILLS ════════════════════ -->
+<h2 id="schema-skills">Database — skills</h2>
+<p>Skill library. Every skill belongs to a specific department and has a weight (1–5) and criticality level that both influence the scoring formula.</p>
+<div class="table-wrap">
+  <table>
+    <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>id</code></td><td>uuid PK</td><td>Unique skill identifier</td></tr>
+    <tr><td><code>code</code></td><td>varchar(20) UNIQUE</td><td>Short skill code, e.g. <code>UPH-01</code></td></tr>
+    <tr><td><code>name</code></td><td>varchar(255) NOT NULL</td><td>Skill display name</td></tr>
+    <tr><td><code>department_id</code></td><td>uuid → departments NOT NULL</td><td>Owning department</td></tr>
+    <tr><td><code>category</code></td><td>varchar(100)</td><td>Grouping within department</td></tr>
+    <tr><td><code>weight</code></td><td>integer 1–5</td><td>Relative importance in score formula</td></tr>
+    <tr><td><code>criticality</code></td><td>criticality_level enum</td><td><code>Low</code> · <code>Medium</code> · <code>High</code> · <code>Critical</code></td></tr>
+    <tr><td><code>description</code></td><td>text</td><td>What this skill involves</td></tr>
+    <tr><td><code>is_active</code></td><td>boolean</td><td>Inactive = excluded from new evaluations</td></tr>
+  </table>
+</div>
+<pre><span class="pre-label">sql</span><code><span class="kw">CREATE TYPE</span> criticality_level <span class="kw">AS ENUM</span> (
+  <span class="str">'Low'</span>, <span class="str">'Medium'</span>, <span class="str">'High'</span>, <span class="str">'Critical'</span>
+);
+<span class="cmt">-- weight CHECK constraint</span>
+weight INTEGER <span class="kw">CHECK</span> (weight >= <span class="num">1</span> <span class="kw">AND</span> weight <= <span class="num">5</span>) <span class="kw">DEFAULT</span> <span class="num">3</span></code></pre>
+
+<!-- ════════════════════ DB SCHEMA: CAMPAIGNS ════════════════════ -->
+<h2 id="schema-campaigns">Database — evaluation_campaigns</h2>
+<p>Evaluation periods. A campaign may target the whole company (department_id = NULL) or a single department. Only <strong>Active</strong> campaigns accept score submissions.</p>
+<div class="table-wrap">
+  <table>
+    <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>id</code></td><td>uuid PK</td><td>Unique campaign identifier</td></tr>
+    <tr><td><code>title</code></td><td>varchar(255) NOT NULL</td><td>Campaign name, e.g. "Q2 2026 Evaluation"</td></tr>
+    <tr><td><code>type</code></td><td>campaign_type enum</td><td><code>Monthly</code> · <code>Quarterly</code> · <code>Bi-Annually</code> · <code>Custom</code></td></tr>
+    <tr><td><code>department_id</code></td><td>uuid → departments?</td><td>NULL = company-wide campaign</td></tr>
+    <tr><td><code>status</code></td><td>campaign_status enum</td><td><code>Draft</code> → <code>Active</code> → <code>Completed</code> → <code>Archived</code></td></tr>
+    <tr><td><code>start_date</code></td><td>date NOT NULL</td><td>Evaluation window opens</td></tr>
+    <tr><td><code>end_date</code></td><td>date NOT NULL</td><td>Evaluation window closes</td></tr>
+    <tr><td><code>triggered_by</code></td><td>uuid → users</td><td>User who activated the campaign</td></tr>
+    <tr><td><code>notes</code></td><td>text</td><td>Campaign-level notes or instructions</td></tr>
+  </table>
+</div>
+
+<!-- ════════════════════ DB SCHEMA: EVALUATIONS ════════════════════ -->
+<h2 id="schema-evaluations">Database — evaluations</h2>
+<p>Individual skill scores. One row per (campaign, employee, skill) triplet — enforced by a UNIQUE constraint. Score is 0–4 as defined by the skill level descriptors.</p>
+<div class="table-wrap">
+  <table>
+    <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>id</code></td><td>uuid PK</td><td>Row identifier</td></tr>
+    <tr><td><code>campaign_id</code></td><td>uuid → campaigns NOT NULL</td><td>Parent campaign (CASCADE DELETE)</td></tr>
+    <tr><td><code>employee_id</code></td><td>uuid → employees NOT NULL</td><td>Evaluated employee</td></tr>
+    <tr><td><code>skill_id</code></td><td>uuid → skills NOT NULL</td><td>Skill being scored</td></tr>
+    <tr><td><code>score</code></td><td>integer 0–4</td><td>0=Cannot perform → 4=Expert</td></tr>
+    <tr><td><code>notes</code></td><td>text</td><td>Evaluator's contextual notes</td></tr>
+    <tr><td><code>evaluated_by</code></td><td>uuid → users</td><td>Who recorded the score</td></tr>
+    <tr><td><code>evaluation_date</code></td><td>timestamp</td><td>When the score was recorded</td></tr>
+  </table>
+</div>
+<pre><span class="pre-label">sql</span><code><span class="cmt">-- Score levels</span>
+<span class="num">0</span> — Cannot perform the skill
+<span class="num">1</span> — Requires constant supervision
+<span class="num">2</span> — Requires occasional supervision
+<span class="num">3</span> — Works independently
+<span class="num">4</span> — Expert / can train others
+
+<span class="cmt">-- Uniqueness: one score per (campaign, employee, skill)</span>
+<span class="kw">UNIQUE</span>(campaign_id, employee_id, skill_id)</code></pre>
+
+<!-- ════════════════════ DB SCHEMA: SUMMARIES ════════════════════ -->
+<h2 id="schema-summaries">Database — evaluation_summaries</h2>
+<p>Computed roll-up of all skill evaluations for an employee within a campaign. Recalculated whenever a score is submitted via <code>POST /api/evaluations</code>. One row per (campaign, employee).</p>
+<div class="table-wrap">
+  <table>
+    <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>id</code></td><td>uuid PK</td><td>Row identifier</td></tr>
+    <tr><td><code>campaign_id</code></td><td>uuid → campaigns</td><td>Parent campaign</td></tr>
+    <tr><td><code>employee_id</code></td><td>uuid → employees</td><td>Evaluated employee</td></tr>
+    <tr><td><code>total_score</code></td><td>decimal(10,2)</td><td>Sum of (score × weight) across all skills</td></tr>
+    <tr><td><code>max_possible_score</code></td><td>decimal(10,2)</td><td>Sum of (4 × weight) across all skills</td></tr>
+    <tr><td><code>percentage</code></td><td>decimal(5,2)</td><td><code>total_score / max_possible_score × 100</code></td></tr>
+    <tr><td><code>class</code></td><td>evaluation_class enum</td><td>Derived: A (≥85) · B (60–84) · C (&lt;60)</td></tr>
+    <tr><td><code>evaluated_skills_count</code></td><td>integer</td><td>Number of skills scored</td></tr>
+    <tr><td><code>updated_at</code></td><td>timestamp</td><td>Last recalculation time</td></tr>
+  </table>
+</div>
+
+<!-- ════════════════════ DB SCHEMA: TRAINING ════════════════════ -->
+<h2 id="schema-training">Database — training_recommendations</h2>
+<p>Auto-generated training plans. Created automatically when evaluations are submitted. Dept heads and HR can override status, assign trainers, and set target dates.</p>
+<div class="table-wrap">
+  <table>
+    <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>id</code></td><td>uuid PK</td><td>Row identifier</td></tr>
+    <tr><td><code>employee_id</code></td><td>uuid → employees NOT NULL</td><td>Employee needing training</td></tr>
+    <tr><td><code>skill_id</code></td><td>uuid → skills?</td><td>Specific skill gap (nullable for general)</td></tr>
+    <tr><td><code>campaign_id</code></td><td>uuid → campaigns?</td><td>Source campaign that triggered the rec</td></tr>
+    <tr><td><code>score</code></td><td>integer</td><td>Score that triggered this recommendation</td></tr>
+    <tr><td><code>recommendation_type</code></td><td>recommendation_type enum</td><td><code>Immediate</code> · <code>Short-term</code> · <code>Long-term</code> · <code>Promotion</code></td></tr>
+    <tr><td><code>status</code></td><td>recommendation_status enum</td><td><code>Pending</code> · <code>In Progress</code> · <code>Completed</code> · <code>Cancelled</code></td></tr>
+    <tr><td><code>assigned_trainer_id</code></td><td>uuid → users?</td><td>Optional trainer assignment</td></tr>
+    <tr><td><code>target_date</code></td><td>date</td><td>Target completion date</td></tr>
+    <tr><td><code>notes</code></td><td>text</td><td>Training plan notes</td></tr>
+  </table>
+</div>
+
+<!-- ════════════════════ DB SCHEMA: AUDIT ════════════════════ -->
+<h2 id="schema-audit">Database — audit_logs</h2>
+<p>Immutable compliance log. All significant write operations (create, update, delete) generate an audit record. Used for regulatory compliance, data governance, and debugging.</p>
+<div class="table-wrap">
+  <table>
+    <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>id</code></td><td>uuid PK</td><td>Log entry identifier</td></tr>
+    <tr><td><code>action</code></td><td>varchar(100) NOT NULL</td><td>e.g. <code>CREATE_EVALUATION</code>, <code>UPDATE_CAMPAIGN</code></td></tr>
+    <tr><td><code>table_name</code></td><td>varchar(100)</td><td>Affected table</td></tr>
+    <tr><td><code>record_id</code></td><td>uuid</td><td>Affected row ID</td></tr>
+    <tr><td><code>user_id</code></td><td>uuid → users</td><td>Who performed the action</td></tr>
+    <tr><td><code>old_values</code></td><td>jsonb</td><td>State before change</td></tr>
+    <tr><td><code>new_values</code></td><td>jsonb</td><td>State after change</td></tr>
+    <tr><td><code>ip_address</code></td><td>inet</td><td>Client IP address</td></tr>
+    <tr><td><code>created_at</code></td><td>timestamp</td><td>Event timestamp (never updated)</td></tr>
+  </table>
+</div>
+<div class="callout callout-warning">
+  <p><strong>Retention policy:</strong> Audit logs are append-only and should never be deleted. Maintain a minimum of 3 years of audit history for compliance with Egyptian manufacturing regulations.</p>
+</div>
+
+<!-- ════════════════════ DB SCHEMA: RELATIONSHIPS ════════════════════ -->
+<h2 id="schema-relationships">Database — Entity Relationships (ERD)</h2>
+<p>The following diagram shows the primary foreign key relationships between all 9 tables. Arrow notation: <code>FK →</code> indicates a foreign key pointing to the target table's primary key.</p>
+
+<pre><span class="pre-label">erd</span><code>┌──────────────┐          ┌──────────────────┐
+│    users     │          │   departments    │
+│──────────────│          │──────────────────│
+│ id (PK)      │◄────┐    │ id (PK)          │
+│ email        │     │    │ name             │
+│ role         │     └────┤ manager_id  FK   │
+│ department_id│──────────► id               │
+│ is_active    │          └────────┬─────────┘
+└──────────────┘                   │
+                                   │ FK
+┌──────────────────────────────────▼──────────────┐
+│                  employees                       │
+│────────────────────────────────────────────────  │
+│ id (PK)                                          │
+│ employee_code                                    │
+│ full_name                                        │
+│ department_id ──────────────────────────► FK     │
+│ job_title                                        │
+│ current_class  (A / B / C)                       │
+│ user_id ──────────────────────────────► FK users │
+└──────────────────────────────────────────────────┘
+        │
+        │ FK (employee_id)
+        ▼
+┌──────────────────────────────────────────────────┐
+│              evaluations                          │
+│────────────────────────────────────────────────  │
+│ id (PK)                                          │
+│ campaign_id ──────────────────► FK campaigns     │
+│ employee_id ──────────────────► FK employees     │
+│ skill_id ─────────────────────► FK skills        │
+│ score (0–4)                                      │
+│ evaluated_by ─────────────────► FK users         │
+│ UNIQUE (campaign_id, employee_id, skill_id)       │
+└──────────────────────────────────────────────────┘
+        │                         │
+        │ (on submit, recalc)      │ FK (skill_id)
+        ▼                         ▼
+┌────────────────────┐   ┌──────────────────────┐
+│ evaluation_summaries│  │       skills          │
+│────────────────────│   │──────────────────────│
+│ id (PK)             │  │ id (PK)               │
+│ campaign_id FK      │  │ name                  │
+│ employee_id FK      │  │ department_id FK      │
+│ total_score         │  │ weight (1–5)          │
+│ max_possible_score  │  │ criticality           │
+│ percentage          │  │ is_active             │
+│ class (A/B/C)       │  └──────────────────────┘
+└────────────────────┘
+        │ (on complete campaign, generates)
+        ▼
+┌──────────────────────────────────────────────────┐
+│           training_recommendations                │
+│──────────────────────────────────────────────────│
+│ id (PK)                                          │
+│ employee_id ──────────────────► FK employees     │
+│ skill_id ─────────────────────► FK skills        │
+│ campaign_id ──────────────────► FK campaigns     │
+│ recommendation_type (Immediate/Short-term/…)     │
+│ status (Pending/In Progress/Completed/Cancelled)  │
+│ assigned_trainer_id ──────────► FK users         │
+└──────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────┐
+│               audit_logs                          │
+│──────────────────────────────────────────────────│
+│ id (PK)   action   table_name   record_id        │
+│ user_id ──────────────────────► FK users         │
+│ old_values (jsonb)   new_values (jsonb)           │
+│ ip_address   created_at                           │
+└──────────────────────────────────────────────────┘</code></pre>
+
+<h3>Key Constraints</h3>
+<div class="table-wrap">
+  <table>
+    <tr><th>Relationship</th><th>Cardinality</th><th>On Delete</th></tr>
+    <tr><td>departments → users (manager)</td><td>Many:1</td><td>SET NULL</td></tr>
+    <tr><td>employees → departments</td><td>Many:1</td><td>RESTRICT (cannot delete dept with employees)</td></tr>
+    <tr><td>employees → users</td><td>1:1 (unique)</td><td>SET NULL</td></tr>
+    <tr><td>skills → departments</td><td>Many:1</td><td>RESTRICT</td></tr>
+    <tr><td>evaluations → campaigns</td><td>Many:1</td><td>CASCADE</td></tr>
+    <tr><td>evaluations → employees</td><td>Many:1</td><td>CASCADE</td></tr>
+    <tr><td>evaluations → skills</td><td>Many:1</td><td>CASCADE</td></tr>
+    <tr><td>evaluation_summaries → campaigns</td><td>Many:1</td><td>CASCADE</td></tr>
+    <tr><td>training_recommendations → employees</td><td>Many:1</td><td>CASCADE</td></tr>
+  </table>
+</div>
+
+<!-- ════════════════════ DB SCHEMA: RLS ════════════════════ -->
+<h2 id="schema-rls">Database — Row Level Security (RLS)</h2>
+<p>When deployed to Supabase, all 9 tables have RLS enabled. Each table has policies that enforce the same access rules as the Express middleware layer, providing defence-in-depth at the database level.</p>
+
+<div class="callout callout-info">
+  <p><strong>Note:</strong> The Replit deployment uses Express middleware for auth (token-based). The RLS policies below apply to Supabase/direct PostgreSQL access and use <code>auth.uid()</code> from Supabase Auth. Both layers enforce the same business rules.</p>
+</div>
+
+<pre><span class="pre-label">sql</span><code><span class="cmt">-- Enable RLS on all tables</span>
+<span class="kw">ALTER TABLE</span> public.users              <span class="kw">ENABLE ROW LEVEL SECURITY</span>;
+<span class="kw">ALTER TABLE</span> public.departments         <span class="kw">ENABLE ROW LEVEL SECURITY</span>;
+<span class="kw">ALTER TABLE</span> public.employees           <span class="kw">ENABLE ROW LEVEL SECURITY</span>;
+<span class="kw">ALTER TABLE</span> public.skills              <span class="kw">ENABLE ROW LEVEL SECURITY</span>;
+<span class="kw">ALTER TABLE</span> public.evaluation_campaigns <span class="kw">ENABLE ROW LEVEL SECURITY</span>;
+<span class="kw">ALTER TABLE</span> public.evaluations          <span class="kw">ENABLE ROW LEVEL SECURITY</span>;
+<span class="kw">ALTER TABLE</span> public.evaluation_summaries <span class="kw">ENABLE ROW LEVEL SECURITY</span>;
+<span class="kw">ALTER TABLE</span> public.training_recommendations <span class="kw">ENABLE ROW LEVEL SECURITY</span>;
+<span class="kw">ALTER TABLE</span> public.audit_logs           <span class="kw">ENABLE ROW LEVEL SECURITY</span>;
+
+<span class="cmt">-- POLICY 1: super_admin — full access to every table</span>
+<span class="kw">CREATE POLICY</span> super_admin_all <span class="kw">ON</span> public.users
+  <span class="kw">FOR ALL USING</span> (
+    (<span class="kw">SELECT</span> role <span class="kw">FROM</span> public.users <span class="kw">WHERE</span> id = auth.uid()) = <span class="str">'super_admin'</span>
+  );
+
+<span class="cmt">-- Same pattern on departments, employees, skills, campaigns, evaluations…</span>
+
+<span class="cmt">-- POLICY 2: dept_head — own department employees only</span>
+<span class="kw">CREATE POLICY</span> dept_head_view_employees <span class="kw">ON</span> public.employees
+  <span class="kw">FOR SELECT USING</span> (
+    department_id = (<span class="kw">SELECT</span> department_id <span class="kw">FROM</span> public.users <span class="kw">WHERE</span> id = auth.uid())
+    <span class="kw">OR</span> (<span class="kw">SELECT</span> role <span class="kw">FROM</span> public.users <span class="kw">WHERE</span> id = auth.uid()) = <span class="str">'dept_head'</span>
+  );
+
+<span class="cmt">-- dept_head can only write evaluations for their dept in Active campaigns</span>
+<span class="kw">CREATE POLICY</span> dept_head_edit_evaluations <span class="kw">ON</span> public.evaluations
+  <span class="kw">FOR ALL USING</span> (
+    (<span class="kw">SELECT</span> role <span class="kw">FROM</span> public.users <span class="kw">WHERE</span> id = auth.uid()) = <span class="str">'dept_head'</span>
+    <span class="kw">AND</span> employee_id <span class="kw">IN</span> (
+      <span class="kw">SELECT</span> id <span class="kw">FROM</span> public.employees
+      <span class="kw">WHERE</span> department_id = (<span class="kw">SELECT</span> department_id <span class="kw">FROM</span> public.users <span class="kw">WHERE</span> id = auth.uid())
+    )
+    <span class="kw">AND</span> campaign_id <span class="kw">IN</span> (
+      <span class="kw">SELECT</span> id <span class="kw">FROM</span> public.evaluation_campaigns <span class="kw">WHERE</span> status = <span class="str">'Active'</span>
+    )
+  );
+
+<span class="cmt">-- POLICY 3: hr_coordinator — read-only access to all data</span>
+<span class="kw">CREATE POLICY</span> hr_readonly_all <span class="kw">ON</span> public.employees
+  <span class="kw">FOR SELECT USING</span> (
+    (<span class="kw">SELECT</span> role <span class="kw">FROM</span> public.users <span class="kw">WHERE</span> id = auth.uid())
+      <span class="kw">IN</span> (<span class="str">'hr_coordinator'</span>, <span class="str">'super_admin'</span>)
+  );
+
+<span class="cmt">-- POLICY 4: employee — own profile only</span>
+<span class="kw">CREATE POLICY</span> employee_view_own <span class="kw">ON</span> public.employees
+  <span class="kw">FOR SELECT USING</span> (
+    user_id = auth.uid()
+    <span class="kw">OR</span> (<span class="kw">SELECT</span> role <span class="kw">FROM</span> public.users <span class="kw">WHERE</span> id = auth.uid())
+      <span class="kw">IN</span> (<span class="str">'hr_coordinator'</span>, <span class="str">'dept_head'</span>, <span class="str">'super_admin'</span>)
+  );</code></pre>
+
+<h3>RLS Policy Summary</h3>
+<div class="table-wrap">
+  <table>
+    <tr><th>Table</th><th>super_admin</th><th>hr_coordinator</th><th>dept_head</th><th>employee</th></tr>
+    <tr><td>users</td><td><span class="badge badge-green">ALL</span></td><td><span class="badge badge-blue">SELECT own</span></td><td><span class="badge badge-blue">SELECT own</span></td><td><span class="badge badge-blue">SELECT own</span></td></tr>
+    <tr><td>departments</td><td><span class="badge badge-green">ALL</span></td><td><span class="badge badge-blue">SELECT</span></td><td><span class="badge badge-blue">SELECT own</span></td><td>None</td></tr>
+    <tr><td>employees</td><td><span class="badge badge-green">ALL</span></td><td><span class="badge badge-blue">SELECT all</span></td><td><span class="badge badge-blue">SELECT own dept</span></td><td><span class="badge badge-blue">SELECT own row</span></td></tr>
+    <tr><td>skills</td><td><span class="badge badge-green">ALL</span></td><td><span class="badge badge-blue">SELECT</span></td><td><span class="badge badge-blue">SELECT own dept</span></td><td>None</td></tr>
+    <tr><td>evaluation_campaigns</td><td><span class="badge badge-green">ALL</span></td><td><span class="badge badge-green">ALL</span></td><td><span class="badge badge-blue">SELECT + Active only</span></td><td>None</td></tr>
+    <tr><td>evaluations</td><td><span class="badge badge-green">ALL</span></td><td><span class="badge badge-blue">SELECT all</span></td><td><span class="badge badge-amber">ALL own dept/Active</span></td><td>None</td></tr>
+    <tr><td>evaluation_summaries</td><td><span class="badge badge-green">ALL</span></td><td><span class="badge badge-blue">SELECT all</span></td><td><span class="badge badge-blue">SELECT own dept</span></td><td><span class="badge badge-blue">SELECT own</span></td></tr>
+    <tr><td>training_recommendations</td><td><span class="badge badge-green">ALL</span></td><td><span class="badge badge-green">ALL</span></td><td><span class="badge badge-amber">ALL own dept</span></td><td><span class="badge badge-blue">SELECT own</span></td></tr>
+    <tr><td>audit_logs</td><td><span class="badge badge-green">ALL</span></td><td>None</td><td>None</td><td>None</td></tr>
+  </table>
+</div>
+
+<!-- ════════════════════ API: AUTH ════════════════════ -->
+<h2 id="api-auth">API — Authentication</h2>
+<p>Session tokens are UUID strings stored in an in-memory <code>Map</code>. Every protected request must include the token in <code>x-user-token</code> header.</p>
+<div class="card">
+  <div class="endpoint">
+    <span class="method method-post">POST</span>
+    <span class="ep-path">/api/auth/login</span>
+    <span class="ep-desc">Returns session token + user object</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-get">GET</span>
+    <span class="ep-path">/api/auth/me</span>
+    <span class="ep-desc">Get current user from token</span>
+    <span class="ep-auth">AUTH</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-post">POST</span>
+    <span class="ep-path">/api/auth/logout</span>
+    <span class="ep-desc">Invalidate token</span>
+    <span class="ep-auth">AUTH</span>
+  </div>
+</div>
+
+<pre><span class="pre-label">login example</span><code><span class="cmt">// POST /api/auth/login</span>
+{
+  <span class="str">"email"</span>: <span class="str">"super_admin@ebdaa.com"</span>,
+  <span class="str">"password"</span>: <span class="str">"admin123"</span>
+}
+
+<span class="cmt">// 200 Response</span>
+{
+  <span class="str">"token"</span>: <span class="str">"550e8400-e29b-41d4-a716-446655440000"</span>,
+  <span class="str">"user"</span>: {
+    <span class="str">"id"</span>: <span class="str">"..."</span>,
+    <span class="str">"email"</span>: <span class="str">"super_admin@ebdaa.com"</span>,
+    <span class="str">"role"</span>: <span class="str">"super_admin"</span>,
+    <span class="str">"full_name"</span>: <span class="str">"System Administrator"</span>,
+    <span class="str">"department"</span>: <span class="kw">null</span>
+  }
+}
+
+<span class="cmt">// Use token in all subsequent requests:</span>
+x-user-token: 550e8400-e29b-41d4-a716-446655440000</code></pre>
+
+<!-- ════════════════════ API: DASHBOARD ════════════════════ -->
+<h2 id="api-dashboard">API — Dashboard</h2>
+<div class="card">
+  <div class="endpoint">
+    <span class="method method-get">GET</span>
+    <span class="ep-path">/api/dashboard/metrics</span>
+    <span class="ep-desc">KPI summary (employees, classes, campaigns)</span>
+    <span class="ep-auth">AUTH</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-get">GET</span>
+    <span class="ep-path">/api/dashboard/department-performance</span>
+    <span class="ep-desc">A/B/C breakdown per department</span>
+    <span class="ep-auth">AUTH</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-get">GET</span>
+    <span class="ep-path">/api/dashboard/recent-activity</span>
+    <span class="ep-desc">Activity feed (query: <code>limit</code>)</span>
+    <span class="ep-auth">AUTH</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-get">GET</span>
+    <span class="ep-path">/api/dashboard/class-trends</span>
+    <span class="ep-desc">A/B/C distribution over last 12 months</span>
+    <span class="ep-auth">AUTH</span>
+  </div>
+</div>
+
+<!-- ════════════════════ API: DEPARTMENTS ════════════════════ -->
+<h2 id="api-departments">API — Departments</h2>
+<div class="card">
+  <div class="endpoint">
+    <span class="method method-get">GET</span>
+    <span class="ep-path">/api/departments</span>
+    <span class="ep-desc">List all departments with employee count</span>
+    <span class="ep-auth">AUTH</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-post">POST</span>
+    <span class="ep-path">/api/departments</span>
+    <span class="ep-desc">Create department</span>
+    <span class="ep-auth">super_admin</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-get">GET</span>
+    <span class="ep-path">/api/departments/:id</span>
+    <span class="ep-desc">Single department with metrics</span>
+    <span class="ep-auth">AUTH</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-put">PUT</span>
+    <span class="ep-path">/api/departments/:id</span>
+    <span class="ep-desc">Update department</span>
+    <span class="ep-auth">super_admin</span>
+  </div>
+</div>
+
+<!-- ════════════════════ API: EMPLOYEES ════════════════════ -->
+<h2 id="api-employees">API — Employees</h2>
+<div class="card">
+  <div class="endpoint">
+    <span class="method method-get">GET</span>
+    <span class="ep-path">/api/employees</span>
+    <span class="ep-desc">Paginated list — query: <code>department_id</code>, <code>current_class</code>, <code>search</code>, <code>page</code>, <code>page_size</code></span>
+    <span class="ep-auth">AUTH</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-post">POST</span>
+    <span class="ep-path">/api/employees</span>
+    <span class="ep-desc">Create new employee record</span>
+    <span class="ep-auth">super_admin / hr</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-get">GET</span>
+    <span class="ep-path">/api/employees/me/profile</span>
+    <span class="ep-desc">Own profile (linked by user email)</span>
+    <span class="ep-auth">AUTH</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-get">GET</span>
+    <span class="ep-path">/api/employees/:id</span>
+    <span class="ep-desc">Single employee</span>
+    <span class="ep-auth">AUTH</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-put">PUT</span>
+    <span class="ep-path">/api/employees/:id</span>
+    <span class="ep-desc">Update employee data</span>
+    <span class="ep-auth">super_admin / hr</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-delete">DEL</span>
+    <span class="ep-path">/api/employees/:id</span>
+    <span class="ep-desc">Soft-delete (sets is_active = false)</span>
+    <span class="ep-auth">super_admin</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-get">GET</span>
+    <span class="ep-path">/api/employees/:id/profile</span>
+    <span class="ep-desc">Full profile including evaluation history</span>
+    <span class="ep-auth">AUTH</span>
+  </div>
+</div>
+
+<pre><span class="pre-label">employee create</span><code><span class="cmt">// POST /api/employees</span>
+{
+  <span class="str">"full_name"</span>: <span class="str">"Ahmed Hassan"</span>,
+  <span class="str">"department_id"</span>: <span class="str">"uuid..."</span>,
+  <span class="str">"job_title"</span>: <span class="str">"Senior Upholsterer"</span>,
+  <span class="str">"employee_code"</span>: <span class="str">"EMP-147"</span>,
+  <span class="str">"joined_date"</span>: <span class="str">"2023-03-15"</span>,
+  <span class="str">"email"</span>: <span class="str">"ahmed.hassan@ebdaa.com"</span>
+}</code></pre>
+
+<!-- ════════════════════ API: SKILLS ════════════════════ -->
+<h2 id="api-skills">API — Skills</h2>
+<div class="card">
+  <div class="endpoint">
+    <span class="method method-get">GET</span>
+    <span class="ep-path">/api/skills</span>
+    <span class="ep-desc">List — query: <code>department_id</code>, <code>criticality</code>, <code>is_active</code></span>
+    <span class="ep-auth">AUTH</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-post">POST</span>
+    <span class="ep-path">/api/skills</span>
+    <span class="ep-desc">Create skill</span>
+    <span class="ep-auth">super_admin / hr</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-get">GET</span>
+    <span class="ep-path">/api/skills/:id</span>
+    <span class="ep-desc">Single skill</span>
+    <span class="ep-auth">AUTH</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-put">PUT</span>
+    <span class="ep-path">/api/skills/:id</span>
+    <span class="ep-desc">Update skill (name, weight, criticality, active)</span>
+    <span class="ep-auth">super_admin / hr</span>
+  </div>
+</div>
+
+<!-- ════════════════════ API: CAMPAIGNS ════════════════════ -->
+<h2 id="api-campaigns">API — Campaigns</h2>
+<div class="card">
+  <div class="endpoint">
+    <span class="method method-get">GET</span>
+    <span class="ep-path">/api/campaigns</span>
+    <span class="ep-desc">List — query: <code>status</code>, <code>department_id</code></span>
+    <span class="ep-auth">AUTH</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-post">POST</span>
+    <span class="ep-path">/api/campaigns</span>
+    <span class="ep-desc">Create campaign (status defaults to Draft)</span>
+    <span class="ep-auth">super_admin / hr</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-get">GET</span>
+    <span class="ep-path">/api/campaigns/:id</span>
+    <span class="ep-desc">Single campaign with evaluation progress</span>
+    <span class="ep-auth">AUTH</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-put">PUT</span>
+    <span class="ep-path">/api/campaigns/:id</span>
+    <span class="ep-desc">Update (title, status, dates, notes)</span>
+    <span class="ep-auth">super_admin / hr</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-get">GET</span>
+    <span class="ep-path">/api/campaigns/:id/summaries</span>
+    <span class="ep-desc">All employee summaries for campaign</span>
+    <span class="ep-auth">AUTH</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-get">GET</span>
+    <span class="ep-path">/api/campaigns/:id/matrix</span>
+    <span class="ep-desc">Full skill matrix grid (employee × skill)</span>
+    <span class="ep-auth">AUTH</span>
+  </div>
+</div>
+
+<!-- ════════════════════ API: EVALUATIONS ════════════════════ -->
+<h2 id="api-evaluations">API — Evaluations</h2>
+<div class="card">
+  <div class="endpoint">
+    <span class="method method-get">GET</span>
+    <span class="ep-path">/api/evaluations</span>
+    <span class="ep-desc">List — query: <code>campaign_id</code>, <code>employee_id</code>, <code>skill_id</code></span>
+    <span class="ep-auth">AUTH</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-post">POST</span>
+    <span class="ep-path">/api/evaluations</span>
+    <span class="ep-desc">Submit or update a single score; auto-recalculates summary + training recs</span>
+    <span class="ep-auth">super_admin / hr / dept_head</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-post">POST</span>
+    <span class="ep-path">/api/evaluations/bulk</span>
+    <span class="ep-desc">Submit multiple scores in one request</span>
+    <span class="ep-auth">super_admin / hr / dept_head</span>
+  </div>
+</div>
+
+<pre><span class="pre-label">single submit</span><code><span class="cmt">// POST /api/evaluations</span>
+{
+  <span class="str">"campaign_id"</span>: <span class="str">"uuid..."</span>,
+  <span class="str">"employee_id"</span>: <span class="str">"uuid..."</span>,
+  <span class="str">"skill_id"</span>:    <span class="str">"uuid..."</span>,
+  <span class="str">"score"</span>: <span class="num">3</span>,
+  <span class="str">"notes"</span>: <span class="str">"Works independently on complex joints"</span>
+}
+
+<span class="cmt">// POST /api/evaluations/bulk</span>
+{
+  <span class="str">"campaign_id"</span>: <span class="str">"uuid..."</span>,
+  <span class="str">"evaluations"</span>: [
+    { <span class="str">"employee_id"</span>: <span class="str">"..."</span>, <span class="str">"skill_id"</span>: <span class="str">"..."</span>, <span class="str">"score"</span>: <span class="num">2</span> },
+    { <span class="str">"employee_id"</span>: <span class="str">"..."</span>, <span class="str">"skill_id"</span>: <span class="str">"..."</span>, <span class="str">"score"</span>: <span class="num">4</span> }
+  ]
+}</code></pre>
+
+<!-- ════════════════════ API: TRAINING ════════════════════ -->
+<h2 id="api-training">API — Training Recommendations</h2>
+<div class="card">
+  <div class="endpoint">
+    <span class="method method-get">GET</span>
+    <span class="ep-path">/api/training</span>
+    <span class="ep-desc">List — query: <code>employee_id</code>, <code>status</code>, <code>recommendation_type</code></span>
+    <span class="ep-auth">AUTH (scoped by role)</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-get">GET</span>
+    <span class="ep-path">/api/training/:id</span>
+    <span class="ep-desc">Single recommendation</span>
+    <span class="ep-auth">AUTH</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-put">PUT</span>
+    <span class="ep-path">/api/training/:id</span>
+    <span class="ep-desc">Update status, assign trainer, set target date</span>
+    <span class="ep-auth">super_admin / hr / dept_head</span>
+  </div>
+</div>
+<p>The <code>employee</code> role can only see their own recommendations. <code>dept_head</code> sees their department's. <code>hr_coordinator</code> and <code>super_admin</code> see all.</p>
+
+<!-- ════════════════════ API: REPORTS ════════════════════ -->
+<h2 id="api-reports">API — Reports &amp; Exports</h2>
+<p>Report endpoints aggregate data across departments and campaigns for compliance, HR review, and executive summaries. All endpoints require authentication and return JSON; clients can render to PDF or Excel client-side.</p>
+
+<div class="card">
+  <div class="endpoint">
+    <span class="method method-get">GET</span>
+    <span class="ep-path">/api/dashboard/metrics</span>
+    <span class="ep-desc">Company-wide KPI summary (total employees, class distribution, active campaigns)</span>
+    <span class="ep-auth">AUTH</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-get">GET</span>
+    <span class="ep-path">/api/dashboard/department-performance</span>
+    <span class="ep-desc">Class A/B/C count per department — primary data source for bar charts</span>
+    <span class="ep-auth">AUTH</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-get">GET</span>
+    <span class="ep-path">/api/dashboard/class-trends</span>
+    <span class="ep-desc">Monthly A/B/C distribution over last 12 months — for trend line charts</span>
+    <span class="ep-auth">AUTH</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-get">GET</span>
+    <span class="ep-path">/api/campaigns/:id/summaries</span>
+    <span class="ep-desc">All employee summaries for a campaign — scores, class, skill count</span>
+    <span class="ep-auth">AUTH</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-get">GET</span>
+    <span class="ep-path">/api/campaigns/:id/matrix</span>
+    <span class="ep-desc">Full skill matrix grid (employee × skill scores) — basis for Excel export</span>
+    <span class="ep-auth">AUTH</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-get">GET</span>
+    <span class="ep-path">/api/employees/:id/profile</span>
+    <span class="ep-desc">Full employee profile with all evaluation history and training recs</span>
+    <span class="ep-auth">AUTH</span>
+  </div>
+  <div class="endpoint">
+    <span class="method method-get">GET</span>
+    <span class="ep-path">/api/training</span>
+    <span class="ep-desc">Company-wide training recommendations — filter by status, type, employee</span>
+    <span class="ep-auth">AUTH</span>
+  </div>
+</div>
+
+<h3>Excel Export</h3>
+<p>A pre-built Excel template with 6 worksheets is available for download at <code>/ebdaa-skill-matrix-template.xlsx</code>. The template contains:</p>
+<ul>
+  <li><strong>Overview</strong> — System summary and instructions</li>
+  <li><strong>Departments</strong> — All 9 departments with employee counts</li>
+  <li><strong>Employees</strong> — Full 146-employee roster with class and department</li>
+  <li><strong>Skills</strong> — Complete skill library with weights and criticality</li>
+  <li><strong>Evaluation Matrix</strong> — Sample score grid (employees × skills)</li>
+  <li><strong>Training Plan</strong> — Auto-calculated recommendations by employee</li>
+</ul>
+
+<pre><span class="pre-label">javascript</span><code><span class="cmt">// Client-side Excel export using campaign matrix data</span>
+<span class="kw">const</span> matrix = <span class="kw">await</span> fetch(<span class="str">`/api/campaigns/<span class="str">${campaignId}</span>/matrix`</span>, {
+  headers: { <span class="str">'x-user-token'</span>: token }
+}).then(r => r.json());
+
+<span class="cmt">// matrix.rows = [{ employee_name, skill_scores: { [skill_id]: score } }]</span>
+<span class="cmt">// matrix.skills = [{ id, name, weight, criticality }]</span>
+<span class="cmt">// Use SheetJS (xlsx) to build workbook:</span>
+<span class="kw">import</span> * <span class="kw">as</span> XLSX <span class="kw">from</span> <span class="str">'xlsx'</span>;
+<span class="kw">const</span> ws = XLSX.<span class="fn">utils</span>.<span class="fn">json_to_sheet</span>(matrix.rows);
+<span class="kw">const</span> wb = XLSX.<span class="fn">utils</span>.<span class="fn">book_new</span>();
+XLSX.<span class="fn">utils</span>.<span class="fn">book_append_sheet</span>(wb, ws, <span class="str">'Evaluation Matrix'</span>);
+XLSX.<span class="fn">writeFile</span>(wb, <span class="str">'Ebdaa-Evaluation-Report.xlsx'</span>);</code></pre>
+
+<h3>PDF Report</h3>
+<p>Employee profile reports can be generated client-side from the <code>/api/employees/:id/profile</code> response. The profile includes:</p>
+<ul>
+  <li>Employee details (name, department, job title, join date)</li>
+  <li>Current performance class with percentage score</li>
+  <li>Skill-by-skill breakdown with scores and weights</li>
+  <li>Campaign history (all past evaluations)</li>
+  <li>Active training recommendations with status</li>
+</ul>
+
+<!-- ════════════════════ USER GUIDE: SUPER ADMIN ════════════════════ -->
+<h2 id="role-super-admin">User Guide — Super Admin</h2>
+
+<div class="role-card">
+  <div class="role-header">
+    <div class="role-icon" style="background:rgba(239,68,68,.15);">👑</div>
+    <div>
+      <div class="role-name">Super Admin</div>
+      <div class="role-desc">Full system access. System configuration and user management.</div>
+    </div>
+    <span class="badge badge-red">super_admin</span>
+  </div>
+  <ul class="role-perms">
+    <li class="perm-allow">View all employees across all departments</li>
+    <li class="perm-allow">Create, edit, and deactivate user accounts</li>
+    <li class="perm-allow">Create and manage departments</li>
+    <li class="perm-allow">Create, activate, and close evaluation campaigns</li>
+    <li class="perm-allow">Submit and edit evaluations for any employee</li>
+    <li class="perm-allow">View and manage all training recommendations</li>
+    <li class="perm-allow">Export all reports and data</li>
+    <li class="perm-allow">Access audit logs</li>
+  </ul>
+</div>
+
+<h3>Typical Workflow</h3>
+<div class="steps">
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <div class="step-title">Set up departments &amp; skills</div>
+      <div class="step-desc">Navigate to Departments → add each of the 9 departments. Then Skills → add the skill library for each department with appropriate weights and criticality levels.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <div class="step-title">Import employees</div>
+      <div class="step-desc">Go to Employees → Create for each employee, or use the bulk import feature to import from Excel. Assign each employee to their department.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body">
+      <div class="step-title">Create user accounts</div>
+      <div class="step-desc">Go to Users → Create accounts for each dept head and HR coordinator. Assign their role and department. They will use email/password to log in.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-body">
+      <div class="step-title">Launch an evaluation campaign</div>
+      <div class="step-desc">Campaigns → Create → set title, type, date range → Save as Draft → Activate when ready. Notify department heads to begin scoring.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">5</div>
+    <div class="step-body">
+      <div class="step-title">Complete and review</div>
+      <div class="step-desc">Once all scores are in, set campaign status to Completed. The system auto-calculates summaries and generates training recommendations. Review the dashboard for results.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════ USER GUIDE: DEPT HEAD ════════════════════ -->
+<h2 id="role-dept-head">User Guide — Department Head</h2>
+
+<div class="role-card">
+  <div class="role-header">
+    <div class="role-icon" style="background:rgba(59,130,246,.15);">🏭</div>
+    <div>
+      <div class="role-name">Department Head</div>
+      <div class="role-desc">Evaluates employees in own department only. Scoped access.</div>
+    </div>
+    <span class="badge badge-blue">dept_head</span>
+  </div>
+  <ul class="role-perms">
+    <li class="perm-allow">View employees in own department</li>
+    <li class="perm-allow">Submit and edit skill scores during active campaigns</li>
+    <li class="perm-allow">View own department's performance metrics</li>
+    <li class="perm-allow">View and update training recommendations for own employees</li>
+    <li class="perm-allow">Assign trainers for recommendations in their department</li>
+    <li class="perm-deny">Cannot see other departments' data</li>
+    <li class="perm-deny">Cannot create campaigns or manage users</li>
+    <li class="perm-deny">Cannot access audit logs</li>
+  </ul>
+</div>
+
+<h3>Evaluating Employees</h3>
+<ol style="margin-left:20px">
+  <li>Log in with department head credentials.</li>
+  <li>Go to <strong>Campaigns</strong> — you will see only campaigns assigned to your department (or company-wide ones).</li>
+  <li>Click an <strong>Active</strong> campaign → open the Skill Matrix Grid.</li>
+  <li>Each row is an employee; each column is a skill. Enter scores from 0–4 for each cell.</li>
+  <li>Scores are saved immediately. The employee summary recalculates in real-time.</li>
+  <li>When all employees are scored, inform HR/Admin to close the campaign.</li>
+</ol>
+
+<!-- ════════════════════ USER GUIDE: HR ════════════════════ -->
+<h2 id="role-hr">User Guide — HR Coordinator</h2>
+
+<div class="role-card">
+  <div class="role-header">
+    <div class="role-icon" style="background:rgba(212,150,10,.15);">📋</div>
+    <div>
+      <div class="role-name">HR Coordinator</div>
+      <div class="role-desc">Read-write access across all departments. Manages campaigns and reporting.</div>
+    </div>
+    <span class="badge badge-amber">hr_coordinator</span>
+  </div>
+  <ul class="role-perms">
+    <li class="perm-allow">View all employees across all departments</li>
+    <li class="perm-allow">Create and manage evaluation campaigns</li>
+    <li class="perm-allow">Submit evaluations for any employee</li>
+    <li class="perm-allow">Export reports (department, company-wide)</li>
+    <li class="perm-allow">Track and update all training recommendations</li>
+    <li class="perm-allow">Generate compliance exports</li>
+    <li class="perm-deny">Cannot create or modify user accounts</li>
+    <li class="perm-deny">Cannot modify system configuration</li>
+  </ul>
+</div>
+
+<!-- ════════════════════ USER GUIDE: EMPLOYEE ════════════════════ -->
+<h2 id="role-employee">User Guide — Employee</h2>
+
+<div class="role-card">
+  <div class="role-header">
+    <div class="role-icon" style="background:rgba(168,85,247,.15);">👤</div>
+    <div>
+      <div class="role-name">Employee</div>
+      <div class="role-desc">Read-only access to personal profile, scores, and training plan.</div>
+    </div>
+    <span class="badge badge-purple">employee</span>
+  </div>
+  <ul class="role-perms">
+    <li class="perm-allow">View own profile (<code>GET /api/employees/me/profile</code>)</li>
+    <li class="perm-allow">View own evaluation history and scores</li>
+    <li class="perm-allow">View own training recommendations</li>
+    <li class="perm-allow">View own performance class (A/B/C)</li>
+    <li class="perm-deny">Cannot view other employees' data</li>
+    <li class="perm-deny">Cannot edit any data</li>
+    <li class="perm-deny">Cannot access campaigns or department views</li>
+  </ul>
+</div>
+
+<!-- ════════════════════ SCORING ════════════════════ -->
+<h2 id="scoring">Scoring &amp; Calculations</h2>
+<p>The Ebdaa scoring system uses a weighted average of skill scores on a 0–4 scale, converting the result to a percentage for class assignment.</p>
+
+<h3>Score Level Descriptors</h3>
+<div class="table-wrap">
+  <table>
+    <tr><th>Score</th><th>Level</th><th>Description</th></tr>
+    <tr><td><strong>0</strong></td><td>Cannot perform</td><td>Employee has no demonstrated ability in this skill</td></tr>
+    <tr><td><strong>1</strong></td><td>Constant supervision</td><td>Can attempt the task but requires continuous guidance</td></tr>
+    <tr><td><strong>2</strong></td><td>Occasional supervision</td><td>Can complete the task with periodic check-ins</td></tr>
+    <tr><td><strong>3</strong></td><td>Independent</td><td>Works competently without supervision</td></tr>
+    <tr><td><strong>4</strong></td><td>Expert / Trainer</td><td>Mastery level; can train others in this skill</td></tr>
+  </table>
+</div>
+
+<h3>Weighted Score Formula</h3>
+<pre><span class="pre-label">formula</span><code>percentage = Σ(score × weight) / Σ(4 × weight) × 100
+
+Where:
+  score  = individual skill score (0–4)
+  weight = skill importance weight (1–5)
+  4      = maximum possible score per skill</code></pre>
+
+<h3>Worked Example</h3>
+<div class="table-wrap">
+  <table>
+    <tr><th>Skill</th><th>Weight</th><th>Score</th><th>Score × Weight</th><th>Max (4 × W)</th></tr>
+    <tr><td>Foam Cutting</td><td>3</td><td>4</td><td>12</td><td>12</td></tr>
+    <tr><td>Spring Tying</td><td>5</td><td>2</td><td>10</td><td>20</td></tr>
+    <tr><td>Fabric Cutting</td><td>4</td><td>3</td><td>12</td><td>16</td></tr>
+    <tr><td>Stitching</td><td>5</td><td>1</td><td>5</td><td>20</td></tr>
+    <tr><td>Frame Assembly</td><td>3</td><td>3</td><td>9</td><td>12</td></tr>
+    <tr><td style="font-weight:600">Total</td><td style="font-weight:600">20</td><td>—</td><td style="font-weight:600">48</td><td style="font-weight:600">80</td></tr>
+  </table>
+</div>
+<p><strong>Percentage = 48 / 80 × 100 = 60.0%</strong> → Class <span class="badge badge-amber">B</span></p>
+
+<h3>Performance Classes</h3>
+<div class="grid-3">
+  <div class="class-card" style="border-top:3px solid var(--green)">
+    <div class="class-letter" style="color:var(--green)">A</div>
+    <div class="class-range">Score ≥ 85%</div>
+    <div class="class-desc">High performer. Fully competent. Eligible for leadership development and promotion track.</div>
+  </div>
+  <div class="class-card" style="border-top:3px solid var(--yellow)">
+    <div class="class-letter" style="color:var(--yellow)">B</div>
+    <div class="class-range">Score 60–84%</div>
+    <div class="class-desc">Developing. Core skills present. Targeted training recommended to close gaps.</div>
+  </div>
+  <div class="class-card" style="border-top:3px solid var(--red)">
+    <div class="class-letter" style="color:var(--red)">C</div>
+    <div class="class-range">Score &lt; 60%</div>
+    <div class="class-desc">Needs improvement. Immediate training required. Priority for intervention.</div>
+  </div>
+</div>
+
+<h3>Implementation (TypeScript)</h3>
+<pre><span class="pre-label">typescript</span><code><span class="kw">function</span> <span class="fn">calculateSummary</span>(
+  skillScores: <span class="ty">Array</span>&lt;{ skill_id: <span class="ty">string</span>; score: <span class="ty">number</span>; weight: <span class="ty">number</span> }&gt;
+) {
+  <span class="kw">let</span> totalScore = <span class="num">0</span>;
+  <span class="kw">let</span> maxScore = <span class="num">0</span>;
+
+  <span class="kw">for</span> (<span class="kw">const</span> { score, weight } <span class="kw">of</span> skillScores) {
+    totalScore += score * weight;
+    maxScore  += <span class="num">4</span> * weight;
+  }
+
+  <span class="kw">const</span> percentage = maxScore > <span class="num">0</span>
+    ? (totalScore / maxScore) * <span class="num">100</span>
+    : <span class="num">0</span>;
+
+  <span class="kw">const</span> evalClass: <span class="str">"A"</span> | <span class="str">"B"</span> | <span class="str">"C"</span> =
+    percentage >= <span class="num">85</span> ? <span class="str">"A"</span> :
+    percentage >= <span class="num">60</span> ? <span class="str">"B"</span> : <span class="str">"C"</span>;
+
+  <span class="kw">return</span> { total_score: totalScore, max_possible_score: maxScore,
+            percentage: <span class="fn">Math.round</span>(percentage * <span class="num">10</span>) / <span class="num">10</span>, class: evalClass };
+}</code></pre>
+
+<!-- ════════════════════ CAMPAIGN LOGIC ════════════════════ -->
+<h2 id="campaigns-logic">Evaluation Campaigns</h2>
+<p>Campaigns are the organizing unit for all evaluations. They move through a defined lifecycle and can target the whole company or a single department.</p>
+
+<h3>Campaign Lifecycle</h3>
+<div class="flow">
+  <div class="flow-node">
+    <div class="flow-node-label" style="color:var(--muted)">Draft</div>
+    <div class="flow-node-desc">Created but not open</div>
+  </div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-node active-state">
+    <div class="flow-node-label" style="color:var(--primary)">Active</div>
+    <div class="flow-node-desc">Scoring open</div>
+  </div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-node">
+    <div class="flow-node-label" style="color:var(--green)">Completed</div>
+    <div class="flow-node-desc">Summaries computed</div>
+  </div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-node">
+    <div class="flow-node-label" style="color:var(--muted)">Archived</div>
+    <div class="flow-node-desc">Historical record</div>
+  </div>
+</div>
+
+<div class="table-wrap">
+  <table>
+    <tr><th>Transition</th><th>Who</th><th>What happens</th></tr>
+    <tr><td>Draft → Active</td><td>super_admin, hr</td><td>Campaign opens; evaluations can be submitted; <code>triggered_by</code> is set</td></tr>
+    <tr><td>Active → Completed</td><td>super_admin, hr</td><td>Scoring closes; <code>evaluation_summaries</code> are finalised; <code>employees.current_class</code> is updated; training recs are generated</td></tr>
+    <tr><td>Completed → Archived</td><td>super_admin, hr</td><td>Campaign moves to historical view only; no further changes</td></tr>
+  </table>
+</div>
+
+<div class="callout callout-warning">
+  <p><strong>Note:</strong> Campaigns in <strong>Draft</strong> or <strong>Archived</strong> status reject evaluation submissions with HTTP 400. Only Active campaigns accept scores.</p>
+</div>
+
+<h3>Campaign Types</h3>
+<ul>
+  <li><strong>Monthly</strong> — Regular monthly assessments, usually department-specific.</li>
+  <li><strong>Quarterly</strong> — Quarterly company-wide evaluation.</li>
+  <li><strong>Bi-Annually</strong> — Mid-year and end-of-year comprehensive review.</li>
+  <li><strong>Custom</strong> — Ad-hoc campaigns for special projects or new hire assessments.</li>
+</ul>
+
+<!-- ════════════════════ TRAINING LOGIC ════════════════════ -->
+<h2 id="training-logic">Training Recommendations</h2>
+<p>Training recommendations are auto-generated when evaluation scores are submitted. The recommendation type is determined by the skill score and the overall employee class.</p>
+
+<h3>Auto-Generation Rules</h3>
+<div class="table-wrap">
+  <table>
+    <tr><th>Condition</th><th>Type Generated</th><th>Priority</th></tr>
+    <tr><td>Skill score = 0 (Cannot perform)</td><td><span class="badge badge-red">Immediate</span></td><td>Highest — urgent intervention</td></tr>
+    <tr><td>Skill score = 1 (Constant supervision)</td><td><span class="badge badge-red">Immediate</span></td><td>High — structured training program</td></tr>
+    <tr><td>Skill score = 2 (Occasional supervision)</td><td><span class="badge badge-amber">Short-term</span></td><td>Medium — development plan</td></tr>
+    <tr><td>Overall class = A (≥ 85%)</td><td><span class="badge badge-green">Promotion</span></td><td>Low — leadership track</td></tr>
+  </table>
+</div>
+
+<div class="callout callout-info">
+  <p>When an employee's evaluation is re-submitted (scores updated), all existing <strong>Pending</strong> recommendations for that employee+campaign are deleted and regenerated from scratch. This prevents duplicate training plans.</p>
+</div>
+
+<h3>Recommendation Status Flow</h3>
+<div class="flow">
+  <div class="flow-node active-state">
+    <div class="flow-node-label" style="color:var(--primary)">Pending</div>
+    <div class="flow-node-desc">Auto-generated</div>
+  </div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-node">
+    <div class="flow-node-label" style="color:var(--blue)">In Progress</div>
+    <div class="flow-node-desc">Training started</div>
+  </div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-node">
+    <div class="flow-node-label" style="color:var(--green)">Completed</div>
+    <div class="flow-node-desc">Skill improved</div>
+  </div>
+  <div class="flow-arrow">|</div>
+  <div class="flow-node">
+    <div class="flow-node-label" style="color:var(--muted)">Cancelled</div>
+    <div class="flow-node-desc">No longer needed</div>
+  </div>
+</div>
+
+<h3>Manual Override</h3>
+<p>Dept heads and HR coordinators can update any recommendation via <code>PUT /api/training/:id</code>:</p>
+<pre><span class="pre-label">typescript</span><code><span class="cmt">// Assign a trainer and set a target date</span>
+<span class="kw">await</span> fetch(<span class="str">'/api/training/:id'</span>, {
+  method: <span class="str">'PUT'</span>,
+  headers: { <span class="str">'x-user-token'</span>: token },
+  body: <span class="fn">JSON.stringify</span>({
+    status: <span class="str">'In Progress'</span>,
+    assigned_trainer_id: <span class="str">'uuid...'</span>,
+    target_date: <span class="str">'2026-07-01'</span>,
+    notes: <span class="str">'Enrolled in CNC machining course'</span>
+  })
+});</code></pre>
+
+<!-- ════════════════════ DATA MIGRATION ════════════════════ -->
+<h2 id="migration">Data Migration</h2>
+<p>For organisations migrating from the Excel-based system, follow this sequence to minimise downtime.</p>
+
+<div class="steps">
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <div class="step-title">Export clean data from Excel</div>
+      <div class="step-desc">Export Departments, Employees, and Skills sheets as CSV. Verify there are no blank rows, duplicate employee codes, or missing department references.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <div class="step-title">Create departments via API</div>
+      <div class="step-desc">POST each department. Note the returned UUID — you will need it for employee records.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body">
+      <div class="step-title">Import skills per department</div>
+      <div class="step-desc">POST each skill with the correct <code>department_id</code>, <code>weight</code>, and <code>criticality</code>. Use <code>code</code> field to match back to Excel columns (e.g. <code>UPH-01</code>).</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-body">
+      <div class="step-title">Import employees</div>
+      <div class="step-desc">POST each employee. Map Excel "Department Name" to the correct UUID from step 2. Preserve <code>employee_code</code> values for traceability.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">5</div>
+    <div class="step-body">
+      <div class="step-title">Create historical evaluation campaign</div>
+      <div class="step-desc">Create a campaign titled "Historical Import" with type Custom, status Draft. Set the date range to cover your oldest Excel data.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">6</div>
+    <div class="step-body">
+      <div class="step-title">Bulk submit historical scores</div>
+      <div class="step-desc">Use <code>POST /api/evaluations/bulk</code> to submit all historical scores. The system will calculate summaries and set initial performance classes.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">7</div>
+    <div class="step-body">
+      <div class="step-title">Complete the historical campaign</div>
+      <div class="step-desc">Set the campaign to Completed. This finalises all <code>current_class</code> values on employee records. Verify counts match your Excel totals.</div>
+    </div>
+  </div>
+</div>
+
+<div class="callout">
+  <p><strong>Tip:</strong> Use a Node.js migration script for bulk imports to avoid hitting rate limits. The API accepts JSON payloads; a simple <code>for...of</code> loop with <code>await fetch()</code> works well.</p>
+</div>
+
+<!-- ════════════════════ DEPLOYMENT ════════════════════ -->
+<h2 id="deployment">Deployment Guide</h2>
+<p>The system runs as a single Node.js process serving both API and static assets. All artifacts must be built before deploying.</p>
+
+<h3>Build All Artifacts</h3>
+<pre><span class="pre-label">bash</span><code><span class="cmt"># From monorepo root</span>
+
+<span class="cmt"># 1. Build main app</span>
+PORT=<span class="num">5000</span> BASE_PATH=/ebdaa-skill-matrix/ pnpm --filter @workspace/ebdaa-skill-matrix run build
+
+<span class="cmt"># 2. Build analytics dashboard</span>
+PORT=<span class="num">20165</span> BASE_PATH=/ebdaa-dashboard/ pnpm --filter @workspace/ebdaa-dashboard run build
+
+<span class="cmt"># 3. Build pitch deck</span>
+PORT=<span class="num">3001</span> BASE_PATH=/ebdaa-pitch-deck/ pnpm --filter @workspace/ebdaa-pitch-deck run build
+
+<span class="cmt"># 4. Start the API server (serves all artifacts)</span>
+pnpm --filter @workspace/api-server run start</code></pre>
+
+<h3>Database Setup</h3>
+<pre><span class="pre-label">bash</span><code><span class="cmt"># Run Drizzle migrations</span>
+pnpm --filter @workspace/db run migrate
+
+<span class="cmt"># Seed with demo data (9 departments, 146 employees)</span>
+pnpm --filter @workspace/api-server run seed</code></pre>
+
+<h3>Production Checklist</h3>
+<ul>
+  <li><strong>Environment variables</strong> — ensure <code>DATABASE_URL</code> and <code>PORT=8080</code> are set in production.</li>
+  <li><strong>Static builds</strong> — all four artifacts must be built before starting the API server.</li>
+  <li><strong>Token persistence</strong> — the current in-memory token store does not survive restarts. For production, replace with Redis or a database-backed session store.</li>
+  <li><strong>Password hashing</strong> — the demo uses plaintext passwords. Production deployments must hash passwords with bcrypt or Argon2.</li>
+  <li><strong>CORS</strong> — configure <code>cors()</code> origin allowlist to restrict to your domain.</li>
+  <li><strong>HTTPS</strong> — deploy behind a reverse proxy (Nginx, Cloudflare) with TLS termination.</li>
+  <li><strong>Audit logs</strong> — verify <code>audit_logs</code> table is present and is not purged by maintenance jobs.</li>
+</ul>
+
+<!-- ════════════════════ ENV VARS ════════════════════ -->
+<h2 id="env-vars">Environment Variables</h2>
+<div class="table-wrap">
+  <table>
+    <tr><th>Variable</th><th>Required</th><th>Default</th><th>Description</th></tr>
+    <tr><td><code>DATABASE_URL</code></td><td><span class="badge badge-red">Required</span></td><td>—</td><td>PostgreSQL connection string, e.g. <code>postgresql://user:pass@host:5432/ebdaa</code></td></tr>
+    <tr><td><code>PORT</code></td><td><span class="badge badge-red">Required</span></td><td>8080</td><td>API server listen port</td></tr>
+    <tr><td><code>NODE_ENV</code></td><td><span class="badge badge-blue">Optional</span></td><td>development</td><td><code>production</code> disables verbose error output</td></tr>
+    <tr><td><code>BASE_PATH</code></td><td><span class="badge badge-blue">Build only</span></td><td>/</td><td>Frontend base path baked into Vite build. Must match the express static mount path.</td></tr>
+  </table>
+</div>
+
+<!-- ════════════════════ DEMO CREDENTIALS ════════════════════ -->
+<h2 id="demo-credentials">Demo Credentials</h2>
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">👑 Super Admin</div>
+    <p style="font-size:13px;color:var(--muted);margin:4px 0 2px">Email</p>
+    <code>super_admin@ebdaa.com</code>
+    <p style="font-size:13px;color:var(--muted);margin:8px 0 2px">Password</p>
+    <code>admin123</code>
+  </div>
+  <div class="card">
+    <div class="card-title">📋 HR Coordinator</div>
+    <p style="font-size:13px;color:var(--muted);margin:4px 0 2px">Email</p>
+    <code>hr@ebdaa.com</code>
+    <p style="font-size:13px;color:var(--muted);margin:8px 0 2px">Password</p>
+    <code>hr123</code>
+  </div>
+  <div class="card">
+    <div class="card-title">🏭 Dept Head (Upholstery)</div>
+    <p style="font-size:13px;color:var(--muted);margin:4px 0 2px">Email</p>
+    <code>dept_head@ebdaa.com</code>
+    <p style="font-size:13px;color:var(--muted);margin:8px 0 2px">Password</p>
+    <code>dept123</code>
+  </div>
+  <div class="card">
+    <div class="card-title">👤 Employee</div>
+    <p style="font-size:13px;color:var(--muted);margin:4px 0 2px">Email</p>
+    <code>employee@ebdaa.com</code>
+    <p style="font-size:13px;color:var(--muted);margin:8px 0 2px">Password</p>
+    <code>emp123</code>
+  </div>
+</div>
+<div class="callout callout-danger">
+  <p><strong>Warning:</strong> Demo credentials are for testing only. Change all passwords before any production deployment. Enable password hashing (bcrypt) in the auth service.</p>
+</div>
+
+<!-- ════════════════════ CHANGELOG ════════════════════ -->
+<h2 id="changelog">Changelog</h2>
+
+<div style="margin:16px 0">
+  <div class="version-row">
+    <div class="v-dot" style="background:var(--green)"></div>
+    <strong>v1.0.0</strong>
+    <span class="badge badge-green">Latest</span>
+    <span style="color:var(--muted);font-size:12px;margin-left:auto">May 2026</span>
+  </div>
+  <ul style="margin-left:20px;margin-top:8px">
+    <li>Initial release — full-stack Skill Matrix System</li>
+    <li>9-department seed data with 146 employees</li>
+    <li>RBAC: super_admin, hr_coordinator, dept_head, employee</li>
+    <li>Evaluation campaigns with Draft → Active → Completed → Archived lifecycle</li>
+    <li>Weighted scoring formula with A/B/C classification</li>
+    <li>Auto-generated training recommendations on score submission</li>
+    <li>Bulk evaluation submission endpoint</li>
+    <li>Analytics dashboard (no-login required) at <code>/ebdaa-dashboard/</code></li>
+    <li>16-slide pitch deck at <code>/ebdaa-pitch-deck/</code></li>
+    <li>Technical documentation site at <code>/ebdaa-docs/</code></li>
+    <li>OpenAPI 3.1 spec with Orval codegen for type-safe client hooks</li>
+    <li>Drizzle ORM with full PostgreSQL schema and migration support</li>
+    <li>Pino structured request logging</li>
+    <li>Audit log table for compliance</li>
+  </ul>
+</div>
+
+<div style="margin:16px 0">
+  <div class="version-row">
+    <div class="v-dot" style="background:var(--border2)"></div>
+    <strong>v0.9.0</strong>
+    <span style="color:var(--muted);font-size:12px;margin-left:auto">April 2026</span>
+  </div>
+  <ul style="margin-left:20px;margin-top:8px">
+    <li>Beta — core CRUD complete, auth working, seed data validated</li>
+    <li>Frontend pages: Login, Dashboard, Employees, Skills, Campaigns, Evaluations, Training</li>
+    <li>Score calculation engine implemented and tested</li>
+    <li>Pitch deck drafted (12 slides)</li>
+  </ul>
+</div>
+
+<div style="margin:16px 0">
+  <div class="version-row">
+    <div class="v-dot" style="background:var(--border2)"></div>
+    <strong>v0.5.0</strong>
+    <span style="color:var(--muted);font-size:12px;margin-left:auto">March 2026</span>
+  </div>
+  <ul style="margin-left:20px;margin-top:8px">
+    <li>Alpha — database schema designed, API skeleton, React app bootstrapped</li>
+    <li>PostgreSQL schema with all 9 tables and RLS policies</li>
+    <li>Auth service with token-based sessions</li>
+    <li>Planning docs, Excel template, system architecture finalised</li>
+  </ul>
+</div>
+
+<footer>
+  <p>
+    Ebdaa Skill Matrix System — Technical Documentation
+    &nbsp;·&nbsp; v1.0.0
+    &nbsp;·&nbsp; Created by <a href="https://yasserious.com" target="_blank">yasserious.com</a>
+    &nbsp;·&nbsp; Ebdaa Wood Manufacturing Factory, 2026
+  </p>
+</footer>

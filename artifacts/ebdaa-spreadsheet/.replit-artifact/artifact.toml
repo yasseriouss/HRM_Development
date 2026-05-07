@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/ebdaa-spreadsheet/"
+title = "Ebdaa Skill Matrix - Spreadsheet Tool"
+version = "1.0.0"
+id = "artifacts/ebdaa-spreadsheet"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/ebdaa-spreadsheet/" ]
+localPort = 20210
+
+[services.development]
+run = "pnpm --filter @workspace/ebdaa-spreadsheet run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/ebdaa-spreadsheet", "run", "build" ]
+publicDir = "artifacts/ebdaa-spreadsheet/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20210"
+BASE_PATH = "/ebdaa-spreadsheet/"
