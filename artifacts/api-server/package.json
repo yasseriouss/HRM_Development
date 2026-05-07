@@ -14,6 +14,7 @@
   "dependencies": {
     "@hrm-development/api-zod": "workspace:*",
     "@hrm-development/db": "workspace:*",
+    "@vercel/speed-insights": "^2.0.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2",
     "drizzle-orm": "catalog:",
