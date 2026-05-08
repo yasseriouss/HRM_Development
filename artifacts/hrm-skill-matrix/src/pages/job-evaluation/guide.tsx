@@ -90,7 +90,7 @@ export default function JobEvaluationGuide() {
       animate="visible"
     >
       {/* Header Section - Industrial Focus */}
-      <motion.div variants={itemVariants} className="relative p-10 bg-[#0A0A0A] border-2 border-primary/20 overflow-hidden">
+      <motion.div variants={itemVariants} className="relative p-10 bg-[#0A0A0A] border-2 border-primary/20 animate-scan overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
         <div className="relative z-10 flex flex-col md:flex-row items-center gap-10">
           <div className="p-4 bg-primary/10 border border-primary/20 shrink-0">
@@ -99,7 +99,7 @@ export default function JobEvaluationGuide() {
           <div className="space-y-3">
             <div className="flex items-center gap-3">
                <Activity className="h-4 w-4 text-primary animate-pulse" />
-               <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">METHODOLOGY_CORE_DOCUMENTATION</span>
+               <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">{t("je_methodology_core")}</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
               {t("je_guide_title")}
@@ -189,7 +189,7 @@ export default function JobEvaluationGuide() {
               </div>
               <div className="p-6 bg-primary/[0.02] border-t border-zinc-900 flex items-center justify-between">
                 <span className="font-headline font-black text-[10px] text-zinc-600 uppercase tracking-[0.2em]">{t("je_total_pts")}</span>
-                <span className="text-primary font-mono font-black text-xl tracking-tighter">1000.00 PTS</span>
+                <span className="text-primary font-mono font-black text-xl tracking-tighter">1000.00 {t("je_points_value")}</span>
               </div>
             </CardContent>
             <CornerMarks />
@@ -367,7 +367,7 @@ export default function JobEvaluationGuide() {
          <Terminal className="absolute -right-6 -top-6 h-32 w-32 text-primary opacity-5 group-hover:opacity-10 transition-all duration-1000" />
          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
             <div className="space-y-2">
-               <p className="font-headline font-black text-sm text-primary uppercase tracking-[0.3em]">GUIDE_SYNC_COMPLETED</p>
+               <p className="font-headline font-black text-sm text-primary uppercase tracking-[0.3em]">{t("je_guide_sync")}</p>
                <p className="text-[10px] font-mono text-zinc-600 leading-relaxed uppercase tracking-widest">
                   DOC_REF_v4.2 // SECURITY_LAYER_ACTIVE // AUTHORIZED_ACCESS_ONLY
                </p>

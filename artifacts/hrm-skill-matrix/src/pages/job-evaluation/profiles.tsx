@@ -189,18 +189,18 @@ export default function JobProfilesPage() {
 
   const handleExportExcel = () => {
     exportToExcel({
-      title: isAr ? "Ø£ÙˆØµØ§Ù Ø§Ù„ÙˆØ¸Ø§Ø¦Ù Ø§Ù„Ù…Ø¬Ù…Ø¹Ø©" : "Job Profiles Evaluation",
+      title: t("je_export_title"),
       filename: "Job_Evaluation_Profiles",
-      headers: [t("field_name"), t("field_department"), isAr ? "Ø§Ù„Ù†Ù‚Ø§Ø·" : "Points", isAr ? "Ø§Ù„Ø¯Ø±Ø¬Ø©" : "Grade", t("field_status")],
+      headers: [t("field_name"), t("field_department"), t("je_col_pts_val"), t("je_col_tier"), t("field_status")],
       rows: profiles.map(p => [isAr ? p.title_ar : p.title, isAr ? p.department_ar : p.department, p.points.toString(), p.grade, p.status])
     });
   };
 
   const handleExportPDF = () => {
     exportToPDF({
-      title: isAr ? "Ø£ÙˆØµØ§Ù Ø§Ù„ÙˆØ¸Ø§Ø¦Ù Ø§Ù„Ù…Ø¬Ù…Ø¹Ø©" : "Job Profiles Evaluation",
+      title: t("je_export_title"),
       filename: "Job_Evaluation_Profiles",
-      headers: [t("field_name"), t("field_department"), isAr ? "Ø§Ù„Ù†Ù‚Ø§Ø·" : "Points", isAr ? "Ø§Ù„Ø¯Ø±Ø¬Ø©" : "Grade", t("field_status")],
+      headers: [t("field_name"), t("field_department"), t("je_col_pts_val"), t("je_col_tier"), t("field_status")],
       rows: profiles.map(p => [isAr ? p.title_ar : p.title, isAr ? p.department_ar : p.department, p.points.toString(), p.grade, p.status])
     });
   };
@@ -211,7 +211,7 @@ export default function JobProfilesPage() {
       <motion.div 
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="relative p-10 bg-[#0A0A0A] border-2 border-primary/30 overflow-hidden shadow-2xl"
+        className="relative p-10 bg-[#0A0A0A] border-2 border-primary/30 animate-scan overflow-hidden shadow-2xl"
       >
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
         <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">

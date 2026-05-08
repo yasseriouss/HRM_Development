@@ -151,11 +151,11 @@ export default function Dashboard() {
           </div>
           <div className="flex gap-4">
             <div className="p-6 bg-white/5 border border-white/10 text-center min-w-[120px]">
-              <p className="text-[9px] font-headline font-black text-secondary/40 tracking-widest">UPTIME</p>
+              <p className="text-[9px] font-headline font-black text-secondary/40 tracking-widest">{t("je_stat_uptime")}</p>
               <p className="text-2xl font-mono font-black text-white mt-1">99.9%</p>
             </div>
             <div className="p-6 bg-white/5 border border-white/10 text-center min-w-[120px]">
-              <p className="text-[9px] font-headline font-black text-secondary/40 tracking-widest">LATENCY</p>
+              <p className="text-[9px] font-headline font-black text-secondary/40 tracking-widest">{t("je_stat_latency")}</p>
               <p className="text-2xl font-mono font-black text-emerald-500 mt-1">12ms</p>
             </div>
           </div>
@@ -226,7 +226,7 @@ export default function Dashboard() {
                     <div>
                       <p className={`text-[10px] font-headline font-black tracking-widest text-secondary/40 uppercase ${isAr ? 'font-tajawal' : ''}`}>{t("dashboard_active_campaigns")}</p>
                       <h3 className="text-4xl font-mono font-black text-white mt-4 leading-none">{metrics.active_campaigns}</h3>
-                      <p className={`mt-4 text-[10px] font-bold text-amber-500 ${isAr ? 'font-tajawal' : ''}`}>SYSTEM_IN_SYNC</p>
+                      <p className={`mt-4 text-[10px] font-bold text-amber-500 ${isAr ? 'font-tajawal' : ''}`}{t("je_stat_sync")}/p>
                     </div>
                     <div className="p-4 bg-white/5 border border-white/5 group-hover:border-amber-500/30 transition-colors">
                       <Zap className="h-6 w-6 text-amber-500" />
@@ -242,9 +242,9 @@ export default function Dashboard() {
                 <CardContent className="p-8">
                   <div className="flex items-start justify-between">
                     <div>
-                      <p className={`text-[10px] font-headline font-black tracking-widest text-secondary/40 uppercase ${isAr ? 'font-tajawal' : ''}`}>THREAT_LEVEL</p>
-                      <h3 className="text-4xl font-mono font-black text-white mt-4 leading-none">LOW</h3>
-                      <p className={`mt-4 text-[10px] font-bold text-rose-500 uppercase ${isAr ? 'font-tajawal' : ''}`}>NO_FAILURES_DETECTED</p>
+                      <p className={`text-[10px] font-headline font-black tracking-widest text-secondary/40 uppercase ${isAr ? 'font-tajawal' : ''}`}>{t("je_stat_threat")}</p>
+                      <h3 className="text-4xl font-mono font-black text-white mt-4 leading-none"{t("je_level_low")}/h3>
+                      <p className={`mt-4 text-[10px] font-bold text-rose-500 uppercase ${isAr ? 'font-tajawal' : ''}`}{t("je_stat_no_failures")}/p>
                     </div>
                     <div className="p-4 bg-white/5 border border-white/5 group-hover:border-rose-500/30 transition-colors">
                       <ShieldAlert className="h-6 w-6 text-rose-500" />
