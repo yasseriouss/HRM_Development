@@ -9,6 +9,7 @@ import { CampaignsSheet } from './pages/CampaignsSheet';
 import { EvalSheet } from './pages/EvalSheet';
 import { CalculationsSheet } from './pages/CalculationsSheet';
 import { BlankTemplateSheet } from './pages/BlankTemplateSheet';
+import { ProductionManagementSheet } from './pages/ProductionManagementSheet';
 import { PrintReportSheet } from './pages/PrintReportSheet';
 import { exportToExcel } from './utils/excelExport';
 import type { ScoreMap } from './data/masterData';
@@ -33,11 +34,7 @@ const TABS = [
   { id: 'skills',       key_label: 'tab_skills',       key_short: 'tab_skills_short',       icon: '📚' },
   { id: 'employees',    key_label: 'tab_employees',    key_short: 'tab_employees_short',    icon: '👥' },
   { id: 'campaigns',    key_label: 'tab_campaigns',    key_short: 'tab_campaigns_short',    icon: '📅' },
-  { id: 'upholstery',   key_label: 'tab_upholstery',   key_short: 'tab_upholstery_short',   icon: '✨' },
-  { id: 'painting',     key_label: 'tab_painting',     key_short: 'tab_painting_short',     icon: '🎨' },
-  { id: 'naturalwood',  key_label: 'tab_naturalwood',  key_short: 'tab_naturalwood_short',  icon: '🪵' },
-  { id: 'assembly',     key_label: 'tab_assembly',     key_short: 'tab_assembly_short',     icon: '🔧' },
-  { id: 'cutting',      key_label: 'tab_cutting',      key_short: 'tab_cutting_short',      icon: '⚙️' },
+  { id: 'production_management', key_label: 'tab_production_management', key_short: 'tab_production_management_short', icon: '🏗️' },
   { id: 'qc',           key_label: 'tab_qc',           key_short: 'tab_qc_short',           icon: '🔍' },
   { id: 'logistics',    key_label: 'tab_logistics',    key_short: 'tab_logistics_short',    icon: '🚚' },
   { id: 'maintenance',  key_label: 'tab_maintenance',  key_short: 'tab_maintenance_short',  icon: '🛠️' },
@@ -292,69 +289,24 @@ function AppInner() {
       case 'skills': return <SkillsLibrarySheet />;
       case 'employees': return <EmployeesSheet />;
       case 'campaigns': return <CampaignsSheet />;
-      case 'upholstery':
+      case 'production_management':
         return (
-          <EvalSheet
-            key={`upholstery-${resetKey}`}
-            title="Upholstery"
-            icon="✨"
-            employees={UPHOLSTERY_EMPLOYEES}
-            skills={UPHOLSTERY_SKILLS}
-            initialScores={uphScores}
-            onScoresChange={setUphScores}
-            hasSampleData
-          />
-        );
-      case 'painting':
-        return (
-          <EvalSheet
-            key={`painting-${resetKey}`}
-            title="Painting"
-            icon="🎨"
-            employees={PAINTING_EMPLOYEES}
-            skills={PAINTING_SKILLS}
-            initialScores={pntScores}
-            onScoresChange={setPntScores}
-            hasSampleData
-          />
-        );
-      case 'naturalwood':
-        return (
-          <EvalSheet
-            key={`naturalwood-${resetKey}`}
-            title="Natural Wood"
-            icon="🪵"
-            employees={NATURAL_WOOD_EMPLOYEES}
-            skills={NATURAL_WOOD_SKILLS}
-            initialScores={nwdScores}
-            onScoresChange={setNwdScores}
-            hasSampleData
-          />
-        );
-      case 'assembly':
-        return (
-          <EvalSheet
-            key={`assembly-${resetKey}`}
-            title="Assembly"
-            icon="🔧"
-            employees={ASSEMBLY_EMPLOYEES}
-            skills={ASSEMBLY_SKILLS}
-            initialScores={asmScores}
-            onScoresChange={setAsmScores}
-            hasSampleData
-          />
-        );
-      case 'cutting':
-        return (
-          <EvalSheet
-            key={`cutting-${resetKey}`}
-            title="Cutting"
-            icon="⚙️"
-            employees={CUTTING_EMPLOYEES}
-            skills={CUTTING_SKILLS}
-            initialScores={cutScores}
-            onScoresChange={setCutScores}
-            hasSampleData
+          <ProductionManagementSheet
+            resetKey={resetKey}
+            scores={{
+              upholstery: uphScores,
+              painting: pntScores,
+              naturalwood: nwdScores,
+              assembly: asmScores,
+              cutting: cutScores
+            }}
+            setScores={{
+              upholstery: setUphScores,
+              painting: setPntScores,
+              naturalwood: setNwdScores,
+              assembly: setAsmScores,
+              cutting: setCutScores
+            }}
           />
         );
       case 'qc':

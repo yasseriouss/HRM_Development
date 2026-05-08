@@ -1,7 +1,7 @@
 <!-- ════════════════════ INTRODUCTION ════════════════════ -->
 <section id="introduction">
-  <h1>Ebdaa Skill Matrix System</h1>
-  <p class="lead">Full-stack workforce competency management platform purpose-built for Ebdaa wood manufacturing operations. Tracks employee skills, drives structured evaluation campaigns, and auto-generates training recommendations across 146 employees in 9 production departments.</p>
+  <h1>HRM Skill Matrix System</h1>
+  <p class="lead">Full-stack workforce competency management platform purpose-built for HRM wood manufacturing operations. Tracks employee skills, drives structured evaluation campaigns, and auto-generates training recommendations across 146 employees in 9 production departments.</p>
 
   <div class="grid-4">
     <div class="card" style="text-align:center">
@@ -23,7 +23,7 @@
   </div>
 
   <div class="callout">
-    <p><strong>Created by yasserious.com</strong> — Ebdaa Wood Manufacturing Factory, May 2026. This documentation covers the full technical specification of the Skill Matrix platform including the backend API, database schema, scoring formula, and deployment guide.</p>
+    <p><strong>Created by yasserious.com</strong> — HRM Wood Manufacturing Factory, May 2026. This documentation covers the full technical specification of the Skill Matrix platform including the backend API, database schema, scoring formula, and deployment guide.</p>
   </div>
 </section>
 
@@ -36,14 +36,14 @@
     <div class="step-num">1</div>
     <div class="step-body">
       <div class="step-title">Open the main app</div>
-      <div class="step-desc">Navigate to <code>/ebdaa-skill-matrix/</code> in your browser. The login screen loads immediately.</div>
+      <div class="step-desc">Navigate to <code>/hrm-skill-matrix/</code> in your browser. The login screen loads immediately.</div>
     </div>
   </div>
   <div class="step">
     <div class="step-num">2</div>
     <div class="step-body">
       <div class="step-title">Sign in</div>
-      <div class="step-desc">Use <code>super_admin@ebdaa.com</code> / <code>admin123</code> for full-access. See <a href="#demo-credentials">Demo Credentials</a> for all accounts.</div>
+      <div class="step-desc">Use <code>super_admin@hrm.com</code> / <code>admin123</code> for full-access. See <a href="#demo-credentials">Demo Credentials</a> for all accounts.</div>
     </div>
   </div>
   <div class="step">
@@ -57,7 +57,7 @@
     <div class="step-num">4</div>
     <div class="step-body">
       <div class="step-title">View the analytics dashboard</div>
-      <div class="step-desc">Navigate to <code>/ebdaa-dashboard/</code> for the standalone analytics view — no login required.</div>
+      <div class="step-desc">Navigate to <code>/hrm-dashboard/</code> for the standalone analytics view — no login required.</div>
     </div>
   </div>
 </div>
@@ -66,10 +66,10 @@
 <div class="table-wrap">
   <table>
     <tr><th>Path</th><th>Description</th><th>Auth</th></tr>
-    <tr><td><code>/ebdaa-skill-matrix/</code></td><td>Main app — RBAC, employee management, evaluations</td><td>Required</td></tr>
-    <tr><td><code>/ebdaa-dashboard/</code></td><td>Analytics dashboard — charts, heatmaps, trends</td><td>None</td></tr>
-    <tr><td><code>/ebdaa-pitch-deck/</code></td><td>16-slide executive pitch deck</td><td>None</td></tr>
-    <tr><td><code>/ebdaa-docs/</code></td><td>This documentation site</td><td>None</td></tr>
+    <tr><td><code>/hrm-skill-matrix/</code></td><td>Main app — RBAC, employee management, evaluations</td><td>Required</td></tr>
+    <tr><td><code>/hrm-dashboard/</code></td><td>Analytics dashboard — charts, heatmaps, trends</td><td>None</td></tr>
+    <tr><td><code>/hrm-pitch-deck/</code></td><td>16-slide executive pitch deck</td><td>None</td></tr>
+    <tr><td><code>/hrm-docs/</code></td><td>This documentation site</td><td>None</td></tr>
     <tr><td><code>/api/</code></td><td>REST API base path</td><td>Token-based</td></tr>
   </table>
 </div>
@@ -152,10 +152,10 @@
   ▼
 Express API server  (port 8080)
   │
-  ├─ /ebdaa-skill-matrix/*  →  static HTML/JS build
-  ├─ /ebdaa-dashboard/*     →  static HTML/JS build
-  ├─ /ebdaa-pitch-deck/*    →  static HTML/JS build
-  ├─ /ebdaa-docs/*          →  static HTML
+  ├─ /hrm-skill-matrix/*  →  static HTML/JS build
+  ├─ /hrm-dashboard/*     →  static HTML/JS build
+  ├─ /hrm-pitch-deck/*    →  static HTML/JS build
+  ├─ /hrm-docs/*          →  static HTML
   │
   └─ /api/*  →  Route handlers
                 │
@@ -200,7 +200,7 @@ Express API server  (port 8080)
 
 <!-- ════════════════════ DB SCHEMA: DEPARTMENTS ════════════════════ -->
 <h2 id="schema-departments">Database — departments</h2>
-<p>Organisational units. The 9 production departments at Ebdaa are seeded at startup. Each department has an optional manager linked from the users table.</p>
+<p>Organisational units. The 9 production departments at HRM are seeded at startup. Each department has an optional manager linked from the users table.</p>
 <div class="table-wrap">
   <table>
     <tr><th>Column</th><th>Type</th><th>Description</th></tr>
@@ -566,7 +566,7 @@ weight INTEGER <span class="kw">CHECK</span> (weight >= <span class="num">1</spa
 
 <pre><span class="pre-label">login example</span><code><span class="cmt">// POST /api/auth/login</span>
 {
-  <span class="str">"email"</span>: <span class="str">"super_admin@ebdaa.com"</span>,
+  <span class="str">"email"</span>: <span class="str">"super_admin@hrm.com"</span>,
   <span class="str">"password"</span>: <span class="str">"admin123"</span>
 }
 
@@ -575,7 +575,7 @@ weight INTEGER <span class="kw">CHECK</span> (weight >= <span class="num">1</spa
   <span class="str">"token"</span>: <span class="str">"550e8400-e29b-41d4-a716-446655440000"</span>,
   <span class="str">"user"</span>: {
     <span class="str">"id"</span>: <span class="str">"..."</span>,
-    <span class="str">"email"</span>: <span class="str">"super_admin@ebdaa.com"</span>,
+    <span class="str">"email"</span>: <span class="str">"super_admin@hrm.com"</span>,
     <span class="str">"role"</span>: <span class="str">"super_admin"</span>,
     <span class="str">"full_name"</span>: <span class="str">"System Administrator"</span>,
     <span class="str">"department"</span>: <span class="kw">null</span>
@@ -697,7 +697,7 @@ x-user-token: 550e8400-e29b-41d4-a716-446655440000</code></pre>
   <span class="str">"job_title"</span>: <span class="str">"Senior Upholsterer"</span>,
   <span class="str">"employee_code"</span>: <span class="str">"EMP-147"</span>,
   <span class="str">"joined_date"</span>: <span class="str">"2023-03-15"</span>,
-  <span class="str">"email"</span>: <span class="str">"ahmed.hassan@ebdaa.com"</span>
+  <span class="str">"email"</span>: <span class="str">"ahmed.hassan@hrm.com"</span>
 }</code></pre>
 
 <!-- ════════════════════ API: SKILLS ════════════════════ -->
