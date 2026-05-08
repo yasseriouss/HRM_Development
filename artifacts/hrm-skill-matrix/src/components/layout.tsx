@@ -127,7 +127,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const isDark = theme === "dark";
 
   return (
-    <div className={`min-h-screen flex flex-col bg-[#050505] text-white font-sans selection:bg-primary selection:text-primary-foreground`}>
+    <div className={`min-h-screen flex flex-col bg-[#050505] text-white font-sans selection:bg-primary selection:text-primary-foreground relative overflow-hidden`}>
+      {/* Global Scanline Effect */}
+      <div className="scanline" />
       {/* Top Navigation Bar */}
       <header className="sticky top-0 z-50 border-b border-white/10 bg-[#0A0A0A]/80 backdrop-blur-md px-6 py-4 flex items-center justify-between gap-8">
         <div className="flex items-center gap-8">
@@ -196,7 +198,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </DropdownMenu>
 
             <div className="flex flex-col">
-              <h1 className="text-xl font-headline font-black text-white tracking-tighter uppercase leading-none">HRM_DEV</h1>
+              <h1 className={`text-xl font-headline font-black text-white tracking-tighter uppercase leading-none ${isAr ? 'font-tajawal' : ''}`}>HRM_DEV</h1>
               <span className="text-[8px] font-mono text-primary font-black tracking-[0.5em] mt-1 leading-none">WORKSTATION</span>
             </div>
           </div>
