@@ -109,6 +109,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
     { href: "/training", labelKey: "nav_training" as const, roles: ["super_admin", "hr_coordinator", "dept_head"] },
     { href: "/settings", labelKey: "nav_settings" as const, roles: ["super_admin", "hr_coordinator", "dept_head", "employee"] },
     { href: "/manual", labelKey: "nav_manual" as const, roles: ["super_admin", "hr_coordinator", "dept_head", "employee"] },
+    { href: "/job-evaluation/guide", labelKey: "nav_job_evaluation_guide" as const, roles: ["super_admin", "hr_coordinator", "dept_head"] },
+    { href: "/job-evaluation/dashboard", labelKey: "nav_job_evaluation_dashboard" as const, roles: ["super_admin", "hr_coordinator", "dept_head"] },
+    { href: "/job-evaluation/profiles", labelKey: "nav_job_evaluation_profiles" as const, roles: ["super_admin", "hr_coordinator", "dept_head"] },
   ];
 
   const navItems = ALL_NAV.filter((item) => item.roles.includes(role));

@@ -12,6 +12,10 @@ const ar = {
   nav_workflows: "سير العمل",
   nav_my_tasks: "مهامي",
   nav_manual: "دليل النظام",
+  nav_job_evaluation: "تقييم الوظائف",
+  nav_job_evaluation_guide: "دليل التقييم",
+  nav_job_evaluation_profiles: "أوصاف الوظائف",
+  nav_job_evaluation_dashboard: "لوحة التقييم",
 
   common_save_changes: "حفظ التغييرات",
   common_cancel: "إلغاء",

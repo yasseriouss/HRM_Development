@@ -12,6 +12,10 @@ const en = {
   nav_workflows: "Workflows",
   nav_my_tasks: "My Tasks",
   nav_manual: "System Manual",
+  nav_job_evaluation: "Job Evaluation",
+  nav_job_evaluation_guide: "Evaluation Guide",
+  nav_job_evaluation_profiles: "Job Profiles",
+  nav_job_evaluation_dashboard: "Eval Dashboard",
 
   common_save_changes: "Save Changes",
   common_cancel: "Cancel",

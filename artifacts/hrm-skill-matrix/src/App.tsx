@@ -1,4 +1,5 @@
 import { Switch, Route, Router as WouterRouter, Redirect, useLocation } from "wouter";
+import { motion, AnimatePresence } from "framer-motion";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/toaster";
@@ -27,6 +28,9 @@ import WorkflowsPage from "@/pages/workflows/index";
 import WorkflowDetailPage from "@/pages/workflows/[id]";
 import MyTasksPage from "@/pages/my-tasks";
 import ManualPage from "@/pages/manual";
+import JobEvaluationGuide from "@/pages/job-evaluation/guide";
+import JobEvaluationDashboard from "@/pages/job-evaluation/dashboard";
+import JobProfilesPage from "@/pages/job-evaluation/profiles";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -78,84 +82,113 @@ function AppRoutes() {
   return (
     <Layout>
       <ErrorBoundary>
-        <Switch>
-          <Route path="/" component={EmployeeRedirect} />
-          <Route
-            path="/my-profile"
-            component={() => <ProtectedRoute component={MyProfilePage} roles={ALL_ROLES} />}
-          />
-          <Route
-            path="/employees"
-            component={() => <ProtectedRoute component={EmployeesPage} roles={ADMIN_HR_DEPT} />}
-          />
-          <Route
-            path="/employees/:id"
-            component={() => (
-              <ProtectedRoute component={EmployeeProfilePage} roles={ADMIN_HR_DEPT} />
-            )}
-          />
-          <Route
-            path="/departments"
-            component={() => (
-              <ProtectedRoute component={DepartmentsPage} roles={ADMIN_HR_DEPT} />
-            )}
-          />
-          <Route
-            path="/departments/:id"
-            component={() => (
-              <ProtectedRoute component={DepartmentDetailPage} roles={ADMIN_HR_DEPT} />
-            )}
-          />
-          <Route
-            path="/campaigns"
-            component={() => <ProtectedRoute component={CampaignsPage} roles={ADMIN_HR_DEPT} />}
-          />
-          <Route
-            path="/campaigns/:id"
-            component={() => (
-              <ProtectedRoute component={CampaignDetailPage} roles={ADMIN_HR_DEPT} />
-            )}
-          />
-          <Route
-            path="/evaluations"
-            component={() => (
-              <ProtectedRoute component={EvaluationsPage} roles={ADMIN_HR_DEPT} />
-            )}
-          />
-          <Route
-            path="/skills"
-            component={() => <ProtectedRoute component={SkillsPage} roles={ADMIN_HR} />}
-          />
-          <Route
-            path="/training"
-            component={() => <ProtectedRoute component={TrainingPage} roles={ADMIN_HR_DEPT} />}
-          />
-          <Route
-            path="/workflows"
-            component={() => <ProtectedRoute component={WorkflowsPage} roles={WORKFLOW_ROLES} />}
-          />
-          <Route
-            path="/workflows/:id"
-            component={() => <ProtectedRoute component={WorkflowDetailPage} roles={WORKFLOW_ROLES} />}
-          />
-          <Route
-            path="/my-tasks"
-            component={() => <ProtectedRoute component={MyTasksPage} roles={WORKFLOW_ROLES} />}
-          />
-          <Route
-            path="/settings"
-            component={() => (
-              <ProtectedRoute component={SettingsPage} roles={ALL_ROLES} />
-            )}
-          />
-          <Route
-            path="/manual"
-            component={() => (
-              <ProtectedRoute component={ManualPage} roles={ALL_ROLES} />
-            )}
-          />
-          <Route component={NotFound} />
-        </Switch>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={location}
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -10 }}
+            transition={{ duration: 0.2 }}
+            className="h-full"
+          >
+            <Switch location={location}>
+              <Route path="/" component={EmployeeRedirect} />
+              <Route
+                path="/my-profile"
+                component={() => <ProtectedRoute component={MyProfilePage} roles={ALL_ROLES} />}
+              />
+              <Route
+                path="/employees"
+                component={() => <ProtectedRoute component={EmployeesPage} roles={ADMIN_HR_DEPT} />}
+              />
+              <Route
+                path="/employees/:id"
+                component={() => (
+                  <ProtectedRoute component={EmployeeProfilePage} roles={ADMIN_HR_DEPT} />
+                )}
+              />
+              <Route
+                path="/departments"
+                component={() => (
+                  <ProtectedRoute component={DepartmentsPage} roles={ADMIN_HR_DEPT} />
+                )}
+              />
+              <Route
+                path="/departments/:id"
+                component={() => (
+                  <ProtectedRoute component={DepartmentDetailPage} roles={ADMIN_HR_DEPT} />
+                )}
+              />
+              <Route
+                path="/campaigns"
+                component={() => <ProtectedRoute component={CampaignsPage} roles={ADMIN_HR_DEPT} />}
+              />
+              <Route
+                path="/campaigns/:id"
+                component={() => (
+                  <ProtectedRoute component={CampaignDetailPage} roles={ADMIN_HR_DEPT} />
+                )}
+              />
+              <Route
+                path="/evaluations"
+                component={() => (
+                  <ProtectedRoute component={EvaluationsPage} roles={ADMIN_HR_DEPT} />
+                )}
+              />
+              <Route
+                path="/skills"
+                component={() => <ProtectedRoute component={SkillsPage} roles={ADMIN_HR} />}
+              />
+              <Route
+                path="/training"
+                component={() => <ProtectedRoute component={TrainingPage} roles={ADMIN_HR_DEPT} />}
+              />
+              <Route
+                path="/workflows"
+                component={() => <ProtectedRoute component={WorkflowsPage} roles={WORKFLOW_ROLES} />}
+              />
+              <Route
+                path="/workflows/:id"
+                component={() => <ProtectedRoute component={WorkflowDetailPage} roles={WORKFLOW_ROLES} />}
+              />
+              <Route
+                path="/my-tasks"
+                component={() => <ProtectedRoute component={MyTasksPage} roles={WORKFLOW_ROLES} />}
+              />
+              <Route
+                path="/settings"
+                component={() => (
+                  <ProtectedRoute component={SettingsPage} roles={ALL_ROLES} />
+                )}
+              />
+              <Route
+                path="/manual"
+                component={() => (
+                  <ProtectedRoute component={ManualPage} roles={ALL_ROLES} />
+                )}
+              />
+              <Route
+                path="/job-evaluation/guide"
+                component={() => (
+                  <ProtectedRoute component={JobEvaluationGuide} roles={ALL_ROLES} />
+                )}
+              />
+              <Route
+                path="/job-evaluation/dashboard"
+                component={() => (
+                  <ProtectedRoute component={JobEvaluationDashboard} roles={ADMIN_HR_DEPT} />
+                )}
+              />
+              <Route
+                path="/job-evaluation/profiles"
+                component={() => (
+                  <ProtectedRoute component={JobProfilesPage} roles={ADMIN_HR_DEPT} />
+                )}
+              />
+              <Route component={NotFound} />
+            </Switch>
+          </motion.div>
+        </AnimatePresence>
       </ErrorBoundary>
     </Layout>
   );

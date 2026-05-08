@@ -17,11 +17,12 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { ChevronLeft, ChevronRight, Plus, Pencil, Trash2, ExternalLink, Download } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus, Pencil, Trash2, ExternalLink, Download, Upload } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { useT } from "@/i18n";
 import { exportToPDF, exportToExcel } from "@/lib/export-utils";
+import { ImportDialog } from "@/components/import-dialog";
 
 interface EmpForm {
   full_name: string;
@@ -58,6 +59,7 @@ export default function EmployeesPage() {
   const [form, setForm] = useState<EmpForm>(emptyForm());
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [showImport, setShowImport] = useState(false);
 
   const { data: departments } = useListDepartments({ request: { headers } });
 
@@ -168,7 +170,7 @@ export default function EmployeesPage() {
             title: t("employees_title"),
             filename: "Employees_List",
             headers: [t("field_name"), t("field_code"), t("field_department"), t("field_job_title"), t("field_class")],
-            rows: (employees ?? []).map(e => [e.full_name, e.code ?? "—", e.department_name ?? "—", e.job_title ?? "—", e.current_class ?? "—"])
+            rows: (employees ?? []).map(e => [e.full_name ?? "—", e.employee_code ?? "—", e.department?.name ?? "—", e.job_title ?? "—", e.current_class ?? "—"])
           })}>
             <Download className="h-3.5 w-3.5" /> PDF
           </Button>
@@ -176,14 +178,19 @@ export default function EmployeesPage() {
             title: t("employees_title"),
             filename: "Employees_List",
             headers: [t("field_name"), t("field_code"), t("field_department"), t("field_job_title"), t("field_class")],
-            rows: (employees ?? []).map(e => [e.full_name, e.code ?? "—", e.department_name ?? "—", e.job_title ?? "—", e.current_class ?? "—"])
+            rows: (employees ?? []).map(e => [e.full_name ?? "—", e.employee_code ?? "—", e.department?.name ?? "—", e.job_title ?? "—", e.current_class ?? "—"])
           })}>
             <Download className="h-3.5 w-3.5" /> EXCEL
           </Button>
           {isAdmin && (
-            <Button size="sm" className="bg-primary text-primary-foreground gap-1 shrink-0" onClick={openCreate}>
-              <Plus className="h-3.5 w-3.5" /> {t("employees_new")}
-            </Button>
+            <>
+              <Button variant="outline" size="sm" className="gap-1 border-border" onClick={() => setShowImport(true)}>
+                <Upload className="h-3.5 w-3.5" /> Import
+              </Button>
+              <Button size="sm" className="bg-primary text-primary-foreground gap-1 shrink-0" onClick={openCreate}>
+                <Plus className="h-3.5 w-3.5" /> {t("employees_new")}
+              </Button>
+            </>
           )}
         </div>
       </div>
@@ -375,6 +382,13 @@ export default function EmployeesPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <ImportDialog
+        open={showImport}
+        onOpenChange={setShowImport}
+        onSuccess={() => queryClient.invalidateQueries({ queryKey })}
+        type="employees"
+      />
     </div>
   );
 }

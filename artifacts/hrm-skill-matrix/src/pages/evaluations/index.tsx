@@ -83,7 +83,7 @@ function SummaryTable({ campaignId }: { campaignId: string }) {
         <div className="flex items-center gap-2">
           <Button
             variant="outline"
-            size="xs"
+            size="sm"
             className="h-7 text-[10px] gap-1 border-border"
             onClick={() => exportToPDF({
               title: `${t("evaluations_title")} - ${campaignId}`,
@@ -96,7 +96,7 @@ function SummaryTable({ campaignId }: { campaignId: string }) {
           </Button>
           <Button
             variant="outline"
-            size="xs"
+            size="sm"
             className="h-7 text-[10px] gap-1 border-border"
             onClick={() => exportToExcel({
               title: `${t("evaluations_title")} - ${campaignId}`,

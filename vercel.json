@@ -1,38 +1,38 @@
 {
   "version": 2,
   "functions": {
-    "api/index.ts": {
+    "src/index.ts": {
       "includeFiles": "artifacts/**"
     }
   },
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/api/index.ts"
+      "destination": "/src/index.ts"
     },
     {
       "source": "/hrm-skill-matrix/(.*)",
-      "destination": "/api/index.ts"
+      "destination": "/src/index.ts"
     },
     {
       "source": "/hrm-dashboard/(.*)",
-      "destination": "/api/index.ts"
+      "destination": "/src/index.ts"
     },
     {
       "source": "/hrm-docs/(.*)",
-      "destination": "/api/index.ts"
+      "destination": "/src/index.ts"
     },
     {
       "source": "/hrm-pitch-deck/(.*)",
-      "destination": "/api/index.ts"
+      "destination": "/src/index.ts"
     },
     {
       "source": "/hrm-spreadsheet/(.*)",
-      "destination": "/api/index.ts"
+      "destination": "/src/index.ts"
     },
     {
       "source": "/hrm-skill-matrix-template.xlsx",
-      "destination": "/api/index.ts"
+      "destination": "/src/index.ts"
     }
   ]
 }

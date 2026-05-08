@@ -15,10 +15,13 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Plus, Pencil, Trash2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Download } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { useT } from "@/i18n";
+import { exportToPDF, exportToExcel } from "@/lib/export-utils";
+import { ImportDialog } from "@/components/import-dialog";
+import { Upload } from "lucide-react";
 
 const CRITICALITIES = ["Low", "Medium", "High", "Critical"] as const;
 type Criticality = (typeof CRITICALITIES)[number];
@@ -75,6 +78,7 @@ export default function SkillsPage() {
   const [form, setForm] = useState<SkillForm>(emptyForm());
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [showImport, setShowImport] = useState(false);
 
   const { data: departments } = useListDepartments({ request: { headers } });
   const { data: skills, isLoading, queryKey } = useListSkills(
@@ -162,11 +166,34 @@ export default function SkillsPage() {
           <h2 className="text-3xl font-bold tracking-tight">{t("skills_title")}</h2>
           <p className="text-muted-foreground">{t("skills_subtitle")}</p>
         </div>
-        {isAdmin && (
-          <Button size="sm" className="bg-primary text-primary-foreground gap-1 shrink-0" onClick={openCreate}>
-            <Plus className="h-3.5 w-3.5" /> {t("skills_new")}
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" className="gap-1 border-border" onClick={() => exportToPDF({
+            title: t("skills_title"),
+            filename: "Skills_Library",
+            headers: [t("field_name"), t("field_code"), t("skills_col_category"), t("field_department"), t("skills_col_weight"), t("skills_col_criticality")],
+            rows: (skills ?? []).map(sk => [sk.name, sk.code ?? "—", sk.category ?? "—", sk.department?.name ?? "—", sk.weight ?? 0, sk.criticality])
+          })}>
+            <Download className="h-3.5 w-3.5" /> PDF
           </Button>
-        )}
+          <Button variant="outline" size="sm" className="gap-1 border-border" onClick={() => exportToExcel({
+            title: t("skills_title"),
+            filename: "Skills_Library",
+            headers: [t("field_name"), t("field_code"), t("skills_col_category"), t("field_department"), t("skills_col_weight"), t("skills_col_criticality")],
+            rows: (skills ?? []).map(sk => [sk.name, sk.code ?? "—", sk.category ?? "—", sk.department?.name ?? "—", sk.weight ?? 0, sk.criticality])
+          })}>
+            <Download className="h-3.5 w-3.5" /> EXCEL
+          </Button>
+          {isAdmin && (
+            <>
+              <Button variant="outline" size="sm" className="gap-1 border-border" onClick={() => setShowImport(true)}>
+                <Upload className="h-3.5 w-3.5" /> Import
+              </Button>
+              <Button size="sm" className="bg-primary text-primary-foreground gap-1 shrink-0" onClick={openCreate}>
+                <Plus className="h-3.5 w-3.5" /> {t("skills_new")}
+              </Button>
+            </>
+          )}
+        </div>
       </div>
 
       <Select value={deptFilter} onValueChange={setDeptFilter}>
@@ -324,6 +351,13 @@ export default function SkillsPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <ImportDialog
+        open={showImport}
+        onOpenChange={setShowImport}
+        onSuccess={() => queryClient.invalidateQueries({ queryKey })}
+        type="skills"
+      />
     </div>
   );
 }
