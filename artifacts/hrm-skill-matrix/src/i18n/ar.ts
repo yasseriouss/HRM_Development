@@ -358,6 +358,65 @@ const ar = {
   settings_demo_warning: "تحذير: سيؤدي مسح بيانات النظام إلى إزالة جميع التقييمات والموظفين والمهارات. سيتم الاحتفاظ بحساب المدير العام فقط.",
   settings_demo_seeding: "جاري الحقن...",
   settings_demo_resetting: "جاري المسح...",
+
+  // ── UI Action Strings ─────────────────────────────────────────────────────
+  action_create_unit: "إنشاء وحدة",
+  action_init_unit: "تهيئة الوحدة",
+  action_apply_config: "تطبيق الإعدادات",
+  action_saving: "جاري الحفظ...",
+  action_purging: "جاري المسح...",
+  action_aborting: "جاري الإلغاء...",
+  action_synchronizing: "جاري المزامنة...",
+  action_confirm_delete: "تأكيد الحذف",
+  action_confirm_deactivate: "تأكيد التعطيل",
+  action_confirm_abort: "تأكيد الإلغاء",
+  action_reconfigure: "إعادة الضبط",
+  action_access_details: "عرض التفاصيل",
+  action_register_operative: "تسجيل موظف",
+  action_init_operative: "تهيئة موظف جديد",
+  action_register_skill: "تسجيل مهارة",
+  action_init_asset: "تهيئة أصل جديد",
+  action_init_campaign: "تهيئة حملة جديدة",
+  action_import_csv: "استيراد CSV",
+
+  // ── Section Labels ────────────────────────────────────────────────────────
+  label_org_structure: "الهيكل التنظيمي",
+  label_personnel_registry: "سجل الموظفين",
+  label_skill_repository: "مستودع المهارات",
+  label_mission_control: "مركز تحكم التقييم",
+  label_personnel_count: "عدد الموظفين",
+  label_deployment_progress: "تقدم التقييم",
+  label_no_records: "لا توجد سجلات",
+  label_no_active_missions: "لا توجد مهام نشطة",
+
+  // ── Status & Badge Labels ─────────────────────────────────────────────────
+  status_active: "نشط",
+  status_draft: "مسودة",
+  status_completed: "مكتملة",
+  status_archived: "مؤرشفة",
+  status_online: "متصل",
+  status_global: "عام",
+  status_dept_specific: "خاص بالقسم",
+
+  // ── Criticality Levels ────────────────────────────────────────────────────
+  crit_critical: "حرج",
+  crit_high: "عالٍ",
+  crit_medium: "متوسط",
+  crit_low: "منخفض",
+
+  // ── Filter & Search ───────────────────────────────────────────────────────
+  search_departments: "البحث في الأقسام...",
+  search_campaigns: "البحث في الحملات...",
+  search_by_name_or_code: "البحث بالاسم أو الكود...",
+  filter_by_class: "تصفية حسب الفئة",
+  filter_by_status_label: "تصفية حسب الحالة",
+  all_statuses: "جميع الحالات",
+  filter_reset: "إعادة تعيين الفلاتر",
+
+  // ── Evaluated / Progress Strings ─────────────────────────────────────────
+  label_evaluated: "مقيَّم",
+  label_total_nodes: "إجمالي الموظفين",
+  label_node_profile: "عرض الملف",
 } as const;
 
 export default ar;

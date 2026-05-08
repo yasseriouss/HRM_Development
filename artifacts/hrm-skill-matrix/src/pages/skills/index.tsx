@@ -36,17 +36,17 @@ const CornerMarks = ({ color = "primary" }: { color?: string }) => (
   </>
 );
 
-function critBadge(crit: string) {
-  const map: Record<string, { bg: string; text: string; label: string }> = {
-    Critical: { bg: "bg-rose-500/10", text: "text-rose-500", label: "LVL_CRITICAL" },
-    High: { bg: "bg-amber-500/10", text: "text-amber-500", label: "LVL_HIGH" },
-    Medium: { bg: "bg-sky-500/10", text: "text-sky-500", label: "LVL_MEDIUM" },
-    Low: { bg: "bg-zinc-500/10", text: "text-zinc-500", label: "LVL_LOW" },
+function critBadge(crit: string, t: (k: any) => string) {
+  const map: Record<string, { bg: string; text: string; key: string }> = {
+    Critical: { bg: "bg-rose-500/10", text: "text-rose-500", key: "crit_critical" },
+    High: { bg: "bg-amber-500/10", text: "text-amber-500", key: "crit_high" },
+    Medium: { bg: "bg-sky-500/10", text: "text-sky-500", key: "crit_medium" },
+    Low: { bg: "bg-zinc-500/10", text: "text-zinc-500", key: "crit_low" },
   };
   const config = map[crit] ?? map.Low;
   return (
     <Badge variant="outline" className={`rounded-none font-mono text-[9px] font-black border-current/20 px-2 py-0.5 ${config.bg} ${config.text} tracking-widest`}>
-      {config.label}
+      {t(config.key)}
     </Badge>
   );
 }
@@ -190,7 +190,7 @@ export default function SkillsPage() {
           <div className="space-y-3">
             <div className="flex items-center gap-3">
               <Shield className="h-4 w-4 text-primary animate-pulse" />
-              <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">SECURITY_ASSET_REPOSITORY</span>
+              <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">{t("label_skill_repository")}</span>
             </div>
             <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
               {t("skills_title")}
@@ -218,10 +218,10 @@ export default function SkillsPage() {
             {isAdmin && (
               <>
                 <Button variant="outline" className="rounded-none border-white/10 bg-white/5 hover:bg-white/10 text-white font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto" onClick={() => setShowImport(true)}>
-                  <Upload className="h-4 w-4 me-2" /> IMPORT_CSV
+                  <Upload className="h-4 w-4 me-2" /> {t("action_import_csv")}
                 </Button>
                 <Button className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto hover:bg-primary/90" onClick={openCreate}>
-                  <Plus className="h-4 w-4 me-2" /> REGISTER_NEW_SKILL
+                  <Plus className="h-4 w-4 me-2" /> {t("action_register_skill")}
                 </Button>
               </>
             )}
@@ -237,7 +237,7 @@ export default function SkillsPage() {
             <div className="flex-1 w-full relative">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-secondary/30" />
               <Input 
-                placeholder="SEARCH_BY_NAME_OR_CODE..." 
+                placeholder={t("search_by_name_or_code")} 
                 className="ps-12 h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white placeholder:text-secondary/20 focus-visible:ring-primary/50"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -274,7 +274,7 @@ export default function SkillsPage() {
         ) : !filteredSkills?.length ? (
           <div className="p-20 text-center space-y-4">
             <HardDrive className="h-12 w-12 text-secondary/10 mx-auto" />
-            <p className="font-mono text-xs text-secondary/30 uppercase tracking-[0.3em]">NO_RECORDS_FOUND_IN_BUFFER</p>
+            <p className="font-mono text-xs text-secondary/30 uppercase tracking-[0.3em]">{t("label_no_records")}</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -316,7 +316,7 @@ export default function SkillsPage() {
                         {sk.weight}
                       </div>
                     </td>
-                    <td className="px-8 py-6">{critBadge(sk.criticality)}</td>
+                    <td className="px-8 py-6">{critBadge(sk.criticality, t)}</td>
                     <td className="px-8 py-6 text-end">
                       {isAdmin && (
                         <div className="flex items-center justify-end gap-2">
@@ -344,7 +344,7 @@ export default function SkillsPage() {
           <div className="relative z-10">
             <div className="p-8 border-b border-white/10 bg-white/5">
               <h2 className="font-headline font-black text-2xl text-white uppercase tracking-tighter">
-                {editTarget ? "RECONFIGURE_ASSET" : "INITIALIZE_NEW_ASSET"}
+                {editTarget ? t("action_reconfigure") : t("action_init_asset")}
               </h2>
               <p className="text-[10px] font-mono text-primary tracking-[0.3em] mt-2 uppercase">NODE_REGISTRATION_v2.0</p>
             </div>
@@ -398,7 +398,7 @@ export default function SkillsPage() {
             <div className="p-8 border-t border-white/10 bg-white/5 flex justify-end gap-4">
               <Button variant="ghost" className="rounded-none font-headline font-black text-[10px] tracking-widest uppercase text-white hover:bg-white/5" onClick={() => { setShowCreate(false); setEditTarget(null); }}>{t("common_cancel")}</Button>
               <Button onClick={handleSave} disabled={saving} className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase px-10 py-6 h-auto">
-                {saving ? "SYNCHRONIZING..." : editTarget ? "APPLY_CONFIG" : "INIT_ASSET"}
+                {saving ? t("action_synchronizing") : editTarget ? t("action_apply_config") : t("action_init_asset")}
               </Button>
             </div>
           </div>
@@ -415,7 +415,7 @@ export default function SkillsPage() {
           <AlertDialogFooter className="mt-8">
             <AlertDialogCancel className="rounded-none border-white/10 bg-white/5 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-white/10 h-auto py-4 px-8">{t("common_cancel")}</AlertDialogCancel>
             <AlertDialogAction onClick={handleDelete} disabled={deleting} className="rounded-none bg-rose-600 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-rose-700 px-8 h-auto py-4">
-              {deleting ? "PURGING..." : "CONFIRM_DEACTIVATE"}
+              {deleting ? t("action_purging") : t("action_confirm_deactivate")}
             </AlertDialogAction>
           </AlertDialogFooter>
           <CornerMarks color="rose" />

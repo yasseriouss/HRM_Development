@@ -122,18 +122,18 @@ export default function JobEvaluationManualPage() {
                 sub: ["EDUCATION", "EXPERIENCE", "TECH_KNOWLEDGE"]
               },
               { 
-                title: isAr ? "Ø§Ù„Ù…Ø³Ø¤ÙˆÙ„ÙŠØ© (35%)" : "RESPONSIBILITY_DOMAIN (35%)", 
-                desc: isAr ? "ØªØ´Ù…Ù„ ØµÙ†Ø¹ Ø§Ù„Ù‚Ø±Ø§Ø±ØŒ Ø§Ù„Ø¥Ø´Ø±Ø§Ù Ø¹Ù„Ù‰ Ø§Ù„Ø¢Ø®Ø±ÙŠÙ†ØŒ ÙˆØ§Ù„Ù…Ø³Ø¤ÙˆÙ„ÙŠØ© Ø§Ù„Ù…Ø§Ù„ÙŠØ©." : "Includes decision-making, supervision of others, and fiscal responsibility protocols.",
+                title: isAr ? "المسؤولية (35%)" : "RESPONSIBILITY_DOMAIN (35%)", 
+                desc: isAr ? "تشمل صنع القرار، الإشراف على الآخرين، والمسؤولية المالية." : "Includes decision-making, supervision of others, and fiscal responsibility protocols.",
                 sub: ["DECISION_MAKING", "SUPERVISION", "CONFIDENTIALITY"]
               },
               { 
-                title: isAr ? "Ø§Ù„Ù…Ø¬Ù‡ÙˆØ¯ (10%)" : "EFFORT_VECTOR (10%)", 
-                desc: isAr ? "ØªØ´Ù…Ù„ Ø§Ù„Ù…Ø¬Ù‡ÙˆØ¯ Ø§Ù„Ø°Ù‡Ù†ÙŠ ÙˆØ§Ù„Ø¨Ø¯Ù†ÙŠ Ø§Ù„Ù…Ø¨Ø°ÙˆÙ„ ÙÙŠ Ø§Ù„Ø¹Ù…Ù„." : "Includes mental concentration and physical exertion bandwidth.",
+                title: isAr ? "المجهود (10%)" : "EFFORT_VECTOR (10%)", 
+                desc: isAr ? "تشمل المجهود الذهني والبدني المبذول في العمل." : "Includes mental concentration and physical exertion bandwidth.",
                 sub: ["MENTAL_CONCENTRATION", "PHYSICAL_DEMAND"]
               },
               { 
-                title: isAr ? "Ø¸Ø±ÙˆÙ Ø§Ù„Ø¹Ù…Ù„ (20%)" : "ENVIRONMENT_LOGS (20%)", 
-                desc: isAr ? "ØªØ´Ù…Ù„ Ø§Ù„Ù…Ø®Ø§Ø·Ø± ÙˆØ§Ù„Ø¨ÙŠØ¦Ø© Ø§Ù„Ù…Ø§Ø¯ÙŠØ© Ø§Ù„Ù…Ø­ÙŠØ·Ø© Ø¨Ø§Ù„Ø¹Ù…Ù„." : "Includes hazards and the physical surrounding operational environment.",
+                title: isAr ? "ظروف العمل (20%)" : "ENVIRONMENT_LOGS (20%)", 
+                desc: isAr ? "تشمل المخاطر والبيئة المادية المحيطة بالعمل." : "Includes hazards and the physical surrounding operational environment.",
                 sub: ["HAZARDS", "ENVIRONMENT", "WORK_SCHEDULE"]
               }
             ].map((f, i) => (
@@ -157,20 +157,20 @@ export default function JobEvaluationManualPage() {
         <motion.div variants={item} className="space-y-8">
           <div className="flex items-center gap-4">
             <div className="h-2 w-2 bg-amber-500 rotate-45" />
-            <h2 className="font-headline text-2xl font-black uppercase tracking-widest">{isAr ? "Ù…Ø³ØªÙˆÙŠØ§Øª Ø§Ù„ØªÙ‚ÙŠÙŠÙ…" : "LEVEL_SCORING_v9.2"}</h2>
+            <h2 className="font-headline text-2xl font-black uppercase tracking-widest">{isAr ? "مستويات التقييم" : "LEVEL_SCORING_v9.2"}</h2>
             <div className="flex-1 h-px bg-zinc-900" />
           </div>
 
           <Card className="bg-[#0A0A0A] border border-zinc-800 rounded-none overflow-hidden relative">
             <div className="divide-y divide-zinc-900">
               {[
-                { lv: "L1", title: isAr ? "Ù…Ø¨ØªØ¯Ø¦ / Ø£Ø³Ø§Ø³ÙŠ" : "BASIC_ENTRY", desc: isAr ? "Ù…Ù‡Ø§Ù… Ø¨Ø³ÙŠØ·Ø© ØªØªØ·Ù„Ø¨ Ø¥Ø´Ø±Ø§ÙØ§Ù‹ Ù…Ø¨Ø§Ø´Ø±Ø§Ù‹." : "Simple tasks requiring direct supervision protocols." },
-                { lv: "L2", title: isAr ? "Ù…ØªÙˆØ³Ø·" : "INTERMEDIATE", desc: isAr ? "ÙÙ‡Ù… Ø¬ÙŠØ¯ Ù„Ù„Ù…Ù‡Ø§Ù… Ù…Ø¹ Ø§Ø³ØªÙ‚Ù„Ø§Ù„ÙŠØ© Ù…Ø­Ø¯ÙˆØ¯Ø©." : "Proficient understanding with limited node autonomy." },
-                { lv: "L3", title: isAr ? "Ù…Ø§Ù‡Ø±" : "PROFICIENT", desc: isAr ? "Ø£Ø¯Ø§Ø¡ Ù…Ù‡Ø§Ù… Ù…Ø¹Ù‚Ø¯Ø© Ø¨Ø´ÙƒÙ„ Ù…Ø³ØªÙ‚Ù„." : "Independent performance of complex operational tasks." },
-                { lv: "L4", title: isAr ? "Ø®Ø¨ÙŠØ±" : "SYSTEM_EXPERT", desc: isAr ? "ØªÙ‚Ø¯ÙŠÙ… Ø§Ù„Ù…Ø´ÙˆØ±Ø© Ø§Ù„ÙÙ†ÙŠØ© ÙˆÙ‚ÙŠØ§Ø¯Ø© Ø§Ù„ÙØ±Ù‚." : "Technical advisory and tactical team leadership." },
-                { lv: "L5", title: isAr ? "Ø±Ø§Ø¦Ø¯ / Ø§Ø³ØªØ±Ø§ØªÙŠØ¬ÙŠ" : "STRATEGIC_MASTER", desc: isAr ? "ØªØ­Ø¯ÙŠØ¯ Ø§Ù„ØªÙˆØ¬Ù‡Ø§Øª Ø§Ù„Ø§Ø³ØªØ±Ø§ØªÙŠØ¬ÙŠØ© Ù„Ù„Ù…Ø¤Ø³Ø³Ø©." : "Architecting strategic organizational direction." }
+                { lv: "L1", title: isAr ? "مبتدئ / أساسي" : "BASIC_ENTRY", desc: isAr ? "مهام بسيطة تتطلب إشرافاً مباشراً." : "Simple tasks requiring direct supervision protocols." },
+                { lv: "L2", title: isAr ? "متوسط" : "INTERMEDIATE", desc: isAr ? "فهم جيد للمهام مع استقلالية محدودة." : "Proficient understanding with limited node autonomy." },
+                { lv: "L3", title: isAr ? "ماهر" : "PROFICIENT", desc: isAr ? "أداء مهام معقدة بشكل مستقل." : "Independent performance of complex operational tasks." },
+                { lv: "L4", title: isAr ? "خبير" : "SYSTEM_EXPERT", desc: isAr ? "تقديم المشورة الفنية وقيادة الفرق." : "Technical advisory and tactical team leadership." },
+                { lv: "L5", title: isAr ? "رائد / استراتيجي" : "STRATEGIC_MASTER", desc: isAr ? "تحديد التوجهات الاستراتيجية للمؤسسة." : "Architecting strategic organizational direction." }
               ].map((l, i) => (
-                <div key={i} className="p-6 flex gap-6 hover:bg-primary/2 transition-colors group">
+                <div key={i} className="p-6 flex gap-6 hover:bg-white/5 transition-colors group">
                   <div className="h-12 w-12 shrink-0 border border-zinc-800 bg-black flex items-center justify-center font-mono font-black text-primary group-hover:border-primary transition-colors text-sm">
                     {l.lv}
                   </div>
@@ -184,17 +184,17 @@ export default function JobEvaluationManualPage() {
             <CornerMarks color="zinc" />
           </Card>
 
-          <div className="p-8 bg-amber-500/3 border border-amber-500/20 relative overflow-hidden group">
+          <div className="p-8 bg-amber-500/10 border border-amber-500/20 relative overflow-hidden group">
             <Cpu className="absolute -right-4 -bottom-4 h-24 w-24 text-amber-500 opacity-5 group-hover:opacity-10 transition-all duration-700" />
             <div className="flex items-center gap-4 mb-4 relative z-10">
               <div className="p-2 bg-amber-500/10 border border-amber-500/30">
                  <Info className="h-5 w-5 text-amber-500" />
               </div>
-              <h4 className="font-headline font-black text-sm text-white uppercase tracking-[0.2em]">{isAr ? "Ù…Ø¹Ø§Ø¯Ù„Ø© Ø§Ù„Ø§Ø­ØªØ³Ø§Ø¨" : "CALCULATION_LOGIC"}</h4>
+              <h4 className="font-headline font-black text-sm text-white uppercase tracking-[0.2em]">{isAr ? "معادلة الاحتساب" : "CALCULATION_LOGIC"}</h4>
             </div>
             <p className="text-[11px] font-sans font-medium text-zinc-500 leading-relaxed relative z-10">
               {isAr 
-                ? "ÙŠØªÙ… Ø¶Ø±Ø¨ Ù…Ø³ØªÙˆÙ‰ Ø§Ù„Ø¹Ø§Ù…Ù„ (1-5) ÙÙŠ ÙˆØ²Ù†Ù‡ Ø§Ù„Ù†Ø³Ø¨ÙŠ Ø§Ù„Ù…Ø®ØµØµ Ù„Ù„Ù‚Ø³Ù… ÙˆØ§Ù„ÙˆØ¸ÙŠÙØ©. ÙŠØªÙ… Ø¬Ù…Ø¹ ÙƒØ§ÙØ© Ø§Ù„Ù†Ù‚Ø§Ø· Ù„Ù„Ø­ØµÙˆÙ„ Ø¹Ù„Ù‰ Ø§Ù„ØªÙ‚ÙŠÙŠÙ… Ø§Ù„Ù†Ù‡Ø§Ø¦ÙŠ Ù…Ù† Ø£ØµÙ„ 1000 Ù†Ù‚Ø·Ø©." 
+                ? "يتم ضرب مستوى العامل (1-5) في وزنه النسبي المخصص للقسم والوظيفة. يتم جمع كافة النقاط للحصول على التقييم النهائي من أصل 1000 نقطة." 
                 : "Recursive factor level (1-5) multiplied by relative weighted coefficient assigned to the node domain. All points aggregated into a final 1000-point structural valuation."}
             </p>
           </div>
@@ -204,35 +204,35 @@ export default function JobEvaluationManualPage() {
       {/* Grade Mapping - Full Width Tactical Table */}
       <motion.div variants={item} className="mt-12">
         <Card className="bg-[#0A0A0A] border border-zinc-800 rounded-none relative overflow-hidden shadow-2xl">
-           <div className="absolute inset-0 bg-primary/1 pointer-events-none" />
+           <div className="absolute inset-0 bg-primary/5 pointer-events-none" />
           <CardHeader className="text-center p-12 border-b border-zinc-900">
              <div className="flex items-center justify-center gap-3 mb-4">
                 <div className="h-px w-12 bg-primary/30" />
                 <span className="font-headline font-black text-[10px] text-primary tracking-[0.4em] uppercase">SYSTEM_TIER_MAPPING</span>
                 <div className="h-px w-12 bg-primary/30" />
              </div>
-             <CardTitle className="font-headline font-black text-4xl text-white uppercase tracking-tighter">{isAr ? "Ø¬Ø¯ÙˆÙ„ Ø§Ù„Ø¯Ø±Ø¬Ø§Øª Ø§Ù„ÙˆØ¸ÙŠÙÙŠØ©" : "STANDARD_GRADE_MATRIX"}</CardTitle>
+             <CardTitle className="font-headline font-black text-4xl text-white uppercase tracking-tighter">{isAr ? "جدول الدرجات الوظيفية" : "STANDARD_GRADE_MATRIX"}</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-zinc-900/50 text-zinc-500 uppercase text-[10px] font-headline font-black tracking-widest border-b border-zinc-800">
-                    <th className="p-8 text-center">{isAr ? "Ø§Ù„Ø¯Ø±Ø¬Ø©" : "TIER_GRADE"}</th>
-                    <th className="p-8 text-center">{isAr ? "Ù†Ø·Ø§Ù‚ Ø§Ù„Ù†Ù‚Ø§Ø·" : "POINT_BAND"}</th>
-                    <th className="p-8 text-start">{isAr ? "Ø§Ù„ØªØµÙ†ÙŠÙ Ø§Ù„Ø¥Ø¯Ø§Ø±ÙŠ" : "H_CATEGORY"}</th>
-                    <th className="p-8 text-end">{isAr ? "Ø§Ù„Ø­Ø§Ù„Ø©" : "STATUS"}</th>
+                    <th className="p-8 text-center">{isAr ? "الدرجة" : "TIER_GRADE"}</th>
+                    <th className="p-8 text-center">{isAr ? "نطاق النقاط" : "POINT_BAND"}</th>
+                    <th className="p-8 text-start">{isAr ? "التصنيف الإداري" : "H_CATEGORY"}</th>
+                    <th className="p-8 text-end">{isAr ? "الحالة" : "STATUS"}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-zinc-900 font-mono">
                   {[
-                    { g: "G1-G2", range: "100 - 199", cat: isAr ? "Ø¹Ù…Ø§Ù„ÙŠ / Ù…Ø³Ø§Ø¹Ø¯" : "Labor / Support Node" },
-                    { g: "G3-G4", range: "200 - 329", cat: isAr ? "Ù…ÙˆØ¸Ù ÙÙ†ÙŠ / Ø¥Ø¯Ø§Ø±ÙŠ" : "Technical / Admin Operative" },
-                    { g: "G5-G6", range: "330 - 509", cat: isAr ? "Ø£Ø®ØµØ§Ø¦ÙŠ / Ù…Ù‡Ù†ÙŠ" : "Professional / Specialist" },
-                    { g: "G7-G8", range: "510 - 769", cat: isAr ? "Ø¥Ø¯Ø§Ø±Ø© ÙˆØ³Ø·Ù‰ / Ø¹Ù„ÙŠØ§" : "Middle / Senior Management" },
-                    { g: "G9-G10", range: "770 - 1000", cat: isAr ? "ØªÙ†ÙÙŠØ°ÙŠ / Ù‚ÙŠØ§Ø¯ÙŠ" : "Executive / Strategic Lead" },
+                    { g: "G1-G2", range: "100 - 199", cat: isAr ? "عمالي / مساعد" : "Labor / Support Node" },
+                    { g: "G3-G4", range: "200 - 329", cat: isAr ? "موظف فني / إداري" : "Technical / Admin Operative" },
+                    { g: "G5-G6", range: "330 - 509", cat: isAr ? "أخصائي / مهني" : "Professional / Specialist" },
+                    { g: "G7-G8", range: "510 - 769", cat: isAr ? "إدارة وسطى / عليا" : "Middle / Senior Management" },
+                    { g: "G9-G10", range: "770 - 1000", cat: isAr ? "تنفيذي / قيادي" : "Executive / Strategic Lead" },
                   ].map((row, i) => (
-                    <tr key={i} className="hover:bg-primary/3 transition-colors group">
+                    <tr key={i} className="hover:bg-white/5 transition-colors group">
                       <td className="p-8 text-center font-headline font-black text-2xl text-primary">{row.g}</td>
                       <td className="p-8 text-center text-lg font-black text-white">{row.range}</td>
                       <td className="p-8 text-start font-headline font-black text-[10px] text-zinc-500 uppercase tracking-widest group-hover:text-white transition-colors">{row.cat}</td>
@@ -252,7 +252,7 @@ export default function JobEvaluationManualPage() {
       </motion.div>
 
       {/* Telemetry Footer */}
-      <div className="p-10 border-2 border-primary/20 bg-primary/3 relative overflow-hidden group">
+      <div className="p-10 border-2 border-primary/20 bg-primary/5 relative overflow-hidden group">
          <Terminal className="absolute -right-6 -top-6 h-32 w-32 text-primary opacity-5 group-hover:opacity-10 transition-all duration-1000" />
          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
             <div className="space-y-2">

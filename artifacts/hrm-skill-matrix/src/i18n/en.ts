@@ -358,6 +358,65 @@ const en = {
   settings_demo_warning: "Warning: Clearing system data will remove all evaluations, employees, and skills. Only the super_admin account will be preserved.",
   settings_demo_seeding: "Seeding...",
   settings_demo_resetting: "Resetting...",
+
+  // ── UI Action Strings ─────────────────────────────────────────────────────
+  action_create_unit: "Create Unit",
+  action_init_unit: "Initialize Unit",
+  action_apply_config: "Apply Config",
+  action_saving: "Saving...",
+  action_purging: "Purging...",
+  action_aborting: "Aborting...",
+  action_synchronizing: "Synchronizing...",
+  action_confirm_delete: "Confirm Deletion",
+  action_confirm_deactivate: "Confirm Deactivation",
+  action_confirm_abort: "Confirm Abort",
+  action_reconfigure: "Reconfigure",
+  action_access_details: "Access Details",
+  action_register_operative: "Register Operative",
+  action_init_operative: "Initialize Operative",
+  action_register_skill: "Register Skill",
+  action_init_asset: "Initialize Asset",
+  action_init_campaign: "Initialize Campaign",
+  action_import_csv: "Import CSV",
+
+  // ── Section Labels ────────────────────────────────────────────────────────
+  label_org_structure: "Organizational Structure",
+  label_personnel_registry: "Personnel Registry",
+  label_skill_repository: "Skill Repository",
+  label_mission_control: "Evaluation Mission Control",
+  label_personnel_count: "Personnel Count",
+  label_deployment_progress: "Deployment Progress",
+  label_no_records: "No records found",
+  label_no_active_missions: "No active missions detected",
+
+  // ── Status & Badge Labels ─────────────────────────────────────────────────
+  status_active: "Active",
+  status_draft: "Draft",
+  status_completed: "Completed",
+  status_archived: "Archived",
+  status_online: "Online",
+  status_global: "Global",
+  status_dept_specific: "Dept Specific",
+
+  // ── Criticality Levels ────────────────────────────────────────────────────
+  crit_critical: "Critical",
+  crit_high: "High",
+  crit_medium: "Medium",
+  crit_low: "Low",
+
+  // ── Filter & Search ───────────────────────────────────────────────────────
+  search_departments: "Search departments...",
+  search_campaigns: "Search campaigns...",
+  search_by_name_or_code: "Search by name or code...",
+  filter_by_class: "Filter by class",
+  filter_by_status_label: "Filter by status",
+  all_statuses: "All Statuses",
+  filter_reset: "Reset Filters",
+
+  // ── Evaluated / Progress Strings ─────────────────────────────────────────
+  label_evaluated: "Evaluated",
+  label_total_nodes: "Total Nodes",
+  label_node_profile: "View Profile",
 } as const;
 
 export default en;

@@ -177,7 +177,7 @@ export default function EmployeesPage() {
           <div className="space-y-3">
             <div className="flex items-center gap-3">
               <Users className="h-4 w-4 text-primary animate-pulse" />
-              <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">OPERATIVE_PERSONNEL_REGISTRY</span>
+              <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">{t("label_personnel_registry")}</span>
             </div>
             <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
               {t("employees_title")}
@@ -205,10 +205,10 @@ export default function EmployeesPage() {
             {isAdmin && (
               <>
                 <Button variant="outline" className="rounded-none border-white/10 bg-white/5 hover:bg-white/10 text-white font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto" onClick={() => setShowImport(true)}>
-                  <Upload className="h-4 w-4 me-2" /> IMPORT_CSV
+                  <Upload className="h-4 w-4 me-2" /> {t("action_import_csv")}
                 </Button>
                 <Button className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto hover:bg-primary/90" onClick={openCreate}>
-                  <Plus className="h-4 w-4 me-2" /> REGISTER_OPERATIVE
+                  <Plus className="h-4 w-4 me-2" /> {t("action_register_operative")}
                 </Button>
               </>
             )}
@@ -224,7 +224,7 @@ export default function EmployeesPage() {
             <div className="flex-1 w-full relative">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-secondary/30" />
               <Input 
-                placeholder="SEARCH_OPERATIVE_IDENTIFIER..." 
+                placeholder={t("search_by_name_or_code")} 
                 className="ps-12 h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white placeholder:text-secondary/20 focus-visible:ring-primary/50"
                 value={search}
                 onChange={(e) => { setSearch(e.target.value); resetPage(); }}
@@ -271,7 +271,7 @@ export default function EmployeesPage() {
         ) : !employees.length ? (
           <div className="p-20 text-center space-y-4">
             <HardDrive className="h-12 w-12 text-secondary/10 mx-auto" />
-            <p className="font-mono text-xs text-secondary/30 uppercase tracking-[0.3em]">NO_RECORDS_IN_LOCAL_BUFFER</p>
+            <p className="font-mono text-xs text-secondary/30 uppercase tracking-[0.3em]">{t("label_no_records")}</p>
           </div>
         ) : (
           <>
@@ -296,7 +296,7 @@ export default function EmployeesPage() {
                             {emp.full_name}
                           </p>
                           <div className="flex items-center gap-1 text-[9px] font-mono text-secondary/20 mt-1 uppercase">
-                            <ExternalLink className="h-3 w-3" /> NODE_PROFILE
+                            <ExternalLink className="h-3 w-3" /> {t("label_node_profile")}
                           </div>
                         </Link>
                       </td>
@@ -352,7 +352,7 @@ export default function EmployeesPage() {
           <div className="relative z-10">
             <div className="p-8 border-b border-white/10 bg-white/5">
               <h2 className="font-headline font-black text-2xl text-white uppercase tracking-tighter">
-                {editTarget ? "RECONFIGURE_OPERATIVE" : "INITIALIZE_NEW_OPERATIVE"}
+                {editTarget ? t("action_reconfigure") : t("action_init_operative")}
               </h2>
               <p className="text-[10px] font-mono text-primary tracking-[0.3em] mt-2 uppercase">NODE_ASSIGNMENT_v3.4</p>
             </div>
@@ -399,7 +399,7 @@ export default function EmployeesPage() {
             <div className="p-8 border-t border-white/10 bg-white/5 flex justify-end gap-4">
               <Button variant="ghost" className="rounded-none font-headline font-black text-[10px] tracking-widest uppercase text-white hover:bg-white/5" onClick={() => { setShowCreate(false); setEditTarget(null); }}>{t("common_cancel")}</Button>
               <Button onClick={handleSave} disabled={saving} className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase px-10 py-6 h-auto">
-                {saving ? "SYNCHRONIZING..." : editTarget ? "APPLY_RECONFIG" : "INIT_OPERATIVE"}
+                {saving ? t("action_synchronizing") : editTarget ? t("action_apply_config") : t("action_init_operative")}
               </Button>
             </div>
           </div>
@@ -410,13 +410,13 @@ export default function EmployeesPage() {
       <AlertDialog open={!!deleteTarget} onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}>
         <AlertDialogContent className="bg-[#0A0A0A] border-2 border-rose-500/30 rounded-none text-white">
           <AlertDialogHeader>
-            <AlertDialogTitle className="font-headline font-black text-2xl text-white uppercase tracking-tighter">DEACTIVATE_OPERATIVE_NODE?</AlertDialogTitle>
+            <AlertDialogTitle className="font-headline font-black text-2xl text-white uppercase tracking-tighter">{t("action_confirm_deactivate")} — {deleteTarget?.name}</AlertDialogTitle>
             <AlertDialogDescription className="text-secondary/40 font-mono text-xs uppercase tracking-widest">{t("employees_deactivate_desc")}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="mt-8">
             <AlertDialogCancel className="rounded-none border-white/10 bg-white/5 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-white/10 h-auto py-4 px-8">{t("common_cancel")}</AlertDialogCancel>
             <AlertDialogAction onClick={handleDelete} disabled={deleting} className="rounded-none bg-rose-600 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-rose-700 px-8 h-auto py-4">
-              {deleting ? "PURGING..." : "CONFIRM_DEACTIVATION"}
+              {deleting ? t("action_purging") : t("action_confirm_deactivate")}
             </AlertDialogAction>
           </AlertDialogFooter>
           <CornerMarks color="rose" />

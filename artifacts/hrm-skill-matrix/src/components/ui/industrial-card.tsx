@@ -53,7 +53,7 @@ export function IndustrialCard({
 
         {footerText && (
           <div className="mt-6 text-xs text-primary uppercase tracking-[0.3em] font-mono border-t border-primary/20 pt-4 relative">
-             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-12 h-[1px] bg-primary"></div>
+             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-12 h-px bg-primary"></div>
              {footerText}
           </div>
         )}

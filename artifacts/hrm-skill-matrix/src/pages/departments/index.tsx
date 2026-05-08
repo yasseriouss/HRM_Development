@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { useListDepartments } from "@hrm-development/api-client-react";
@@ -15,7 +15,7 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Plus, Pencil, Trash2, Users, ExternalLink, Download, LayoutDashboard, Building2, Terminal } from "lucide-react";
+import { Plus, Pencil, Trash2, Users, ExternalLink, Download, Building2, Terminal, Search } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { useT } from "@/i18n";
@@ -56,6 +56,20 @@ export default function DepartmentsPage() {
   const [form, setForm] = useState<DeptForm>(emptyForm());
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Client-side filter
+  const filteredDepts = useMemo(() => {
+    if (!departments) return [];
+    const q = searchQuery.toLowerCase().trim();
+    if (!q) return departments;
+    return departments.filter(
+      (d) =>
+        d.name.toLowerCase().includes(q) ||
+        (d.code ?? "").toLowerCase().includes(q) ||
+        (d.description ?? "").toLowerCase().includes(q),
+    );
+  }, [departments, searchQuery]);
 
   const openCreate = () => { setForm(emptyForm()); setShowCreate(true); };
   const openEdit = (dept: NonNullable<typeof departments>[number]) => {
@@ -116,33 +130,33 @@ export default function DepartmentsPage() {
 
   return (
     <div className="space-y-8 pb-20 font-sans selection:bg-primary selection:text-primary-foreground">
-       {/* Header - Industrial Style */}
-       <div className="relative p-10 bg-[#0A0A0A] border-2 border-primary/20 overflow-hidden">
+      {/* Header - Industrial Style */}
+      <div className="relative p-10 bg-[#0A0A0A] border-2 border-primary/20 overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="space-y-3">
             <div className="flex items-center gap-3">
               <Building2 className="h-4 w-4 text-primary" />
-              <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">ORGANIZATIONAL_STRUCTURE</span>
+              <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">{t("label_org_structure")}</span>
             </div>
             <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
               {t("departments_title")}
             </h2>
             <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4">{t("departments_subtitle")}</p>
           </div>
-          
+
           <div className="flex items-center gap-3">
             <Button variant="outline" className="rounded-none border-white/10 bg-white/5 hover:bg-white/10 text-white font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto" onClick={() => exportToPDF({
               title: t("departments_title"),
               filename: "Departments_List",
               headers: [t("field_name"), t("field_code"), t("field_description"), t("field_manager_email"), t("departments_col_employees")],
-              rows: (departments ?? []).map(d => [d.name, d.code ?? "â€”", d.description ?? "â€”", d.manager_email ?? "â€”", d.employee_count ?? 0])
+              rows: (departments ?? []).map(d => [d.name, d.code ?? "—", d.description ?? "—", d.manager_email ?? "—", d.employee_count ?? 0])
             })}>
-              <Download className="h-4 w-4 me-2" /> PDF_EXPORT
+              <Download className="h-4 w-4 me-2" /> PDF
             </Button>
             {isAdmin && (
               <Button className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto hover:bg-primary/90" onClick={openCreate}>
-                <Plus className="h-4 w-4 me-2" /> CREATE_UNIT
+                <Plus className="h-4 w-4 me-2" /> {t("action_create_unit")}
               </Button>
             )}
           </div>
@@ -150,25 +164,51 @@ export default function DepartmentsPage() {
         <CornerMarks />
       </div>
 
+      {/* Search / Filter Control Panel */}
+      <Card className="bg-[#121212] border border-white/10 rounded-none relative">
+        <CardContent className="p-6">
+          <div className="flex flex-col sm:flex-row items-center gap-4">
+            <div className="flex-1 w-full relative">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-secondary/30" />
+              <Input
+                placeholder={t("search_departments")}
+                className="ps-12 h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white placeholder:text-secondary/20 focus-visible:ring-primary/50"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+            {searchQuery && (
+              <Button
+                variant="ghost"
+                className="h-14 px-6 rounded-none border border-white/10 text-secondary/40 hover:text-white font-headline font-black text-[10px] tracking-widest uppercase"
+                onClick={() => setSearchQuery("")}
+              >
+                {t("filter_reset")}
+              </Button>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
       {isLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {Array.from({ length: 6 }).map((_, i) => (
             <Skeleton key={i} className="h-48 w-full bg-white/5 rounded-none" />
           ))}
         </div>
-      ) : !departments?.length ? (
+      ) : !filteredDepts.length ? (
         <Card className="bg-[#121212] border-white/10 rounded-none relative">
           <CardContent className="py-20 text-center space-y-4">
-             <Terminal className="h-12 w-12 text-secondary/10 mx-auto" />
-             <p className="font-mono text-xs text-secondary/30 uppercase tracking-[0.3em]">
-                {t("departments_no_data")}
-             </p>
+            <Terminal className="h-12 w-12 text-secondary/10 mx-auto" />
+            <p className="font-mono text-xs text-secondary/30 uppercase tracking-[0.3em]">
+              {searchQuery ? t("label_no_records") : t("departments_no_data")}
+            </p>
           </CardContent>
           <CornerMarks />
         </Card>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {departments.map((dept) => (
+          {filteredDepts.map((dept) => (
             <motion.div
               key={dept.id}
               initial={{ opacity: 0, y: 20 }}
@@ -202,20 +242,20 @@ export default function DepartmentsPage() {
                   </div>
 
                   <p className="text-secondary/30 font-medium text-xs line-clamp-2 uppercase tracking-wide leading-relaxed min-h-12">
-                    {dept.description ?? "NO_SYSTEM_DESCRIPTION_AVAILABLE"}
+                    {dept.description ?? t("label_no_records")}
                   </p>
 
                   <div className="pt-6 border-t border-white/5 flex items-center justify-between">
                     <div className="flex flex-col gap-1">
-                       <span className="font-mono text-[9px] text-secondary/20 uppercase tracking-widest">PERSONNEL_COUNT</span>
-                       <div className="flex items-center gap-2">
-                          <Users className="h-4 w-4 text-primary" />
-                          <span className="font-headline font-black text-xl text-white">{dept.employee_count}</span>
-                       </div>
+                      <span className="font-mono text-[9px] text-secondary/20 uppercase tracking-widest">{t("label_personnel_count")}</span>
+                      <div className="flex items-center gap-2">
+                        <Users className="h-4 w-4 text-primary" />
+                        <span className="font-headline font-black text-xl text-white">{dept.employee_count}</span>
+                      </div>
                     </div>
                     <Link href={`/departments/${dept.id}`}>
                       <Button variant="ghost" className="rounded-none border border-white/10 hover:border-primary/50 text-[10px] font-headline font-black tracking-widest uppercase h-auto py-3 px-5 group/btn">
-                         ACCESS_DETAILS <ExternalLink className="ms-2 h-3 w-3 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+                        {t("action_access_details")} <ExternalLink className="ms-2 h-3 w-3 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
                       </Button>
                     </Link>
                   </div>
@@ -234,19 +274,19 @@ export default function DepartmentsPage() {
           <div className="relative z-10">
             <div className="p-8 border-b border-white/10 bg-white/5">
               <h2 className="font-headline font-black text-2xl text-white uppercase tracking-tighter">
-                {editTarget ? "RECONFIGURE_UNIT" : "INITIALIZE_UNIT"}
+                {editTarget ? t("action_reconfigure") : t("action_init_unit")}
               </h2>
               <p className="text-[10px] font-mono text-primary tracking-[0.3em] mt-2 uppercase">STRUCT_INIT_v4.1</p>
             </div>
-            
+
             <div className="p-8 space-y-6">
               <div className="space-y-2">
                 <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_name")} *</Label>
-                <Input placeholder="e.g. ASSEMBLY_DEPT" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white focus-visible:ring-primary/50" />
+                <Input placeholder="ASSEMBLY_DEPT" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white focus-visible:ring-primary/50" />
               </div>
               <div className="space-y-2">
                 <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_code")}</Label>
-                <Input placeholder="e.g. UNIT_X01" value={form.code} onChange={(e) => setForm({ ...form, code: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white uppercase" />
+                <Input placeholder="UNIT_X01" value={form.code} onChange={(e) => setForm({ ...form, code: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white uppercase" />
               </div>
               <div className="space-y-2">
                 <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_description")}</Label>
@@ -257,11 +297,11 @@ export default function DepartmentsPage() {
                 <Input type="email" placeholder="ADMIN@UNIT" value={form.manager_email} onChange={(e) => setForm({ ...form, manager_email: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white" />
               </div>
             </div>
-            
+
             <div className="p-8 border-t border-white/10 bg-white/5 flex justify-end gap-4">
               <Button variant="ghost" className="rounded-none font-headline font-black text-[10px] tracking-widest uppercase text-white hover:bg-white/5" onClick={() => { setShowCreate(false); setEditTarget(null); }}>{t("common_cancel")}</Button>
               <Button onClick={handleSave} disabled={saving} className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase px-10 py-6 h-auto">
-                {saving ? "SAVING..." : editTarget ? "APPLY_CONFIG" : "INIT_UNIT"}
+                {saving ? t("action_saving") : editTarget ? t("action_apply_config") : t("action_init_unit")}
               </Button>
             </div>
           </div>
@@ -272,13 +312,13 @@ export default function DepartmentsPage() {
       <AlertDialog open={!!deleteTarget} onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}>
         <AlertDialogContent className="bg-[#0A0A0A] border-2 border-rose-500/30 rounded-none text-white">
           <AlertDialogHeader>
-            <AlertDialogTitle className="font-headline font-black text-2xl text-white uppercase tracking-tighter">TERMINATE_UNIT_STRUCT?</AlertDialogTitle>
+            <AlertDialogTitle className="font-headline font-black text-2xl text-white uppercase tracking-tighter">{t("common_delete")} — {deleteTarget?.name}</AlertDialogTitle>
             <AlertDialogDescription className="text-secondary/40 font-mono text-xs uppercase tracking-widest">{t("departments_delete_desc")}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="mt-8">
             <AlertDialogCancel className="rounded-none border-white/10 bg-white/5 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-white/10 h-auto py-4 px-8">{t("common_cancel")}</AlertDialogCancel>
             <AlertDialogAction onClick={handleDelete} disabled={deleting} className="rounded-none bg-rose-600 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-rose-700 px-8 h-auto py-4">
-              {deleting ? "PURGING..." : "CONFIRM_TERMINATION"}
+              {deleting ? t("action_purging") : t("action_confirm_delete")}
             </AlertDialogAction>
           </AlertDialogFooter>
           <CornerMarks color="rose" />
