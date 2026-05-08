@@ -2,6 +2,7 @@ import { useGetDashboardMetrics, useGetDepartmentPerformance } from "@hrm-develo
 import { getAuthHeaders } from "@/lib/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
 import { useT } from "@/i18n";
 import { motion } from "framer-motion";
 
@@ -22,6 +23,13 @@ import {
   Cpu
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Brain, Sparkles, Loader2, RefreshCcw } from "lucide-react";
+
+interface AIInsight {
+  title: string;
+  content: string;
+  priority: "Low" | "Medium" | "High";
+}
 
 const CornerMarks = ({ color = "primary" }: { color?: string }) => (
   <>
@@ -86,6 +94,24 @@ export default function Dashboard() {
   const isAr = document.documentElement.dir === "rtl";
   const { data: metrics, isLoading: isMetricsLoading } = useGetDashboardMetrics({ request: { headers } });
   const { data: deptPerformance, isLoading: isDeptLoading } = useGetDepartmentPerformance({ request: { headers } });
+
+  const [aiInsights, setAiInsights] = useState<AIInsight[] | null>(null);
+  const [isAiLoading, setIsAiLoading] = useState(false);
+
+  const fetchAIInsights = async () => {
+    setIsAiLoading(true);
+    try {
+      const res = await fetch("/api/ai/insights", { headers });
+      if (res.ok) {
+        const data = await res.json();
+        setAiInsights(data);
+      }
+    } catch (err) {
+      console.error("Failed to fetch AI insights", err);
+    } finally {
+      setIsAiLoading(false);
+    }
+  };
 
   const container = {
     hidden: { opacity: 0 },
@@ -263,6 +289,82 @@ export default function Dashboard() {
           </motion.div>
         ))}
       </div>
+
+      {/* AI Strategic Insights Hub */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.7 }}
+        className="space-y-6 pt-6"
+      >
+        <div className="flex items-center justify-between">
+          <h3 className="font-headline text-2xl font-black text-white flex items-center gap-4 uppercase">
+            <Brain className="h-6 w-6 text-primary animate-pulse" />
+            AI_STRATEGIC_INTELLIGENCE
+          </h3>
+          <Button 
+            onClick={fetchAIInsights} 
+            disabled={isAiLoading}
+            variant="outline"
+            className="rounded-none border-primary/20 bg-primary/5 text-primary font-headline font-black text-[10px] tracking-widest uppercase hover:bg-primary/10 h-auto py-3 px-6 group"
+          >
+            {isAiLoading ? (
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+            ) : (
+              <RefreshCcw className="h-4 w-4 mr-2 group-hover:rotate-180 transition-transform duration-500" />
+            )}
+            {aiInsights ? "REGENERATE_ANALYSIS" : "INITIALIZE_INTELLIGENCE_STREAM"}
+          </Button>
+        </div>
+
+        {!aiInsights && !isAiLoading ? (
+          <Card className="bg-[#0A0A0A] border-2 border-dashed border-white/5 rounded-none p-12 text-center group hover:border-primary/20 transition-colors">
+            <Sparkles className="h-12 w-12 text-secondary/10 mx-auto mb-6 group-hover:text-primary/20 transition-colors" />
+            <p className="text-secondary/40 font-mono text-xs uppercase tracking-widest max-w-md mx-auto leading-relaxed">
+              Tactical insights engine idle. Initialize the stream to analyze organizational performance vectors and critical skill-gap trajectories.
+            </p>
+          </Card>
+        ) : isAiLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[1, 2, 3].map(i => (
+              <Card key={i} className="bg-[#121212] border border-white/5 rounded-none h-48 animate-pulse" />
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {aiInsights?.map((insight, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: i * 0.1 }}
+              >
+                <Card className="bg-[#121212] border border-white/10 rounded-none relative h-full group hover:border-primary/50 transition-all">
+                  <CardContent className="p-8">
+                    <div className="flex justify-between items-start mb-6">
+                      <Badge className={`rounded-none font-mono text-[9px] font-black tracking-widest uppercase ${
+                        insight.priority === 'High' ? 'bg-rose-500/10 text-rose-500 border-rose-500/20' :
+                        insight.priority === 'Medium' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' :
+                        'bg-blue-500/10 text-blue-500 border-blue-500/20'
+                      }`}>
+                        PRIORITY_{insight.priority.toUpperCase()}
+                      </Badge>
+                      <div className="w-1 h-8 bg-primary/20 group-hover:bg-primary transition-colors" />
+                    </div>
+                    <h4 className="font-headline font-black text-white text-sm uppercase tracking-tighter mb-4 group-hover:text-primary transition-colors">
+                      {insight.title}
+                    </h4>
+                    <p className="text-secondary/40 font-mono text-xs leading-relaxed uppercase">
+                      {insight.content}
+                    </p>
+                  </CardContent>
+                  <CornerMarks />
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        )}
+      </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-7 gap-6">
         {/* Performance Stream */}

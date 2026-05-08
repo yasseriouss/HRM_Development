@@ -55,7 +55,7 @@ export default function ManualPage() {
         className="relative p-16 bg-[#0E0E0E] border-2 border-primary/30 shadow-[0_0_50px_rgba(212,175,55,0.05)] overflow-hidden"
       >
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20" />
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-50" />
+        <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-transparent via-primary to-transparent opacity-50" />
         
         <div className="relative z-10 flex flex-col md:flex-row items-center gap-12">
           <div className="relative">
@@ -212,7 +212,7 @@ export default function ManualPage() {
                       <span className="font-mono text-5xl font-black text-white/5 absolute -top-4 -right-2 group-hover:text-primary/20 transition-colors">{step.s}</span>
                       <h4 className="font-headline font-black text-lg text-white mb-2">{step.t}</h4>
                       <p className="text-xs text-secondary/50 uppercase tracking-tighter">{step.d}</p>
-                      {idx < 3 && <div className="hidden md:block absolute top-1/2 -right-4 translate-y-[-50%] z-20 text-primary/30 font-black text-xl">>></div>}
+                      {idx < 3 && <div className="hidden md:block absolute top-1/2 -right-4 translate-y-[-50%] z-20 text-primary/30 font-black text-xl">{" >> "}</div>}
                     </div>
                   ))}
                 </div>
@@ -311,7 +311,7 @@ export default function ManualPage() {
                   <h3 className="font-headline text-3xl font-black uppercase text-white">DATA_SCHEMA</h3>
                 </div>
                 <div className="relative group">
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/50 to-transparent opacity-30 group-hover:opacity-50 blur transition duration-1000"></div>
+                  <div className="absolute -inset-0.5 bg-linear-to-r from-primary/50 to-transparent opacity-30 group-hover:opacity-50 blur transition duration-1000"></div>
                   <div className="relative bg-[#050505] border border-white/10 p-8 font-mono text-[11px] text-emerald-500 overflow-x-auto">
                     <div className="flex justify-between items-center mb-4 border-b border-white/5 pb-2">
                       <span className="text-white/30 text-[9px]">METHODOLOGY_STRUCT.JSON</span>

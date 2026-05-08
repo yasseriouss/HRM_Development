@@ -2,8 +2,9 @@ import { useGetMyProfile } from "@hrm-development/api-client-react";
 import { getAuthHeaders } from "@/lib/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Briefcase, CalendarDays, Building2, User, Target, Activity, Zap, ShieldCheck, History, GraduationCap, ChevronRight } from "lucide-react";
+import { Briefcase, CalendarDays, Building2, User, Target, Activity, Zap, ShieldCheck, History, GraduationCap, ChevronRight, HardDrive } from "lucide-react";
 import type { EvaluationSummary } from "@hrm-development/api-client-react";
 import { useT } from "@/i18n";
 import { motion } from "framer-motion";
@@ -199,7 +200,7 @@ export default function MyProfilePage() {
                         {s.campaign_title ?? "Campaign"}
                       </p>
                       <p className="font-mono text-[9px] text-zinc-600 uppercase tracking-widest">
-                        {t("profile_skills_assessed", { count: s.evaluated_skills_count })} // {new Date(s.created_at || "").toLocaleDateString()}
+                        {t("profile_skills_assessed", { count: s.evaluated_skills_count })} // {new Date(s.updated_at || "").toLocaleDateString()}
                       </p>
                     </div>
                     <div className="text-right flex flex-col items-end gap-2">

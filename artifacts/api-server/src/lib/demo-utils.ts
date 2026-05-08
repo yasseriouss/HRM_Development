@@ -9,14 +9,13 @@ import {
   evaluationSummariesTable,
   trainingRecommendationsTable,
   userSessionsTable,
-  notificationsTable,
-  workflowsTable,
+  workflowInstancesTable as workflowsTable,
+  workflowAssignmentsTable,
   workflowStepsTable,
-  workflowAttachmentsTable,
-  workflowLogsTable,
-  jobEvaluationProfilesTable,
+  workflowScoresTable,
+  jobProfilesTable as jobEvaluationProfilesTable,
   jobEvaluationFactorsTable,
-  jobEvaluationScoresTable,
+  jobProfileScoresTable as jobEvaluationScoresTable,
 } from "@hrm-development/db/schema";
 import { eq, count, and, sql, not } from "drizzle-orm";
 import { seed } from "../seed";
@@ -29,11 +28,10 @@ export async function resetDatabase() {
   await db.delete(evaluationSummariesTable);
   await db.delete(evaluationsTable);
   await db.delete(campaignsTable);
-  await db.delete(workflowLogsTable);
-  await db.delete(workflowAttachmentsTable);
+  await db.delete(workflowScoresTable);
   await db.delete(workflowStepsTable);
+  await db.delete(workflowAssignmentsTable);
   await db.delete(workflowsTable);
-  await db.delete(notificationsTable);
   await db.delete(jobEvaluationScoresTable);
   await db.delete(jobEvaluationFactorsTable);
   await db.delete(jobEvaluationProfilesTable);

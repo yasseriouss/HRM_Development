@@ -11,6 +11,7 @@ import trainingRouter from "./training";
 import workflowsRouter from "./workflows";
 import notificationsRouter from "./notifications";
 import jobEvaluationRouter from "./job-evaluation";
+import aiRouter from "./ai";
 import demoRouter from "./demo";
 
 const router: IRouter = Router();
@@ -27,6 +28,7 @@ router.use("/training", trainingRouter);
 router.use("/workflows", workflowsRouter);
 router.use("/notifications", notificationsRouter);
 router.use("/job-evaluation", jobEvaluationRouter);
+router.use("/ai", aiRouter);
 router.use("/demo", demoRouter);
 
 export default router;

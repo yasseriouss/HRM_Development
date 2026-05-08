@@ -11,7 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Pencil, Check, Loader2, Target, Shield, Activity, BarChart3, Zap, Layers, ExternalLink, Info } from "lucide-react";
+import { ArrowLeft, Pencil, Check, Loader2, Target, Shield, Activity, BarChart3, Zap, Layers, ExternalLink, Info, Terminal } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { useT } from "@/i18n";
