@@ -97,7 +97,7 @@ function SummaryTable({ campaignId }: { campaignId: string }) {
         ))}
       </div>
 
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-6 bg-zinc-900/30 border-l-4 border-primary">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-6 bg-zinc-900/30 border-s-4 border-primary">
         <div className="flex items-center gap-4">
           <div className="h-12 w-12 rounded-none bg-primary/10 flex items-center justify-center border border-primary/20">
             <Activity className="h-6 w-6 text-primary" />
@@ -115,10 +115,10 @@ function SummaryTable({ campaignId }: { campaignId: string }) {
               title: `${t("evaluations_title")} - ${campaignId}`,
               filename: `Evaluation_Report_${campaignId}`,
               headers: [t("field_employee"), t("field_code"), t("evaluations_col_score"), "%", t("field_class")],
-              rows: items.map(r => [r.employee_name ?? "—", r.employee_code ?? "—", `${Number(r.total_score).toFixed(0)}/${Number(r.max_possible_score).toFixed(0)}`, `${Number(r.percentage).toFixed(1)}%`, r.class ?? "—"])
+              rows: items.map(r => [r.employee_name ?? "â€”", r.employee_code ?? "â€”", `${Number(r.total_score).toFixed(0)}/${Number(r.max_possible_score).toFixed(0)}`, `${Number(r.percentage).toFixed(1)}%`, r.class ?? "â€”"])
             })}
           >
-            <Download className="h-4 w-4 mr-2 text-primary" /> PDF_EXPORT
+            <Download className="h-4 w-4 me-2 text-primary" /> PDF_EXPORT
           </Button>
           <Button
             variant="outline"
@@ -127,10 +127,10 @@ function SummaryTable({ campaignId }: { campaignId: string }) {
               title: `${t("evaluations_title")} - ${campaignId}`,
               filename: `Evaluation_Export_${campaignId}`,
               headers: [t("field_employee"), t("field_code"), t("evaluations_col_score"), "Percentage", t("field_class")],
-              rows: items.map(r => [r.employee_name ?? "—", r.employee_code ?? "—", `${Number(r.total_score).toFixed(0)}/${Number(r.max_possible_score).toFixed(0)}`, Number(r.percentage), r.class ?? "—"])
+              rows: items.map(r => [r.employee_name ?? "â€”", r.employee_code ?? "â€”", `${Number(r.total_score).toFixed(0)}/${Number(r.max_possible_score).toFixed(0)}`, Number(r.percentage), r.class ?? "â€”"])
             })}
           >
-            <Table className="h-4 w-4 mr-2 text-emerald-500" /> EXCEL_SYNC
+            <Table className="h-4 w-4 me-2 text-emerald-500" /> EXCEL_SYNC
           </Button>
         </div>
       </div>
@@ -151,10 +151,10 @@ function SummaryTable({ campaignId }: { campaignId: string }) {
               <tr key={row.id} className="hover:bg-primary/5 transition-colors group">
                 <td className="px-6 py-4 font-headline font-black text-white uppercase group-hover:text-primary transition-colors">
                   <Link href={`/employees/${row.employee_id}`}>
-                    {row.employee_name ?? "—"}
+                    {row.employee_name ?? "â€”"}
                   </Link>
                 </td>
-                <td className="px-6 py-4 font-mono text-xs text-zinc-500 whitespace-nowrap uppercase tracking-tighter">{row.employee_code ?? "—"}</td>
+                <td className="px-6 py-4 font-mono text-xs text-zinc-500 whitespace-nowrap uppercase tracking-tighter">{row.employee_code ?? "â€”"}</td>
                 <td className="px-6 py-4 text-end font-mono text-sm text-zinc-400 whitespace-nowrap uppercase tracking-tighter">
                   {Number(row.total_score).toFixed(0)} / {Number(row.max_possible_score).toFixed(0)}
                 </td>
@@ -197,7 +197,7 @@ export default function EvaluationsPage() {
             <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
               {t("evaluations_title")}
             </h2>
-            <p className="text-secondary/40 font-medium border-l-2 border-primary/20 pl-4">{t("evaluations_subtitle")}</p>
+            <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4">{t("evaluations_subtitle")}</p>
           </div>
         </div>
         <CornerMarks />
@@ -262,7 +262,7 @@ export default function EvaluationsPage() {
                       <span className="text-[10px] font-mono text-primary uppercase tracking-[0.3em]">{selectedCampaign.type}</span>
                       <div className="h-1 w-1 rounded-full bg-zinc-800" />
                       <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
-                         {new Date(selectedCampaign.start_date).toLocaleDateString()} — {new Date(selectedCampaign.end_date).toLocaleDateString()}
+                         {new Date(selectedCampaign.start_date).toLocaleDateString()} â€” {new Date(selectedCampaign.end_date).toLocaleDateString()}
                       </span>
                    </div>
                 </div>
@@ -273,7 +273,7 @@ export default function EvaluationsPage() {
               <div className="pt-6">
                 <Link href={`/campaigns/${selectedCampaign.id}`}>
                   <Button className="rounded-none border border-primary/30 bg-primary/10 hover:bg-primary/20 text-primary font-headline font-black text-[11px] tracking-widest uppercase h-auto py-5 px-10">
-                     ENTER_SCORE_INTERFACE <ExternalLink className="ml-3 h-4 w-4" />
+                     ENTER_SCORE_INTERFACE <ExternalLink className="ms-3 h-4 w-4" />
                   </Button>
                 </Link>
               </div>
@@ -317,10 +317,10 @@ export default function EvaluationsPage() {
               <div className="space-y-4">
                 <div className="space-y-2">
                   <p className="text-[9px] font-mono text-zinc-500 uppercase tracking-[0.3em]">SPREADSHEET_MODULE</p>
-                  <Button asChild variant="outline" className="w-full justify-between h-auto py-5 rounded-none border-zinc-800 bg-zinc-900 hover:bg-zinc-800 group border-l-4 border-l-emerald-500">
+                  <Button asChild variant="outline" className="w-full justify-between h-auto py-5 rounded-none border-zinc-800 bg-zinc-900 hover:bg-zinc-800 group border-s-4 border-s-emerald-500">
                     <a href="/hrm-spreadsheet" className="flex items-center gap-3 w-full">
                       <Table className="h-5 w-5 text-emerald-500 group-hover:scale-110 transition-transform" />
-                      <span className="font-headline font-black text-[10px] tracking-widest uppercase text-white flex-1 text-left">{t("evaluations_spreadsheet_tool")}</span>
+                      <span className="font-headline font-black text-[10px] tracking-widest uppercase text-white flex-1 text-start">{t("evaluations_spreadsheet_tool")}</span>
                       <ExternalLink className="h-3 w-3 text-zinc-600" />
                     </a>
                   </Button>
@@ -331,10 +331,10 @@ export default function EvaluationsPage() {
 
                 <div className="space-y-2 pt-6 border-t border-white/5">
                   <p className="text-[9px] font-mono text-zinc-500 uppercase tracking-[0.3em]">OFFLINE_SYNCHRONIZATION</p>
-                  <Button asChild variant="outline" className="w-full justify-between h-auto py-5 rounded-none border-zinc-800 bg-zinc-900 hover:bg-zinc-800 group border-l-4 border-l-blue-500">
+                  <Button asChild variant="outline" className="w-full justify-between h-auto py-5 rounded-none border-zinc-800 bg-zinc-900 hover:bg-zinc-800 group border-s-4 border-s-blue-500">
                     <a href="/hrm-skill-matrix-template.xlsx" download className="flex items-center gap-3 w-full">
                       <FileText className="h-5 w-5 text-blue-500 group-hover:scale-110 transition-transform" />
-                      <span className="font-headline font-black text-[10px] tracking-widest uppercase text-white flex-1 text-left">{t("evaluations_download_template")}</span>
+                      <span className="font-headline font-black text-[10px] tracking-widest uppercase text-white flex-1 text-start">{t("evaluations_download_template")}</span>
                       <Download className="h-3 w-3 text-zinc-600" />
                     </a>
                   </Button>

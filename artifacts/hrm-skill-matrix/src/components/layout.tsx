@@ -226,7 +226,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
         <div className="flex items-center gap-4 shrink-0">
           {/* User Profile Info */}
-          <div className="hidden lg:flex flex-col items-end mr-4">
+          <div className="hidden lg:flex flex-col items-end me-4">
             <span className="text-[11px] font-headline font-black text-white uppercase tracking-wider leading-none">
               {user?.full_name}
             </span>
@@ -255,7 +255,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               onClick={() => setLang(lang === "en" ? "ar" : "en")}
               className="h-10 px-3 border border-white/5 bg-white/5 hover:bg-white/10 text-[10px] font-headline font-black tracking-widest text-secondary/40 hover:text-white rounded-none transition-colors uppercase"
             >
-              <Globe className="h-3 w-3 mr-2" />
+              <Globe className="h-3 w-3 me-2" />
               {lang === "en" ? "AR" : "EN"}
             </Button>
 
@@ -265,7 +265,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               onClick={handleLogout}
               className="h-10 px-4 border border-rose-500/30 bg-rose-500/5 text-rose-500 hover:bg-rose-500 hover:text-white rounded-none font-headline font-black text-[10px] tracking-widest uppercase transition-all"
             >
-              <LogOut className="h-3 w-3 mr-2" />
+              <LogOut className="h-3 w-3 me-2" />
               {t("nav_logout")}
             </Button>
 

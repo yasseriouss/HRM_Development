@@ -78,10 +78,10 @@ export default function SettingsPage() {
     <div className="space-y-8 max-w-4xl animate-in fade-in duration-700">
       {/* Header */}
       <div className="relative p-6 border border-zinc-800 bg-[#0A0A0A] overflow-hidden">
-        <div className="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-zinc-600" />
-        <div className="absolute top-0 right-0 w-2 h-2 border-t-2 border-r-2 border-zinc-600" />
-        <div className="absolute bottom-0 left-0 w-2 h-2 border-b-2 border-l-2 border-zinc-600" />
-        <div className="absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 border-zinc-600" />
+        <div className="absolute top-0 left-0 w-2 h-2 border-t-2 border-s-2 border-zinc-600" />
+        <div className="absolute top-0 right-0 w-2 h-2 border-t-2 border-e-2 border-zinc-600" />
+        <div className="absolute bottom-0 left-0 w-2 h-2 border-b-2 border-s-2 border-zinc-600" />
+        <div className="absolute bottom-0 right-0 w-2 h-2 border-b-2 border-e-2 border-zinc-600" />
         
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
@@ -190,7 +190,7 @@ export default function SettingsPage() {
                 disabled={isSeeding || isResetting}
                 className="flex-1 rounded-none font-mono uppercase text-xs tracking-widest h-12 border border-red-600/50"
               >
-                <Trash2 className="mr-2 h-4 w-4" />
+                <Trash2 className="me-2 h-4 w-4" />
                 {isResetting ? t("settings_demo_resetting") : t("settings_reset_system")}
               </Button>
             </div>

@@ -91,28 +91,28 @@ export default function JobEvaluationDashboard() {
       <motion.div variants={itemVariants} className="relative p-10 bg-[#0A0A0A] border-2 border-primary/20 overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="space-y-3 text-center md:text-left">
+          <div className="space-y-3 text-center md:text-start">
             <div className="flex items-center justify-center md:justify-start gap-3">
               <Activity className="h-4 w-4 text-primary animate-pulse" />
               <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">EVALUATION_INTELLIGENCE_CENTER</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
-              {isAr ? "تحليلات تقييم الوظائف" : "JOB_EVAL_ANALYTICS"}
+              {isAr ? "ØªØ­Ù„ÙŠÙ„Ø§Øª ØªÙ‚ÙŠÙŠÙ… Ø§Ù„ÙˆØ¸Ø§Ø¦Ù" : "JOB_EVAL_ANALYTICS"}
             </h1>
-            <p className="text-secondary/40 font-medium border-l-2 border-primary/20 pl-4 text-sm">
-              {isAr ? "إدارة ومراقبة العدالة الداخلية وتوزيع الدرجات الوظيفية." : "Internal equity monitoring and structural grade distribution telemetry."}
+            <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4 text-sm">
+              {isAr ? "Ø¥Ø¯Ø§Ø±Ø© ÙˆÙ…Ø±Ø§Ù‚Ø¨Ø© Ø§Ù„Ø¹Ø¯Ø§Ù„Ø© Ø§Ù„Ø¯Ø§Ø®Ù„ÙŠØ© ÙˆØªÙˆØ²ÙŠØ¹ Ø§Ù„Ø¯Ø±Ø¬Ø§Øª Ø§Ù„ÙˆØ¸ÙŠÙÙŠØ©." : "Internal equity monitoring and structural grade distribution telemetry."}
             </p>
           </div>
           
           <div className="flex flex-wrap items-center gap-3">
             <Button variant="outline" className="rounded-none border-white/10 bg-white/5 hover:bg-white/10 font-headline font-black text-[10px] tracking-widest uppercase py-6 px-6 h-auto">
-              <Upload className="h-4 w-4 mr-2" /> IMPORT_STREAM
+              <Upload className="h-4 w-4 me-2" /> IMPORT_STREAM
             </Button>
             <Button variant="outline" className="rounded-none border-white/10 bg-white/5 hover:bg-white/10 font-headline font-black text-[10px] tracking-widest uppercase py-6 px-6 h-auto">
-              <FileDown className="h-4 w-4 mr-2" /> EXPORT_DATA
+              <FileDown className="h-4 w-4 me-2" /> EXPORT_DATA
             </Button>
             <Button className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto shadow-[0_0_20px_rgba(212,175,55,0.2)]">
-              <Plus className="h-4 w-4 mr-2" /> NEW_PROTOCOL
+              <Plus className="h-4 w-4 me-2" /> NEW_PROTOCOL
             </Button>
           </div>
         </div>
@@ -122,10 +122,10 @@ export default function JobEvaluationDashboard() {
       {/* Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[
-          { label: isAr ? "إجمالي الوظائف" : "TOTAL_ROLES", value: "142", icon: Briefcase, trend: "+12%", up: true, color: "primary" },
-          { label: isAr ? "متوسط النقاط" : "AVG_EVAL_PTS", value: "342", icon: BarChart3, trend: "+5.4%", up: true, color: "emerald-400" },
-          { label: isAr ? "عدالة الرواتب" : "EQUITY_INDEX", value: "92%", icon: TrendingUp, trend: "-2.1%", up: false, color: "amber-400" },
-          { label: isAr ? "الموظفين" : "OPERATIVES", value: "1,284", icon: Users, trend: "+3%", up: true, color: "sky-400" },
+          { label: isAr ? "Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„ÙˆØ¸Ø§Ø¦Ù" : "TOTAL_ROLES", value: "142", icon: Briefcase, trend: "+12%", up: true, color: "primary" },
+          { label: isAr ? "Ù…ØªÙˆØ³Ø· Ø§Ù„Ù†Ù‚Ø§Ø·" : "AVG_EVAL_PTS", value: "342", icon: BarChart3, trend: "+5.4%", up: true, color: "emerald-400" },
+          { label: isAr ? "Ø¹Ø¯Ø§Ù„Ø© Ø§Ù„Ø±ÙˆØ§ØªØ¨" : "EQUITY_INDEX", value: "92%", icon: TrendingUp, trend: "-2.1%", up: false, color: "amber-400" },
+          { label: isAr ? "Ø§Ù„Ù…ÙˆØ¸ÙÙŠÙ†" : "OPERATIVES", value: "1,284", icon: Users, trend: "+3%", up: true, color: "sky-400" },
         ].map((stat, i) => (
           <motion.div key={i} variants={itemVariants}>
             <Card className="bg-[#0D0D0D] border-zinc-800 rounded-none relative group overflow-hidden hover:border-primary/40 transition-all">
@@ -136,7 +136,7 @@ export default function JobEvaluationDashboard() {
                   </div>
                   <Badge className={`rounded-none font-mono text-[9px] font-black border-none ${stat.up ? "bg-emerald-500/10 text-emerald-500" : "bg-rose-500/10 text-rose-500"}`}>
                     {stat.trend}
-                    {stat.up ? <ArrowUpRight className="h-3 w-3 ml-1" /> : <ArrowDownRight className="h-3 w-3 ml-1" />}
+                    {stat.up ? <ArrowUpRight className="h-3 w-3 ms-1" /> : <ArrowDownRight className="h-3 w-3 ms-1" />}
                   </Badge>
                 </div>
                 <div className="mt-6">
@@ -160,7 +160,7 @@ export default function JobEvaluationDashboard() {
               <div>
                 <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
                   <Cpu className="h-5 w-5 text-primary" />
-                  {isAr ? "تحليل العدالة الداخلية" : "EQUITY_REGRESSION_MATRIX"}
+                  {isAr ? "ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø¹Ø¯Ø§Ù„Ø© Ø§Ù„Ø¯Ø§Ø®Ù„ÙŠØ©" : "EQUITY_REGRESSION_MATRIX"}
                 </CardTitle>
                 <CardDescription className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest mt-1">
                    POINT_VALUATION_VS_COMPENSATION_TELEMETRY
@@ -200,7 +200,7 @@ export default function JobEvaluationDashboard() {
           <Card className="bg-[#0A0A0A] border border-zinc-800 rounded-none relative overflow-hidden h-full">
             <CardHeader className="p-8 border-b border-zinc-900">
               <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter">
-                {isAr ? "توزيع الفئات" : "GRADE_ARCH_DIST"}
+                {isAr ? "ØªÙˆØ²ÙŠØ¹ Ø§Ù„ÙØ¦Ø§Øª" : "GRADE_ARCH_DIST"}
               </CardTitle>
               <CardDescription className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest mt-1">
                  STRUCTURAL_HIERARCHY_RATIOS
@@ -252,7 +252,7 @@ export default function JobEvaluationDashboard() {
             <div>
               <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
                 <Shield className="h-5 w-5 text-primary" />
-                {isAr ? "آخر عمليات التقييم" : "RECENT_VALUATION_LOGS"}
+                {isAr ? "Ø¢Ø®Ø± Ø¹Ù…Ù„ÙŠØ§Øª Ø§Ù„ØªÙ‚ÙŠÙŠÙ…" : "RECENT_VALUATION_LOGS"}
               </CardTitle>
               <CardDescription className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest mt-1">
                  AUDIT_TRAIL_v9.4 // SECURITY_VERIFIED
@@ -260,19 +260,19 @@ export default function JobEvaluationDashboard() {
             </div>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-600" />
-              <Input placeholder={isAr ? "بحث..." : "QUERY_LOGS..."} className="pl-10 h-12 w-[300px] bg-white/5 border-zinc-800 rounded-none font-mono text-xs text-white uppercase tracking-widest focus:border-primary/50" />
+              <Input placeholder={isAr ? "Ø¨Ø­Ø«..." : "QUERY_LOGS..."} className="ps-10 h-12 w-[300px] bg-white/5 border-zinc-800 rounded-none font-mono text-xs text-white uppercase tracking-widest focus:border-primary/50" />
             </div>
           </CardHeader>
           <CardContent className="p-0">
             <div className="overflow-x-auto">
               <table className="w-full border-collapse">
                 <thead>
-                  <tr className="bg-zinc-900/50 border-b border-zinc-800 text-left">
-                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{isAr ? "المسمى الوظيفي" : "JOB_PROFILE_TITLE"}</th>
-                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{isAr ? "النقاط" : "PTS_UNIT"}</th>
-                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{isAr ? "الدرجة" : "TIER_GRADE"}</th>
-                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{isAr ? "الحالة" : "OPS_STATUS"}</th>
-                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase text-right">{isAr ? "الإجراءات" : "COMMAND"}</th>
+                  <tr className="bg-zinc-900/50 border-b border-zinc-800 text-start">
+                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{isAr ? "Ø§Ù„Ù…Ø³Ù…Ù‰ Ø§Ù„ÙˆØ¸ÙŠÙÙŠ" : "JOB_PROFILE_TITLE"}</th>
+                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{isAr ? "Ø§Ù„Ù†Ù‚Ø§Ø·" : "PTS_UNIT"}</th>
+                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{isAr ? "Ø§Ù„Ø¯Ø±Ø¬Ø©" : "TIER_GRADE"}</th>
+                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{isAr ? "Ø§Ù„Ø­Ø§Ù„Ø©" : "OPS_STATUS"}</th>
+                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase text-end">{isAr ? "Ø§Ù„Ø¥Ø¬Ø±Ø§Ø¡Ø§Øª" : "COMMAND"}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-zinc-900">
@@ -302,9 +302,9 @@ export default function JobEvaluationDashboard() {
                           {job.status === "Approved" ? "VERIFIED" : job.status.toUpperCase()}
                         </Badge>
                       </td>
-                      <td className="px-8 py-5 text-right">
+                      <td className="px-8 py-5 text-end">
                         <Button variant="ghost" className="rounded-none border border-zinc-800 hover:border-primary/50 text-[9px] font-headline font-black tracking-widest uppercase h-auto py-2 px-4 group/btn">
-                           ACCESS <ExternalLink className="ml-2 h-3 w-3" />
+                           ACCESS <ExternalLink className="ms-2 h-3 w-3" />
                         </Button>
                       </td>
                     </tr>

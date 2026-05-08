@@ -195,7 +195,7 @@ export default function SkillsPage() {
             <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
               {t("skills_title")}
             </h2>
-            <p className="text-secondary/40 font-medium border-l-2 border-primary/20 pl-4">{t("skills_subtitle")}</p>
+            <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4">{t("skills_subtitle")}</p>
           </div>
           
           <div className="flex flex-wrap items-center gap-3">
@@ -203,25 +203,25 @@ export default function SkillsPage() {
               title: t("skills_title"),
               filename: "Skills_Library",
               headers: [t("field_name"), t("field_code"), t("skills_col_category"), t("field_department"), t("skills_col_weight"), t("skills_col_criticality")],
-              rows: (skills ?? []).map(sk => [sk.name, sk.code ?? "—", sk.category ?? "—", sk.department?.name ?? "—", sk.weight ?? 0, sk.criticality])
+              rows: (skills ?? []).map(sk => [sk.name, sk.code ?? "â€”", sk.category ?? "â€”", sk.department?.name ?? "â€”", sk.weight ?? 0, sk.criticality])
             })}>
-              <Download className="h-4 w-4 mr-2" /> PDF
+              <Download className="h-4 w-4 me-2" /> PDF
             </Button>
             <Button variant="outline" className="rounded-none border-white/10 bg-white/5 hover:bg-white/10 text-white font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto" onClick={() => exportToExcel({
               title: t("skills_title"),
               filename: "Skills_Library",
               headers: [t("field_name"), t("field_code"), t("skills_col_category"), t("field_department"), t("skills_col_weight"), t("skills_col_criticality")],
-              rows: (skills ?? []).map(sk => [sk.name, sk.code ?? "—", sk.category ?? "—", sk.department?.name ?? "—", sk.weight ?? 0, sk.criticality])
+              rows: (skills ?? []).map(sk => [sk.name, sk.code ?? "â€”", sk.category ?? "â€”", sk.department?.name ?? "â€”", sk.weight ?? 0, sk.criticality])
             })}>
-              <Download className="h-4 w-4 mr-2" /> EXCEL
+              <Download className="h-4 w-4 me-2" /> EXCEL
             </Button>
             {isAdmin && (
               <>
                 <Button variant="outline" className="rounded-none border-white/10 bg-white/5 hover:bg-white/10 text-white font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto" onClick={() => setShowImport(true)}>
-                  <Upload className="h-4 w-4 mr-2" /> IMPORT_CSV
+                  <Upload className="h-4 w-4 me-2" /> IMPORT_CSV
                 </Button>
                 <Button className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto hover:bg-primary/90" onClick={openCreate}>
-                  <Plus className="h-4 w-4 mr-2" /> REGISTER_NEW_SKILL
+                  <Plus className="h-4 w-4 me-2" /> REGISTER_NEW_SKILL
                 </Button>
               </>
             )}
@@ -238,7 +238,7 @@ export default function SkillsPage() {
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-secondary/30" />
               <Input 
                 placeholder="SEARCH_BY_NAME_OR_CODE..." 
-                className="pl-12 h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white placeholder:text-secondary/20 focus-visible:ring-primary/50"
+                className="ps-12 h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white placeholder:text-secondary/20 focus-visible:ring-primary/50"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -246,7 +246,7 @@ export default function SkillsPage() {
             <div className="w-full md:w-80 relative">
               <Filter className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-secondary/30" />
               <Select value={deptFilter} onValueChange={setDeptFilter}>
-                <SelectTrigger className="pl-12 h-14 bg-white/5 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
+                <SelectTrigger className="ps-12 h-14 bg-white/5 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
                   <SelectValue placeholder={t("filter_by_dept")} />
                 </SelectTrigger>
                 <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">
@@ -278,7 +278,7 @@ export default function SkillsPage() {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
+            <table className="w-full text-start border-collapse">
               <thead>
                 <tr className="bg-white/5 border-b border-white/10">
                   <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase">{t("field_name")}</th>
@@ -287,7 +287,7 @@ export default function SkillsPage() {
                   <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase whitespace-nowrap">{t("field_department")}</th>
                   <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase text-center">{t("skills_col_weight")}</th>
                   <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase">{t("skills_col_criticality")}</th>
-                  <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase text-right">{t("common_actions")}</th>
+                  <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase text-end">{t("common_actions")}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
@@ -304,7 +304,7 @@ export default function SkillsPage() {
                         </div>
                       </div>
                     </td>
-                    <td className="px-8 py-6 font-mono text-[11px] text-primary/60">{sk.code ?? "—"}</td>
+                    <td className="px-8 py-6 font-mono text-[11px] text-primary/60">{sk.code ?? "â€”"}</td>
                     <td className="px-8 py-6 font-headline font-black text-[10px] text-secondary/30 tracking-widest uppercase">{sk.category ?? "SYSTEM"}</td>
                     <td className="px-8 py-6">
                       <Badge variant="outline" className="rounded-none border-white/5 bg-white/5 text-[9px] font-mono text-secondary/60 py-1 uppercase">
@@ -317,7 +317,7 @@ export default function SkillsPage() {
                       </div>
                     </td>
                     <td className="px-8 py-6">{critBadge(sk.criticality)}</td>
-                    <td className="px-8 py-6 text-right">
+                    <td className="px-8 py-6 text-end">
                       {isAdmin && (
                         <div className="flex items-center justify-end gap-2">
                           <Button size="icon" variant="ghost" className="h-10 w-10 rounded-none border border-transparent hover:border-primary/30 hover:bg-primary/5 text-secondary/30 hover:text-primary" onClick={() => openEdit(sk)}>

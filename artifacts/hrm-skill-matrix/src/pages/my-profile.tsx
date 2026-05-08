@@ -97,7 +97,7 @@ export default function MyProfilePage() {
             <CornerMarks />
           </div>
           
-          <div className="flex-1 space-y-4 text-center md:text-left">
+          <div className="flex-1 space-y-4 text-center md:text-start">
             <div className="flex flex-col md:flex-row items-center gap-4">
               <h2 className="text-5xl font-headline font-black tracking-tighter uppercase leading-none">{emp.full_name}</h2>
               {classBadge(emp.current_class as EmployeeClass)}
@@ -105,19 +105,19 @@ export default function MyProfilePage() {
             
             <div className="flex flex-wrap justify-center md:justify-start gap-6 text-[10px] font-mono font-black text-zinc-500 uppercase tracking-widest">
               {emp.job_title && (
-                <span className="flex items-center gap-2 border-r border-zinc-800 pr-6 last:border-0">
+                <span className="flex items-center gap-2 border-r border-zinc-800 pe-6 last:border-0">
                   <Briefcase className="h-3.5 w-3.5 text-primary" />
                   {emp.job_title}
                 </span>
               )}
               {emp.department?.name && (
-                <span className="flex items-center gap-2 border-r border-zinc-800 pr-6 last:border-0">
+                <span className="flex items-center gap-2 border-r border-zinc-800 pe-6 last:border-0">
                   <Building2 className="h-3.5 w-3.5 text-primary" />
                   {emp.department.name}
                 </span>
               )}
               {emp.joined_date && (
-                <span className="flex items-center gap-2 border-r border-zinc-800 pr-6 last:border-0">
+                <span className="flex items-center gap-2 border-r border-zinc-800 pe-6 last:border-0">
                   <CalendarDays className="h-3.5 w-3.5 text-primary" />
                   {t("profile_joined")} {new Date(emp.joined_date).toLocaleDateString()}
                 </span>
@@ -129,7 +129,7 @@ export default function MyProfilePage() {
           </div>
 
           {latestSummary && (
-            <div className="text-center md:text-right border-l-2 border-zinc-900 pl-10 hidden md:block">
+            <div className="text-center md:text-end border-s-2 border-zinc-900 ps-10 hidden md:block">
               <p className="text-5xl font-mono font-black text-primary leading-none shadow-[0_0_20px_rgba(255,255,255,0.05)]">{Number(latestSummary.percentage).toFixed(1)}%</p>
               <p className="text-[9px] font-headline font-black text-zinc-500 mt-2 uppercase tracking-[0.3em]">{t("profile_latest_score")}</p>
             </div>
@@ -203,7 +203,7 @@ export default function MyProfilePage() {
                         {t("profile_skills_assessed", { count: s.evaluated_skills_count })} // {new Date(s.updated_at || "").toLocaleDateString()}
                       </p>
                     </div>
-                    <div className="text-right flex flex-col items-end gap-2">
+                    <div className="text-end flex flex-col items-end gap-2">
                       <span className="font-mono font-black text-lg text-primary leading-none">{Number(s.percentage).toFixed(1)}%</span>
                       {classBadge(s.class as EmployeeClass)}
                     </div>

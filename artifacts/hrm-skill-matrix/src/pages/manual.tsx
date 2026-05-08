@@ -22,10 +22,10 @@ import {
 
 const CornerMarks = () => (
   <>
-    <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-primary/40" />
-    <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-primary/40" />
-    <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-primary/40" />
-    <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-primary/40" />
+    <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-s-2 border-primary/40" />
+    <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-e-2 border-primary/40" />
+    <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-s-2 border-primary/40" />
+    <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-e-2 border-primary/40" />
   </>
 );
 
@@ -71,16 +71,16 @@ export default function ManualPage() {
             />
           </div>
           
-          <div className="text-center md:text-left space-y-4">
+          <div className="text-center md:text-start space-y-4">
             <div className="flex items-center justify-center md:justify-start gap-3">
               <div className="h-1 w-8 bg-primary" />
               <span className="font-headline font-black tracking-[0.4em] uppercase text-[10px] text-primary">
-                {isAr ? "البروتوكول التشغيلي" : "Operational Protocol"}
+                {isAr ? "Ø§Ù„Ø¨Ø±ÙˆØªÙˆÙƒÙˆÙ„ Ø§Ù„ØªØ´ØºÙŠÙ„ÙŠ" : "Operational Protocol"}
               </span>
               <div className="h-1 w-8 bg-primary" />
             </div>
             <h1 className="text-5xl md:text-7xl font-headline font-black tracking-tighter text-white uppercase leading-none">
-              {isAr ? "دليل نظام الموارد البشرية" : "HRM SYSTEM MANUAL"}
+              {isAr ? "Ø¯Ù„ÙŠÙ„ Ù†Ø¸Ø§Ù… Ø§Ù„Ù…ÙˆØ§Ø±Ø¯ Ø§Ù„Ø¨Ø´Ø±ÙŠØ©" : "HRM SYSTEM MANUAL"}
             </h1>
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 pt-2">
               <Badge variant="outline" className="border-primary/50 text-primary bg-primary/5 rounded-none px-4 py-1 font-mono text-[10px]">
@@ -103,10 +103,10 @@ export default function ManualPage() {
         <div className="flex justify-center sticky top-4 z-50">
           <TabsList className="bg-[#0A0A0A]/90 backdrop-blur-xl border border-primary/30 p-1 rounded-none shadow-2xl">
             {[
-              { id: "overview", icon: LayoutDashboard, label: isAr ? "نظرة عامة" : "Overview" },
-              { id: "skills", icon: BrainCircuit, label: isAr ? "مصفوفة المهارات" : "Skill Matrix" },
-              { id: "evaluation", icon: Scaling, label: isAr ? "تقييم الوظائف" : "Job Evaluation" },
-              { id: "tech", icon: Database, label: isAr ? "البيانات التقنية" : "Technical Data" }
+              { id: "overview", icon: LayoutDashboard, label: isAr ? "Ù†Ø¸Ø±Ø© Ø¹Ø§Ù…Ø©" : "Overview" },
+              { id: "skills", icon: BrainCircuit, label: isAr ? "Ù…ØµÙÙˆÙØ© Ø§Ù„Ù…Ù‡Ø§Ø±Ø§Øª" : "Skill Matrix" },
+              { id: "evaluation", icon: Scaling, label: isAr ? "ØªÙ‚ÙŠÙŠÙ… Ø§Ù„ÙˆØ¸Ø§Ø¦Ù" : "Job Evaluation" },
+              { id: "tech", icon: Database, label: isAr ? "Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„ØªÙ‚Ù†ÙŠØ©" : "Technical Data" }
             ].map((tab) => (
               <TabsTrigger 
                 key={tab.id}
@@ -129,18 +129,18 @@ export default function ManualPage() {
                   <CardHeader className="pb-2">
                     <CardTitle className="font-headline text-2xl font-black uppercase flex items-center gap-3">
                       <Target className="h-6 w-6 text-primary" />
-                      {isAr ? "الهدف الاستراتيجي" : "STRATEGIC OBJECTIVE"}
+                      {isAr ? "Ø§Ù„Ù‡Ø¯Ù Ø§Ù„Ø§Ø³ØªØ±Ø§ØªÙŠØ¬ÙŠ" : "STRATEGIC OBJECTIVE"}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="text-secondary/70 leading-relaxed font-medium">
-                    <p className="border-l-2 border-primary/20 pl-4 py-2 italic bg-primary/5">
+                    <p className="border-s-2 border-primary/20 ps-4 py-2 italic bg-primary/5">
                       {isAr 
-                        ? "تحويل إدارة الموارد البشرية من وظيفة إدارية إلى محرك استراتيجي قائم على البيانات." 
+                        ? "ØªØ­ÙˆÙŠÙ„ Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ù…ÙˆØ§Ø±Ø¯ Ø§Ù„Ø¨Ø´Ø±ÙŠØ© Ù…Ù† ÙˆØ¸ÙŠÙØ© Ø¥Ø¯Ø§Ø±ÙŠØ© Ø¥Ù„Ù‰ Ù…Ø­Ø±Ùƒ Ø§Ø³ØªØ±Ø§ØªÙŠØ¬ÙŠ Ù‚Ø§Ø¦Ù… Ø¹Ù„Ù‰ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª." 
                         : "Transforming HR management from an administrative function to a data-driven strategic engine."}
                     </p>
                     <p className="mt-4">
                       {isAr 
-                        ? "نظامنا يضمن الشفافية المطلقة في تقييم الكفاءات، مما يسمح باتخاذ قرارات دقيقة تتعلق بالترقيات، التدريب، وتخصيص الموارد في بيئة صناعية عالية الضغط." 
+                        ? "Ù†Ø¸Ø§Ù…Ù†Ø§ ÙŠØ¶Ù…Ù† Ø§Ù„Ø´ÙØ§ÙÙŠØ© Ø§Ù„Ù…Ø·Ù„Ù‚Ø© ÙÙŠ ØªÙ‚ÙŠÙŠÙ… Ø§Ù„ÙƒÙØ§Ø¡Ø§ØªØŒ Ù…Ù…Ø§ ÙŠØ³Ù…Ø­ Ø¨Ø§ØªØ®Ø§Ø° Ù‚Ø±Ø§Ø±Ø§Øª Ø¯Ù‚ÙŠÙ‚Ø© ØªØªØ¹Ù„Ù‚ Ø¨Ø§Ù„ØªØ±Ù‚ÙŠØ§ØªØŒ Ø§Ù„ØªØ¯Ø±ÙŠØ¨ØŒ ÙˆØªØ®ØµÙŠØµ Ø§Ù„Ù…ÙˆØ§Ø±Ø¯ ÙÙŠ Ø¨ÙŠØ¦Ø© ØµÙ†Ø§Ø¹ÙŠØ© Ø¹Ø§Ù„ÙŠØ© Ø§Ù„Ø¶ØºØ·." 
                         : "Our system ensures absolute transparency in competency evaluation, allowing for precise decisions regarding promotions, training, and resource allocation in high-pressure industrial environments."}
                     </p>
                   </CardContent>
@@ -154,15 +154,15 @@ export default function ManualPage() {
                   <CardHeader className="pb-2">
                     <CardTitle className="font-headline text-2xl font-black uppercase flex items-center gap-3">
                       <ShieldCheck className="h-6 w-6 text-emerald-500" />
-                      {isAr ? "بروتوكول الأمان" : "SECURITY PROTOCOL"}
+                      {isAr ? "Ø¨Ø±ÙˆØªÙˆÙƒÙˆÙ„ Ø§Ù„Ø£Ù…Ø§Ù†" : "SECURITY PROTOCOL"}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="text-secondary/70 leading-relaxed font-medium">
                     <div className="space-y-4">
                       {[
-                        { r: "ADMIN", d: isAr ? "تحكم كامل في النظام والمعايير." : "Full override authority over all system parameters." },
-                        { r: "MANAGER", d: isAr ? "إدارة تقييمات القسم والتقارير." : "Manage departmental evaluations and analytical exports." },
-                        { r: "COORDINATOR", d: isAr ? "تنسيق حملات التقييم والتدريب." : "Coordinate assessment campaigns and training logs." }
+                        { r: "ADMIN", d: isAr ? "ØªØ­ÙƒÙ… ÙƒØ§Ù…Ù„ ÙÙŠ Ø§Ù„Ù†Ø¸Ø§Ù… ÙˆØ§Ù„Ù…Ø¹Ø§ÙŠÙŠØ±." : "Full override authority over all system parameters." },
+                        { r: "MANAGER", d: isAr ? "Ø¥Ø¯Ø§Ø±Ø© ØªÙ‚ÙŠÙŠÙ…Ø§Øª Ø§Ù„Ù‚Ø³Ù… ÙˆØ§Ù„ØªÙ‚Ø§Ø±ÙŠØ±." : "Manage departmental evaluations and analytical exports." },
+                        { r: "COORDINATOR", d: isAr ? "ØªÙ†Ø³ÙŠÙ‚ Ø­Ù…Ù„Ø§Øª Ø§Ù„ØªÙ‚ÙŠÙŠÙ… ÙˆØ§Ù„ØªØ¯Ø±ÙŠØ¨." : "Coordinate assessment campaigns and training logs." }
                       ].map((role) => (
                         <div key={role.r} className="flex gap-4 items-center">
                           <div className="font-mono text-[10px] bg-white/5 px-2 py-1 border border-white/10 text-emerald-500">{role.r}</div>
@@ -181,9 +181,9 @@ export default function ManualPage() {
             <motion.div variants={container} initial="hidden" animate="show" className="space-y-12">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {[
-                  { class: "CLASS A", color: "border-emerald-500", text: "text-emerald-500", label: "EXPERT", desc: isAr ? "درجة ≥ 85%. استقلالية تامة وقدرة على التوجيه." : "Score ≥ 85%. Full autonomy and mentoring capability." },
-                  { class: "CLASS B", color: "border-primary", text: "text-primary", label: "ADVANCED", desc: isAr ? "درجة 60% – 84%. كفاءة عالية مع إشراف محدود." : "Score 60% – 84%. High proficiency with limited oversight." },
-                  { class: "CLASS C", color: "border-rose-500", text: "text-rose-500", label: "TRAINEE", desc: isAr ? "درجة < 60%. طور التعلم، يحتاج إشراف مستمر." : "Score < 60%. Learning phase, requires continuous supervision." }
+                  { class: "CLASS A", color: "border-emerald-500", text: "text-emerald-500", label: "EXPERT", desc: isAr ? "Ø¯Ø±Ø¬Ø© â‰¥ 85%. Ø§Ø³ØªÙ‚Ù„Ø§Ù„ÙŠØ© ØªØ§Ù…Ø© ÙˆÙ‚Ø¯Ø±Ø© Ø¹Ù„Ù‰ Ø§Ù„ØªÙˆØ¬ÙŠÙ‡." : "Score â‰¥ 85%. Full autonomy and mentoring capability." },
+                  { class: "CLASS B", color: "border-primary", text: "text-primary", label: "ADVANCED", desc: isAr ? "Ø¯Ø±Ø¬Ø© 60% â€“ 84%. ÙƒÙØ§Ø¡Ø© Ø¹Ø§Ù„ÙŠØ© Ù…Ø¹ Ø¥Ø´Ø±Ø§Ù Ù…Ø­Ø¯ÙˆØ¯." : "Score 60% â€“ 84%. High proficiency with limited oversight." },
+                  { class: "CLASS C", color: "border-rose-500", text: "text-rose-500", label: "TRAINEE", desc: isAr ? "Ø¯Ø±Ø¬Ø© < 60%. Ø·ÙˆØ± Ø§Ù„ØªØ¹Ù„Ù…ØŒ ÙŠØ­ØªØ§Ø¬ Ø¥Ø´Ø±Ø§Ù Ù…Ø³ØªÙ…Ø±." : "Score < 60%. Learning phase, requires continuous supervision." }
                 ].map((c, i) => (
                   <motion.div key={i} variants={item} className={`p-8 bg-[#121212] border-t-4 ${c.color} relative group`}>
                     <div className="flex justify-between items-start mb-4">
@@ -199,14 +199,14 @@ export default function ManualPage() {
               <motion.div variants={item} className="p-12 bg-[#0E0E0E] border border-primary/20 relative">
                 <h3 className="font-headline text-3xl font-black uppercase text-primary mb-12 flex items-center gap-4">
                   <Zap className="h-8 w-8" />
-                  {isAr ? "مسار العمليات التشغيلي" : "OPERATIONAL PIPELINE"}
+                  {isAr ? "Ù…Ø³Ø§Ø± Ø§Ù„Ø¹Ù…Ù„ÙŠØ§Øª Ø§Ù„ØªØ´ØºÙŠÙ„ÙŠ" : "OPERATIONAL PIPELINE"}
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   {[
-                    { s: "01", t: isAr ? "تحديد المعايير" : "DEFINE", d: isAr ? "برمجة المهارات والأوزان." : "Initialize skill matrices & weights." },
-                    { s: "02", t: isAr ? "إطلاق الحملة" : "DEPLOY", d: isAr ? "تفعيل نافذة التقييم." : "Activate evaluation window." },
-                    { s: "03", t: isAr ? "التقييم" : "EXECUTE", d: isAr ? "إدخال البيانات الفنية." : "Execute score inputs." },
-                    { s: "04", t: isAr ? "التحليل" : "ANALYZE", d: isAr ? "تصدير الذكاء التشغيلي." : "Export operational intelligence." }
+                    { s: "01", t: isAr ? "ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù…Ø¹Ø§ÙŠÙŠØ±" : "DEFINE", d: isAr ? "Ø¨Ø±Ù…Ø¬Ø© Ø§Ù„Ù…Ù‡Ø§Ø±Ø§Øª ÙˆØ§Ù„Ø£ÙˆØ²Ø§Ù†." : "Initialize skill matrices & weights." },
+                    { s: "02", t: isAr ? "Ø¥Ø·Ù„Ø§Ù‚ Ø§Ù„Ø­Ù…Ù„Ø©" : "DEPLOY", d: isAr ? "ØªÙØ¹ÙŠÙ„ Ù†Ø§ÙØ°Ø© Ø§Ù„ØªÙ‚ÙŠÙŠÙ…." : "Activate evaluation window." },
+                    { s: "03", t: isAr ? "Ø§Ù„ØªÙ‚ÙŠÙŠÙ…" : "EXECUTE", d: isAr ? "Ø¥Ø¯Ø®Ø§Ù„ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„ÙÙ†ÙŠØ©." : "Execute score inputs." },
+                    { s: "04", t: isAr ? "Ø§Ù„ØªØ­Ù„ÙŠÙ„" : "ANALYZE", d: isAr ? "ØªØµØ¯ÙŠØ± Ø§Ù„Ø°ÙƒØ§Ø¡ Ø§Ù„ØªØ´ØºÙŠÙ„ÙŠ." : "Export operational intelligence." }
                   ].map((step, idx) => (
                     <div key={idx} className="relative group p-6 bg-white/5 border border-white/5 hover:border-primary/50 transition-all">
                       <span className="font-mono text-5xl font-black text-white/5 absolute -top-4 -right-2 group-hover:text-primary/20 transition-colors">{step.s}</span>
@@ -228,22 +228,22 @@ export default function ManualPage() {
                   <div className="flex items-center gap-4">
                     <Scaling className="h-10 w-10 text-primary" />
                     <h3 className="font-headline text-4xl font-black uppercase text-white leading-none">
-                      {isAr ? "مصفوفة النقاط الأربعة" : "POINT FACTOR MATRIX"}
+                      {isAr ? "Ù…ØµÙÙˆÙØ© Ø§Ù„Ù†Ù‚Ø§Ø· Ø§Ù„Ø£Ø±Ø¨Ø¹Ø©" : "POINT FACTOR MATRIX"}
                     </h3>
                   </div>
                   <div className="space-y-4">
                     {[
-                      { l: "SKILLS & KNOWLEDGE", w: "350", p: "35%", d: isAr ? "الخبرة، التعليم، والقدرات التقنية." : "Experience, Education, and Tech Cap." },
-                      { l: "RESPONSIBILITY", w: "350", p: "35%", d: isAr ? "صنع القرار، الإشراف، والتبعات المالية." : "Decision Making, Supervision, Fiscal impact." },
-                      { l: "EFFORT / CONCENTRATION", w: "100", p: "10%", d: isAr ? "التركيز الذهني والجهد البدني." : "Mental density and physical exertion." },
-                      { l: "WORKING CONDITIONS", w: "200", p: "20%", d: isAr ? "المخاطر، السفر، وبيئة العمل." : "Hazards, travel, and environment." }
+                      { l: "SKILLS & KNOWLEDGE", w: "350", p: "35%", d: isAr ? "Ø§Ù„Ø®Ø¨Ø±Ø©ØŒ Ø§Ù„ØªØ¹Ù„ÙŠÙ…ØŒ ÙˆØ§Ù„Ù‚Ø¯Ø±Ø§Øª Ø§Ù„ØªÙ‚Ù†ÙŠØ©." : "Experience, Education, and Tech Cap." },
+                      { l: "RESPONSIBILITY", w: "350", p: "35%", d: isAr ? "ØµÙ†Ø¹ Ø§Ù„Ù‚Ø±Ø§Ø±ØŒ Ø§Ù„Ø¥Ø´Ø±Ø§ÙØŒ ÙˆØ§Ù„ØªØ¨Ø¹Ø§Øª Ø§Ù„Ù…Ø§Ù„ÙŠØ©." : "Decision Making, Supervision, Fiscal impact." },
+                      { l: "EFFORT / CONCENTRATION", w: "100", p: "10%", d: isAr ? "Ø§Ù„ØªØ±ÙƒÙŠØ² Ø§Ù„Ø°Ù‡Ù†ÙŠ ÙˆØ§Ù„Ø¬Ù‡Ø¯ Ø§Ù„Ø¨Ø¯Ù†ÙŠ." : "Mental density and physical exertion." },
+                      { l: "WORKING CONDITIONS", w: "200", p: "20%", d: isAr ? "Ø§Ù„Ù…Ø®Ø§Ø·Ø±ØŒ Ø§Ù„Ø³ÙØ±ØŒ ÙˆØ¨ÙŠØ¦Ø© Ø§Ù„Ø¹Ù…Ù„." : "Hazards, travel, and environment." }
                     ].map((f, i) => (
                       <div key={i} className="flex items-center justify-between p-6 bg-[#121212] border border-white/10 group hover:border-primary/50 transition-all relative">
                         <div className="space-y-2">
                           <p className="font-headline font-black text-sm tracking-widest text-white">{f.l}</p>
                           <p className="text-[10px] text-secondary/40 font-mono">{f.d}</p>
                         </div>
-                        <div className="text-right">
+                        <div className="text-end">
                           <p className="font-mono text-2xl font-black text-primary leading-none">{f.w}</p>
                           <p className="text-[9px] text-secondary/40 font-bold tracking-[0.2em]">{f.p}</p>
                         </div>
@@ -256,7 +256,7 @@ export default function ManualPage() {
                   <div className="flex items-center gap-4">
                     <Layers className="h-10 w-10 text-primary" />
                     <h3 className="font-headline text-4xl font-black uppercase text-white leading-none">
-                      {isAr ? "توزيع الدرجات الوظيفية" : "GRADE HIERARCHY"}
+                      {isAr ? "ØªÙˆØ²ÙŠØ¹ Ø§Ù„Ø¯Ø±Ø¬Ø§Øª Ø§Ù„ÙˆØ¸ÙŠÙÙŠØ©" : "GRADE HIERARCHY"}
                     </h3>
                   </div>
                   <div className="bg-[#0A0A0A] border border-primary/30 p-1 relative overflow-hidden">
@@ -265,7 +265,7 @@ export default function ManualPage() {
                         <tr>
                           <th className="p-4 border border-primary/20 text-center">GRADE</th>
                           <th className="p-4 border border-primary/20 text-center">POINTS</th>
-                          <th className="p-4 border border-primary/20 text-left">DESIGNATION</th>
+                          <th className="p-4 border border-primary/20 text-start">DESIGNATION</th>
                         </tr>
                       </thead>
                       <tbody className="text-white">
@@ -279,7 +279,7 @@ export default function ManualPage() {
                           <tr key={i} className="hover:bg-primary/5 transition-colors group">
                             <td className="p-4 border border-white/5 text-center font-black group-hover:text-primary">{r.g}</td>
                             <td className="p-4 border border-white/5 text-center">{r.p}</td>
-                            <td className="p-4 border border-white/5 text-left text-secondary/50 group-hover:text-white transition-colors">{r.c}</td>
+                            <td className="p-4 border border-white/5 text-start text-secondary/50 group-hover:text-white transition-colors">{r.c}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -292,7 +292,7 @@ export default function ManualPage() {
                     </div>
                     <p className="text-xs text-secondary/60 leading-tight">
                       {isAr 
-                        ? "يتم تحديد الدرجة النهائية تلقائياً بمجرد إغلاق جلسة التقييم وحساب مجموع نقاط العوامل." 
+                        ? "ÙŠØªÙ… ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ø¯Ø±Ø¬Ø© Ø§Ù„Ù†Ù‡Ø§Ø¦ÙŠØ© ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹ Ø¨Ù…Ø¬Ø±Ø¯ Ø¥ØºÙ„Ø§Ù‚ Ø¬Ù„Ø³Ø© Ø§Ù„ØªÙ‚ÙŠÙŠÙ… ÙˆØ­Ø³Ø§Ø¨ Ù…Ø¬Ù…ÙˆØ¹ Ù†Ù‚Ø§Ø· Ø§Ù„Ø¹ÙˆØ§Ù…Ù„." 
                         : "Final grade is automatically determined upon evaluation session closure and factor point summation."}
                     </p>
                   </div>
@@ -364,7 +364,7 @@ export default function ManualPage() {
                           <span className="text-[9px] font-mono text-secondary/30">HASH: SHA256_{Math.random().toString(16).substring(2, 10).toUpperCase()}</span>
                         </div>
                       </div>
-                      <div className="text-right">
+                      <div className="text-end">
                         <Badge className="bg-white/5 text-secondary/50 rounded-none border-white/10 font-mono text-[9px] mb-1">{e.v}</Badge>
                         <span className={`block text-[8px] font-black tracking-widest ${e.c}`}>{e.s}</span>
                       </div>
@@ -394,7 +394,7 @@ export default function ManualPage() {
           <div className="h-px w-20 bg-primary/30" />
         </div>
         <div className="flex gap-8 text-[9px] font-mono text-secondary/20 uppercase tracking-[0.2em]">
-          <span>© DEEPMIND_SYSTEMS</span>
+          <span>Â© DEEPMIND_SYSTEMS</span>
           <span>LATENCY: 0.002MS</span>
           <span>KERN_MOD: HR_EVAL_SCORER</span>
         </div>

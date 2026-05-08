@@ -14,6 +14,7 @@ import {
   UserCircle 
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { Loader } from "@/components/ui/loader";
 
 export default function Hub() {
   const [showSplash, setShowSplash] = useState(true);
@@ -112,9 +113,9 @@ export default function Hub() {
               <h1 className="text-3xl tracking-[0.3em] font-headline text-primary uppercase">
                 GRAND LINE ERP
               </h1>
-              <p className="mt-4 text-muted-foreground tracking-widest text-sm uppercase">
-                INITIALIZING CORE SYSTEMS...
-              </p>
+              <div className="mt-8">
+                <Loader text="INITIALIZING CORE SYSTEMS..." />
+              </div>
             </motion.div>
           </motion.div>
         ) : (

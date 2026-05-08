@@ -83,31 +83,31 @@ interface JobProfile {
 }
 
 const SUB_FACTORS = [
-  { id: "edu", name: "Education", name_ar: "التعليم", category: "Skills", weight: 35 },
-  { id: "exp", name: "Experience", name_ar: "الخبرة", category: "Skills", weight: 35 },
-  { id: "knw", name: "Knowledge", name_ar: "المعرفة", category: "Skills", weight: 30 },
-  { id: "cmp", name: "Compliance", name_ar: "الامتثال", category: "Responsibility", weight: 35 },
-  { id: "sup", name: "Supervisory", name_ar: "الإشراف", category: "Responsibility", weight: 35 },
-  { id: "dec", name: "Decision-Making", name_ar: "صنع القرار", category: "Responsibility", weight: 30 },
-  { id: "mnt", name: "Mental Effort", name_ar: "المجهود الذهني", category: "Effort", weight: 50 },
-  { id: "phy", name: "Physical Effort", name_ar: "المجهود البدني", category: "Effort", weight: 50 },
-  { id: "haz", name: "Hazards", name_ar: "المخاطر", category: "Conditions", weight: 25 },
-  { id: "sch", name: "Schedule", name_ar: "الجدول الزمني", category: "Conditions", weight: 25 },
-  { id: "env", name: "Environment", name_ar: "البيئة", category: "Conditions", weight: 25 },
-  { id: "trv", name: "Travel", name_ar: "السفر", category: "Conditions", weight: 25 },
+  { id: "edu", name: "Education", name_ar: "Ø§Ù„ØªØ¹Ù„ÙŠÙ…", category: "Skills", weight: 35 },
+  { id: "exp", name: "Experience", name_ar: "Ø§Ù„Ø®Ø¨Ø±Ø©", category: "Skills", weight: 35 },
+  { id: "knw", name: "Knowledge", name_ar: "Ø§Ù„Ù…Ø¹Ø±ÙØ©", category: "Skills", weight: 30 },
+  { id: "cmp", name: "Compliance", name_ar: "Ø§Ù„Ø§Ù…ØªØ«Ø§Ù„", category: "Responsibility", weight: 35 },
+  { id: "sup", name: "Supervisory", name_ar: "Ø§Ù„Ø¥Ø´Ø±Ø§Ù", category: "Responsibility", weight: 35 },
+  { id: "dec", name: "Decision-Making", name_ar: "ØµÙ†Ø¹ Ø§Ù„Ù‚Ø±Ø§Ø±", category: "Responsibility", weight: 30 },
+  { id: "mnt", name: "Mental Effort", name_ar: "Ø§Ù„Ù…Ø¬Ù‡ÙˆØ¯ Ø§Ù„Ø°Ù‡Ù†ÙŠ", category: "Effort", weight: 50 },
+  { id: "phy", name: "Physical Effort", name_ar: "Ø§Ù„Ù…Ø¬Ù‡ÙˆØ¯ Ø§Ù„Ø¨Ø¯Ù†ÙŠ", category: "Effort", weight: 50 },
+  { id: "haz", name: "Hazards", name_ar: "Ø§Ù„Ù…Ø®Ø§Ø·Ø±", category: "Conditions", weight: 25 },
+  { id: "sch", name: "Schedule", name_ar: "Ø§Ù„Ø¬Ø¯ÙˆÙ„ Ø§Ù„Ø²Ù…Ù†ÙŠ", category: "Conditions", weight: 25 },
+  { id: "env", name: "Environment", name_ar: "Ø§Ù„Ø¨ÙŠØ¦Ø©", category: "Conditions", weight: 25 },
+  { id: "trv", name: "Travel", name_ar: "Ø§Ù„Ø³ÙØ±", category: "Conditions", weight: 25 },
 ];
 
 const GRADES = [
-  { g: "G1", min: 100, max: 149, category_en: "Entry Level", category_ar: "مستوى مبتدئ" },
-  { g: "G2", min: 150, max: 199, category_en: "Junior", category_ar: "مساعد" },
-  { g: "G3", min: 200, max: 259, category_en: "Officer", category_ar: "موظف" },
-  { g: "G4", min: 260, max: 329, category_en: "Senior Officer", category_ar: "موظف أول" },
-  { g: "G5", min: 330, max: 409, category_en: "Specialist", category_ar: "أخصائي" },
-  { g: "G6", min: 410, max: 509, category_en: "Senior Specialist", category_ar: "أخصائي أول" },
-  { g: "G7", min: 510, max: 629, category_en: "Manager", category_ar: "مدير" },
-  { g: "G8", min: 630, max: 769, category_en: "Senior Manager", category_ar: "مدير أول" },
-  { g: "G9", min: 770, max: 929, category_en: "Director", category_ar: "مدير عام" },
-  { g: "G10", min: 930, max: 1000, category_en: "Executive", category_ar: "رئيس تنفيذي" },
+  { g: "G1", min: 100, max: 149, category_en: "Entry Level", category_ar: "Ù…Ø³ØªÙˆÙ‰ Ù…Ø¨ØªØ¯Ø¦" },
+  { g: "G2", min: 150, max: 199, category_en: "Junior", category_ar: "Ù…Ø³Ø§Ø¹Ø¯" },
+  { g: "G3", min: 200, max: 259, category_en: "Officer", category_ar: "Ù…ÙˆØ¸Ù" },
+  { g: "G4", min: 260, max: 329, category_en: "Senior Officer", category_ar: "Ù…ÙˆØ¸Ù Ø£ÙˆÙ„" },
+  { g: "G5", min: 330, max: 409, category_en: "Specialist", category_ar: "Ø£Ø®ØµØ§Ø¦ÙŠ" },
+  { g: "G6", min: 410, max: 509, category_en: "Senior Specialist", category_ar: "Ø£Ø®ØµØ§Ø¦ÙŠ Ø£ÙˆÙ„" },
+  { g: "G7", min: 510, max: 629, category_en: "Manager", category_ar: "Ù…Ø¯ÙŠØ±" },
+  { g: "G8", min: 630, max: 769, category_en: "Senior Manager", category_ar: "Ù…Ø¯ÙŠØ± Ø£ÙˆÙ„" },
+  { g: "G9", min: 770, max: 929, category_en: "Director", category_ar: "Ù…Ø¯ÙŠØ± Ø¹Ø§Ù…" },
+  { g: "G10", min: 930, max: 1000, category_en: "Executive", category_ar: "Ø±Ø¦ÙŠØ³ ØªÙ†ÙÙŠØ°ÙŠ" },
 ];
 
 export default function JobProfilesPage() {
@@ -116,11 +116,11 @@ export default function JobProfilesPage() {
   const isAr = document.documentElement.dir === "rtl";
   
   const [profiles, setProfiles] = useState<JobProfile[]>([
-    { id: "1", title: "Senior Developer", title_ar: "مطور برمجيات أول", department: "IT", department_ar: "تكنولوجيا المعلومات", points: 342, grade: "G5", status: "Approved", factors: {}, salary_mid: 8500 },
-    { id: "2", title: "HR Manager", title_ar: "مدير الموارد البشرية", department: "HR", department_ar: "الموارد البشرية", points: 580, grade: "G7", status: "Approved", factors: {}, salary_mid: 12000 },
-    { id: "3", title: "Accountant", title_ar: "محاسب", department: "Finance", department_ar: "المالية", points: 245, grade: "G3", status: "Approved", factors: {}, salary_mid: 6000 },
-    { id: "4", title: "Plant Operator", title_ar: "مشغل محطة", department: "Production", department_ar: "الإنتاج", points: 185, grade: "G2", status: "Approved", factors: {}, salary_mid: 4500 },
-    { id: "5", title: "Quality Inspector", title_ar: "مراقب جودة", department: "QA", department_ar: "الجودة", points: 290, grade: "G4", status: "Approved", factors: {}, salary_mid: 6800 },
+    { id: "1", title: "Senior Developer", title_ar: "Ù…Ø·ÙˆØ± Ø¨Ø±Ù…Ø¬ÙŠØ§Øª Ø£ÙˆÙ„", department: "IT", department_ar: "ØªÙƒÙ†ÙˆÙ„ÙˆØ¬ÙŠØ§ Ø§Ù„Ù…Ø¹Ù„ÙˆÙ…Ø§Øª", points: 342, grade: "G5", status: "Approved", factors: {}, salary_mid: 8500 },
+    { id: "2", title: "HR Manager", title_ar: "Ù…Ø¯ÙŠØ± Ø§Ù„Ù…ÙˆØ§Ø±Ø¯ Ø§Ù„Ø¨Ø´Ø±ÙŠØ©", department: "HR", department_ar: "Ø§Ù„Ù…ÙˆØ§Ø±Ø¯ Ø§Ù„Ø¨Ø´Ø±ÙŠØ©", points: 580, grade: "G7", status: "Approved", factors: {}, salary_mid: 12000 },
+    { id: "3", title: "Accountant", title_ar: "Ù…Ø­Ø§Ø³Ø¨", department: "Finance", department_ar: "Ø§Ù„Ù…Ø§Ù„ÙŠØ©", points: 245, grade: "G3", status: "Approved", factors: {}, salary_mid: 6000 },
+    { id: "4", title: "Plant Operator", title_ar: "Ù…Ø´ØºÙ„ Ù…Ø­Ø·Ø©", department: "Production", department_ar: "Ø§Ù„Ø¥Ù†ØªØ§Ø¬", points: 185, grade: "G2", status: "Approved", factors: {}, salary_mid: 4500 },
+    { id: "5", title: "Quality Inspector", title_ar: "Ù…Ø±Ø§Ù‚Ø¨ Ø¬ÙˆØ¯Ø©", department: "QA", department_ar: "Ø§Ù„Ø¬ÙˆØ¯Ø©", points: 290, grade: "G4", status: "Approved", factors: {}, salary_mid: 6800 },
   ]);
 
   const [isNewOpen, setIsNewOpen] = useState(false);
@@ -157,18 +157,18 @@ export default function JobProfilesPage() {
 
   const handleExportExcel = () => {
     exportToExcel({
-      title: isAr ? "أوصاف الوظائف المجمعة" : "Job Profiles Evaluation",
+      title: isAr ? "Ø£ÙˆØµØ§Ù Ø§Ù„ÙˆØ¸Ø§Ø¦Ù Ø§Ù„Ù…Ø¬Ù…Ø¹Ø©" : "Job Profiles Evaluation",
       filename: "Job_Evaluation_Profiles",
-      headers: [t("field_name"), t("field_department"), isAr ? "النقاط" : "Points", isAr ? "الدرجة" : "Grade", t("field_status")],
+      headers: [t("field_name"), t("field_department"), isAr ? "Ø§Ù„Ù†Ù‚Ø§Ø·" : "Points", isAr ? "Ø§Ù„Ø¯Ø±Ø¬Ø©" : "Grade", t("field_status")],
       rows: profiles.map(p => [isAr ? p.title_ar : p.title, isAr ? p.department_ar : p.department, p.points.toString(), p.grade, p.status])
     });
   };
 
   const handleExportPDF = () => {
     exportToPDF({
-      title: isAr ? "أوصاف الوظائف المجمعة" : "Job Profiles Evaluation",
+      title: isAr ? "Ø£ÙˆØµØ§Ù Ø§Ù„ÙˆØ¸Ø§Ø¦Ù Ø§Ù„Ù…Ø¬Ù…Ø¹Ø©" : "Job Profiles Evaluation",
       filename: "Job_Evaluation_Profiles",
-      headers: [t("field_name"), t("field_department"), isAr ? "النقاط" : "Points", isAr ? "الدرجة" : "Grade", t("field_status")],
+      headers: [t("field_name"), t("field_department"), isAr ? "Ø§Ù„Ù†Ù‚Ø§Ø·" : "Points", isAr ? "Ø§Ù„Ø¯Ø±Ø¬Ø©" : "Grade", t("field_status")],
       rows: profiles.map(p => [isAr ? p.title_ar : p.title, isAr ? p.department_ar : p.department, p.points.toString(), p.grade, p.status])
     });
   };
@@ -186,25 +186,25 @@ export default function JobProfilesPage() {
           <div className="space-y-3">
             <div className="flex items-center gap-3">
               <Activity className="h-4 w-4 text-primary animate-pulse" />
-              <span className="font-headline font-black tracking-[0.4em] uppercase text-[9px] text-primary">{isAr ? "بروتوكول التقييم" : "EVALUATION_PROTOCOL"}</span>
+              <span className="font-headline font-black tracking-[0.4em] uppercase text-[9px] text-primary">{isAr ? "Ø¨Ø±ÙˆØªÙˆÙƒÙˆÙ„ Ø§Ù„ØªÙ‚ÙŠÙŠÙ…" : "EVALUATION_PROTOCOL"}</span>
             </div>
             <h1 className="text-4xl lg:text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
-              {isAr ? "أوصاف وتقييم الوظائف" : "JOB_PROFILE_REGISTRY"}
+              {isAr ? "Ø£ÙˆØµØ§Ù ÙˆØªÙ‚ÙŠÙŠÙ… Ø§Ù„ÙˆØ¸Ø§Ø¦Ù" : "JOB_PROFILE_REGISTRY"}
             </h1>
-            <p className="text-secondary/40 font-medium text-sm border-l-2 border-primary/20 pl-4">
-              {isAr ? "إدارة وتحليل الوظائف باستخدام منهجية النقاط الصناعية." : "Industrial grade point-factor methodology management for structural integrity."}
+            <p className="text-secondary/40 font-medium text-sm border-s-2 border-primary/20 ps-4">
+              {isAr ? "Ø¥Ø¯Ø§Ø±Ø© ÙˆØªØ­Ù„ÙŠÙ„ Ø§Ù„ÙˆØ¸Ø§Ø¦Ù Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Ù…Ù†Ù‡Ø¬ÙŠØ© Ø§Ù„Ù†Ù‚Ø§Ø· Ø§Ù„ØµÙ†Ø§Ø¹ÙŠØ©." : "Industrial grade point-factor methodology management for structural integrity."}
             </p>
           </div>
           
           <div className="flex flex-wrap items-center gap-3">
             <Button variant="outline" className="rounded-none border-white/10 bg-white/5 hover:bg-white/10 font-headline font-black text-[10px] tracking-widest px-6 h-12 uppercase" onClick={handleExportPDF}>
-              <Download className="h-4 w-4 mr-2" /> PDF_EXPORT
+              <Download className="h-4 w-4 me-2" /> PDF_EXPORT
             </Button>
             <Button variant="outline" className="rounded-none border-white/10 bg-white/5 hover:bg-white/10 font-headline font-black text-[10px] tracking-widest px-6 h-12 uppercase" onClick={handleExportExcel}>
-              <FileDown className="h-4 w-4 mr-2" /> XLSX_STREAM
+              <FileDown className="h-4 w-4 me-2" /> XLSX_STREAM
             </Button>
             <Button className="rounded-none bg-primary hover:bg-primary/90 text-primary-foreground font-headline font-black tracking-widest text-[10px] px-10 h-12 uppercase shadow-[0_0_20px_rgba(212,175,55,0.3)]" onClick={() => { setEvalStep(0); setIsNewOpen(true); }}>
-              <Plus className="h-4 w-4 mr-2" /> INITIALIZE_EVAL
+              <Plus className="h-4 w-4 me-2" /> INITIALIZE_EVAL
             </Button>
           </div>
         </div>
@@ -214,10 +214,10 @@ export default function JobProfilesPage() {
       {/* Stats - Tactical Modules */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[
-          { label: isAr ? 'إجمالي السجلات' : 'TOTAL_NODES', val: profiles.length, icon: Users, color: 'text-primary' },
-          { label: isAr ? 'متوسط الكفاءة' : 'AVG_EQUITY_PTS', val: Math.round(profiles.reduce((a, b) => a + b.points, 0) / profiles.length), icon: Target, color: 'text-emerald-500' },
-          { label: isAr ? 'أعلى فئة' : 'MAX_TIER_IDENTIFIED', val: 'G7', icon: TrendingUp, color: 'text-amber-500' },
-          { label: isAr ? 'حالة البروتوكول' : 'PROTOCOL_STATUS', val: 'SECURE', icon: Crosshair, color: 'text-sky-500' },
+          { label: isAr ? 'Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„Ø³Ø¬Ù„Ø§Øª' : 'TOTAL_NODES', val: profiles.length, icon: Users, color: 'text-primary' },
+          { label: isAr ? 'Ù…ØªÙˆØ³Ø· Ø§Ù„ÙƒÙØ§Ø¡Ø©' : 'AVG_EQUITY_PTS', val: Math.round(profiles.reduce((a, b) => a + b.points, 0) / profiles.length), icon: Target, color: 'text-emerald-500' },
+          { label: isAr ? 'Ø£Ø¹Ù„Ù‰ ÙØ¦Ø©' : 'MAX_TIER_IDENTIFIED', val: 'G7', icon: TrendingUp, color: 'text-amber-500' },
+          { label: isAr ? 'Ø­Ø§Ù„Ø© Ø§Ù„Ø¨Ø±ÙˆØªÙˆÙƒÙˆÙ„' : 'PROTOCOL_STATUS', val: 'SECURE', icon: Crosshair, color: 'text-sky-500' },
         ].map((stat, i) => (
           <motion.div
             key={i}
@@ -249,11 +249,11 @@ export default function JobProfilesPage() {
           <CardHeader className="border-b border-zinc-900 flex flex-row items-center justify-between p-8">
             <CardTitle className="font-headline text-xl font-black uppercase flex items-center gap-3">
               <Shield className="h-5 w-5 text-primary" />
-              {isAr ? "سجل ذكاء الوظائف" : "JOB_VALUATION_STREAM"}
+              {isAr ? "Ø³Ø¬Ù„ Ø°ÙƒØ§Ø¡ Ø§Ù„ÙˆØ¸Ø§Ø¦Ù" : "JOB_VALUATION_STREAM"}
             </CardTitle>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-600" />
-              <Input placeholder={isAr ? "فلترة البيانات..." : "QUERY_LOGS..."} className="pl-10 h-12 w-[240px] bg-white/5 border-zinc-800 rounded-none font-mono text-xs uppercase tracking-widest focus:border-primary/50 text-white" />
+              <Input placeholder={isAr ? "ÙÙ„ØªØ±Ø© Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª..." : "QUERY_LOGS..."} className="ps-10 h-12 w-[240px] bg-white/5 border-zinc-800 rounded-none font-mono text-xs uppercase tracking-widest focus:border-primary/50 text-white" />
             </div>
           </CardHeader>
           <CardContent className="p-0">
@@ -261,11 +261,11 @@ export default function JobProfilesPage() {
               <table className="w-full border-collapse">
                 <thead className="bg-zinc-900/50 text-zinc-500 font-headline font-black text-[10px] uppercase tracking-widest border-b border-zinc-800">
                   <tr>
-                    <th className="px-8 py-5 text-left">{isAr ? "المسمى" : "PROFILE_ID"}</th>
-                    <th className="px-8 py-5 text-left">{isAr ? "القسم" : "UNIT_DOMAIN"}</th>
-                    <th className="px-8 py-5 text-center">{isAr ? "النقاط" : "PTS_VAL"}</th>
-                    <th className="px-8 py-5 text-center">{isAr ? "الدرجة" : "TIER"}</th>
-                    <th className="px-8 py-5 text-right">{isAr ? "العمليات" : "COMMAND"}</th>
+                    <th className="px-8 py-5 text-start">{isAr ? "Ø§Ù„Ù…Ø³Ù…Ù‰" : "PROFILE_ID"}</th>
+                    <th className="px-8 py-5 text-start">{isAr ? "Ø§Ù„Ù‚Ø³Ù…" : "UNIT_DOMAIN"}</th>
+                    <th className="px-8 py-5 text-center">{isAr ? "Ø§Ù„Ù†Ù‚Ø§Ø·" : "PTS_VAL"}</th>
+                    <th className="px-8 py-5 text-center">{isAr ? "Ø§Ù„Ø¯Ø±Ø¬Ø©" : "TIER"}</th>
+                    <th className="px-8 py-5 text-end">{isAr ? "Ø§Ù„Ø¹Ù…Ù„ÙŠØ§Øª" : "COMMAND"}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-zinc-900">
@@ -296,7 +296,7 @@ export default function JobProfilesPage() {
                             {p.grade}
                           </div>
                         </td>
-                        <td className="px-8 py-5 text-right">
+                        <td className="px-8 py-5 text-end">
                           <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all">
                             <Button variant="ghost" size="icon" className="h-8 w-8 rounded-none border border-zinc-800 hover:bg-white/5 hover:text-primary transition-colors"><Pencil className="h-4 w-4" /></Button>
                             <Button variant="ghost" size="icon" className="h-8 w-8 rounded-none border border-zinc-800 hover:bg-rose-500/10 hover:text-rose-500 transition-colors"><Trash2 className="h-4 w-4" /></Button>
@@ -317,7 +317,7 @@ export default function JobProfilesPage() {
           <CardHeader className="p-8 border-b border-zinc-900">
             <CardTitle className="font-headline text-lg font-black uppercase flex items-center gap-3">
               <TrendingUp className="h-5 w-5 text-emerald-500" />
-              {isAr ? "تحليل العدالة" : "EQUITY_ANALYTICS"}
+              {isAr ? "ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø¹Ø¯Ø§Ù„Ø©" : "EQUITY_ANALYTICS"}
             </CardTitle>
           </CardHeader>
           <CardContent className="h-[400px] p-8">
@@ -357,21 +357,21 @@ export default function JobProfilesPage() {
                   <div className="p-3 bg-primary/10 border border-primary text-primary">
                     <Calculator className="h-8 w-8" />
                   </div>
-                  {isAr ? "محرك تقييم العوامل" : "FACTOR_EVAL_ENGINE"}
+                  {isAr ? "Ù…Ø­Ø±Ùƒ ØªÙ‚ÙŠÙŠÙ… Ø§Ù„Ø¹ÙˆØ§Ù…Ù„" : "FACTOR_EVAL_ENGINE"}
                 </DialogTitle>
                 <DialogDescription className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest">
-                  {isAr ? "بروتوكول النقاط الموزونة (SC-2026)" : "WEIGHTED_FACTOR_PROTOCOL_v4.2_ACTIVE"}
+                  {isAr ? "Ø¨Ø±ÙˆØªÙˆÙƒÙˆÙ„ Ø§Ù„Ù†Ù‚Ø§Ø· Ø§Ù„Ù…ÙˆØ²ÙˆÙ†Ø© (SC-2026)" : "WEIGHTED_FACTOR_PROTOCOL_v4.2_ACTIVE"}
                 </DialogDescription>
               </div>
               
               <div className="flex items-center gap-8 p-6 bg-black border border-zinc-800 min-w-[320px]">
                 <div className="flex-1">
-                  <p className="text-[9px] font-headline font-black text-primary tracking-[0.2em] uppercase">{isAr ? 'نقاط التقييم' : 'PTS_ACCUMULATED'}</p>
+                  <p className="text-[9px] font-headline font-black text-primary tracking-[0.2em] uppercase">{isAr ? 'Ù†Ù‚Ø§Ø· Ø§Ù„ØªÙ‚ÙŠÙŠÙ…' : 'PTS_ACCUMULATED'}</p>
                   <p className="text-4xl font-mono font-black text-white leading-none mt-2">{currentTotal}</p>
                 </div>
                 <div className="h-12 w-px bg-zinc-800" />
                 <div className="flex-1">
-                  <p className="text-[9px] font-headline font-black text-zinc-500 tracking-[0.2em] uppercase">{isAr ? 'الدرجة المستحقة' : 'TIER_GRADE'}</p>
+                  <p className="text-[9px] font-headline font-black text-zinc-500 tracking-[0.2em] uppercase">{isAr ? 'Ø§Ù„Ø¯Ø±Ø¬Ø© Ø§Ù„Ù…Ø³ØªØ­Ù‚Ø©' : 'TIER_GRADE'}</p>
                   <p className="text-4xl font-mono font-black text-primary leading-none mt-2">{currentGrade}</p>
                 </div>
               </div>
@@ -390,25 +390,25 @@ export default function JobProfilesPage() {
                 >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                     <div className="space-y-4">
-                      <label className="text-[10px] font-headline font-black uppercase tracking-[0.3em] text-primary">{isAr ? "تعريف الهوية (EN)" : "PROFILE_LABEL (EN) *"}</label>
+                      <label className="text-[10px] font-headline font-black uppercase tracking-[0.3em] text-primary">{isAr ? "ØªØ¹Ø±ÙŠÙ Ø§Ù„Ù‡ÙˆÙŠØ© (EN)" : "PROFILE_LABEL (EN) *"}</label>
                       <Input 
                         placeholder="e.g. SENIOR_SYSTEM_OPERATIVE" 
-                        className="bg-white/5 border-zinc-800 h-14 text-xl font-black rounded-none border-l-4 border-l-primary focus:border-primary/50 text-white transition-all uppercase placeholder:text-zinc-800" 
+                        className="bg-white/5 border-zinc-800 h-14 text-xl font-black rounded-none border-s-4 border-s-primary focus:border-primary/50 text-white transition-all uppercase placeholder:text-zinc-800" 
                         value={newProfile.title_en}
                         onChange={(e) => setNewProfile({ ...newProfile, title_en: e.target.value })}
                       />
                     </div>
                     <div className="space-y-4">
-                      <label className="text-[10px] font-headline font-black uppercase tracking-[0.3em] text-primary">{isAr ? "تعريف الهوية (AR)" : "PROFILE_LABEL (AR) *"}</label>
+                      <label className="text-[10px] font-headline font-black uppercase tracking-[0.3em] text-primary">{isAr ? "ØªØ¹Ø±ÙŠÙ Ø§Ù„Ù‡ÙˆÙŠØ© (AR)" : "PROFILE_LABEL (AR) *"}</label>
                       <Input 
-                        placeholder="المسمى العربي" 
-                        className="text-right bg-white/5 border-zinc-800 h-14 text-xl font-black rounded-none border-r-4 border-r-primary focus:border-primary/50 text-white transition-all" 
+                        placeholder="Ø§Ù„Ù…Ø³Ù…Ù‰ Ø§Ù„Ø¹Ø±Ø¨ÙŠ" 
+                        className="text-end bg-white/5 border-zinc-800 h-14 text-xl font-black rounded-none border-e-4 border-e-primary focus:border-primary/50 text-white transition-all" 
                         value={newProfile.title_ar}
                         onChange={(e) => setNewProfile({ ...newProfile, title_ar: e.target.value })}
                       />
                     </div>
                     <div className="space-y-4 md:col-span-2">
-                      <label className="text-[10px] font-headline font-black uppercase tracking-[0.3em] text-zinc-600">{isAr ? "تخصيص الوحدة" : "DEPLOYMENT_DOMAIN (DEPT) *"}</label>
+                      <label className="text-[10px] font-headline font-black uppercase tracking-[0.3em] text-zinc-600">{isAr ? "ØªØ®ØµÙŠØµ Ø§Ù„ÙˆØ­Ø¯Ø©" : "DEPLOYMENT_DOMAIN (DEPT) *"}</label>
                       <Select value={newProfile.department_id} onValueChange={(val) => setNewProfile({ ...newProfile, department_id: val })}>
                         <SelectTrigger className="bg-white/5 border-zinc-800 h-14 rounded-none text-white font-bold uppercase text-[10px] tracking-widest">
                           <SelectValue placeholder="SELECT_OPERATIONAL_DOMAIN" />
@@ -431,7 +431,7 @@ export default function JobProfilesPage() {
                       <div>
                         <h4 className="font-headline font-black text-sm uppercase tracking-[0.2em] text-white">EVALUATION_PROTOCOL_NOTICE</h4>
                         <p className="text-[11px] text-zinc-500 mt-2 leading-relaxed font-sans font-medium">
-                          {isAr ? "يتطلب محرك التقييم إدخال مستويات دقيقة لـ 12 عاملاً فرعياً موزعة على 4 محاور أساسية لضمان الامتثال للمعايير الصناعية." : "The valuation engine requires high-fidelity calibration across 12 unique sub-factors. All inputs are cryptographically logged for structural integrity audit trails."}
+                          {isAr ? "ÙŠØªØ·Ù„Ø¨ Ù…Ø­Ø±Ùƒ Ø§Ù„ØªÙ‚ÙŠÙŠÙ… Ø¥Ø¯Ø®Ø§Ù„ Ù…Ø³ØªÙˆÙŠØ§Øª Ø¯Ù‚ÙŠÙ‚Ø© Ù„Ù€ 12 Ø¹Ø§Ù…Ù„Ø§Ù‹ ÙØ±Ø¹ÙŠØ§Ù‹ Ù…ÙˆØ²Ø¹Ø© Ø¹Ù„Ù‰ 4 Ù…Ø­Ø§ÙˆØ± Ø£Ø³Ø§Ø³ÙŠØ© Ù„Ø¶Ù…Ø§Ù† Ø§Ù„Ø§Ù…ØªØ«Ø§Ù„ Ù„Ù„Ù…Ø¹Ø§ÙŠÙŠØ± Ø§Ù„ØµÙ†Ø§Ø¹ÙŠØ©." : "The valuation engine requires high-fidelity calibration across 12 unique sub-factors. All inputs are cryptographically logged for structural integrity audit trails."}
                         </p>
                       </div>
                     </div>
@@ -519,7 +519,7 @@ export default function JobProfilesPage() {
                     disabled={!newProfile.title_en}
                     className="rounded-none bg-white text-black hover:bg-white/90 font-headline font-black text-[10px] tracking-widest px-12 uppercase h-12"
                   >
-                    DEPLOY_FACTORS <ChevronRight className="h-4 w-4 ml-2" />
+                    DEPLOY_FACTORS <ChevronRight className="h-4 w-4 ms-2" />
                   </Button>
                 ) : (
                   <Button 
@@ -531,7 +531,7 @@ export default function JobProfilesPage() {
                         title: newProfile.title_en,
                         title_ar: newProfile.title_ar,
                         department: "DOMAIN_DEPLOYED",
-                        department_ar: "قسم جديد",
+                        department_ar: "Ù‚Ø³Ù… Ø¬Ø¯ÙŠØ¯",
                         points: currentTotal,
                         grade: currentGrade,
                         status: "Approved",
@@ -543,7 +543,7 @@ export default function JobProfilesPage() {
                       toast({ title: "LOG_COMMITTED", description: "Valuation protocol successfully written to registry." });
                     }}
                   >
-                    <CheckCircle2 className="h-4 w-4 mr-2" /> COMMIT_REGISTRY
+                    <CheckCircle2 className="h-4 w-4 me-2" /> COMMIT_REGISTRY
                   </Button>
                 )}
               </div>

@@ -76,7 +76,7 @@ export default function Login() {
           onClick={() => setLang(lang === "en" ? "ar" : "en")}
           className="h-12 px-6 border border-white/5 bg-black/40 backdrop-blur-md hover:bg-white/10 text-[10px] font-headline font-black tracking-[0.2em] text-zinc-500 hover:text-white rounded-none transition-all uppercase shadow-2xl"
         >
-          <Globe className="h-3.5 w-3.5 mr-3 text-primary" />
+          <Globe className="h-3.5 w-3.5 me-3 text-primary" />
           {lang === "en" ? "AR" : "EN"}
         </Button>
       </div>
@@ -162,7 +162,8 @@ export default function Login() {
             <CardFooter className="p-12 pt-0 flex flex-col gap-10">
               <Button
                 type="submit"
-                className="w-full h-18 bg-primary text-primary-foreground hover:bg-primary/90 font-headline font-black text-xs tracking-[0.3em] uppercase rounded-none transition-all py-8 shadow-[0_10px_30px_rgba(0,0,0,0.3)] active:scale-[0.98] group"
+                variant="industrial-metallic"
+                className="w-full h-18 text-xs tracking-[0.3em] shadow-[0_10px_30px_rgba(0,0,0,0.3)] group"
                 disabled={loginMutation.isPending}
               >
                 {loginMutation.isPending ? (
@@ -226,7 +227,7 @@ export default function Login() {
                 className="flex items-center gap-4 group"
               >
                 <div className="h-10 w-[1px] bg-zinc-900" />
-                <div className="text-right">
+                <div className="text-end">
                    <p className="text-[8px] font-mono text-zinc-700 uppercase tracking-widest leading-none">{t("created_by")}</p>
                    <p className="text-[10px] font-headline font-black text-white uppercase tracking-widest group-hover:text-primary transition-colors">YASSERIOUS_ENGINEERING</p>
                 </div>

@@ -309,7 +309,7 @@ export default function WorkflowsPage() {
       <div className="relative p-10 bg-[#0A0A0A] border-2 border-primary/20 overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="space-y-3 text-center md:text-left">
+          <div className="space-y-3 text-center md:text-start">
             <div className="flex items-center justify-center md:justify-start gap-3">
               <GitBranch className="h-4 w-4 text-primary animate-pulse" />
               <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">EVALUATION_WORKFLOW_PROTOCOL</span>
@@ -317,12 +317,12 @@ export default function WorkflowsPage() {
             <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
               STRATEGIC_WORKFLOWS
             </h2>
-            <p className="text-secondary/40 font-medium border-l-2 border-primary/20 pl-4">Hierarchical evaluation and approval chain management.</p>
+            <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4">Hierarchical evaluation and approval chain management.</p>
           </div>
           
           {isManager && (
             <Button className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto hover:bg-primary/90" onClick={openCreate}>
-              <Plus className="h-4 w-4 mr-2" /> INITIALIZE_PROTOCOL
+              <Plus className="h-4 w-4 me-2" /> INITIALIZE_PROTOCOL
             </Button>
           )}
         </div>
@@ -409,7 +409,7 @@ export default function WorkflowsPage() {
                         )}
                         <Link href={`/workflows/${wf.id}`}>
                           <Button variant="ghost" className="rounded-none border border-white/10 hover:border-primary/50 text-[10px] font-headline font-black tracking-widest uppercase h-auto py-3 px-5 group/btn">
-                             ACCESS <ExternalLink className="ml-2 h-3 w-3 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+                             ACCESS <ExternalLink className="ms-2 h-3 w-3 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
                           </Button>
                         </Link>
                       </div>
@@ -464,10 +464,10 @@ export default function WorkflowsPage() {
                     onValueChange={(v) => setForm({ ...form, campaign_id: v === "_none" ? "" : v })}
                   >
                     <SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
-                      <SelectValue placeholder="— NULL —" />
+                      <SelectValue placeholder="â€” NULL â€”" />
                     </SelectTrigger>
                     <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">
-                      <SelectItem value="_none" className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">— NULL —</SelectItem>
+                      <SelectItem value="_none" className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">â€” NULL â€”</SelectItem>
                       {campaigns?.map((c) => (
                         <SelectItem key={c.id} value={c.id} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{c.title}</SelectItem>
                       ))}
@@ -539,7 +539,7 @@ export default function WorkflowsPage() {
                         </div>
 
                         {/* Supervisors under engineer */}
-                        <div className="pl-6 space-y-4 border-l border-sky-500/20">
+                        <div className="ps-6 space-y-4 border-l border-sky-500/20">
                           <Label className="font-headline font-black text-[9px] text-secondary/30 tracking-[0.2em] uppercase">DIRECT_SUPERVISORS</Label>
                           <Select onValueChange={(v) => addSupervisor(eng.userId, v)} value="">
                             <SelectTrigger className="h-10 bg-white/5 border-white/5 rounded-none font-headline font-black text-[9px] tracking-widest text-white uppercase">
@@ -568,7 +568,7 @@ export default function WorkflowsPage() {
                                 </div>
 
                                 {/* Workers under this supervisor */}
-                                <div className="pl-6 space-y-4 border-l border-amber-500/20">
+                                <div className="ps-6 space-y-4 border-l border-amber-500/20">
                                   <div className="flex items-center gap-3">
                                     <Select
                                       onValueChange={(v) => {

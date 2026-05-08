@@ -96,7 +96,7 @@ export default function MyTasksPage() {
             <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
               My Tasks
             </h2>
-            <p className="text-secondary/40 font-medium border-l-2 border-primary/20 pl-4 uppercase tracking-widest text-xs">Awaiting operational execution.</p>
+            <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4 uppercase tracking-widest text-xs">Awaiting operational execution.</p>
           </div>
           
           <div className="flex gap-4">
@@ -147,7 +147,7 @@ export default function MyTasksPage() {
                             </div>
                           </div>
                           
-                          <div className="flex-1 space-y-4 text-center md:text-left">
+                          <div className="flex-1 space-y-4 text-center md:text-start">
                             <div className="flex flex-wrap justify-center md:justify-start gap-3 items-center">
                               <Badge variant="outline" className={`rounded-none font-mono text-[9px] font-black tracking-widest uppercase px-2 py-0.5 ${LEVEL_BADGE[task.level]}`}>
                                 {LEVEL_LABELS[task.level] || task.level}
@@ -170,7 +170,7 @@ export default function MyTasksPage() {
 
                           <Link href={`/workflows/${task.workflow.id}`}>
                             <Button className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto shadow-[0_0_20px_rgba(255,255,255,0.05)] group-hover:scale-105 transition-transform">
-                              EXECUTE_ACTION <ArrowRight className="h-4 w-4 ml-2" />
+                              EXECUTE_ACTION <ArrowRight className="h-4 w-4 ms-2" />
                             </Button>
                           </Link>
                         </div>

@@ -248,12 +248,12 @@ export default function TrainingPage() {
             <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
               {t("training_title")}
             </h2>
-            <p className="text-secondary/40 font-medium border-l-2 border-primary/20 pl-4">{t("training_subtitle")}</p>
+            <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4">{t("training_subtitle")}</p>
           </div>
           
           {isAdmin && (
             <Button className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto hover:bg-primary/90" onClick={() => { setCreateForm(emptyCreateForm()); setShowCreate(true); }}>
-              <Plus className="h-4 w-4 mr-2" /> INITIALIZE_NEW_VECTOR
+              <Plus className="h-4 w-4 me-2" /> INITIALIZE_NEW_VECTOR
             </Button>
           )}
         </div>
@@ -320,7 +320,7 @@ export default function TrainingPage() {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse text-sm">
+            <table className="w-full text-start border-collapse text-sm">
               <thead>
                 <tr className="bg-white/5 border-b border-white/10">
                   <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase">{t("field_employee")}</th>
@@ -329,7 +329,7 @@ export default function TrainingPage() {
                   <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase">{t("field_status")}</th>
                   <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase">{t("training_col_target_date")}</th>
                   <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase">{t("field_notes")}</th>
-                  <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase text-right">{t("common_actions")}</th>
+                  <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase text-end">{t("common_actions")}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
@@ -345,7 +345,7 @@ export default function TrainingPage() {
                         </div>
                       </Link>
                     </td>
-                    <td className="px-8 py-6 font-mono text-[11px] text-primary/60">{r.skill_name ?? "—"}</td>
+                    <td className="px-8 py-6 font-mono text-[11px] text-primary/60">{r.skill_name ?? "â€”"}</td>
                     <td className="px-8 py-6">{typeBadge(r.recommendation_type)}</td>
                     <td className="px-8 py-6">{statusBadge(r.status)}</td>
                     <td className="px-8 py-6 font-mono text-[11px] text-secondary/40">
@@ -354,7 +354,7 @@ export default function TrainingPage() {
                     <td className="px-8 py-6">
                        <p className="text-[11px] font-medium text-secondary/40 max-w-xs truncate italic">{r.notes ?? "NO_REMARKS"}</p>
                     </td>
-                    <td className="px-8 py-6 text-right">
+                    <td className="px-8 py-6 text-end">
                       {isAdmin && (
                         <div className="flex items-center justify-end gap-2">
                           <Button size="icon" variant="ghost" className="h-10 w-10 rounded-none border border-transparent hover:border-primary/30 hover:bg-primary/5 text-secondary/30 hover:text-primary" onClick={() => openEdit(r)}>

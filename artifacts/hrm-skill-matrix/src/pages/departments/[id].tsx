@@ -1,18 +1,26 @@
-import { useRoute, Link } from "wouter";
-import {
-  useGetDepartment,
-  useGetDepartmentStats,
-  useListEmployees,
-  useListSkills,
-} from "@hrm-development/api-client-react";
-import type { DepartmentStats } from "@hrm-development/api-client-react";
-import { getAuthHeaders } from "@/lib/auth";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
-import { ArrowLeft, Users, BookOpen, Building2, Activity, Zap, ShieldCheck, ExternalLink, Target, Briefcase } from "lucide-react";
-import { useT } from "@/i18n";
+import { useState } from "react";
+import { Link } from "wouter";
 import { motion } from "framer-motion";
+import { useListDepartments } from "@hrm-development/api-client-react";
+import { getAuthHeaders, getAuthUser } from "@/lib/auth";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
+} from "@/components/ui/dialog";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Plus, Pencil, Trash2, Users, ExternalLink, Download, LayoutDashboard, Building2, Terminal } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useToast } from "@/hooks/use-toast";
+import { useT } from "@/i18n";
+import { exportToPDF, exportToExcel } from "@/lib/export-utils";
+import { Badge } from "@/components/ui/badge";
 
 const CornerMarks = ({ color = "primary" }: { color?: string }) => (
   <>
@@ -23,215 +31,259 @@ const CornerMarks = ({ color = "primary" }: { color?: string }) => (
   </>
 );
 
-export default function DepartmentDetailPage() {
-  const [, params] = useRoute("/departments/:id");
-  const id = params?.id ?? "";
+interface DeptForm {
+  name: string;
+  code: string;
+  description: string;
+  manager_email: string;
+}
+
+const emptyForm = (): DeptForm => ({ name: "", code: "", description: "", manager_email: "" });
+
+export default function DepartmentsPage() {
   const headers = getAuthHeaders();
+  const user = getAuthUser();
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const isAdmin = user?.role === "super_admin";
   const t = useT();
 
-  const { data: dept, isLoading } = useGetDepartment(id, { request: { headers } });
-  const { data: stats } = useGetDepartmentStats(id, { request: { headers } });
-  const { data: employees } = useListEmployees(
-    { department_id: id, page: 1, page_size: 50 },
-    { request: { headers } },
-  );
-  const { data: skills } = useListSkills({ department_id: id }, { request: { headers } });
+  const { data: departments, isLoading, queryKey } = useListDepartments({ request: { headers } });
 
-  if (isLoading)
-    return (
-      <div className="space-y-6 pb-20">
-        <Skeleton className="h-40 w-full bg-zinc-900 rounded-none" />
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-           {Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-24 bg-zinc-900 rounded-none" />)}
-        </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-           <Skeleton className="h-[400px] bg-zinc-900 rounded-none" />
-           <Skeleton className="h-[400px] bg-zinc-900 rounded-none" />
-        </div>
-      </div>
-    );
+  const [showCreate, setShowCreate] = useState(false);
+  const [editTarget, setEditTarget] = useState<(typeof departments extends (infer T)[] | undefined ? T : never) | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
+  const [form, setForm] = useState<DeptForm>(emptyForm());
+  const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
-  if (!dept) return (
-    <div className="p-20 text-center border-2 border-zinc-900 bg-black/20 font-mono text-xs uppercase tracking-[0.3em] text-zinc-600">
-      {t("dept_not_found")}
-    </div>
-  );
+  const openCreate = () => { setForm(emptyForm()); setShowCreate(true); };
+  const openEdit = (dept: NonNullable<typeof departments>[number]) => {
+    setForm({ name: dept.name, code: dept.code ?? "", description: dept.description ?? "", manager_email: dept.manager_email ?? "" });
+    setEditTarget(dept);
+  };
 
-  const s = stats as DepartmentStats | undefined;
+  const handleSave = async () => {
+    if (!form.name.trim()) {
+      toast({ title: t("departments_name_required"), variant: "destructive" });
+      return;
+    }
+    setSaving(true);
+    try {
+      const isEdit = !!editTarget;
+      const url = isEdit ? `/api/departments/${editTarget!.id}` : `/api/departments`;
+      const res = await fetch(url, {
+        method: isEdit ? "PUT" : "POST",
+        headers: { "Content-Type": "application/json", ...headers },
+        body: JSON.stringify({ name: form.name, code: form.code || undefined, description: form.description || undefined, manager_email: form.manager_email || undefined }),
+      });
+      if (res.ok) {
+        toast({ title: isEdit ? t("departments_updated") : t("departments_created") });
+        setShowCreate(false);
+        setEditTarget(null);
+        await queryClient.invalidateQueries({ queryKey });
+      } else {
+        const body = await res.json() as { message?: string };
+        toast({ title: t("common_failed"), description: body.message ?? "Could not save.", variant: "destructive" });
+      }
+    } catch {
+      toast({ title: t("common_network_error"), variant: "destructive" });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!deleteTarget) return;
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/departments/${deleteTarget.id}`, { method: "DELETE", headers });
+      if (res.ok) {
+        toast({ title: t("departments_deleted") });
+        setDeleteTarget(null);
+        await queryClient.invalidateQueries({ queryKey });
+      } else {
+        const body = await res.json() as { message?: string };
+        toast({ title: t("departments_cannot_delete"), description: body.message ?? "Failed to delete.", variant: "destructive" });
+        setDeleteTarget(null);
+      }
+    } catch {
+      toast({ title: t("common_network_error"), variant: "destructive" });
+    } finally {
+      setDeleting(false);
+    }
+  };
 
   return (
-    <div className="space-y-10 pb-24 font-sans text-white">
-      {/* Back Navigation */}
-      <Link href="/departments">
-        <motion.button 
-          whileHover={{ x: -5 }}
-          className="group flex items-center gap-3 text-[10px] font-mono font-black text-zinc-500 hover:text-primary transition-colors uppercase tracking-[0.3em]"
-        >
-          <ArrowLeft className="h-4 w-4" /> {t("dept_back")}
-        </motion.button>
-      </Link>
-
-      {/* Header - Unit Detail */}
-      <div className="relative p-10 bg-[#0A0A0A] border-2 border-primary/20 overflow-hidden">
+    <div className="space-y-8 pb-20 font-sans selection:bg-primary selection:text-primary-foreground">
+       {/* Header - Industrial Style */}
+       <div className="relative p-10 bg-[#0A0A0A] border-2 border-primary/20 overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
-        <div className="relative z-10 flex flex-col md:flex-row items-center gap-10">
-          <div className="relative group">
-            <div className="w-24 h-24 rounded-none bg-zinc-900 border border-zinc-800 flex items-center justify-center text-4xl font-headline font-black text-primary transition-transform group-hover:scale-105">
-              <Building2 className="h-10 w-10" />
+        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="space-y-3">
+            <div className="flex items-center gap-3">
+              <Building2 className="h-4 w-4 text-primary" />
+              <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">ORGANIZATIONAL_STRUCTURE</span>
             </div>
-            <CornerMarks />
+            <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
+              {t("departments_title")}
+            </h2>
+            <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4">{t("departments_subtitle")}</p>
           </div>
           
-          <div className="flex-1 space-y-4 text-center md:text-left">
-            <div className="flex flex-col md:flex-row items-center gap-4">
-              <h2 className="text-5xl font-headline font-black tracking-tighter uppercase leading-none">{dept.name}</h2>
-              <Badge variant="outline" className="border-emerald-500/30 bg-emerald-500/10 text-emerald-500 rounded-none font-mono text-[10px] font-black px-3 py-1 uppercase tracking-widest">
-                ACTIVE_UNIT
-              </Badge>
-            </div>
-            
-            <div className="flex flex-wrap justify-center md:justify-start gap-6 text-[10px] font-mono font-black text-zinc-500 uppercase tracking-widest">
-              <span className="bg-primary/10 text-primary px-3 py-1 border border-primary/20">
-                UNIT_ID::{dept.code || "UNKNOWN"}
-              </span>
-              {dept.description && (
-                <span className="flex items-center gap-2 border-l border-zinc-800 pl-6 text-zinc-600">
-                  {dept.description}
-                </span>
-              )}
-            </div>
-          </div>
-
-          <div className="text-center md:text-right border-l-2 border-zinc-900 pl-10 hidden md:block">
-            <p className="text-4xl font-mono font-black text-primary leading-none">{s?.employee_count || 0}</p>
-            <p className="text-[9px] font-headline font-black text-zinc-500 mt-2 uppercase tracking-[0.3em]">UNIT_PERSONNEL</p>
+          <div className="flex items-center gap-3">
+            <Button variant="outline" className="rounded-none border-white/10 bg-white/5 hover:bg-white/10 text-white font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto" onClick={() => exportToPDF({
+              title: t("departments_title"),
+              filename: "Departments_List",
+              headers: [t("field_name"), t("field_code"), t("field_description"), t("field_manager_email"), t("departments_col_employees")],
+              rows: (departments ?? []).map(d => [d.name, d.code ?? "â€”", d.description ?? "â€”", d.manager_email ?? "â€”", d.employee_count ?? 0])
+            })}>
+              <Download className="h-4 w-4 me-2" /> PDF_EXPORT
+            </Button>
+            {isAdmin && (
+              <Button className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto hover:bg-primary/90" onClick={openCreate}>
+                <Plus className="h-4 w-4 me-2" /> CREATE_UNIT
+              </Button>
+            )}
           </div>
         </div>
         <CornerMarks />
       </div>
 
-      {/* Metrics Grid */}
-      {s && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {[
-            { label: t("dept_stat_employees"), value: s.employee_count, icon: Users, color: "primary" },
-            { label: t("class_a"), value: s.class_a_count, icon: ShieldCheck, color: "emerald-400" },
-            { label: t("dept_stat_avg_score"), value: `${Number(s.average_percentage ?? 0).toFixed(1)}%`, icon: Activity, color: "primary" },
-            { label: t("dept_stat_skills"), value: s.skill_count, icon: Target, color: "primary" }
-          ].map((stat, i) => (
-            <Card key={i} className="bg-[#0D0D0D] border-zinc-800 rounded-none relative group overflow-hidden">
-               <CardContent className="p-6">
-                  <div className="flex items-center gap-4">
-                    <div className="p-2 bg-zinc-900 border border-zinc-800">
-                       <stat.icon className={`h-5 w-5 text-${stat.color}`} />
+      {isLoading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Skeleton key={i} className="h-48 w-full bg-white/5 rounded-none" />
+          ))}
+        </div>
+      ) : !departments?.length ? (
+        <Card className="bg-[#121212] border-white/10 rounded-none relative">
+          <CardContent className="py-20 text-center space-y-4">
+             <Terminal className="h-12 w-12 text-secondary/10 mx-auto" />
+             <p className="font-mono text-xs text-secondary/30 uppercase tracking-[0.3em]">
+                {t("departments_no_data")}
+             </p>
+          </CardContent>
+          <CornerMarks />
+        </Card>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {departments.map((dept) => (
+            <motion.div
+              key={dept.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              whileHover={{ y: -5 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Card className="bg-[#121212] border border-white/10 rounded-none relative group h-full overflow-hidden">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 -rotate-45 translate-x-12 -translate-y-12 transition-transform group-hover:scale-150" />
+                <CardContent className="p-8 space-y-6">
+                  <div className="flex justify-between items-start">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-[10px] text-primary/60 tracking-widest uppercase">{dept.code ?? "UNIT_CODE"}</span>
+                        <div className="h-px w-8 bg-primary/20" />
+                      </div>
+                      <h3 className="font-headline font-black text-2xl text-white uppercase tracking-tight group-hover:text-primary transition-colors">
+                        {dept.name}
+                      </h3>
                     </div>
-                    <div>
-                       <p className="text-[9px] font-headline font-black text-zinc-500 uppercase tracking-widest">{stat.label}</p>
-                       <p className={`text-2xl font-mono font-black text-${stat.color} leading-none mt-1`}>{stat.value}</p>
-                    </div>
+                    {isAdmin && (
+                      <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Button size="icon" variant="ghost" className="h-8 w-8 rounded-none border border-white/10 hover:border-primary/30 hover:bg-primary/5 text-secondary/30 hover:text-primary" onClick={() => openEdit(dept)}>
+                          <Pencil className="h-3.5 w-3.5" />
+                        </Button>
+                        <Button size="icon" variant="ghost" className="h-8 w-8 rounded-none border border-white/10 hover:border-rose-500/30 hover:bg-rose-500/5 text-secondary/30 hover:text-rose-500" onClick={() => setDeleteTarget({ id: dept.id, name: dept.name })}>
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </Button>
+                      </div>
+                    )}
                   </div>
-               </CardContent>
-               <CornerMarks />
-            </Card>
+
+                  <p className="text-secondary/30 font-medium text-xs line-clamp-2 uppercase tracking-wide leading-relaxed min-h-12">
+                    {dept.description ?? "NO_SYSTEM_DESCRIPTION_AVAILABLE"}
+                  </p>
+
+                  <div className="pt-6 border-t border-white/5 flex items-center justify-between">
+                    <div className="flex flex-col gap-1">
+                       <span className="font-mono text-[9px] text-secondary/20 uppercase tracking-widest">PERSONNEL_COUNT</span>
+                       <div className="flex items-center gap-2">
+                          <Users className="h-4 w-4 text-primary" />
+                          <span className="font-headline font-black text-xl text-white">{dept.employee_count}</span>
+                       </div>
+                    </div>
+                    <Link href={`/departments/${dept.id}`}>
+                      <Button variant="ghost" className="rounded-none border border-white/10 hover:border-primary/50 text-[10px] font-headline font-black tracking-widest uppercase h-auto py-3 px-5 group/btn">
+                         ACCESS_DETAILS <ExternalLink className="ms-2 h-3 w-3 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+                <CornerMarks />
+              </Card>
+            </motion.div>
           ))}
         </div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Personnel Registry */}
-        <Card className="bg-[#0D0D0D] border-zinc-800 rounded-none relative overflow-hidden group">
-          <CardHeader className="border-b border-zinc-900 py-8 flex flex-row items-center justify-between">
-            <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
-              <Users className="h-5 w-5 text-primary" />
-              {t("dept_team_members")}
-            </CardTitle>
-            <Zap className="h-4 w-4 text-amber-500" />
-          </CardHeader>
-          <CardContent className="p-0">
-            <div className="divide-y divide-zinc-900">
-              {employees?.data.map((emp) => (
-                <Link key={emp.id} href={`/employees/${emp.id}`}>
-                  <div className="p-6 hover:bg-zinc-800/50 transition-all flex items-center justify-between group/emp cursor-pointer">
-                    <div className="space-y-1">
-                      <p className="font-headline font-black text-sm text-white uppercase tracking-tight group-hover/emp:text-primary transition-colors">
-                        {emp.full_name}
-                      </p>
-                      <p className="font-mono text-[9px] text-zinc-600 uppercase tracking-widest flex items-center gap-2">
-                        <Briefcase className="h-3 w-3" /> {emp.job_title ?? "OPERATIVE"}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-4">
-                       {emp.current_class && (
-                         <Badge variant="outline" className={`rounded-none font-mono text-[9px] font-black tracking-widest px-2 py-0.5 uppercase ${emp.current_class === "A" ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-500" : emp.current_class === "B" ? "border-amber-500/30 bg-amber-500/10 text-amber-500" : "border-rose-500/30 bg-rose-500/10 text-rose-500"}`}>
-                           {emp.current_class}
-                         </Badge>
-                       )}
-                       <ExternalLink className="h-3 w-3 text-zinc-800 group-hover/emp:text-primary" />
-                    </div>
-                  </div>
-                </Link>
-              ))}
-              {!employees?.data.length && (
-                <div className="p-12 text-center font-mono text-[10px] text-zinc-700 uppercase tracking-widest">
-                   NO_OPERATIVES_DEPLOYED_TO_THIS_UNIT
-                </div>
-              )}
+      {/* Forms & Dialogs */}
+      <Dialog open={showCreate || !!editTarget} onOpenChange={(open) => { if (!open) { setShowCreate(false); setEditTarget(null); } }}>
+        <DialogContent className="max-w-md bg-[#0A0A0A] border-2 border-primary/30 rounded-none p-0 overflow-hidden text-white">
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5" />
+          <div className="relative z-10">
+            <div className="p-8 border-b border-white/10 bg-white/5">
+              <h2 className="font-headline font-black text-2xl text-white uppercase tracking-tighter">
+                {editTarget ? "RECONFIGURE_UNIT" : "INITIALIZE_UNIT"}
+              </h2>
+              <p className="text-[10px] font-mono text-primary tracking-[0.3em] mt-2 uppercase">STRUCT_INIT_v4.1</p>
             </div>
-          </CardContent>
+            
+            <div className="p-8 space-y-6">
+              <div className="space-y-2">
+                <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_name")} *</Label>
+                <Input placeholder="e.g. ASSEMBLY_DEPT" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white focus-visible:ring-primary/50" />
+              </div>
+              <div className="space-y-2">
+                <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_code")}</Label>
+                <Input placeholder="e.g. UNIT_X01" value={form.code} onChange={(e) => setForm({ ...form, code: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white uppercase" />
+              </div>
+              <div className="space-y-2">
+                <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_description")}</Label>
+                <Input placeholder="OPERATIONAL_PARAMETERS" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white uppercase" />
+              </div>
+              <div className="space-y-2">
+                <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("departments_col_manager_email")}</Label>
+                <Input type="email" placeholder="ADMIN@UNIT" value={form.manager_email} onChange={(e) => setForm({ ...form, manager_email: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white" />
+              </div>
+            </div>
+            
+            <div className="p-8 border-t border-white/10 bg-white/5 flex justify-end gap-4">
+              <Button variant="ghost" className="rounded-none font-headline font-black text-[10px] tracking-widest uppercase text-white hover:bg-white/5" onClick={() => { setShowCreate(false); setEditTarget(null); }}>{t("common_cancel")}</Button>
+              <Button onClick={handleSave} disabled={saving} className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase px-10 py-6 h-auto">
+                {saving ? "SAVING..." : editTarget ? "APPLY_CONFIG" : "INIT_UNIT"}
+              </Button>
+            </div>
+          </div>
           <CornerMarks />
-        </Card>
+        </DialogContent>
+      </Dialog>
 
-        {/* Technical Requirements */}
-        <Card className="bg-[#0D0D0D] border-zinc-800 rounded-none relative overflow-hidden group">
-          <CardHeader className="border-b border-zinc-900 py-8">
-            <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
-              <BookOpen className="h-5 w-5 text-blue-500" />
-              {t("dept_required_skills")}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-0">
-            <div className="divide-y divide-zinc-900">
-              {skills?.map((sk) => (
-                <div key={sk.id} className="p-6 hover:bg-zinc-800/50 transition-all flex items-center justify-between group/skill">
-                  <div className="space-y-1">
-                    <p className="font-headline font-black text-sm text-white uppercase tracking-tight group-hover/skill:text-blue-500 transition-colors">
-                      {sk.name}
-                    </p>
-                    <p className="font-mono text-[9px] text-zinc-600 uppercase tracking-widest">
-                      {sk.category} // WEIGHT::{sk.weight}
-                    </p>
-                  </div>
-                  <Badge variant="outline" className={`rounded-none font-mono text-[9px] font-black tracking-widest px-2 py-0.5 uppercase ${sk.criticality === "Critical" ? "border-rose-500/30 bg-rose-500/10 text-rose-500" : sk.criticality === "High" ? "border-amber-500/30 bg-amber-500/10 text-amber-500" : "border-zinc-800 text-zinc-600"}`}>
-                    {sk.criticality}
-                  </Badge>
-                </div>
-              ))}
-              {!skills?.length && (
-                <div className="p-12 text-center font-mono text-[10px] text-zinc-700 uppercase tracking-widest">
-                   NO_TECHNICAL_MATRICES_DEFINED
-                </div>
-              )}
-            </div>
-          </CardContent>
-          <CornerMarks color="blue" />
-        </Card>
-      </div>
-
-      {/* Deployment Footer */}
-      <div className="p-8 border-2 border-primary/20 bg-primary/[0.03] relative overflow-hidden group">
-         <ShieldCheck className="absolute -right-4 -top-4 h-24 w-24 text-primary opacity-5 group-hover:opacity-10 transition-all duration-700" />
-         <p className="font-headline font-black text-[11px] text-primary uppercase tracking-[0.3em] mb-4">UNIT_OPERATIONAL_STATUS</p>
-         <p className="text-[10px] font-mono text-zinc-500 leading-relaxed uppercase tracking-tighter">
-            SYNCHRONIZING_UNIT_TELEMETRY // SECURITY_PROTOCOL_ALPHA_ACTIVE // ALL_NODES_REPORTING
-         </p>
-         <div className="mt-8 flex items-center justify-between text-[9px] font-mono font-black text-zinc-600 uppercase tracking-widest">
-            <span>UNIT_HASH::{id.substring(0, 12).toUpperCase()}</span>
-            <span className="text-emerald-500 flex items-center gap-2">
-              <Activity className="h-3 w-3" />
-              OPERATIONAL
-            </span>
-         </div>
-      </div>
+      <AlertDialog open={!!deleteTarget} onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}>
+        <AlertDialogContent className="bg-[#0A0A0A] border-2 border-rose-500/30 rounded-none text-white">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="font-headline font-black text-2xl text-white uppercase tracking-tighter">TERMINATE_UNIT_STRUCT?</AlertDialogTitle>
+            <AlertDialogDescription className="text-secondary/40 font-mono text-xs uppercase tracking-widest">{t("departments_delete_desc")}</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="mt-8">
+            <AlertDialogCancel className="rounded-none border-white/10 bg-white/5 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-white/10 h-auto py-4 px-8">{t("common_cancel")}</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete} disabled={deleting} className="rounded-none bg-rose-600 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-rose-700 px-8 h-auto py-4">
+              {deleting ? "PURGING..." : "CONFIRM_TERMINATION"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+          <CornerMarks color="rose" />
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

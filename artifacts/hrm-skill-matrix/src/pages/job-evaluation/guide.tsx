@@ -102,10 +102,10 @@ export default function JobEvaluationGuide() {
                <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">METHODOLOGY_CORE_DOCUMENTATION</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
-              {isAr ? "منهجية تقييم الوظائف بالنقاط" : "POINT_FACTOR_METHODOLOGY"}
+              {isAr ? "Ù…Ù†Ù‡Ø¬ÙŠØ© ØªÙ‚ÙŠÙŠÙ… Ø§Ù„ÙˆØ¸Ø§Ø¦Ù Ø¨Ø§Ù„Ù†Ù‚Ø§Ø·" : "POINT_FACTOR_METHODOLOGY"}
             </h1>
-            <p className="text-secondary/40 font-medium border-l-2 border-primary/20 pl-4 text-lg">
-              {isAr ? "منهجية كمية منظمة لتحديد القيمة النسبية للوظائف داخل المنظمة." : "Structural, quantitative framework for determining relative organizational value metrics."}
+            <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4 text-lg">
+              {isAr ? "Ù…Ù†Ù‡Ø¬ÙŠØ© ÙƒÙ…ÙŠØ© Ù…Ù†Ø¸Ù…Ø© Ù„ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù‚ÙŠÙ…Ø© Ø§Ù„Ù†Ø³Ø¨ÙŠØ© Ù„Ù„ÙˆØ¸Ø§Ø¦Ù Ø¯Ø§Ø®Ù„ Ø§Ù„Ù…Ù†Ø¸Ù…Ø©." : "Structural, quantitative framework for determining relative organizational value metrics."}
             </p>
           </div>
         </div>
@@ -115,10 +115,10 @@ export default function JobEvaluationGuide() {
       {/* Pillar Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[
-          { icon: BrainCircuit, title: isAr ? "المهارات" : "SKILLS_DOMAIN", value: "35%", color: "primary" },
-          { icon: ShieldCheck, title: isAr ? "المسؤولية" : "RESPONSIBILITY_DOMAIN", value: "35%", color: "zinc-400" },
-          { icon: Zap, title: isAr ? "الجهد" : "EFFORT_DOMAIN", value: "20%", color: "amber-400" },
-          { icon: BarChart3, title: isAr ? "ظروف العمل" : "ENV_CONDITIONS", value: "10%", color: "rose-400" }
+          { icon: BrainCircuit, title: isAr ? "Ø§Ù„Ù…Ù‡Ø§Ø±Ø§Øª" : "SKILLS_DOMAIN", value: "35%", color: "primary" },
+          { icon: ShieldCheck, title: isAr ? "Ø§Ù„Ù…Ø³Ø¤ÙˆÙ„ÙŠØ©" : "RESPONSIBILITY_DOMAIN", value: "35%", color: "zinc-400" },
+          { icon: Zap, title: isAr ? "Ø§Ù„Ø¬Ù‡Ø¯" : "EFFORT_DOMAIN", value: "20%", color: "amber-400" },
+          { icon: BarChart3, title: isAr ? "Ø¸Ø±ÙˆÙ Ø§Ù„Ø¹Ù…Ù„" : "ENV_CONDITIONS", value: "10%", color: "rose-400" }
         ].map((stat, i) => (
           <motion.div key={i} variants={itemVariants}>
             <Card className={`bg-[#0D0D0D] border-zinc-800 rounded-none relative group hover:border-${stat.color}/40 transition-all`}>
@@ -148,26 +148,26 @@ export default function JobEvaluationGuide() {
             <CardHeader className="p-8 border-b border-zinc-900">
               <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
                 <Layers className="h-5 w-5 text-primary" />
-                {isAr ? "توزيع الأوزان والنقاط" : "STRUCTURAL_WEIGHT_DISTRIBUTION"}
+                {isAr ? "ØªÙˆØ²ÙŠØ¹ Ø§Ù„Ø£ÙˆØ²Ø§Ù† ÙˆØ§Ù„Ù†Ù‚Ø§Ø·" : "STRUCTURAL_WEIGHT_DISTRIBUTION"}
               </CardTitle>
             </CardHeader>
             <CardContent className="p-0">
               <div className="overflow-x-auto">
                 <table className="w-full border-collapse">
                   <thead>
-                    <tr className="bg-zinc-900/50 border-b border-zinc-800 text-left">
-                      <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{isAr ? "الفئة الرئيسية" : "CORE_PILLAR"}</th>
-                      <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{isAr ? "العوامل الفرعية" : "SUB_VECTORS"}</th>
-                      <th className="px-8 py-5 text-center font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{isAr ? "النسبة" : "WEIGHT"}</th>
-                      <th className="px-8 py-5 text-center font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{isAr ? "النقاط" : "MAX_PTS"}</th>
+                    <tr className="bg-zinc-900/50 border-b border-zinc-800 text-start">
+                      <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{isAr ? "Ø§Ù„ÙØ¦Ø© Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©" : "CORE_PILLAR"}</th>
+                      <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{isAr ? "Ø§Ù„Ø¹ÙˆØ§Ù…Ù„ Ø§Ù„ÙØ±Ø¹ÙŠØ©" : "SUB_VECTORS"}</th>
+                      <th className="px-8 py-5 text-center font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{isAr ? "Ø§Ù„Ù†Ø³Ø¨Ø©" : "WEIGHT"}</th>
+                      <th className="px-8 py-5 text-center font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{isAr ? "Ø§Ù„Ù†Ù‚Ø§Ø·" : "MAX_PTS"}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-zinc-900">
                     {[
-                      { cat: isAr ? "المهارات" : "SKILLS", factors: isAr ? "التعليم، الخبرة، المعرفة" : "Education, Experience, Knowledge", weight: "35%", points: 350 },
-                      { cat: isAr ? "المسؤولية" : "RESPONSIBILITY", factors: isAr ? "الالتزام، الإشراف، اتخاذ القرار" : "Compliance, Supervisory, Decision-Making", weight: "35%", points: 350 },
-                      { cat: isAr ? "الجهد" : "EFFORT", factors: isAr ? "الجهد الذهني، الجهد البدني" : "Mental Effort, Physical Effort", weight: "20%", points: 200 },
-                      { cat: isAr ? "ظروف العمل" : "CONDITIONS", factors: isAr ? "المخاطر، الساعات، البيئة، السفر" : "Hazards, Schedule, Environment, Travel", weight: "10%", points: 100 }
+                      { cat: isAr ? "Ø§Ù„Ù…Ù‡Ø§Ø±Ø§Øª" : "SKILLS", factors: isAr ? "Ø§Ù„ØªØ¹Ù„ÙŠÙ…ØŒ Ø§Ù„Ø®Ø¨Ø±Ø©ØŒ Ø§Ù„Ù…Ø¹Ø±ÙØ©" : "Education, Experience, Knowledge", weight: "35%", points: 350 },
+                      { cat: isAr ? "Ø§Ù„Ù…Ø³Ø¤ÙˆÙ„ÙŠØ©" : "RESPONSIBILITY", factors: isAr ? "Ø§Ù„Ø§Ù„ØªØ²Ø§Ù…ØŒ Ø§Ù„Ø¥Ø´Ø±Ø§ÙØŒ Ø§ØªØ®Ø§Ø° Ø§Ù„Ù‚Ø±Ø§Ø±" : "Compliance, Supervisory, Decision-Making", weight: "35%", points: 350 },
+                      { cat: isAr ? "Ø§Ù„Ø¬Ù‡Ø¯" : "EFFORT", factors: isAr ? "Ø§Ù„Ø¬Ù‡Ø¯ Ø§Ù„Ø°Ù‡Ù†ÙŠØŒ Ø§Ù„Ø¬Ù‡Ø¯ Ø§Ù„Ø¨Ø¯Ù†ÙŠ" : "Mental Effort, Physical Effort", weight: "20%", points: 200 },
+                      { cat: isAr ? "Ø¸Ø±ÙˆÙ Ø§Ù„Ø¹Ù…Ù„" : "CONDITIONS", factors: isAr ? "Ø§Ù„Ù…Ø®Ø§Ø·Ø±ØŒ Ø§Ù„Ø³Ø§Ø¹Ø§ØªØŒ Ø§Ù„Ø¨ÙŠØ¦Ø©ØŒ Ø§Ù„Ø³ÙØ±" : "Hazards, Schedule, Environment, Travel", weight: "10%", points: 100 }
                     ].map((row, i) => (
                       <tr key={i} className="group hover:bg-white/2 transition-colors">
                         <td className="px-8 py-6">
@@ -188,7 +188,7 @@ export default function JobEvaluationGuide() {
                 </table>
               </div>
               <div className="p-6 bg-primary/[0.02] border-t border-zinc-900 flex items-center justify-between">
-                <span className="font-headline font-black text-[10px] text-zinc-600 uppercase tracking-[0.2em]">{isAr ? "إجمالي النقاط الأقصى" : "TOTAL_AGGREGATED_POINTS"}</span>
+                <span className="font-headline font-black text-[10px] text-zinc-600 uppercase tracking-[0.2em]">{isAr ? "Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„Ù†Ù‚Ø§Ø· Ø§Ù„Ø£Ù‚ØµÙ‰" : "TOTAL_AGGREGATED_POINTS"}</span>
                 <span className="text-primary font-mono font-black text-xl tracking-tighter">1000.00 PTS</span>
               </div>
             </CardContent>
@@ -202,7 +202,7 @@ export default function JobEvaluationGuide() {
             <CardHeader className="p-8 border-b border-zinc-900">
               <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
                 <Target className="h-5 w-5 text-primary" />
-                {isAr ? "توزيع النقاط بيانياً" : "VECTOR_ALLOCATION"}
+                {isAr ? "ØªÙˆØ²ÙŠØ¹ Ø§Ù„Ù†Ù‚Ø§Ø· Ø¨ÙŠØ§Ù†ÙŠØ§Ù‹" : "VECTOR_ALLOCATION"}
               </CardTitle>
             </CardHeader>
             <CardContent className="p-8 flex flex-col items-center justify-center h-[calc(100%-80px)]">
@@ -249,7 +249,7 @@ export default function JobEvaluationGuide() {
             <CardHeader className="p-8 border-b border-zinc-900">
               <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
                 <Scaling className="h-5 w-5 text-primary" />
-                {isAr ? "سلم الدرجات الوظيفية" : "ARCHITECTURAL_GRADING_SCALE"}
+                {isAr ? "Ø³Ù„Ù… Ø§Ù„Ø¯Ø±Ø¬Ø§Øª Ø§Ù„ÙˆØ¸ÙŠÙÙŠØ©" : "ARCHITECTURAL_GRADING_SCALE"}
               </CardTitle>
             </CardHeader>
             <CardContent className="p-8">
@@ -275,12 +275,12 @@ export default function JobEvaluationGuide() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                 {[gradeData.slice(0, 5), gradeData.slice(5)].map((subset, idx) => (
                   <div key={idx} className="border border-zinc-900 bg-black/40 p-1">
-                    <table className="w-full text-left">
+                    <table className="w-full text-start">
                       <thead className="bg-zinc-900/80 font-headline font-black text-[9px] uppercase tracking-widest text-zinc-500">
                         <tr>
-                          <th className="px-6 py-4">{isAr ? "النقاط" : "PT_RANGE"}</th>
-                          <th className="px-6 py-4">{isAr ? "الدرجة" : "TIER"}</th>
-                          <th className="px-6 py-4">{isAr ? "الفئة" : "DESIGNATION"}</th>
+                          <th className="px-6 py-4">{isAr ? "Ø§Ù„Ù†Ù‚Ø§Ø·" : "PT_RANGE"}</th>
+                          <th className="px-6 py-4">{isAr ? "Ø§Ù„Ø¯Ø±Ø¬Ø©" : "TIER"}</th>
+                          <th className="px-6 py-4">{isAr ? "Ø§Ù„ÙØ¦Ø©" : "DESIGNATION"}</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-zinc-900">
@@ -308,15 +308,15 @@ export default function JobEvaluationGuide() {
                 <CardHeader className="p-8 border-b border-primary/10">
                   <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
                     <Settings2 className="h-5 w-5 text-primary" />
-                    {isAr ? "الحوكمة والعمليات" : "GOVERNANCE_PROTOCOL"}
+                    {isAr ? "Ø§Ù„Ø­ÙˆÙƒÙ…Ø© ÙˆØ§Ù„Ø¹Ù…Ù„ÙŠØ§Øª" : "GOVERNANCE_PROTOCOL"}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-8 space-y-6">
                   {[
-                    { t: isAr ? "تحليل الوظيفة" : "NODE_ANALYSIS", d: isAr ? "جمع البيانات من الأوصاف الوظيفية والمقابلات." : "Granular data harvesting from active JD streams and stakeholder interviews." },
-                    { t: isAr ? "لجنة التقييم" : "VALUATION_COUNCIL", d: isAr ? "تتكون من 3 أعضاء على الأقل لتحديد الدرجات." : "Minimum 3-member quorum required for structural point allocation." },
-                    { t: isAr ? "المراجعة" : "AUDIT_CYCLE", d: isAr ? "اجتماعات دورية كل ستة أشهر لمراجعة الأدوار الجديدة." : "Bi-annual recursive audit to calibrate new or evolving organizational nodes." },
-                    { t: isAr ? "المخرجات" : "OUTPUT_MAP", d: isAr ? "خريطة شفافة مرتبطة مباشرة بسلم الرواتب." : "High-transparency mapping linking structural points to fiscal compensation tiers." }
+                    { t: isAr ? "ØªØ­Ù„ÙŠÙ„ Ø§Ù„ÙˆØ¸ÙŠÙØ©" : "NODE_ANALYSIS", d: isAr ? "Ø¬Ù…Ø¹ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ù…Ù† Ø§Ù„Ø£ÙˆØµØ§Ù Ø§Ù„ÙˆØ¸ÙŠÙÙŠØ© ÙˆØ§Ù„Ù…Ù‚Ø§Ø¨Ù„Ø§Øª." : "Granular data harvesting from active JD streams and stakeholder interviews." },
+                    { t: isAr ? "Ù„Ø¬Ù†Ø© Ø§Ù„ØªÙ‚ÙŠÙŠÙ…" : "VALUATION_COUNCIL", d: isAr ? "ØªØªÙƒÙˆÙ† Ù…Ù† 3 Ø£Ø¹Ø¶Ø§Ø¡ Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„ Ù„ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ø¯Ø±Ø¬Ø§Øª." : "Minimum 3-member quorum required for structural point allocation." },
+                    { t: isAr ? "Ø§Ù„Ù…Ø±Ø§Ø¬Ø¹Ø©" : "AUDIT_CYCLE", d: isAr ? "Ø§Ø¬ØªÙ…Ø§Ø¹Ø§Øª Ø¯ÙˆØ±ÙŠØ© ÙƒÙ„ Ø³ØªØ© Ø£Ø´Ù‡Ø± Ù„Ù…Ø±Ø§Ø¬Ø¹Ø© Ø§Ù„Ø£Ø¯ÙˆØ§Ø± Ø§Ù„Ø¬Ø¯ÙŠØ¯Ø©." : "Bi-annual recursive audit to calibrate new or evolving organizational nodes." },
+                    { t: isAr ? "Ø§Ù„Ù…Ø®Ø±Ø¬Ø§Øª" : "OUTPUT_MAP", d: isAr ? "Ø®Ø±ÙŠØ·Ø© Ø´ÙØ§ÙØ© Ù…Ø±ØªØ¨Ø·Ø© Ù…Ø¨Ø§Ø´Ø±Ø© Ø¨Ø³Ù„Ù… Ø§Ù„Ø±ÙˆØ§ØªØ¨." : "High-transparency mapping linking structural points to fiscal compensation tiers." }
                   ].map((item, i) => (
                     <div key={i} className="flex gap-4">
                       <div className="mt-1"><CheckCircle2 className="h-4 w-4 text-primary" /></div>
@@ -334,22 +334,22 @@ export default function JobEvaluationGuide() {
                 <CardHeader className="p-8 border-b border-zinc-900">
                   <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
                     <Cpu className="h-5 w-5 text-zinc-400" />
-                    {isAr ? "مقياس التقييم الخماسي" : "LEVEL_RUBRIC_v4.2"}
+                    {isAr ? "Ù…Ù‚ÙŠØ§Ø³ Ø§Ù„ØªÙ‚ÙŠÙŠÙ… Ø§Ù„Ø®Ù…Ø§Ø³ÙŠ" : "LEVEL_RUBRIC_v4.2"}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-8 space-y-4">
                   {[
-                    { l: 1, e: "CRITICAL_MINIMUM_REQS", a: "متطلبات بسيطة جداً" },
-                    { l: 2, e: "BASIC_OPERATIONAL_THRESHOLD", a: "متطلبات محدودة" },
-                    { l: 3, e: "STANDARD_PROFICIENCY_NODE", a: "متطلبات متوسطة" },
-                    { l: 4, e: "ADVANCED_SYSTEM_COMMAND", a: "متطلبات عالية" },
-                    { l: 5, e: "STRATEGIC_LEAD_EXCELLENCE", a: "متطلبات قيادية" }
+                    { l: 1, e: "CRITICAL_MINIMUM_REQS", a: "Ù…ØªØ·Ù„Ø¨Ø§Øª Ø¨Ø³ÙŠØ·Ø© Ø¬Ø¯Ø§Ù‹" },
+                    { l: 2, e: "BASIC_OPERATIONAL_THRESHOLD", a: "Ù…ØªØ·Ù„Ø¨Ø§Øª Ù…Ø­Ø¯ÙˆØ¯Ø©" },
+                    { l: 3, e: "STANDARD_PROFICIENCY_NODE", a: "Ù…ØªØ·Ù„Ø¨Ø§Øª Ù…ØªÙˆØ³Ø·Ø©" },
+                    { l: 4, e: "ADVANCED_SYSTEM_COMMAND", a: "Ù…ØªØ·Ù„Ø¨Ø§Øª Ø¹Ø§Ù„ÙŠØ©" },
+                    { l: 5, e: "STRATEGIC_LEAD_EXCELLENCE", a: "Ù…ØªØ·Ù„Ø¨Ø§Øª Ù‚ÙŠØ§Ø¯ÙŠØ©" }
                   ].map((level) => (
                     <div key={level.l} className="flex items-center justify-between p-4 bg-zinc-900/50 border border-zinc-800 group hover:border-primary/30 transition-all">
                       <div className="h-10 w-10 flex items-center justify-center bg-black border border-zinc-800 font-mono font-black text-xs text-primary group-hover:border-primary transition-colors">
                         L{level.l}
                       </div>
-                      <div className="text-right">
+                      <div className="text-end">
                         <p className="font-headline font-black text-[10px] text-white uppercase tracking-widest">{isAr ? level.a : level.e}</p>
                         <p className="font-mono text-[8px] text-zinc-600 uppercase tracking-tighter mt-1">{isAr ? level.e : level.a}</p>
                       </div>

@@ -97,7 +97,7 @@ export function NotificationBell() {
                   <CheckCheck className="h-3 w-3" /> All read
                 </button>
               )}
-              <button onClick={() => setOpen(false)} className="ml-1 text-muted-foreground hover:text-primary">
+              <button onClick={() => setOpen(false)} className="ms-1 text-muted-foreground hover:text-primary">
                 <X className="h-3.5 w-3.5" />
               </button>
             </div>

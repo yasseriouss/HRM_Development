@@ -168,12 +168,12 @@ export default function CampaignsPage() {
             <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
               {t("campaigns_title")}
             </h2>
-            <p className="text-secondary/40 font-medium border-l-2 border-primary/20 pl-4">{t("campaigns_subtitle")}</p>
+            <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4">{t("campaigns_subtitle")}</p>
           </div>
           
           {isAdmin && (
             <Button className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-10 h-auto hover:bg-primary/90 shadow-[0_0_20px_rgba(255,255,255,0.05)]" onClick={openCreate}>
-              <Plus className="h-4 w-4 mr-2" /> INITIATE_NEW_CAMPAIGN
+              <Plus className="h-4 w-4 me-2" /> INITIATE_NEW_CAMPAIGN
             </Button>
           )}
         </div>
@@ -220,7 +220,7 @@ export default function CampaignsPage() {
                   <div className="flex items-center justify-between text-xs font-mono text-zinc-500 uppercase">
                     <div className="flex items-center gap-2">
                       <CalendarDays className="h-3.5 w-3.5 text-primary/60" />
-                      {new Date(c.start_date).toLocaleDateString()} — {new Date(c.end_date).toLocaleDateString()}
+                      {new Date(c.start_date).toLocaleDateString()} â€” {new Date(c.end_date).toLocaleDateString()}
                     </div>
                   </div>
 

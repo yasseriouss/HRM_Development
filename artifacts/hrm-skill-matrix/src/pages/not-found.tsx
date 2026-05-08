@@ -5,10 +5,10 @@ import { motion } from "framer-motion";
 
 const CornerMarks = ({ color = "primary" }: { color?: string }) => (
   <>
-    <div className={`absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-${color}/40`} />
-    <div className={`absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-${color}/40`} />
-    <div className={`absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-${color}/40`} />
-    <div className={`absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-${color}/40`} />
+    <div className={`absolute top-0 left-0 w-4 h-4 border-t-2 border-s-2 border-${color}/40`} />
+    <div className={`absolute top-0 right-0 w-4 h-4 border-t-2 border-e-2 border-${color}/40`} />
+    <div className={`absolute bottom-0 left-0 w-4 h-4 border-b-2 border-s-2 border-${color}/40`} />
+    <div className={`absolute bottom-0 right-0 w-4 h-4 border-b-2 border-e-2 border-${color}/40`} />
   </>
 );
 
@@ -59,7 +59,7 @@ export default function NotFound() {
             onClick={() => navigate("/")} 
             className="w-full sm:w-auto rounded-none bg-primary text-primary-foreground font-headline font-black text-[11px] tracking-[0.2em] uppercase py-7 px-12 h-auto hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(255,255,255,0.05)]"
           >
-            <Home className="h-4 w-4 mr-3" /> INITIALIZE_RETURN_SEQ
+            <Home className="h-4 w-4 me-3" /> INITIALIZE_RETURN_SEQ
           </Button>
           
           <Button 
@@ -67,7 +67,7 @@ export default function NotFound() {
             className="w-full sm:w-auto rounded-none border-zinc-800 bg-zinc-900/50 text-white font-headline font-black text-[11px] tracking-[0.2em] uppercase py-7 px-12 h-auto hover:bg-zinc-800 transition-all"
             onClick={() => window.location.reload()}
           >
-            <Terminal className="h-4 w-4 mr-3 text-rose-500" /> RETRY_HANDSHAKE
+            <Terminal className="h-4 w-4 me-3 text-rose-500" /> RETRY_HANDSHAKE
           </Button>
         </div>
 

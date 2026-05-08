@@ -19,6 +19,7 @@ const buttonVariants = cva(
           "border border-white/10 bg-white/5 text-secondary-foreground hover:bg-white/10 hover:border-white/20",
         ghost: "border border-transparent hover:bg-white/5 hover:text-white",
         link: "text-primary underline-offset-4 hover:underline",
+        "industrial-metallic": "btn-industrial min-h-12 border-none rounded-none tracking-[0.2em]",
       },
       size: {
         default: "min-h-10 px-6 py-3",

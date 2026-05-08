@@ -128,7 +128,7 @@ export default function DepartmentsPage() {
             <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
               {t("departments_title")}
             </h2>
-            <p className="text-secondary/40 font-medium border-l-2 border-primary/20 pl-4">{t("departments_subtitle")}</p>
+            <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4">{t("departments_subtitle")}</p>
           </div>
           
           <div className="flex items-center gap-3">
@@ -136,13 +136,13 @@ export default function DepartmentsPage() {
               title: t("departments_title"),
               filename: "Departments_List",
               headers: [t("field_name"), t("field_code"), t("field_description"), t("field_manager_email"), t("departments_col_employees")],
-              rows: (departments ?? []).map(d => [d.name, d.code ?? "—", d.description ?? "—", d.manager_email ?? "—", d.employee_count ?? 0])
+              rows: (departments ?? []).map(d => [d.name, d.code ?? "â€”", d.description ?? "â€”", d.manager_email ?? "â€”", d.employee_count ?? 0])
             })}>
-              <Download className="h-4 w-4 mr-2" /> PDF_EXPORT
+              <Download className="h-4 w-4 me-2" /> PDF_EXPORT
             </Button>
             {isAdmin && (
               <Button className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto hover:bg-primary/90" onClick={openCreate}>
-                <Plus className="h-4 w-4 mr-2" /> CREATE_UNIT
+                <Plus className="h-4 w-4 me-2" /> CREATE_UNIT
               </Button>
             )}
           </div>
@@ -215,7 +215,7 @@ export default function DepartmentsPage() {
                     </div>
                     <Link href={`/departments/${dept.id}`}>
                       <Button variant="ghost" className="rounded-none border border-white/10 hover:border-primary/50 text-[10px] font-headline font-black tracking-widest uppercase h-auto py-3 px-5 group/btn">
-                         ACCESS_DETAILS <ExternalLink className="ml-2 h-3 w-3 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+                         ACCESS_DETAILS <ExternalLink className="ms-2 h-3 w-3 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
                       </Button>
                     </Link>
                   </div>

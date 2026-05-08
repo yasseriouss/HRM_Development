@@ -141,13 +141,13 @@ export default function Dashboard() {
             <div className="flex items-center gap-3">
               <div className="h-2 w-2 bg-primary animate-pulse" />
               <span className={`font-headline font-black tracking-[0.5em] text-[10px] text-primary uppercase ${isAr ? 'font-tajawal' : ''}`}>
-                {isAr ? "مركز القيادة الموحد" : "COMMAND_CENTER_v2.4"}
+                {isAr ? "Ù…Ø±ÙƒØ² Ø§Ù„Ù‚ÙŠØ§Ø¯Ø© Ø§Ù„Ù…ÙˆØ­Ø¯" : "COMMAND_CENTER_v2.4"}
               </span>
             </div>
             <h2 className={`text-5xl md:text-7xl font-headline font-black tracking-tighter text-white uppercase leading-none ${isAr ? 'font-tajawal' : ''}`}>
               {t("dashboard_title")}
             </h2>
-            <p className={`text-secondary/50 font-medium border-l-2 border-primary/20 pl-4 ${isAr ? 'font-tajawal border-r-2 border-l-0 pr-4 pl-0' : ''}`}>{t("dashboard_subtitle")}</p>
+            <p className={`text-secondary/50 font-medium border-s-2 border-primary/20 ps-4 ${isAr ? 'font-tajawal border-e-2 border-s-0 pe-4 ps-0' : ''}`}>{t("dashboard_subtitle")}</p>
           </div>
           <div className="flex gap-4">
             <div className="p-6 bg-white/5 border border-white/10 text-center min-w-[120px]">
@@ -281,7 +281,7 @@ export default function Dashboard() {
                   <p className={`text-[10px] font-bold text-secondary/40 tracking-widest ${isAr ? 'font-tajawal' : ''}`}>{c.label}</p>
                   <p className="text-3xl font-mono font-black text-white mt-1">{c.count}</p>
                 </div>
-                <div className="text-right">
+                <div className="text-end">
                   <p className="text-2xl font-mono font-black text-white/20">{c.pct}</p>
                 </div>
               </div>
@@ -310,9 +310,9 @@ export default function Dashboard() {
             className={`rounded-none border-primary/20 bg-primary/5 text-primary font-headline font-black text-[10px] tracking-widest uppercase hover:bg-primary/10 h-auto py-3 px-6 group btn-metallic ${isAr ? 'font-tajawal' : ''}`}
           >
             {isAiLoading ? (
-              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              <Loader2 className="h-4 w-4 me-2 animate-spin" />
             ) : (
-              <RefreshCcw className="h-4 w-4 mr-2 group-hover:rotate-180 transition-transform duration-500" />
+              <RefreshCcw className="h-4 w-4 me-2 group-hover:rotate-180 transition-transform duration-500" />
             )}
             {aiInsights ? "REGENERATE_ANALYSIS" : "INITIALIZE_INTELLIGENCE_STREAM"}
           </Button>
@@ -389,7 +389,7 @@ export default function Dashboard() {
                         {dept.employee_count} OPERATORS // SEC_LEVEL_3
                       </p>
                     </div>
-                    <div className="text-right">
+                    <div className="text-end">
                       <p className="text-3xl font-mono font-black text-primary leading-none">{dept.average_percentage}%</p>
                       <div className="mt-2 w-32 h-1 bg-white/5 overflow-hidden">
                         <div className="h-full bg-primary" style={{ width: `${dept.average_percentage}%` }} />
@@ -434,7 +434,7 @@ export default function Dashboard() {
              </div>
              <div className="pt-8 border-t border-white/5">
                 <Button variant="ghost" className={`w-full rounded-none border border-white/10 text-[10px] font-headline font-black tracking-widest uppercase hover:bg-white/5 ${isAr ? 'font-tajawal' : ''}`}>
-                  VIEW_ALL_LOGS <ChevronRight className="h-4 w-4 ml-2" />
+                  VIEW_ALL_LOGS <ChevronRight className="h-4 w-4 ms-2" />
                 </Button>
              </div>
           </CardContent>
