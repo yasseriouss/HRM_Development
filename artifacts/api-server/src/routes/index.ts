@@ -10,6 +10,8 @@ import evaluationsRouter from "./evaluations";
 import trainingRouter from "./training";
 import workflowsRouter from "./workflows";
 import notificationsRouter from "./notifications";
+import jobEvaluationRouter from "./job-evaluation";
+import demoRouter from "./demo";
 
 const router: IRouter = Router();
 
@@ -24,5 +26,7 @@ router.use("/evaluations", evaluationsRouter);
 router.use("/training", trainingRouter);
 router.use("/workflows", workflowsRouter);
 router.use("/notifications", notificationsRouter);
+router.use("/job-evaluation", jobEvaluationRouter);
+router.use("/demo", demoRouter);
 
 export default router;

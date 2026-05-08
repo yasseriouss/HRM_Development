@@ -351,6 +351,13 @@ const en = {
   evaluations_spreadsheet_tool: "Interactive Spreadsheet Tool",
   evaluations_download_template: "Download XLSX Template",
   evaluations_spreadsheet_desc: "Use the grid-based tool for mass skill evaluation.",
+  settings_demo_mode: "Demo Data Control",
+  settings_demo_mode_desc: "Inject or clear system demo data for testing and presentations.",
+  settings_seed_demo: "Inject Demo Data",
+  settings_reset_system: "Clear System Data",
+  settings_demo_warning: "Warning: Clearing system data will remove all evaluations, employees, and skills. Only the super_admin account will be preserved.",
+  settings_demo_seeding: "Seeding...",
+  settings_demo_resetting: "Resetting...",
 } as const;
 
 export default en;

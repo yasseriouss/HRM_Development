@@ -14,11 +14,21 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Plus, Pencil, Trash2, Users, ExternalLink, Download } from "lucide-react";
+import { Plus, Pencil, Trash2, Users, ExternalLink, Download, LayoutDashboard, Building2, Terminal } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { useT } from "@/i18n";
 import { exportToPDF, exportToExcel } from "@/lib/export-utils";
+import { Badge } from "@/components/ui/badge";
+
+const CornerMarks = ({ color = "primary" }: { color?: string }) => (
+  <>
+    <div className={`absolute top-0 left-0 w-2 h-2 border-t border-l border-${color}/40`} />
+    <div className={`absolute top-0 right-0 w-2 h-2 border-t border-r border-${color}/40`} />
+    <div className={`absolute bottom-0 left-0 w-2 h-2 border-b border-l border-${color}/40`} />
+    <div className={`absolute bottom-0 right-0 w-2 h-2 border-b border-r border-${color}/40`} />
+  </>
+);
 
 interface DeptForm {
   name: string;
@@ -104,158 +114,173 @@ export default function DepartmentsPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight">{t("departments_title")}</h2>
-          <p className="text-muted-foreground">{t("departments_subtitle")}</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" className="gap-1 border-border" onClick={() => exportToPDF({
-            title: t("departments_title"),
-            filename: "Departments_List",
-            headers: [t("field_name"), t("field_code"), t("field_description"), t("field_manager_email"), t("departments_col_employees")],
-            rows: (departments ?? []).map(d => [d.name, d.code ?? "—", d.description ?? "—", d.manager_email ?? "—", d.employee_count ?? 0])
-          })}>
-            <Download className="h-3.5 w-3.5" /> PDF
-          </Button>
-          <Button variant="outline" size="sm" className="gap-1 border-border" onClick={() => exportToExcel({
-            title: t("departments_title"),
-            filename: "Departments_List",
-            headers: [t("field_name"), t("field_code"), t("field_description"), t("field_manager_email"), t("departments_col_employees")],
-            rows: (departments ?? []).map(d => [d.name, d.code ?? "—", d.description ?? "—", d.manager_email ?? "—", d.employee_count ?? 0])
-          })}>
-            <Download className="h-3.5 w-3.5" /> EXCEL
-          </Button>
-          {isAdmin && (
-            <Button size="sm" className="bg-primary text-primary-foreground gap-1 shrink-0" onClick={openCreate}>
-              <Plus className="h-3.5 w-3.5" /> {t("departments_new")}
+    <div className="space-y-8 pb-20 font-sans selection:bg-primary selection:text-primary-foreground">
+       {/* Header - Industrial Style */}
+       <div className="relative p-10 bg-[#0A0A0A] border-2 border-primary/20 overflow-hidden">
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
+        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="space-y-3">
+            <div className="flex items-center gap-3">
+              <Building2 className="h-4 w-4 text-primary" />
+              <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">ORGANIZATIONAL_STRUCTURE</span>
+            </div>
+            <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
+              {t("departments_title")}
+            </h2>
+            <p className="text-secondary/40 font-medium border-l-2 border-primary/20 pl-4">{t("departments_subtitle")}</p>
+          </div>
+          
+          <div className="flex items-center gap-3">
+            <Button variant="outline" className="rounded-none border-white/10 bg-white/5 hover:bg-white/10 text-white font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto" onClick={() => exportToPDF({
+              title: t("departments_title"),
+              filename: "Departments_List",
+              headers: [t("field_name"), t("field_code"), t("field_description"), t("field_manager_email"), t("departments_col_employees")],
+              rows: (departments ?? []).map(d => [d.name, d.code ?? "—", d.description ?? "—", d.manager_email ?? "—", d.employee_count ?? 0])
+            })}>
+              <Download className="h-4 w-4 mr-2" /> PDF_EXPORT
             </Button>
-          )}
+            {isAdmin && (
+              <Button className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto hover:bg-primary/90" onClick={openCreate}>
+                <Plus className="h-4 w-4 mr-2" /> CREATE_UNIT
+              </Button>
+            )}
+          </div>
         </div>
+        <CornerMarks />
       </div>
 
       {isLoading ? (
-        <div className="overflow-x-auto rounded-lg border border-border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border bg-muted/30">
-                {[t("field_name"), t("field_code"), t("departments_col_employees"), t("departments_col_manager_email"), ""].map((h) => (
-                  <th key={h} className="px-4 py-3 text-start font-medium text-muted-foreground whitespace-nowrap">{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {Array.from({ length: 6 }).map((_, i) => (
-                <tr key={i} className="border-b border-border/50">
-                  {Array.from({ length: 5 }).map((__, j) => (
-                    <td key={j} className="px-4 py-3"><Skeleton className="h-4 w-full" /></td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Skeleton key={i} className="h-48 w-full bg-white/5 rounded-none" />
+          ))}
         </div>
       ) : !departments?.length ? (
-        <Card className="border-border">
-          <CardContent className="py-12 text-center text-muted-foreground">
-            {t("departments_no_data")}{isAdmin ? t("departments_no_data_admin") : ""}
+        <Card className="bg-[#121212] border-white/10 rounded-none relative">
+          <CardContent className="py-20 text-center space-y-4">
+             <Terminal className="h-12 w-12 text-secondary/10 mx-auto" />
+             <p className="font-mono text-xs text-secondary/30 uppercase tracking-[0.3em]">
+                {t("departments_no_data")}
+             </p>
           </CardContent>
+          <CornerMarks />
         </Card>
       ) : (
-        <div className="overflow-x-auto rounded-lg border border-border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border bg-muted/30 text-muted-foreground">
-                <th className="px-4 py-3 text-start font-medium">{t("field_name")}</th>
-                <th className="px-4 py-3 text-start font-medium whitespace-nowrap">{t("field_code")}</th>
-                <th className="px-4 py-3 text-start font-medium">{t("departments_col_description")}</th>
-                <th className="px-4 py-3 text-start font-medium whitespace-nowrap">{t("departments_col_manager_email")}</th>
-                <th className="px-4 py-3 text-end font-medium whitespace-nowrap">{t("departments_col_employees")}</th>
-                <th className="px-4 py-3 text-end font-medium whitespace-nowrap">{t("common_actions")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {departments.map((dept) => (
-                <tr key={dept.id} className="border-b border-border/50 hover:bg-muted/20 transition-colors">
-                  <td className="px-4 py-3 font-medium">
-                    <Link href={`/departments/${dept.id}`} className="hover:text-primary transition-colors flex items-center gap-1">
-                      {dept.name}
-                      <ExternalLink className="h-3 w-3 opacity-40" />
-                    </Link>
-                  </td>
-                  <td className="px-4 py-3 font-mono text-xs text-muted-foreground whitespace-nowrap">{dept.code ?? "—"}</td>
-                  <td className="px-4 py-3 text-muted-foreground max-w-xs truncate">{dept.description ?? "—"}</td>
-                  <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">{dept.manager_email ?? "—"}</td>
-                  <td className="px-4 py-3 text-end whitespace-nowrap">
-                    <span className="flex items-center justify-end gap-1 text-muted-foreground">
-                      <Users className="h-3.5 w-3.5" />
-                      {dept.employee_count}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-end whitespace-nowrap">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {departments.map((dept) => (
+            <motion.div
+              key={dept.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              whileHover={{ y: -5 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Card className="bg-[#121212] border border-white/10 rounded-none relative group h-full overflow-hidden">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 -rotate-45 translate-x-12 -translate-y-12 transition-transform group-hover:scale-150" />
+                <CardContent className="p-8 space-y-6">
+                  <div className="flex justify-between items-start">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-[10px] text-primary/60 tracking-widest uppercase">{dept.code ?? "UNIT_CODE"}</span>
+                        <div className="h-px w-8 bg-primary/20" />
+                      </div>
+                      <h3 className="font-headline font-black text-2xl text-white uppercase tracking-tight group-hover:text-primary transition-colors">
+                        {dept.name}
+                      </h3>
+                    </div>
                     {isAdmin && (
-                      <div className="flex items-center justify-end gap-1">
-                        <Button size="icon" variant="ghost" className="h-7 w-7 text-muted-foreground hover:text-primary" onClick={() => openEdit(dept)}>
+                      <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Button size="icon" variant="ghost" className="h-8 w-8 rounded-none border border-white/10 hover:border-primary/30 hover:bg-primary/5 text-secondary/30 hover:text-primary" onClick={() => openEdit(dept)}>
                           <Pencil className="h-3.5 w-3.5" />
                         </Button>
-                        <Button size="icon" variant="ghost" className="h-7 w-7 text-muted-foreground hover:text-destructive" onClick={() => setDeleteTarget({ id: dept.id, name: dept.name })}>
+                        <Button size="icon" variant="ghost" className="h-8 w-8 rounded-none border border-white/10 hover:border-rose-500/30 hover:bg-rose-500/5 text-secondary/30 hover:text-rose-500" onClick={() => setDeleteTarget({ id: dept.id, name: dept.name })}>
                           <Trash2 className="h-3.5 w-3.5" />
                         </Button>
                       </div>
                     )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                  </div>
+
+                  <p className="text-secondary/30 font-medium text-xs line-clamp-2 uppercase tracking-wide leading-relaxed min-h-[3rem]">
+                    {dept.description ?? "NO_SYSTEM_DESCRIPTION_AVAILABLE"}
+                  </p>
+
+                  <div className="pt-6 border-t border-white/5 flex items-center justify-between">
+                    <div className="flex flex-col gap-1">
+                       <span className="font-mono text-[9px] text-secondary/20 uppercase tracking-widest">PERSONNEL_COUNT</span>
+                       <div className="flex items-center gap-2">
+                          <Users className="h-4 w-4 text-primary" />
+                          <span className="font-headline font-black text-xl text-white">{dept.employee_count}</span>
+                       </div>
+                    </div>
+                    <Link href={`/departments/${dept.id}`}>
+                      <Button variant="ghost" className="rounded-none border border-white/10 hover:border-primary/50 text-[10px] font-headline font-black tracking-widest uppercase h-auto py-3 px-5 group/btn">
+                         ACCESS_DETAILS <ExternalLink className="ml-2 h-3 w-3 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+                <CornerMarks />
+              </Card>
+            </motion.div>
+          ))}
         </div>
       )}
 
+      {/* Forms & Dialogs */}
       <Dialog open={showCreate || !!editTarget} onOpenChange={(open) => { if (!open) { setShowCreate(false); setEditTarget(null); } }}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle>{editTarget ? t("departments_edit_title") : t("departments_create_title")}</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4 py-2">
-            <div className="space-y-1.5">
-              <Label className="text-xs">{t("field_name")} *</Label>
-              <Input placeholder="e.g. Assembly" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="bg-background border-border" />
+        <DialogContent className="max-w-md bg-[#0A0A0A] border-2 border-primary/30 rounded-none p-0 overflow-hidden text-white">
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5" />
+          <div className="relative z-10">
+            <div className="p-8 border-b border-white/10 bg-white/5">
+              <h2 className="font-headline font-black text-2xl text-white uppercase tracking-tighter">
+                {editTarget ? "RECONFIGURE_UNIT" : "INITIALIZE_UNIT"}
+              </h2>
+              <p className="text-[10px] font-mono text-primary tracking-[0.3em] mt-2 uppercase">STRUCT_INIT_v4.1</p>
             </div>
-            <div className="space-y-1.5">
-              <Label className="text-xs">{t("field_code")}</Label>
-              <Input placeholder="e.g. ASM" value={form.code} onChange={(e) => setForm({ ...form, code: e.target.value })} className="bg-background border-border" />
+            
+            <div className="p-8 space-y-6">
+              <div className="space-y-2">
+                <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_name")} *</Label>
+                <Input placeholder="e.g. ASSEMBLY_DEPT" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white focus-visible:ring-primary/50" />
+              </div>
+              <div className="space-y-2">
+                <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_code")}</Label>
+                <Input placeholder="e.g. UNIT_X01" value={form.code} onChange={(e) => setForm({ ...form, code: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white uppercase" />
+              </div>
+              <div className="space-y-2">
+                <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_description")}</Label>
+                <Input placeholder="OPERATIONAL_PARAMETERS" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white uppercase" />
+              </div>
+              <div className="space-y-2">
+                <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("departments_col_manager_email")}</Label>
+                <Input type="email" placeholder="ADMIN@UNIT" value={form.manager_email} onChange={(e) => setForm({ ...form, manager_email: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white" />
+              </div>
             </div>
-            <div className="space-y-1.5">
-              <Label className="text-xs">{t("field_description")}</Label>
-              <Input placeholder="Brief description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="bg-background border-border" />
-            </div>
-            <div className="space-y-1.5">
-              <Label className="text-xs">{t("departments_col_manager_email")}</Label>
-              <Input type="email" placeholder="manager@hrm-dev.com" value={form.manager_email} onChange={(e) => setForm({ ...form, manager_email: e.target.value })} className="bg-background border-border" />
+            
+            <div className="p-8 border-t border-white/10 bg-white/5 flex justify-end gap-4">
+              <Button variant="ghost" className="rounded-none font-headline font-black text-[10px] tracking-widest uppercase text-white hover:bg-white/5" onClick={() => { setShowCreate(false); setEditTarget(null); }}>{t("common_cancel")}</Button>
+              <Button onClick={handleSave} disabled={saving} className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase px-10 py-6 h-auto">
+                {saving ? "SAVING..." : editTarget ? "APPLY_CONFIG" : "INIT_UNIT"}
+              </Button>
             </div>
           </div>
-          <DialogFooter>
-            <Button variant="ghost" size="sm" onClick={() => { setShowCreate(false); setEditTarget(null); }}>{t("common_cancel")}</Button>
-            <Button size="sm" onClick={handleSave} disabled={saving} className="bg-primary text-primary-foreground">
-              {saving ? t("common_saving") : editTarget ? t("common_save_changes") : t("common_create")}
-            </Button>
-          </DialogFooter>
+          <CornerMarks />
         </DialogContent>
       </Dialog>
 
       <AlertDialog open={!!deleteTarget} onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}>
-        <AlertDialogContent>
+        <AlertDialogContent className="bg-[#0A0A0A] border-2 border-rose-500/30 rounded-none text-white">
           <AlertDialogHeader>
-            <AlertDialogTitle>{t("departments_delete_confirm", { name: deleteTarget?.name ?? "" })}</AlertDialogTitle>
-            <AlertDialogDescription>{t("departments_delete_desc")}</AlertDialogDescription>
+            <AlertDialogTitle className="font-headline font-black text-2xl text-white uppercase tracking-tighter">TERMINATE_UNIT_STRUCT?</AlertDialogTitle>
+            <AlertDialogDescription className="text-secondary/40 font-mono text-xs uppercase tracking-widest">{t("departments_delete_desc")}</AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>{t("common_cancel")}</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete} disabled={deleting} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-              {deleting ? t("common_deleting") : t("common_delete")}
+          <AlertDialogFooter className="mt-8">
+            <AlertDialogCancel className="rounded-none border-white/10 bg-white/5 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-white/10 h-auto py-4 px-8">{t("common_cancel")}</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete} disabled={deleting} className="rounded-none bg-rose-600 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-rose-700 px-8 h-auto py-4">
+              {deleting ? "PURGING..." : "CONFIRM_TERMINATION"}
             </AlertDialogAction>
           </AlertDialogFooter>
+          <CornerMarks color="rose" />
         </AlertDialogContent>
       </AlertDialog>
     </div>

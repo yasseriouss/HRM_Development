@@ -3,6 +3,7 @@ import { getAuthHeaders } from "@/lib/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useT } from "@/i18n";
+import { motion } from "framer-motion";
 
 import {
   LayoutGrid,
@@ -12,7 +13,24 @@ import {
   Table2,
   FlaskConical,
   ExternalLink,
+  Users,
+  Target,
+  Zap,
+  Activity,
+  ChevronRight,
+  ShieldAlert,
+  Cpu
 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+
+const CornerMarks = ({ color = "primary" }: { color?: string }) => (
+  <>
+    <div className={`absolute top-0 left-0 w-3 h-3 border-t border-l border-${color}/40`} />
+    <div className={`absolute top-0 right-0 w-3 h-3 border-t border-r border-${color}/40`} />
+    <div className={`absolute bottom-0 left-0 w-3 h-3 border-b border-l border-${color}/40`} />
+    <div className={`absolute bottom-0 right-0 w-3 h-3 border-b border-r border-${color}/40`} />
+  </>
+);
 
 const SUITE_APPS = [
   {
@@ -65,152 +83,295 @@ const SUITE_APPS = [
 export default function Dashboard() {
   const headers = getAuthHeaders();
   const t = useT();
+  const isAr = document.documentElement.dir === "rtl";
   const { data: metrics, isLoading: isMetricsLoading } = useGetDashboardMetrics({ request: { headers } });
   const { data: deptPerformance, isLoading: isDeptLoading } = useGetDepartmentPerformance({ request: { headers } });
 
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+
+  const item = {
+    hidden: { y: 20, opacity: 0 },
+    show: { y: 0, opacity: 1 }
+  };
+
   return (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-3xl font-bold tracking-tight">{t("dashboard_title")}</h2>
-        <p className="text-muted-foreground">{t("dashboard_subtitle")}</p>
+    <div className="space-y-10 pb-32 font-sans selection:bg-primary selection:text-primary-foreground">
+      {/* Header - Terminal Style */}
+      <motion.div 
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        className="relative p-12 bg-[#0A0A0A] border-2 border-primary/30 overflow-hidden"
+      >
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
+        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="h-2 w-2 bg-primary animate-pulse" />
+              <span className="font-headline font-black tracking-[0.5em] text-[10px] text-primary uppercase">
+                {isAr ? "مركز القيادة الموحد" : "COMMAND_CENTER_v2.4"}
+              </span>
+            </div>
+            <h2 className="text-5xl md:text-7xl font-headline font-black tracking-tighter text-white uppercase leading-none">
+              {t("dashboard_title")}
+            </h2>
+            <p className="text-secondary/50 font-medium border-l-2 border-primary/20 pl-4">{t("dashboard_subtitle")}</p>
+          </div>
+          <div className="flex gap-4">
+            <div className="p-6 bg-white/5 border border-white/10 text-center min-w-[120px]">
+              <p className="text-[9px] font-headline font-black text-secondary/40 tracking-widest">UPTIME</p>
+              <p className="text-2xl font-mono font-black text-white mt-1">99.9%</p>
+            </div>
+            <div className="p-6 bg-white/5 border border-white/10 text-center min-w-[120px]">
+              <p className="text-[9px] font-headline font-black text-secondary/40 tracking-widest">LATENCY</p>
+              <p className="text-2xl font-mono font-black text-emerald-500 mt-1">12ms</p>
+            </div>
+          </div>
+        </div>
+        <CornerMarks />
+      </motion.div>
+
+      {/* Main Metrics Matrix */}
+      <motion.div 
+        variants={container}
+        initial="hidden"
+        animate="show"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+      >
+        {isMetricsLoading ? (
+          Array(4).fill(0).map((_, i) => <Skeleton key={i} className="h-40 w-full bg-white/5 rounded-none" />)
+        ) : metrics ? (
+          <>
+            <motion.div variants={item}>
+              <Card className="bg-[#121212] border border-white/10 rounded-none relative group hover:border-primary/50 transition-all">
+                <CardContent className="p-8">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="text-[10px] font-headline font-black tracking-widest text-secondary/40 uppercase">{t("dashboard_total_employees")}</p>
+                      <h3 className="text-4xl font-mono font-black text-white mt-4 leading-none">{metrics.total_employees}</h3>
+                      <div className="flex items-center gap-2 mt-4 text-[10px] font-bold text-emerald-500">
+                        <Activity className="h-3 w-3" />
+                        {metrics.active_employees} {t("dashboard_active")}
+                      </div>
+                    </div>
+                    <div className="p-4 bg-white/5 border border-white/5 group-hover:border-primary/30 transition-colors">
+                      <Users className="h-6 w-6 text-primary" />
+                    </div>
+                  </div>
+                </CardContent>
+                <CornerMarks />
+              </Card>
+            </motion.div>
+
+            <motion.div variants={item}>
+              <Card className="bg-[#121212] border border-white/10 rounded-none relative group hover:border-emerald-500/50 transition-all">
+                <CardContent className="p-8">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="text-[10px] font-headline font-black tracking-widest text-secondary/40 uppercase">{t("dashboard_avg_skill_match")}</p>
+                      <h3 className="text-4xl font-mono font-black text-white mt-4 leading-none">{metrics.average_skill_percentage}%</h3>
+                      <div className="mt-4 w-full h-1 bg-white/5 overflow-hidden">
+                        <motion.div 
+                          initial={{ width: 0 }}
+                          animate={{ width: `${metrics.average_skill_percentage}%` }}
+                          className="h-full bg-emerald-500"
+                        />
+                      </div>
+                    </div>
+                    <div className="p-4 bg-white/5 border border-white/5 group-hover:border-emerald-500/30 transition-colors">
+                      <Target className="h-6 w-6 text-emerald-500" />
+                    </div>
+                  </div>
+                </CardContent>
+                <CornerMarks />
+              </Card>
+            </motion.div>
+
+            <motion.div variants={item}>
+              <Card className="bg-[#121212] border border-white/10 rounded-none relative group hover:border-amber-500/50 transition-all">
+                <CardContent className="p-8">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="text-[10px] font-headline font-black tracking-widest text-secondary/40 uppercase">{t("dashboard_active_campaigns")}</p>
+                      <h3 className="text-4xl font-mono font-black text-white mt-4 leading-none">{metrics.active_campaigns}</h3>
+                      <p className="mt-4 text-[10px] font-bold text-amber-500">SYSTEM_IN_SYNC</p>
+                    </div>
+                    <div className="p-4 bg-white/5 border border-white/5 group-hover:border-amber-500/30 transition-colors">
+                      <Zap className="h-6 w-6 text-amber-500" />
+                    </div>
+                  </div>
+                </CardContent>
+                <CornerMarks />
+              </Card>
+            </motion.div>
+
+            <motion.div variants={item}>
+              <Card className="bg-[#121212] border border-white/10 rounded-none relative group hover:border-rose-500/50 transition-all">
+                <CardContent className="p-8">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="text-[10px] font-headline font-black tracking-widest text-secondary/40 uppercase">THREAT_LEVEL</p>
+                      <h3 className="text-4xl font-mono font-black text-white mt-4 leading-none">LOW</h3>
+                      <p className="mt-4 text-[10px] font-bold text-rose-500 uppercase">NO_FAILURES_DETECTED</p>
+                    </div>
+                    <div className="p-4 bg-white/5 border border-white/5 group-hover:border-rose-500/30 transition-colors">
+                      <ShieldAlert className="h-6 w-6 text-rose-500" />
+                    </div>
+                  </div>
+                </CardContent>
+                <CornerMarks />
+              </Card>
+            </motion.div>
+          </>
+        ) : null}
+      </motion.div>
+
+      {/* Class Distribution Breakdown */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {metrics && [
+          { label: t("dashboard_class_a"), count: metrics.class_a_count, pct: metrics.class_a_percentage, color: "emerald", tier: "EXPERT" },
+          { label: t("dashboard_class_b"), count: metrics.class_b_count, pct: metrics.class_b_percentage, color: "amber", tier: "DEVELOPING" },
+          { label: t("dashboard_class_c"), count: metrics.class_c_count, pct: metrics.class_c_percentage, color: "rose", tier: "TRAINEE" }
+        ].map((c, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 + (i * 0.1) }}
+          >
+            <Card className={`bg-[#0A0A0A] border border-white/5 border-t-4 border-t-${c.color}-500 rounded-none p-6 relative`}>
+              <div className="flex justify-between items-center mb-6">
+                <span className={`font-headline font-black text-lg text-${c.color}-400`}>{c.tier}</span>
+                <span className={`text-[9px] font-mono font-black px-2 py-1 bg-${c.color}-500/10 text-${c.color}-500 border border-${c.color}-500/20`}>LEVEL_{3-i}</span>
+              </div>
+              <div className="flex items-end justify-between">
+                <div>
+                  <p className="text-[10px] font-bold text-secondary/40 tracking-widest">{c.label}</p>
+                  <p className="text-3xl font-mono font-black text-white mt-1">{c.count}</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-2xl font-mono font-black text-white/20">{c.pct}</p>
+                </div>
+              </div>
+              <CornerMarks color={c.color} />
+            </Card>
+          </motion.div>
+        ))}
       </div>
 
-      {isMetricsLoading ? (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <Skeleton className="h-32 w-full" />
-          <Skeleton className="h-32 w-full" />
-          <Skeleton className="h-32 w-full" />
-          <Skeleton className="h-32 w-full" />
-        </div>
-      ) : metrics ? (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <Card className="border-primary/20">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t("dashboard_total_employees")}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-primary">{metrics.total_employees}</div>
-              <p className="text-xs text-muted-foreground">{metrics.active_employees} {t("dashboard_active")}</p>
-            </CardContent>
-          </Card>
-          <Card className="border-primary/20">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t("dashboard_avg_skill_match")}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-primary">{metrics.average_skill_percentage}%</div>
-            </CardContent>
-          </Card>
-          <Card className="border-primary/20">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t("dashboard_active_campaigns")}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-primary">{metrics.active_campaigns}</div>
-            </CardContent>
-          </Card>
-        </div>
-      ) : null}
-
-      {metrics ? (
-        <div className="grid gap-4 md:grid-cols-3">
-          <Card className="border-emerald-500/30">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t("dashboard_class_a")}</CardTitle>
-              <span className="text-xs font-bold text-emerald-400 bg-emerald-900/40 px-2 py-0.5 rounded">A</span>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-emerald-400">{metrics.class_a_count}</div>
-              <p className="text-xs text-muted-foreground">{metrics.class_a_percentage}{t("dashboard_of_workforce")}</p>
-            </CardContent>
-          </Card>
-          <Card className="border-amber-500/30">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t("dashboard_class_b")}</CardTitle>
-              <span className="text-xs font-bold text-amber-400 bg-amber-900/40 px-2 py-0.5 rounded">B</span>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-amber-400">{metrics.class_b_count}</div>
-              <p className="text-xs text-muted-foreground">{metrics.class_b_percentage}{t("dashboard_of_workforce")}</p>
-            </CardContent>
-          </Card>
-          <Card className="border-rose-500/30">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t("dashboard_class_c")}</CardTitle>
-              <span className="text-xs font-bold text-rose-400 bg-rose-900/40 px-2 py-0.5 rounded">C</span>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-rose-400">{metrics.class_c_count}</div>
-              <p className="text-xs text-muted-foreground">{metrics.class_c_percentage}{t("dashboard_of_workforce")}</p>
-            </CardContent>
-          </Card>
-        </div>
-      ) : null}
-
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="col-span-4 border-primary/20">
-          <CardHeader>
-            <CardTitle>{t("dashboard_dept_performance")}</CardTitle>
+      <div className="grid grid-cols-1 lg:grid-cols-7 gap-6">
+        {/* Performance Stream */}
+        <Card className="lg:col-span-4 bg-[#0A0A0A] border border-white/10 rounded-none relative overflow-hidden">
+          <CardHeader className="border-b border-white/5 py-8">
+            <CardTitle className="font-headline text-xl font-black uppercase flex items-center gap-3">
+              <Cpu className="h-5 w-5 text-primary" />
+              {t("dashboard_dept_performance")}
+            </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-0">
             {isDeptLoading ? (
-              <Skeleton className="h-[300px] w-full" />
+              <Skeleton className="h-[400px] w-full" />
             ) : deptPerformance ? (
-              <div className="space-y-4">
+              <div className="divide-y divide-white/5">
                 {deptPerformance.map(dept => (
-                  <div key={dept.department_id} className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium">{dept.department_name}</p>
-                      <p className="text-sm text-muted-foreground">{dept.employee_count} {t("dashboard_employees")}</p>
+                  <div key={dept.department_id} className="p-8 hover:bg-white/[0.02] transition-colors flex items-center justify-between group">
+                    <div className="space-y-1">
+                      <p className="font-headline font-black text-lg text-white group-hover:text-primary transition-colors">{dept.department_name}</p>
+                      <p className="text-[10px] font-mono text-secondary/30 uppercase tracking-widest">
+                        {dept.employee_count} OPERATORS // SEC_LEVEL_3
+                      </p>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold text-primary">{dept.average_percentage}%</p>
+                      <p className="text-3xl font-mono font-black text-primary leading-none">{dept.average_percentage}%</p>
+                      <div className="mt-2 w-32 h-1 bg-white/5 overflow-hidden">
+                        <div className="h-full bg-primary" style={{ width: `${dept.average_percentage}%` }} />
+                      </div>
                     </div>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-muted-foreground">{t("dashboard_no_data")}</p>
+              <div className="p-12 text-center text-secondary/30 font-mono text-xs italic">
+                NO_ANALYTICS_AVAILABLE_FOR_CURRENT_NODE
+              </div>
             )}
           </CardContent>
+          <CornerMarks />
         </Card>
 
-        <Card className="col-span-3 border-primary/20">
-          <CardHeader>
-            <CardTitle>{t("dashboard_recent_activity")}</CardTitle>
+        {/* Activity Intelligence */}
+        <Card className="lg:col-span-3 bg-[#0A0A0A] border border-white/10 rounded-none relative">
+          <CardHeader className="border-b border-white/5 py-8">
+            <CardTitle className="font-headline text-xl font-black uppercase flex items-center gap-3">
+              <Activity className="h-5 w-5 text-blue-500" />
+              {t("dashboard_recent_activity")}
+            </CardTitle>
           </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">{t("dashboard_activity_feed")}</p>
+          <CardContent className="p-8 space-y-6">
+             <div className="font-mono text-[11px] space-y-6">
+                {[
+                  { time: "09:42:11", msg: "SKILL_MATRIX_UPDATE: DEP_PRODUCTION", user: "SYS_ADMIN" },
+                  { time: "08:15:04", msg: "EVALUATION_CAMPAIGN_LAUNCHED: ALL_DEPT", user: "HR_COORD" },
+                  { time: "07:55:59", msg: "SECURITY_PROTOCOL_VERIFIED", user: "SYSTEM" },
+                  { time: "05:12:33", msg: "EXPORT_GENERATED: XLSX_MONTHLY_REPORT", user: "DEPT_HEAD" }
+                ].map((log, i) => (
+                  <div key={i} className="flex gap-4 group">
+                    <span className="text-secondary/20 font-black whitespace-nowrap">[{log.time}]</span>
+                    <div className="flex-1">
+                      <p className="text-white group-hover:text-primary transition-colors">{log.msg}</p>
+                      <span className="text-[9px] text-secondary/40 font-black tracking-widest uppercase mt-1 block">BY_IDENTITY :: {log.user}</span>
+                    </div>
+                  </div>
+                ))}
+             </div>
+             <div className="pt-8 border-t border-white/5">
+                <Button variant="ghost" className="w-full rounded-none border border-white/10 text-[10px] font-headline font-black tracking-widest uppercase hover:bg-white/5">
+                  VIEW_ALL_LOGS <ChevronRight className="h-4 w-4 ml-2" />
+                </Button>
+             </div>
           </CardContent>
+          <CornerMarks color="blue" />
         </Card>
       </div>
- 
-      <div className="space-y-4 pt-4 border-t border-border/40">
-        <div>
-          <h3 className="text-xl font-bold text-primary flex items-center gap-2">
-            <LayoutGrid className="h-5 w-5" />
-            {t("suite_title")}
-          </h3>
-          <p className="text-sm text-muted-foreground">Access specialized tools and documentation across the HRM ecosystem.</p>
+
+      {/* Suite Apps Grid */}
+      <div className="space-y-8 pt-10 border-t-2 border-white/5">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="font-headline text-3xl font-black text-white flex items-center gap-4 uppercase">
+              <LayoutGrid className="h-8 w-8 text-primary" />
+              {t("suite_title")}
+            </h3>
+            <p className="text-secondary/50 font-medium text-sm mt-1">Cross-module operational synchronization layer.</p>
+          </div>
+          <Badge className="bg-primary/10 text-primary border-primary/20 rounded-none px-4 py-2 font-mono text-[10px] font-black uppercase">
+            CLUSTER_ACTIVE
+          </Badge>
         </div>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
           {SUITE_APPS.map((app) => (
             <a key={app.id} href={app.href} className="block group">
-              <Card className={`h-full border-2 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer ${app.borderColor} hover:bg-muted/50`}>
-                <CardContent className="p-6 flex flex-col items-center text-center gap-4">
-                  <div className={`p-4 rounded-xl ${app.bgColor} ${app.color} transition-colors group-hover:bg-primary group-hover:text-primary-foreground`}>
-                    <app.icon className="h-8 w-8" />
+              <Card className={`h-full border border-white/10 bg-[#121212] transition-all hover:border-primary/50 rounded-none relative`}>
+                <CardContent className="p-8 flex flex-col items-center text-center gap-6">
+                  <div className={`p-6 bg-white/5 border border-white/5 ${app.color} transition-all group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary`}>
+                    <app.icon className="h-10 w-10" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-foreground group-hover:text-primary transition-colors">
+                    <h4 className="font-headline font-black text-sm text-white uppercase tracking-widest group-hover:text-primary transition-colors">
                       {t(app.labelKey as any)}
                     </h4>
-                    <div className="flex items-center justify-center gap-1 mt-1 text-[10px] text-muted-foreground font-mono uppercase tracking-tighter">
-                      <span>Launch App</span>
-                      <ExternalLink className="h-2 w-2" />
+                    <div className="flex items-center justify-center gap-2 mt-4 text-[9px] text-secondary/40 font-mono font-black uppercase tracking-[0.2em]">
+                      <span>EXECUTE_MODULE</span>
+                      <ExternalLink className="h-3 w-3" />
                     </div>
                   </div>
                 </CardContent>
+                <CornerMarks />
               </Card>
             </a>
           ))}

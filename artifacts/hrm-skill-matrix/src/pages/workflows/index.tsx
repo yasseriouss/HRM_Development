@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { getAuthHeaders, getAuthUser } from "@/lib/auth";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,9 +10,19 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { Plus, Trash2, ExternalLink, ChevronRight, CheckCircle2, Clock, Circle, X } from "lucide-react";
+import { Plus, Trash2, ExternalLink, ChevronRight, CheckCircle2, Clock, Circle, X, GitBranch, Activity, Shield, Terminal, Zap, Cpu, Users } from "lucide-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
+import { motion, AnimatePresence } from "framer-motion";
+
+const CornerMarks = ({ color = "primary" }: { color?: string }) => (
+  <>
+    <div className={`absolute top-0 left-0 w-2 h-2 border-t border-l border-${color}/40`} />
+    <div className={`absolute top-0 right-0 w-2 h-2 border-t border-r border-${color}/40`} />
+    <div className={`absolute bottom-0 left-0 w-2 h-2 border-b border-l border-${color}/40`} />
+    <div className={`absolute bottom-0 right-0 w-2 h-2 border-b border-r border-${color}/40`} />
+  </>
+);
 
 interface WorkflowSummary {
   id: string;
@@ -33,22 +43,21 @@ interface Department { id: string; name: string; }
 interface Campaign { id: string; title: string; }
 interface SystemUser { id: string; full_name: string | null; email: string; role: string; }
 
-const STATUS_COLORS: Record<string, string> = {
-  Draft: "bg-amber-500 text-white",
-  "In Progress": "bg-blue-600 text-white",
-  "Awaiting Approval": "bg-purple-600 text-white",
-  Finalized: "bg-emerald-600 text-white",
-  Cancelled: "bg-zinc-700 text-zinc-300",
+const STATUS_CONFIG: Record<string, { bg: string; text: string; label: string }> = {
+  Draft: { bg: "bg-amber-500/10", text: "text-amber-500", label: "STATUS_DRAFT" },
+  "In Progress": { bg: "bg-sky-500/10", text: "text-sky-500", label: "STATUS_ACTIVE" },
+  "Awaiting Approval": { bg: "bg-violet-500/10", text: "text-violet-500", label: "STATUS_REVIEW" },
+  Finalized: { bg: "bg-emerald-500/10", text: "text-emerald-500", label: "STATUS_FINALIZED" },
+  Cancelled: { bg: "bg-zinc-700/10", text: "text-zinc-500", label: "STATUS_ABORTED" },
 };
 
 function statusBadge(status: string) {
-  return <Badge className={`whitespace-nowrap ${STATUS_COLORS[status] ?? "bg-muted"}`}>{status}</Badge>;
-}
-
-function stepIcon(status: string) {
-  if (status === "approved") return <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />;
-  if (status === "in_progress" || status === "submitted") return <Clock className="h-3.5 w-3.5 text-blue-400" />;
-  return <Circle className="h-3.5 w-3.5 text-muted-foreground" />;
+  const config = STATUS_CONFIG[status] ?? { bg: "bg-zinc-500/10", text: "text-zinc-500", label: status.toUpperCase() };
+  return (
+    <Badge variant="outline" className={`rounded-none font-mono text-[9px] font-black border-current/20 px-2 py-0.5 uppercase tracking-widest ${config.bg} ${config.text}`}>
+      {config.label}
+    </Badge>
+  );
 }
 
 interface Employee { id: string; full_name: string; employee_code: string; }
@@ -124,16 +133,11 @@ export default function WorkflowsPage() {
     },
   });
 
-  // Fetch system users (who can log in) — these are stored in the users table.
-  // We use the /api/auth/users endpoint for listing user accounts.
   const { data: systemUsers } = useQuery<SystemUser[]>({
     queryKey: ["system-users-list"],
     queryFn: async () => {
       const res = await fetch("/api/auth/users", { headers });
-      if (!res.ok) {
-        // Fallback: empty list if endpoint unavailable
-        return [] as SystemUser[];
-      }
+      if (!res.ok) return [] as SystemUser[];
       const data = await res.json() as SystemUser[] | { data: SystemUser[] };
       return Array.isArray(data) ? data : (data.data ?? []);
     },
@@ -149,7 +153,6 @@ export default function WorkflowsPage() {
 
   const buildAssignmentTree = () => {
     const result = [];
-
     if (form.manager_id) {
       const engNodes = engineers.map((eng) => {
         const supNodes = eng.supervisors.map((sup) => ({
@@ -173,7 +176,6 @@ export default function WorkflowsPage() {
         children: engNodes,
       });
     }
-
     return result;
   };
 
@@ -197,12 +199,12 @@ export default function WorkflowsPage() {
         }),
       });
       if (res.ok) {
-        toast({ title: "Workflow created successfully" });
+        toast({ title: "Workflow initialized successfully" });
         setShowCreate(false);
         await queryClient.invalidateQueries({ queryKey: ["workflows"] });
       } else {
         const b = await res.json() as { message?: string };
-        toast({ title: "Failed to create workflow", description: b.message, variant: "destructive" });
+        toast({ title: "Failed to initialize protocol", description: b.message, variant: "destructive" });
       }
     } catch {
       toast({ title: "Network error", variant: "destructive" });
@@ -217,12 +219,12 @@ export default function WorkflowsPage() {
     try {
       const res = await fetch(`/api/workflows/${deleteTarget.id}`, { method: "DELETE", headers });
       if (res.ok) {
-        toast({ title: "Workflow deleted" });
+        toast({ title: "Protocol terminated" });
         setDeleteTarget(null);
         await queryClient.invalidateQueries({ queryKey: ["workflows"] });
       } else {
         const b = await res.json() as { message?: string };
-        toast({ title: "Cannot delete", description: b.message, variant: "destructive" });
+        toast({ title: "Termination failed", description: b.message, variant: "destructive" });
         setDeleteTarget(null);
       }
     } catch {
@@ -302,86 +304,120 @@ export default function WorkflowsPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight">Evaluation Workflows</h2>
-          <p className="text-muted-foreground">Manage hierarchical evaluation approval chains.</p>
+    <div className="space-y-8 pb-20 font-sans selection:bg-primary selection:text-primary-foreground text-white">
+      {/* Header - Industrial Style */}
+      <div className="relative p-10 bg-[#0A0A0A] border-2 border-primary/20 overflow-hidden">
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
+        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="space-y-3 text-center md:text-left">
+            <div className="flex items-center justify-center md:justify-start gap-3">
+              <GitBranch className="h-4 w-4 text-primary animate-pulse" />
+              <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">EVALUATION_WORKFLOW_PROTOCOL</span>
+            </div>
+            <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
+              STRATEGIC_WORKFLOWS
+            </h2>
+            <p className="text-secondary/40 font-medium border-l-2 border-primary/20 pl-4">Hierarchical evaluation and approval chain management.</p>
+          </div>
+          
+          {isManager && (
+            <Button className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto hover:bg-primary/90" onClick={openCreate}>
+              <Plus className="h-4 w-4 mr-2" /> INITIALIZE_PROTOCOL
+            </Button>
+          )}
         </div>
-        {isManager && (
-          <Button size="sm" className="bg-primary text-primary-foreground gap-1 shrink-0" onClick={openCreate}>
-            <Plus className="h-3.5 w-3.5" /> Create Workflow
-          </Button>
-        )}
+        <CornerMarks />
       </div>
 
       {isLoading ? (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <Card key={i} className="border-border">
-              <CardContent className="p-4 space-y-3">
-                <Skeleton className="h-5 w-3/4" />
-                <Skeleton className="h-4 w-1/2" />
-                <Skeleton className="h-2 w-full" />
-              </CardContent>
-            </Card>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Skeleton key={i} className="h-56 w-full bg-white/5 rounded-none" />
           ))}
         </div>
       ) : !workflows?.length ? (
-        <Card className="border-border">
-          <CardContent className="py-12 text-center text-muted-foreground">
-            No workflows found.{isManager ? " Create your first evaluation workflow above." : ""}
+        <Card className="bg-[#121212] border-white/10 rounded-none relative">
+          <CardContent className="py-24 text-center space-y-4">
+             <Terminal className="h-12 w-12 text-secondary/10 mx-auto" />
+             <p className="font-mono text-xs text-secondary/30 uppercase tracking-[0.3em]">
+                NO_ACTIVE_DATA_STREAMS_DETECTED
+             </p>
           </CardContent>
+          <CornerMarks />
         </Card>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {workflows.map((wf) => {
             const progress = wf.total_steps > 0 ? Math.round((wf.completed_steps / wf.total_steps) * 100) : 0;
             return (
-              <Card key={wf.id} className="border-border hover:border-primary/40 transition-colors">
-                <CardContent className="p-4 space-y-3">
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="min-w-0">
-                      <h3 className="font-semibold text-sm leading-tight truncate">{wf.title}</h3>
-                      <p className="text-xs text-muted-foreground mt-0.5">{wf.department?.name ?? "Unknown Dept"}</p>
+              <motion.div
+                key={wf.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                whileHover={{ y: -5 }}
+              >
+                <Card className="bg-[#0D0D0D] border border-white/10 rounded-none relative group h-full overflow-hidden">
+                  <CardHeader className="pb-4">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="min-w-0 space-y-1">
+                        <div className="flex items-center gap-2">
+                           <span className="font-mono text-[9px] text-primary/60 tracking-widest uppercase">ID::{wf.id.substring(0, 8)}</span>
+                        </div>
+                        <h3 className="font-headline font-black text-xl text-white uppercase tracking-tight group-hover:text-primary transition-colors truncate">
+                          {wf.title}
+                        </h3>
+                        <p className="text-[10px] font-mono text-secondary/40 uppercase tracking-widest">
+                           UNIT::{wf.department?.name ?? "GENERAL"}
+                        </p>
+                      </div>
+                      {statusBadge(wf.status)}
                     </div>
-                    {statusBadge(wf.status)}
-                  </div>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    {wf.campaign && (
+                      <div className="flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 w-fit">
+                         <Activity className="h-3 w-3 text-primary" />
+                         <span className="text-[9px] font-mono font-black text-secondary/40 uppercase tracking-widest">CAMPAIGN::{wf.campaign.title}</span>
+                      </div>
+                    )}
 
-                  {wf.campaign && (
-                    <p className="text-xs text-muted-foreground">Campaign: {wf.campaign.title}</p>
-                  )}
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between font-mono text-[9px] text-secondary/40 uppercase tracking-widest">
+                        <span>EXECUTION_PROGRESS</span>
+                        <span className="text-white">{progress}%</span>
+                      </div>
+                      <div className="h-1 bg-white/5 rounded-none overflow-hidden relative">
+                        <motion.div 
+                          initial={{ width: 0 }}
+                          animate={{ width: `${progress}%` }}
+                          transition={{ duration: 1, ease: "easeOut" }}
+                          className={`h-full ${progress === 100 ? "bg-emerald-500" : "bg-primary"} shadow-[0_0_10px_rgba(255,255,255,0.2)]`} 
+                        />
+                      </div>
+                    </div>
 
-                  <div className="space-y-1">
-                    <div className="flex items-center justify-between text-xs text-muted-foreground">
-                      <span>Progress</span>
-                      <span>{wf.completed_steps}/{wf.total_steps} steps</span>
+                    <div className="pt-6 border-t border-white/5 flex items-center justify-between">
+                      <span className="font-mono text-[9px] text-secondary/20 uppercase">
+                        INIT_DATE::{new Date(wf.created_at).toLocaleDateString()}
+                      </span>
+                      <div className="flex items-center gap-2">
+                        {isManager && wf.status !== "Finalized" && (
+                          <Button size="icon" variant="ghost" className="h-8 w-8 rounded-none border border-white/10 hover:border-rose-500/30 hover:bg-rose-500/5 text-secondary/30 hover:text-rose-500"
+                            onClick={() => setDeleteTarget({ id: wf.id, title: wf.title })}>
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </Button>
+                        )}
+                        <Link href={`/workflows/${wf.id}`}>
+                          <Button variant="ghost" className="rounded-none border border-white/10 hover:border-primary/50 text-[10px] font-headline font-black tracking-widest uppercase h-auto py-3 px-5 group/btn">
+                             ACCESS <ExternalLink className="ml-2 h-3 w-3 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+                          </Button>
+                        </Link>
+                      </div>
                     </div>
-                    <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-                      <div className="h-full bg-primary rounded-full transition-all" style={{ width: `${progress}%` }} />
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between pt-1">
-                    <span className="text-xs text-muted-foreground">
-                      {new Date(wf.created_at).toLocaleDateString()}
-                    </span>
-                    <div className="flex items-center gap-1">
-                      {isManager && wf.status !== "Finalized" && (
-                        <Button size="icon" variant="ghost" className="h-7 w-7 text-muted-foreground hover:text-destructive"
-                          onClick={() => setDeleteTarget({ id: wf.id, title: wf.title })}>
-                          <Trash2 className="h-3.5 w-3.5" />
-                        </Button>
-                      )}
-                      <Link href={`/workflows/${wf.id}`}>
-                        <Button size="sm" variant="outline" className="h-7 text-xs gap-1">
-                          View <ExternalLink className="h-3 w-3" />
-                        </Button>
-                      </Link>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                  <CornerMarks />
+                </Card>
+              </motion.div>
             );
           })}
         </div>
@@ -389,246 +425,252 @@ export default function WorkflowsPage() {
 
       {/* Create Dialog */}
       <Dialog open={showCreate} onOpenChange={(open) => { if (!open) setShowCreate(false); }}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Create Evaluation Workflow</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4 py-2">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="col-span-2 space-y-1.5">
-                <Label className="text-xs">Workflow Title *</Label>
-                <Input
-                  placeholder="e.g. Q2 2026 Production Evaluation"
-                  value={form.title}
-                  onChange={(e) => setForm({ ...form, title: e.target.value })}
-                  className="bg-background border-border"
-                />
-              </div>
-              <div className="space-y-1.5">
-                <Label className="text-xs">Department *</Label>
-                <Select value={form.department_id} onValueChange={(v) => setForm({ ...form, department_id: v })}>
-                  <SelectTrigger className="bg-background border-border">
-                    <SelectValue placeholder="Select department" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {departments?.map((d) => (
-                      <SelectItem key={d.id} value={d.id}>{d.name}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-1.5">
-                <Label className="text-xs">Campaign (optional)</Label>
-                <Select
-                  value={form.campaign_id || "_none"}
-                  onValueChange={(v) => setForm({ ...form, campaign_id: v === "_none" ? "" : v })}
-                >
-                  <SelectTrigger className="bg-background border-border">
-                    <SelectValue placeholder="— None —" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="_none">— None —</SelectItem>
-                    {campaigns?.map((c) => (
-                      <SelectItem key={c.id} value={c.id}>{c.title}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="col-span-2 space-y-1.5">
-                <Label className="text-xs">Notes</Label>
-                <Input
-                  placeholder="Optional notes…"
-                  value={form.notes}
-                  onChange={(e) => setForm({ ...form, notes: e.target.value })}
-                  className="bg-background border-border"
-                />
-              </div>
+        <DialogContent className="max-w-4xl max-h-[90vh] bg-[#0A0A0A] border-2 border-primary/30 rounded-none p-0 overflow-hidden text-white">
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5" />
+          <div className="relative z-10 flex flex-col h-full max-h-[90vh]">
+            <div className="p-8 border-b border-white/10 bg-white/5 shrink-0">
+              <h2 className="font-headline font-black text-2xl text-white uppercase tracking-tighter">INITIALIZE_PROTOCOL_CHAIN</h2>
+              <p className="text-[10px] font-mono text-primary tracking-[0.3em] mt-2 uppercase">STRAT_INIT_v9.4</p>
             </div>
-
-            {/* Hierarchy Builder */}
-            <div className="border border-border rounded-lg p-4 space-y-4">
-              <h4 className="font-medium text-sm">Assign Hierarchy</h4>
-              <p className="text-xs text-muted-foreground -mt-2">
-                Select system users (those with login accounts) for each role in the approval chain.
-              </p>
-
-              {/* Manager */}
-              <div className="space-y-2">
-                <Label className="text-xs text-muted-foreground">Production Manager</Label>
-                <Select value={form.manager_id} onValueChange={(v) => setForm({ ...form, manager_id: v })}>
-                  <SelectTrigger className="bg-background border-border h-8 text-xs">
-                    <SelectValue placeholder="Select manager…" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {users.map((u) => (
-                      <SelectItem key={u.id} value={u.id}>{u.full_name ?? u.email}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {form.manager_id && (
-                  <div className="flex items-center gap-1.5 text-xs text-emerald-400">
-                    <CheckCircle2 className="h-3 w-3" />
-                    Manager: {users.find((u) => u.id === form.manager_id)?.full_name ?? form.manager_id}
-                  </div>
-                )}
+            
+            <div className="p-10 space-y-10 overflow-y-auto">
+              <div className="grid grid-cols-2 gap-8">
+                <div className="col-span-2 space-y-3">
+                  <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">PROTOCOL_TITLE *</Label>
+                  <Input
+                    placeholder="e.g. Q2_PROD_EVALUATION"
+                    value={form.title}
+                    onChange={(e) => setForm({ ...form, title: e.target.value })}
+                    className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white focus-visible:ring-primary/50"
+                  />
+                </div>
+                <div className="space-y-3">
+                  <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">TARGET_UNIT *</Label>
+                  <Select value={form.department_id} onValueChange={(v) => setForm({ ...form, department_id: v })}>
+                    <SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
+                      <SelectValue placeholder="SELECT_DEPLOYMENT_UNIT" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">
+                      {departments?.map((d) => (
+                        <SelectItem key={d.id} value={d.id} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{d.name}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-3">
+                  <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">ACTIVE_CAMPAIGN</Label>
+                  <Select
+                    value={form.campaign_id || "_none"}
+                    onValueChange={(v) => setForm({ ...form, campaign_id: v === "_none" ? "" : v })}
+                  >
+                    <SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
+                      <SelectValue placeholder="— NULL —" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">
+                      <SelectItem value="_none" className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">— NULL —</SelectItem>
+                      {campaigns?.map((c) => (
+                        <SelectItem key={c.id} value={c.id} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{c.title}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
 
-              {/* Engineers */}
-              <div className="space-y-2">
-                <Label className="text-xs text-muted-foreground">Engineers</Label>
-                <Select onValueChange={addEngineer} value="">
-                  <SelectTrigger className="bg-background border-border h-8 text-xs">
-                    <SelectValue placeholder="Add engineer…" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {users
-                      .filter((u) => u.id !== form.manager_id && !engineers.find((e) => e.userId === u.id))
-                      .map((u) => (
-                        <SelectItem key={u.id} value={u.id}>{u.full_name ?? u.email}</SelectItem>
+              {/* Hierarchy Builder */}
+              <div className="bg-white/5 border border-white/10 rounded-none p-8 space-y-8 relative">
+                <div className="flex items-center gap-3 mb-6">
+                   <div className="h-px flex-1 bg-white/10" />
+                   <h4 className="font-headline font-black text-xs text-primary uppercase tracking-[0.4em]">HIERARCHY_ARCHITECTURE</h4>
+                   <div className="h-px flex-1 bg-white/10" />
+                </div>
+
+                {/* Manager */}
+                <div className="space-y-3">
+                  <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase flex items-center gap-2">
+                    <Shield className="h-3 w-3 text-amber-500" /> PRODUCTION_MANAGER
+                  </Label>
+                  <Select value={form.manager_id} onValueChange={(v) => setForm({ ...form, manager_id: v })}>
+                    <SelectTrigger className="h-12 bg-black/40 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
+                      <SelectValue placeholder="ASSIGN_TOP_LEVEL_ADMIN" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">
+                      {users.map((u) => (
+                        <SelectItem key={u.id} value={u.id} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{u.full_name ?? u.email}</SelectItem>
                       ))}
-                  </SelectContent>
-                </Select>
-
-                {engineers.map((eng) => (
-                  <div key={eng.userId} className="border border-border/50 rounded-md p-3 space-y-2 bg-muted/10">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1.5 text-xs font-medium">
-                        <ChevronRight className="h-3 w-3 text-blue-400" />
-                        <span className="text-blue-400">Engineer:</span> {eng.fullName}
-                      </div>
-                      <button
-                        onClick={() => removeEngineer(eng.userId)}
-                        className="text-muted-foreground hover:text-destructive"
-                      >
-                        <X className="h-3.5 w-3.5" />
-                      </button>
+                    </SelectContent>
+                  </Select>
+                  {form.manager_id && (
+                    <div className="flex items-center gap-2 text-[10px] font-mono font-black text-emerald-500 uppercase tracking-widest px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 w-fit">
+                      <CheckCircle2 className="h-3 w-3" />
+                      AUTHORIZED::{users.find((u) => u.id === form.manager_id)?.full_name ?? "OPERATIVE"}
                     </div>
+                  )}
+                </div>
 
-                    {/* Supervisors under engineer */}
-                    <div className="pl-4 space-y-1">
-                      <Label className="text-xs text-muted-foreground">Supervisors under {eng.fullName}</Label>
-                      <Select onValueChange={(v) => addSupervisor(eng.userId, v)} value="">
-                        <SelectTrigger className="bg-background border-border h-7 text-xs">
-                          <SelectValue placeholder="Add supervisor…" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {users
-                            .filter(
-                              (u) =>
-                                u.id !== form.manager_id &&
-                                u.id !== eng.userId &&
-                                !eng.supervisors.find((s) => s.userId === u.id),
-                            )
-                            .map((u) => (
-                              <SelectItem key={u.id} value={u.id}>{u.full_name ?? u.email}</SelectItem>
-                            ))}
-                        </SelectContent>
-                      </Select>
+                {/* Engineers */}
+                <div className="space-y-4">
+                  <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase flex items-center gap-2">
+                     <Cpu className="h-3 w-3 text-sky-500" /> SYSTEM_ENGINEERS
+                  </Label>
+                  <Select onValueChange={addEngineer} value="">
+                    <SelectTrigger className="h-12 bg-black/40 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
+                      <SelectValue placeholder="ADD_ENGINEER_NODE..." />
+                    </SelectTrigger>
+                    <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">
+                      {users
+                        .filter((u) => u.id !== form.manager_id && !engineers.find((e) => e.userId === u.id))
+                        .map((u) => (
+                          <SelectItem key={u.id} value={u.id} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{u.full_name ?? u.email}</SelectItem>
+                        ))}
+                    </SelectContent>
+                  </Select>
 
-                      {eng.supervisors.map((sup) => (
-                        <div key={sup.userId} className="border-l border-border pl-2 space-y-1">
-                          <div className="flex items-center justify-between text-xs text-muted-foreground py-0.5">
-                            <span>
-                              <ChevronRight className="h-3 w-3 inline me-0.5 text-amber-400" />
-                              <span className="text-amber-400">Supervisor:</span> {sup.fullName}
-                            </span>
-                            <button
-                              onClick={() => removeSupervisor(eng.userId, sup.userId)}
-                              className="text-muted-foreground hover:text-destructive ml-2"
-                            >
-                              <X className="h-3 w-3" />
-                            </button>
+                  <div className="grid grid-cols-1 gap-6">
+                    {engineers.map((eng) => (
+                      <div key={eng.userId} className="border border-white/10 rounded-none p-6 space-y-6 bg-black/40 relative group/eng">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3 font-headline font-black text-[11px] uppercase tracking-widest text-sky-500">
+                            <ChevronRight className="h-4 w-4" />
+                            <span>ENGINEER::{eng.fullName}</span>
                           </div>
+                          <button onClick={() => removeEngineer(eng.userId)} className="text-secondary/20 hover:text-rose-500 transition-colors">
+                            <X className="h-4 w-4" />
+                          </button>
+                        </div>
 
-                          {/* Workers (Technicians/Helpers) under this supervisor */}
-                          <div className="pl-3 space-y-1">
-                            <div className="flex items-center gap-2">
-                              <Select
-                                onValueChange={(v) => {
-                                  const [role, empId] = v.split(":");
-                                  addWorker(eng.userId, sup.userId, empId, role as "technician" | "helper");
-                                }}
-                                value=""
-                              >
-                                <SelectTrigger className="bg-background border-border h-6 text-xs flex-1">
-                                  <SelectValue placeholder="Add technician/helper…" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="_tech_hdr" disabled className="text-xs font-semibold text-muted-foreground">— Technicians —</SelectItem>
-                                  {(employees ?? [])
-                                    .filter((e) => !sup.workers.find((w) => w.employeeId === e.id))
-                                    .map((e) => (
-                                      <SelectItem key={`technician:${e.id}`} value={`technician:${e.id}`} className="text-xs">
-                                        {e.full_name} ({e.employee_code}) — Technician
-                                      </SelectItem>
+                        {/* Supervisors under engineer */}
+                        <div className="pl-6 space-y-4 border-l border-sky-500/20">
+                          <Label className="font-headline font-black text-[9px] text-secondary/30 tracking-[0.2em] uppercase">DIRECT_SUPERVISORS</Label>
+                          <Select onValueChange={(v) => addSupervisor(eng.userId, v)} value="">
+                            <SelectTrigger className="h-10 bg-white/5 border-white/5 rounded-none font-headline font-black text-[9px] tracking-widest text-white uppercase">
+                              <SelectValue placeholder="ADD_SUPERVISOR..." />
+                            </SelectTrigger>
+                            <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">
+                              {users
+                                .filter((u) => u.id !== form.manager_id && u.id !== eng.userId && !eng.supervisors.find((s) => s.userId === u.id))
+                                .map((u) => (
+                                  <SelectItem key={u.id} value={u.id} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{u.full_name ?? u.email}</SelectItem>
+                                ))}
+                            </SelectContent>
+                          </Select>
+
+                          <div className="space-y-4">
+                            {eng.supervisors.map((sup) => (
+                              <div key={sup.userId} className="bg-white/[0.02] border border-white/5 p-4 space-y-4">
+                                <div className="flex items-center justify-between font-headline font-black text-[10px] uppercase tracking-widest text-amber-500">
+                                  <span>
+                                    <ChevronRight className="h-3 w-3 inline me-2" />
+                                    SUPERVISOR::{sup.fullName}
+                                  </span>
+                                  <button onClick={() => removeSupervisor(eng.userId, sup.userId)} className="text-secondary/20 hover:text-rose-500 transition-colors">
+                                    <X className="h-3 w-3" />
+                                  </button>
+                                </div>
+
+                                {/* Workers under this supervisor */}
+                                <div className="pl-6 space-y-4 border-l border-amber-500/20">
+                                  <div className="flex items-center gap-3">
+                                    <Select
+                                      onValueChange={(v) => {
+                                        const [role, empId] = v.split(":");
+                                        addWorker(eng.userId, sup.userId, empId, role as "technician" | "helper");
+                                      }}
+                                      value=""
+                                    >
+                                      <SelectTrigger className="h-9 bg-black/40 border-white/5 rounded-none font-headline font-black text-[9px] tracking-widest text-white uppercase flex-1">
+                                        <SelectValue placeholder="DEPLOY_OPERATIVE..." />
+                                      </SelectTrigger>
+                                      <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white max-h-[300px]">
+                                        <SelectItem value="_tech_hdr" disabled className="font-black text-primary opacity-50 uppercase tracking-widest text-[9px]">--- TECHNICIANS ---</SelectItem>
+                                        {(employees ?? [])
+                                          .filter((e) => !sup.workers.find((w) => w.employeeId === e.id))
+                                          .map((e) => (
+                                            <SelectItem key={`technician:${e.id}`} value={`technician:${e.id}`} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">
+                                              {e.full_name} ({e.employee_code})
+                                            </SelectItem>
+                                          ))}
+                                        <SelectItem value="_help_hdr" disabled className="font-black text-amber-500 opacity-50 uppercase tracking-widest text-[9px]">--- HELPERS ---</SelectItem>
+                                        {(employees ?? [])
+                                          .filter((e) => !sup.workers.find((w) => w.employeeId === e.id))
+                                          .map((e) => (
+                                            <SelectItem key={`helper:${e.id}`} value={`helper:${e.id}`} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">
+                                              {e.full_name} ({e.employee_code})
+                                            </SelectItem>
+                                          ))}
+                                      </SelectContent>
+                                    </Select>
+                                  </div>
+                                  
+                                  <div className="grid grid-cols-2 gap-3">
+                                    {sup.workers.map((w) => (
+                                      <div key={w.employeeId} className="flex items-center justify-between text-[10px] font-mono font-black text-secondary/40 border border-white/5 bg-black/20 p-3 uppercase tracking-tighter group/worker">
+                                        <div className="flex items-center gap-2">
+                                          <Users className="h-3 w-3 text-secondary/20" />
+                                          <span className={`${w.role === "technician" ? "text-primary/60" : "text-amber-500/60"}`}>{w.role.substring(0, 4)}:</span> {w.fullName}
+                                        </div>
+                                        <button onClick={() => removeWorker(eng.userId, sup.userId, w.employeeId)} className="text-secondary/10 hover:text-rose-500 opacity-0 group-hover/worker:opacity-100 transition-opacity">
+                                          <X className="h-3 w-3" />
+                                        </button>
+                                      </div>
                                     ))}
-                                  <SelectItem value="_help_hdr" disabled className="text-xs font-semibold text-muted-foreground">— Helpers —</SelectItem>
-                                  {(employees ?? [])
-                                    .filter((e) => !sup.workers.find((w) => w.employeeId === e.id))
-                                    .map((e) => (
-                                      <SelectItem key={`helper:${e.id}`} value={`helper:${e.id}`} className="text-xs">
-                                        {e.full_name} ({e.employee_code}) — Helper
-                                      </SelectItem>
-                                    ))}
-                                </SelectContent>
-                              </Select>
-                            </div>
-                            {sup.workers.map((w) => (
-                              <div key={w.employeeId} className="flex items-center justify-between text-xs text-muted-foreground border-l border-border/50 pl-2 py-0.5">
-                                <span>
-                                  <ChevronRight className="h-2.5 w-2.5 inline me-0.5 text-muted-foreground" />
-                                  <span className="capitalize text-muted-foreground/80">{w.role}:</span> {w.fullName}
-                                </span>
-                                <button
-                                  onClick={() => removeWorker(eng.userId, sup.userId, w.employeeId)}
-                                  className="text-muted-foreground hover:text-destructive ml-2"
-                                >
-                                  <X className="h-2.5 w-2.5" />
-                                </button>
+                                  </div>
+                                </div>
                               </div>
                             ))}
                           </div>
                         </div>
-                      ))}
-                    </div>
+                        <CornerMarks color="sky" />
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">SYSTEM_NOTES</Label>
+                <textarea
+                  placeholder="SPECIFY_OPERATIONAL_PARAMETERS..."
+                  value={form.notes}
+                  onChange={(e) => setForm({ ...form, notes: e.target.value })}
+                  className="w-full min-h-[100px] p-4 bg-white/5 border border-white/10 rounded-none font-mono text-sm tracking-widest text-white focus:outline-none focus:border-primary/50"
+                />
               </div>
             </div>
-          </div>
 
-          <DialogFooter>
-            <Button variant="ghost" size="sm" onClick={() => setShowCreate(false)}>Cancel</Button>
-            <Button
-              size="sm"
-              onClick={handleCreate}
-              disabled={saving}
-              className="bg-primary text-primary-foreground"
-            >
-              {saving ? "Creating…" : "Create Workflow"}
-            </Button>
-          </DialogFooter>
+            <div className="p-8 border-t border-white/10 bg-white/5 flex justify-end gap-4 shrink-0">
+              <Button variant="ghost" className="rounded-none font-headline font-black text-[10px] tracking-widest uppercase text-white hover:bg-white/5" onClick={() => setShowCreate(false)}>CANCEL_INIT</Button>
+              <Button
+                onClick={handleCreate}
+                disabled={saving}
+                className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase px-10 py-6 h-auto"
+              >
+                {saving ? "INITIALIZING..." : "EXECUTE_DEPLOYMENT"}
+              </Button>
+            </div>
+          </div>
+          <CornerMarks />
         </DialogContent>
       </Dialog>
 
       <AlertDialog open={!!deleteTarget} onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}>
-        <AlertDialogContent>
+        <AlertDialogContent className="bg-[#0A0A0A] border-2 border-rose-500/30 rounded-none text-white">
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete "{deleteTarget?.title}"?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This will permanently delete the workflow and all its data. Finalized workflows cannot be deleted.
+            <AlertDialogTitle className="font-headline font-black text-2xl text-white uppercase tracking-tighter">TERMINATE_PROTOCOL_STREAM?</AlertDialogTitle>
+            <AlertDialogDescription className="text-secondary/40 font-mono text-xs uppercase tracking-widest">
+               This will permanently purge workflow "{deleteTarget?.title}" and all associated approval telemetry.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogFooter className="mt-8">
+            <AlertDialogCancel className="rounded-none border-white/10 bg-white/5 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-white/10 h-auto py-4 px-8">ABORT_TERMINATION</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               disabled={deleting}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              className="rounded-none bg-rose-600 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-rose-700 px-8 h-auto py-4"
             >
-              {deleting ? "Deleting…" : "Delete"}
+              {deleting ? "PURGING..." : "CONFIRM_PURGE"}
             </AlertDialogAction>
           </AlertDialogFooter>
+          <CornerMarks color="rose" />
         </AlertDialogContent>
       </AlertDialog>
     </div>

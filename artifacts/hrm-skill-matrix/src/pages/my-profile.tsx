@@ -3,21 +3,35 @@ import { getAuthHeaders } from "@/lib/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Briefcase, CalendarDays, Building2 } from "lucide-react";
+import { Briefcase, CalendarDays, Building2, User, Target, Activity, Zap, ShieldCheck, History, GraduationCap, ChevronRight } from "lucide-react";
 import type { EvaluationSummary } from "@hrm-development/api-client-react";
 import { useT } from "@/i18n";
+import { motion } from "framer-motion";
 
 type EmployeeClass = "A" | "B" | "C" | null | undefined;
 
+const CornerMarks = ({ color = "primary" }: { color?: string }) => (
+  <>
+    <div className={`absolute top-0 left-0 w-2 h-2 border-t border-l border-${color}/40`} />
+    <div className={`absolute top-0 right-0 w-2 h-2 border-t border-r border-${color}/40`} />
+    <div className={`absolute bottom-0 left-0 w-2 h-2 border-b border-l border-${color}/40`} />
+    <div className={`absolute bottom-0 right-0 w-2 h-2 border-b border-r border-${color}/40`} />
+  </>
+);
+
 function scoreBar(score: number) {
   const pct = (score / 4) * 100;
-  const colors = ["bg-rose-700", "bg-rose-500", "bg-amber-500", "bg-emerald-500", "bg-emerald-400"];
+  const colorMap = ["bg-rose-500", "bg-rose-400", "bg-amber-500", "bg-emerald-500", "bg-primary"];
   return (
-    <div className="flex items-center gap-2">
-      <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
-        <div className={`h-full rounded-full ${colors[score]}`} style={{ width: `${pct}%` }} />
+    <div className="flex items-center gap-3">
+      <div className="flex-1 h-1.5 bg-zinc-900 overflow-hidden">
+        <motion.div 
+          initial={{ width: 0 }}
+          animate={{ width: `${pct}%` }}
+          className={`h-full ${colorMap[score]}`} 
+        />
       </div>
-      <span className="text-xs font-semibold w-4 text-end">{score}</span>
+      <span className="font-mono text-[10px] font-black text-white w-4 text-end uppercase">{score}</span>
     </div>
   );
 }
@@ -27,10 +41,16 @@ export default function MyProfilePage() {
   const t = useT();
 
   function classBadge(cls: EmployeeClass) {
-    if (cls === "A") return <Badge className="bg-emerald-600 text-white">{t("class_a_badge")}</Badge>;
-    if (cls === "B") return <Badge className="bg-amber-500 text-white">{t("class_b_badge")}</Badge>;
-    if (cls === "C") return <Badge className="bg-rose-600 text-white">{t("class_c_badge")}</Badge>;
-    return <Badge variant="secondary">{t("unclassified")}</Badge>;
+    const map: Record<string, string> = {
+      A: "border-emerald-500/30 bg-emerald-500/10 text-emerald-500",
+      B: "border-amber-500/30 bg-amber-500/10 text-amber-500",
+      C: "border-rose-500/30 bg-rose-500/10 text-rose-500",
+    };
+    return (
+      <Badge variant="outline" className={`rounded-none font-mono text-[10px] font-black px-2 py-0.5 uppercase ${map[cls ?? ""] ?? "border-zinc-800 text-zinc-500"}`}>
+        {cls ?? "N/A"}
+      </Badge>
+    );
   }
 
   const scoreLabels: Parameters<typeof t>[0][] = ["score_0", "score_1", "score_2", "score_3", "score_4"];
@@ -39,21 +59,21 @@ export default function MyProfilePage() {
 
   if (isLoading) {
     return (
-      <div className="space-y-4">
-        <Skeleton className="h-24 w-full" />
-        <Skeleton className="h-48 w-full" />
-        <Skeleton className="h-64 w-full" />
+      <div className="space-y-6 pb-20">
+        <Skeleton className="h-40 w-full bg-zinc-900 rounded-none" />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+           <Skeleton className="h-[400px] w-full bg-zinc-900 rounded-none" />
+           <Skeleton className="h-[400px] w-full bg-zinc-900 rounded-none" />
+        </div>
       </div>
     );
   }
 
   if (isError || !profile) {
     return (
-      <Card className="border-border">
-        <CardContent className="pt-6">
-          <p className="text-muted-foreground text-sm">{t("profile_no_record")}</p>
-        </CardContent>
-      </Card>
+      <div className="p-20 text-center border-2 border-zinc-900 bg-black/20 font-mono text-xs uppercase tracking-[0.3em] text-zinc-600">
+        {t("profile_no_record")}
+      </div>
     );
   }
 
@@ -64,147 +84,182 @@ export default function MyProfilePage() {
   const historicalSummaries: EvaluationSummary[] = profile.historical_summaries ?? [];
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-3xl font-bold tracking-tight">{t("profile_title")}</h2>
-        <p className="text-muted-foreground">{t("profile_subtitle")}</p>
-      </div>
-
-      <Card className="border-border">
-        <CardContent className="pt-6">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-            <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center text-2xl font-bold text-primary">
+    <div className="space-y-10 pb-24 font-sans text-white">
+      {/* Header - Profile Dashboard */}
+      <div className="relative p-10 bg-[#0A0A0A] border-2 border-primary/20 overflow-hidden">
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
+        <div className="relative z-10 flex flex-col md:flex-row items-center gap-10">
+          <div className="relative group">
+            <div className="w-24 h-24 rounded-none bg-zinc-900 border border-zinc-800 flex items-center justify-center text-4xl font-headline font-black text-primary transition-transform group-hover:scale-105">
               {emp.full_name?.charAt(0) ?? "?"}
             </div>
-            <div className="flex-1">
-              <div className="flex flex-wrap items-center gap-3 mb-1">
-                <h2 className="text-2xl font-bold">{emp.full_name}</h2>
-                {classBadge(emp.current_class as EmployeeClass)}
-              </div>
-              <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-                {emp.job_title && (
-                  <span className="flex items-center gap-1">
-                    <Briefcase className="h-3.5 w-3.5" />
-                    {emp.job_title}
-                  </span>
-                )}
-                {emp.department?.name && (
-                  <span className="flex items-center gap-1">
-                    <Building2 className="h-3.5 w-3.5" />
-                    {emp.department.name}
-                  </span>
-                )}
-                {emp.joined_date && (
-                  <span className="flex items-center gap-1">
-                    <CalendarDays className="h-3.5 w-3.5" />
-                    {t("profile_joined")} {new Date(emp.joined_date).toLocaleDateString()}
-                  </span>
-                )}
-                {emp.employee_code && (
-                  <span className="font-mono text-xs bg-muted px-2 py-0.5 rounded">
-                    {emp.employee_code}
-                  </span>
-                )}
-              </div>
-            </div>
-            {latestSummary && (
-              <div className="text-end">
-                <p className="text-4xl font-bold text-primary">{Number(latestSummary.percentage).toFixed(1)}%</p>
-                <p className="text-xs text-muted-foreground">{t("profile_latest_score")}</p>
-              </div>
-            )}
+            <CornerMarks />
           </div>
-        </CardContent>
-      </Card>
+          
+          <div className="flex-1 space-y-4 text-center md:text-left">
+            <div className="flex flex-col md:flex-row items-center gap-4">
+              <h2 className="text-5xl font-headline font-black tracking-tighter uppercase leading-none">{emp.full_name}</h2>
+              {classBadge(emp.current_class as EmployeeClass)}
+            </div>
+            
+            <div className="flex flex-wrap justify-center md:justify-start gap-6 text-[10px] font-mono font-black text-zinc-500 uppercase tracking-widest">
+              {emp.job_title && (
+                <span className="flex items-center gap-2 border-r border-zinc-800 pr-6 last:border-0">
+                  <Briefcase className="h-3.5 w-3.5 text-primary" />
+                  {emp.job_title}
+                </span>
+              )}
+              {emp.department?.name && (
+                <span className="flex items-center gap-2 border-r border-zinc-800 pr-6 last:border-0">
+                  <Building2 className="h-3.5 w-3.5 text-primary" />
+                  {emp.department.name}
+                </span>
+              )}
+              {emp.joined_date && (
+                <span className="flex items-center gap-2 border-r border-zinc-800 pr-6 last:border-0">
+                  <CalendarDays className="h-3.5 w-3.5 text-primary" />
+                  {t("profile_joined")} {new Date(emp.joined_date).toLocaleDateString()}
+                </span>
+              )}
+              <span className="bg-primary/10 text-primary px-3 py-1 border border-primary/20">
+                NODE_ID::{emp.employee_code || "UNKNOWN"}
+              </span>
+            </div>
+          </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        <Card className="border-border">
-          <CardHeader>
-            <CardTitle className="text-sm">{t("profile_skill_competencies")}</CardTitle>
+          {latestSummary && (
+            <div className="text-center md:text-right border-l-2 border-zinc-900 pl-10 hidden md:block">
+              <p className="text-5xl font-mono font-black text-primary leading-none shadow-[0_0_20px_rgba(255,255,255,0.05)]">{Number(latestSummary.percentage).toFixed(1)}%</p>
+              <p className="text-[9px] font-headline font-black text-zinc-500 mt-2 uppercase tracking-[0.3em]">{t("profile_latest_score")}</p>
+            </div>
+          )}
+        </div>
+        <CornerMarks />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-7 gap-8">
+        {/* Skills Matrix */}
+        <Card className="lg:col-span-4 bg-[#0D0D0D] border-zinc-800 rounded-none relative overflow-hidden group">
+          <CardHeader className="border-b border-zinc-900 py-8 flex flex-row items-center justify-between">
+            <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
+              <Target className="h-5 w-5 text-primary" />
+              {t("profile_skill_competencies")}
+            </CardTitle>
+            <Zap className="h-4 w-4 text-amber-500 animate-pulse" />
           </CardHeader>
-          <CardContent className="space-y-3">
+          <CardContent className="p-8 space-y-6">
             {skillScores.length === 0 ? (
-              <p className="text-sm text-muted-foreground">{t("profile_no_skills")}</p>
+              <div className="py-10 text-center font-mono text-[10px] text-zinc-600 uppercase tracking-widest italic">
+                NO_SKILL_DATA_SYNCHRONIZED
+              </div>
             ) : (
-              skillScores.map((sk) => (
-                <div key={sk.skill_id} className="space-y-1">
-                  <div className="flex justify-between text-xs">
-                    <span className="font-medium truncate max-w-[200px]" title={sk.skill_name}>
-                      {sk.skill_name}
-                    </span>
-                    <span className="text-muted-foreground ms-2">
-                      {sk.score != null ? t(scoreLabels[sk.score]) : t("profile_not_evaluated")}
-                    </span>
+              <div className="grid gap-6">
+                {skillScores.map((sk) => (
+                  <div key={sk.skill_id} className="group/skill">
+                    <div className="flex justify-between items-end mb-2">
+                      <span className="font-headline font-black text-xs text-white uppercase tracking-tight group-hover/skill:text-primary transition-colors">
+                        {sk.skill_name}
+                      </span>
+                      <span className="font-mono text-[9px] text-zinc-500 uppercase tracking-widest">
+                        {sk.score != null ? t(scoreLabels[sk.score]) : "UN_EVAL"}
+                      </span>
+                    </div>
+                    {sk.score != null ? scoreBar(sk.score) : (
+                      <div className="h-1.5 bg-zinc-900/50 border border-zinc-800 relative overflow-hidden">
+                        <div className="absolute inset-0 bg-zinc-800 animate-pulse" />
+                      </div>
+                    )}
                   </div>
-                  {sk.score != null ? scoreBar(sk.score) : <div className="h-2 bg-muted/30 rounded-full" />}
-                </div>
-              ))
+                ))}
+              </div>
             )}
           </CardContent>
+          <CornerMarks />
         </Card>
 
-        <div className="space-y-6">
-          <Card className="border-border">
-            <CardHeader>
-              <CardTitle className="text-sm">{t("profile_eval_history")}</CardTitle>
+        {/* Evaluation History & Training */}
+        <div className="lg:col-span-3 space-y-8">
+          <Card className="bg-[#0D0D0D] border-zinc-800 rounded-none relative group overflow-hidden">
+            <CardHeader className="border-b border-zinc-900 py-8">
+              <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
+                <History className="h-5 w-5 text-blue-500" />
+                {t("profile_eval_history")}
+              </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-0 divide-y divide-zinc-900">
               {historicalSummaries.length === 0 ? (
-                <p className="text-sm text-muted-foreground">{t("profile_no_evals")}</p>
-              ) : (
-                <div className="space-y-3">
-                  {historicalSummaries.slice(0, 5).map((s) => (
-                    <div key={s.id} className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm font-medium truncate max-w-[200px]">
-                          {s.campaign_title ?? "Campaign"}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {t("profile_skills_assessed", { count: s.evaluated_skills_count })}
-                        </p>
-                      </div>
-                      <div className="text-end">
-                        <p className="text-sm font-bold text-primary">{Number(s.percentage).toFixed(1)}%</p>
-                        {classBadge(s.class as EmployeeClass)}
-                      </div>
-                    </div>
-                  ))}
+                <div className="p-12 text-center font-mono text-[10px] text-zinc-600 uppercase tracking-widest italic">
+                   EMPTY_LOG_STREAM
                 </div>
+              ) : (
+                historicalSummaries.slice(0, 5).map((s) => (
+                  <div key={s.id} className="p-6 hover:bg-zinc-800/50 transition-colors flex items-center justify-between group/eval">
+                    <div className="space-y-1">
+                      <p className="font-headline font-black text-sm text-white uppercase tracking-tight group-hover/eval:text-primary transition-colors">
+                        {s.campaign_title ?? "Campaign"}
+                      </p>
+                      <p className="font-mono text-[9px] text-zinc-600 uppercase tracking-widest">
+                        {t("profile_skills_assessed", { count: s.evaluated_skills_count })} // {new Date(s.created_at || "").toLocaleDateString()}
+                      </p>
+                    </div>
+                    <div className="text-right flex flex-col items-end gap-2">
+                      <span className="font-mono font-black text-lg text-primary leading-none">{Number(s.percentage).toFixed(1)}%</span>
+                      {classBadge(s.class as EmployeeClass)}
+                    </div>
+                  </div>
+                ))
               )}
             </CardContent>
+            <CornerMarks color="blue" />
           </Card>
 
           {training.length > 0 && (
-            <Card className="border-border">
-              <CardHeader>
-                <CardTitle className="text-sm">{t("profile_training_recs")}</CardTitle>
+            <Card className="bg-[#0D0D0D] border-2 border-emerald-500/20 rounded-none relative group">
+              <div className="absolute inset-0 bg-emerald-500/5 pointer-events-none" />
+              <CardHeader className="border-b border-zinc-900 py-8">
+                <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
+                  <GraduationCap className="h-5 w-5 text-emerald-500" />
+                  {t("profile_training_recs")}
+                </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-2">
+              <CardContent className="p-8 space-y-4">
                 {training.map((rec) => (
                   <div
                     key={rec.id}
-                    className="flex items-start justify-between gap-2 py-2 border-b border-border/50 last:border-0"
+                    className="flex items-center justify-between p-4 bg-black/40 border border-zinc-800 hover:border-emerald-500/50 transition-all group/rec"
                   >
-                    <div>
-                      <p className="text-sm font-medium">{rec.skill_name ?? rec.recommendation_type}</p>
+                    <div className="flex-1">
+                      <p className="font-headline font-black text-xs text-white uppercase tracking-tight group-hover/rec:text-emerald-500 transition-colors">
+                        {rec.skill_name ?? rec.recommendation_type}
+                      </p>
                       {rec.notes && (
-                        <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">{rec.notes}</p>
+                        <p className="font-mono text-[9px] text-zinc-500 mt-1 uppercase leading-relaxed line-clamp-1 italic">{rec.notes}</p>
                       )}
                     </div>
-                    <Badge
-                      className={
-                        rec.status === "Completed"
-                          ? "bg-emerald-600 text-white text-xs"
-                          : "bg-amber-500 text-white text-xs"
-                      }
-                    >
-                      {rec.status}
-                    </Badge>
+                    <div className="flex items-center gap-3">
+                       <Badge variant="outline" className={`rounded-none font-mono text-[8px] font-black tracking-tighter uppercase px-2 py-0.5 ${rec.status === "Completed" ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-500" : "border-amber-500/30 bg-amber-500/10 text-amber-500"}`}>
+                          {rec.status}
+                       </Badge>
+                       <ChevronRight className="h-3 w-3 text-zinc-800" />
+                    </div>
                   </div>
                 ))}
               </CardContent>
+              <CornerMarks color="emerald" />
             </Card>
           )}
+          
+          <div className="p-8 border-2 border-primary/20 bg-primary/[0.03] relative overflow-hidden group">
+             <ShieldCheck className="absolute -right-4 -top-4 h-24 w-24 text-primary opacity-5 group-hover:opacity-10 transition-all duration-700" />
+             <p className="font-headline font-black text-[11px] text-primary uppercase tracking-[0.3em] mb-4">PERSONNEL_SECURITY_STATUS</p>
+             <p className="text-[10px] font-mono text-zinc-500 leading-relaxed uppercase tracking-tighter">
+               PROFILE_IDENTITY_VERIFIED // SEC_LEVEL_B4 // ACCESS_GRANTED
+             </p>
+             <div className="mt-8 flex items-center justify-between text-[9px] font-mono font-black text-zinc-600 uppercase tracking-widest">
+                <span>IDENTITY_SYNC_v3.2</span>
+                <span className="text-emerald-500">ENCRYPTED_STREAM_ACTIVE</span>
+             </div>
+          </div>
         </div>
       </div>
     </div>

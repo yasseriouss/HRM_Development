@@ -8,3 +8,4 @@ export * from "./evaluation_summaries";
 export * from "./training";
 export * from "./workflows";
 export * from "./sessions";
+export * from "./job_evaluation";

@@ -351,6 +351,13 @@ const ar = {
   evaluations_spreadsheet_tool: "أداة الجدول التفاعلي",
   evaluations_download_template: "تحميل نموذج XLSX",
   evaluations_spreadsheet_desc: "استخدم الأداة القائمة على الشبكة لتقييم المهارات الجماعي.",
+  settings_demo_mode: "التحكم في البيانات التجريبية",
+  settings_demo_mode_desc: "حقن أو مسح بيانات النظام التجريبية للاختبار والعروض التقديمية.",
+  settings_seed_demo: "حقن البيانات التجريبية",
+  settings_reset_system: "مسح بيانات النظام",
+  settings_demo_warning: "تحذير: سيؤدي مسح بيانات النظام إلى إزالة جميع التقييمات والموظفين والمهارات. سيتم الاحتفاظ بحساب المدير العام فقط.",
+  settings_demo_seeding: "جاري الحقن...",
+  settings_demo_resetting: "جاري المسح...",
 } as const;
 
 export default ar;

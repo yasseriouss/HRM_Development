@@ -1,12 +1,3 @@
-/**
- * HRM Development System — Demo Data Seed Script
- *
- * Usage: pnpm --filter @hrm-development/api-server run seed
- *
- * Idempotent: uses ON CONFLICT DO NOTHING throughout.
- * Guarantees: 9 departments, 4 demo users, 50+ employees, 66+ skills.
- */
-
 import { db } from "@hrm-development/db";
 import {
   departmentsTable,
@@ -22,7 +13,7 @@ import { eq, count, and } from "drizzle-orm";
 
 // ── DEPARTMENTS ──────────────────────────────────────────────────────────────
 
-const DEPARTMENTS = [
+export const DEPARTMENTS = [
   { id: "dec521d4-19b7-41b3-b9d1-9f40ef3567f8", name: "Assembly",              code: "ASM", description: "Furniture assembly and finishing" },
   { id: "777ad386-faf1-4cbc-83bc-9a83a4b2bb03", name: "Engineering",            code: "ENG", description: "Design, CAD and process engineering" },
   { id: "b14b9381-8372-4a8a-b603-605f57b4d0a2", name: "Flat Surfaces",          code: "FLS", description: "Flat panel lamination and cutting" },
@@ -37,7 +28,7 @@ const DEPARTMENTS = [
 // ── DEMO USERS ───────────────────────────────────────────────────────────────
 
 // Passwords are stored as plaintext in this demo system (auth.ts does === comparison)
-const USERS_DEF = [
+export const USERS_DEF = [
   { id: "02cd3916-4d5b-425c-a675-f6d6d124f87f", email: "super_admin@hrm-dev.com", role: "super_admin",    password: "admin123", department_id: null,                                    production_role: "manager"    },
   { id: "1c2b3ac7-96cb-4cee-a9c3-2dcbdca99d7e", email: "hr@hrm-dev.com",          role: "hr_coordinator", password: "hr123",    department_id: null,                                    production_role: null         },
   { id: "bc467dbf-6e48-4ff3-9761-f2dbf34b99cb", email: "dept_head@hrm-dev.com",   role: "dept_head",      password: "head123",  department_id: "dec521d4-19b7-41b3-b9d1-9f40ef3567f8", production_role: "supervisor" },
@@ -48,7 +39,7 @@ const USERS_DEF = [
 
 type Criticality = "Low" | "Medium" | "High" | "Critical";
 
-const SKILLS: Array<{ code: string; name: string; department_id: string; category: string; weight: number; criticality: Criticality; description?: string }> = [
+export const SKILLS: Array<{ code: string; name: string; department_id: string; category: string; weight: number; criticality: Criticality; description?: string }> = [
   // Assembly (ASM)
   { code: "ASM-S01", name: "Furniture Assembly",         department_id: "dec521d4-19b7-41b3-b9d1-9f40ef3567f8", category: "Technical",            weight: 4, criticality: "Critical" },
   { code: "ASM-S02", name: "Hardware Installation",      department_id: "dec521d4-19b7-41b3-b9d1-9f40ef3567f8", category: "Technical",            weight: 3, criticality: "High" },
@@ -147,7 +138,7 @@ interface EmpDef {
   current_class: EmployeeClass;
 }
 
-const EMPLOYEES: EmpDef[] = [
+export const EMPLOYEES: EmpDef[] = [
   // Solid Wood Factory (10)
   { employee_code: "SWF001", full_name: "Khalid Al-Mansouri",  department_id: "dfd7d1fb-4f89-4c49-9a45-f874de588d8d", job_title: "Senior Craftsman",  grade_level: "G5", joined_date: "2019-03-10", current_class: "A" },
   { employee_code: "SWF002", full_name: "Youssef Al-Hamdan",   department_id: "dfd7d1fb-4f89-4c49-9a45-f874de588d8d", job_title: "CNC Operator",       grade_level: "G4", joined_date: "2020-07-15", current_class: "B" },
@@ -215,7 +206,7 @@ const EMPLOYEES: EmpDef[] = [
 
 // ── MAIN ─────────────────────────────────────────────────────────────────────
 
-async function seed() {
+export async function seed() {
   console.log("🌱 Starting seed...");
 
   // 1. Departments
