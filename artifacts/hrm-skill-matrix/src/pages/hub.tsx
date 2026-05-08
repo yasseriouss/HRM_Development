@@ -14,6 +14,7 @@ import {
   UserCircle 
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { IndustrialCard } from "@/components/ui/industrial-card";
 import { Loader } from "@/components/ui/loader";
 
 export default function Hub() {
@@ -150,14 +151,17 @@ export default function Hub() {
                       className="cursor-pointer"
                       onClick={() => setLocation(card.path)}
                     >
-                      <Card className="h-48 flex flex-col items-center justify-center border border-border/50 hover:border-primary/50 bg-[#121212] transition-colors group">
-                        <div className="group-hover:scale-110 transition-transform duration-300">
-                          {card.icon}
+                      <IndustrialCard 
+                        title={card.title}
+                        footerText="SYS_MODULE_READY"
+                        className="h-48 flex flex-col items-center justify-center border-border/50 hover:border-primary/50 transition-colors group cursor-pointer"
+                      >
+                        <div className="absolute inset-0 flex flex-col items-center justify-center">
+                          <div className="group-hover:scale-110 transition-transform duration-300 text-primary/80 group-hover:text-primary filter drop-shadow-[0_0_8px_rgba(212,175,55,0.5)]">
+                            {card.icon}
+                          </div>
                         </div>
-                        <h2 className="text-lg font-headline tracking-[0.2em] uppercase text-center mt-2 group-hover:text-primary transition-colors">
-                          {card.title}
-                        </h2>
-                      </Card>
+                      </IndustrialCard>
                     </motion.div>
                   ))}
               </div>
