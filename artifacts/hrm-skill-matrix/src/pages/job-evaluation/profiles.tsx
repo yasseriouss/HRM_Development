@@ -347,24 +347,24 @@ export default function JobProfilesPage() {
                         exit={{ opacity: 0, x: -20 }}
                         className="hover:bg-white/2 transition-colors group"
                       >
-                        <td className="px-8 py-5">
+                        <td className="px-8 py-5 whitespace-nowrap">
                           <div className="font-headline font-black text-white text-sm uppercase tracking-tight group-hover:text-primary transition-colors">{isAr ? p.title_ar : p.title}</div>
                           <div className="text-[9px] font-mono text-zinc-600 tracking-[0.2em] mt-1 uppercase">ARCH::{p.id.padStart(4, '0')}</div>
                         </td>
-                        <td className="px-8 py-5">
+                        <td className="px-8 py-5 whitespace-nowrap">
                           <span className="px-3 py-1 bg-zinc-900 border border-zinc-800 text-zinc-400 font-mono text-[9px] uppercase tracking-widest">
                             {isAr ? p.department_ar : p.department}
                           </span>
                         </td>
-                        <td className="px-8 py-5 text-center">
+                        <td className="px-8 py-5 text-center whitespace-nowrap">
                           <span className="font-mono font-black text-primary text-lg">{p.points}</span>
                         </td>
-                        <td className="px-8 py-5 text-center">
+                        <td className="px-8 py-5 text-center whitespace-nowrap">
                           <div className="h-10 w-12 mx-auto flex items-center justify-center bg-primary/10 border border-primary/20 text-primary font-mono font-black text-sm">
                             {p.grade}
                           </div>
                         </td>
-                        <td className="px-8 py-5 text-end">
+                        <td className="px-8 py-5 text-end whitespace-nowrap">
                           <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all">
                             <Button variant="ghost" size="icon" className="h-8 w-8 rounded-none border border-zinc-800 hover:bg-white/5 hover:text-primary transition-colors"><Pencil className="h-4 w-4" /></Button>
                             <Button variant="ghost" size="icon" className="h-8 w-8 rounded-none border border-zinc-800 hover:bg-rose-500/10 hover:text-rose-500 transition-colors"><Trash2 className="h-4 w-4" /></Button>
