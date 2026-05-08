@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useGetDashboardMetrics, useGetDepartmentPerformance } from "@hrm-development/api-client-react";
 import { getAuthHeaders } from "@/lib/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -332,7 +333,7 @@ export default function Dashboard() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {aiInsights?.map((insight, i) => (
+            {aiInsights?.map((insight: AIInsight, i: number) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, scale: 0.95 }}
