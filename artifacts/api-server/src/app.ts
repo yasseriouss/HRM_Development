@@ -35,6 +35,11 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", router);
 
+// Redirect root to main skill matrix app
+app.get("/", (_req, res) => {
+  res.redirect("/hrm-skill-matrix");
+});
+
 // ── Static artifacts ─────────────────────────────────────────────────────────
 
 // 1. Main HRM Development app
