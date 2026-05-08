@@ -469,7 +469,7 @@ export default function Dashboard() {
                       {t(app.labelKey as any)}
                     </h4>
                     <div className="flex items-center justify-center gap-2 mt-4 text-[9px] text-secondary/40 font-mono font-black uppercase tracking-[0.2em]">
-                      <span>EXECUTE_MODULE</span>
+                      <span>{t("dashboard_execute_module")}</span>
                       <ExternalLink className="h-3 w-3" />
                     </div>
                   </div>

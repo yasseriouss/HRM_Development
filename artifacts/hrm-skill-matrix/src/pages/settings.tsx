@@ -47,7 +47,7 @@ export default function SettingsPage() {
         headers: getAuthHeaders(),
       });
       if (!res.ok) throw new Error(await res.text());
-      toast({ title: "Success", description: t("campaign_scores_saved") });
+      toast({ title: t("common_saved"), description: t("campaign_scores_saved") });
       window.location.reload();
     } catch (err) {
       toast({ title: t("common_failed"), description: String(err), variant: "destructive" });

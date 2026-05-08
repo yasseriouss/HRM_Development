@@ -293,7 +293,7 @@ export default function SkillsPage() {
               <tbody className="divide-y divide-white/5">
                 {filteredSkills.map((sk) => (
                   <tr key={sk.id} className="group hover:bg-white/2 transition-colors">
-                    <td className="px-8 py-6">
+                    <td className="px-8 py-6 whitespace-nowrap">
                       <div className="flex items-center gap-4">
                         <div className="h-2 w-2 bg-primary/20 group-hover:bg-primary transition-colors" />
                         <div>
@@ -304,20 +304,20 @@ export default function SkillsPage() {
                         </div>
                       </div>
                     </td>
-                    <td className="px-8 py-6 font-mono text-[11px] text-primary/60">{sk.code ?? "â€”"}</td>
-                    <td className="px-8 py-6 font-headline font-black text-[10px] text-secondary/30 tracking-widest uppercase">{sk.category ?? "SYSTEM"}</td>
-                    <td className="px-8 py-6">
+                    <td className="px-8 py-6 font-mono text-[11px] text-primary/60 whitespace-nowrap">{sk.code ?? "â€”"}</td>
+                    <td className="px-8 py-6 font-headline font-black text-[10px] text-secondary/30 tracking-widest uppercase whitespace-nowrap">{sk.category ?? "SYSTEM"}</td>
+                    <td className="px-8 py-6 whitespace-nowrap">
                       <Badge variant="outline" className="rounded-none border-white/5 bg-white/5 text-[9px] font-mono text-secondary/60 py-1 uppercase">
                         {(sk as any).department?.name ?? "GENERAL"}
                       </Badge>
                     </td>
-                    <td className="px-8 py-6 text-center">
+                    <td className="px-8 py-6 text-center whitespace-nowrap">
                       <div className="inline-flex items-center justify-center w-10 h-10 border border-white/5 bg-white/5 font-mono font-black text-lg text-white">
                         {sk.weight}
                       </div>
                     </td>
-                    <td className="px-8 py-6">{critBadge(sk.criticality, t)}</td>
-                    <td className="px-8 py-6 text-end">
+                    <td className="px-8 py-6 whitespace-nowrap">{critBadge(sk.criticality, t)}</td>
+                    <td className="px-8 py-6 text-end whitespace-nowrap">
                       {isAdmin && (
                         <div className="flex items-center justify-end gap-2">
                           <Button size="icon" variant="ghost" className="h-10 w-10 rounded-none border border-transparent hover:border-primary/30 hover:bg-primary/5 text-secondary/30 hover:text-primary" onClick={() => openEdit(sk)}>

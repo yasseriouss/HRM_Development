@@ -1,3 +1,4 @@
+import { useT } from "@/i18n";
 import { Link } from "wouter";
 import { getAuthHeaders } from "@/lib/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -39,12 +40,7 @@ const STEP_ICONS: Record<string, React.ReactNode> = {
   approved: <CheckCircle2 className="h-4 w-4 text-emerald-500" />,
 };
 
-const LEVEL_LABELS: Record<string, string> = {
-  manager: "STRATEGIC_SIGN_OFF",
-  engineer: "UNIT_ENGINEERING",
-  supervisor: "OPERATIONAL_INPUT",
-  peer_eval: "COLLATERAL_EVAL",
-};
+// LEVEL_LABELS moved inside component
 
 const LEVEL_DESC: Record<string, string> = {
   manager: "Execute final mission certification.",
@@ -68,6 +64,19 @@ const STATUS_BADGE: Record<string, string> = {
 };
 
 export default function MyTasksPage() {
+  const t = useT();
+  const LEVEL_LABELS: Record<string, string> = {
+    manager: t("task_level_manager"),
+    engineer: t("task_level_engineer"),
+    supervisor: t("task_level_supervisor"),
+    peer_eval: t("task_level_peer"),
+  };
+  const LEVEL_DESC_T: Record<string, string> = {
+    manager: t("task_desc_manager"),
+    engineer: t("task_desc_engineer"),
+    supervisor: t("task_desc_supervisor"),
+    peer_eval: t("task_desc_peer"),
+  };
   const headers = getAuthHeaders();
 
   const { data: tasks, isLoading } = useQuery<TaskItem[]>({
@@ -163,7 +172,7 @@ export default function MyTasksPage() {
                                </h4>
                                <p className="font-mono text-[9px] text-zinc-600 uppercase tracking-widest flex items-center justify-center md:justify-start gap-2">
                                  <Activity className="h-3 w-3" />
-                                 {task.workflow.department?.name || "GLOBAL_UNIT"} // {LEVEL_DESC[task.level]}
+                                 {task.workflow.department?.name || "GLOBAL_UNIT"} // {LEVEL_DESC_T[task.level]}
                                </p>
                             </div>
                           </div>

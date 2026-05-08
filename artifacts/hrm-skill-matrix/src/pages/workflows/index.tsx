@@ -43,19 +43,19 @@ interface Department { id: string; name: string; }
 interface Campaign { id: string; title: string; }
 interface SystemUser { id: string; full_name: string | null; email: string; role: string; }
 
-const STATUS_CONFIG: Record<string, { bg: string; text: string; label: string }> = {
-  Draft: { bg: "bg-amber-500/10", text: "text-amber-500", label: "STATUS_DRAFT" },
-  "In Progress": { bg: "bg-sky-500/10", text: "text-sky-500", label: "STATUS_ACTIVE" },
-  "Awaiting Approval": { bg: "bg-violet-500/10", text: "text-violet-500", label: "STATUS_REVIEW" },
-  Finalized: { bg: "bg-emerald-500/10", text: "text-emerald-500", label: "STATUS_FINALIZED" },
-  Cancelled: { bg: "bg-zinc-700/10", text: "text-zinc-500", label: "STATUS_ABORTED" },
+const STATUS_CONFIG: Record<string, { bg: string; text: string; key: string }> = {
+  Draft: { bg: "bg-amber-500/10", text: "text-amber-500", key: "status_draft" },
+  "In Progress": { bg: "bg-sky-500/10", text: "text-sky-500", key: "status_active" },
+  "Awaiting Approval": { bg: "bg-violet-500/10", text: "text-violet-500", key: "status_review" },
+  Finalized: { bg: "bg-emerald-500/10", text: "text-emerald-500", key: "status_finalized" },
+  Cancelled: { bg: "bg-zinc-700/10", text: "text-zinc-500", key: "status_cancelled" },
 };
 
-function statusBadge(status: string) {
-  const config = STATUS_CONFIG[status] ?? { bg: "bg-zinc-500/10", text: "text-zinc-500", label: status.toUpperCase() };
+function statusBadge(status: string, t: (k: any) => string) {
+  const config = STATUS_CONFIG[status] ?? { bg: "bg-zinc-500/10", text: "text-zinc-500", key: status };
   return (
     <Badge variant="outline" className={`rounded-none font-mono text-[9px] font-black border-current/20 px-2 py-0.5 uppercase tracking-widest ${config.bg} ${config.text}`}>
-      {config.label}
+      {config.key ? t(config.key as any) : config.key}
     </Badge>
   );
 }
@@ -79,6 +79,7 @@ export default function WorkflowsPage() {
   const user = getAuthUser();
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const t = useT();
   const isManager = user?.role === "super_admin" || user?.role === "dept_head" || user?.role === "hr_coordinator";
 
   const [showCreate, setShowCreate] = useState(false);
@@ -181,7 +182,7 @@ export default function WorkflowsPage() {
 
   const handleCreate = async () => {
     if (!form.title || !form.department_id) {
-      toast({ title: "Title and department are required", variant: "destructive" });
+      toast({ title: t("workflows_required"), variant: "destructive" });
       return;
     }
     setSaving(true);
@@ -199,15 +200,15 @@ export default function WorkflowsPage() {
         }),
       });
       if (res.ok) {
-        toast({ title: "Workflow initialized successfully" });
+        toast({ title: t("workflows_created") });
         setShowCreate(false);
         await queryClient.invalidateQueries({ queryKey: ["workflows"] });
       } else {
         const b = await res.json() as { message?: string };
-        toast({ title: "Failed to initialize protocol", description: b.message, variant: "destructive" });
+        toast({ title: t("common_failed"), description: b.message, variant: "destructive" });
       }
     } catch {
-      toast({ title: "Network error", variant: "destructive" });
+      toast({ title: t("common_network_error"), variant: "destructive" });
     } finally {
       setSaving(false);
     }
@@ -219,16 +220,16 @@ export default function WorkflowsPage() {
     try {
       const res = await fetch(`/api/workflows/${deleteTarget.id}`, { method: "DELETE", headers });
       if (res.ok) {
-        toast({ title: "Protocol terminated" });
+        toast({ title: t("workflows_deleted") });
         setDeleteTarget(null);
         await queryClient.invalidateQueries({ queryKey: ["workflows"] });
       } else {
         const b = await res.json() as { message?: string };
-        toast({ title: "Termination failed", description: b.message, variant: "destructive" });
+        toast({ title: t("common_failed"), description: b.message, variant: "destructive" });
         setDeleteTarget(null);
       }
     } catch {
-      toast({ title: "Network error", variant: "destructive" });
+      toast({ title: t("common_network_error"), variant: "destructive" });
     } finally {
       setDeleting(false);
     }
@@ -312,12 +313,12 @@ export default function WorkflowsPage() {
           <div className="space-y-3 text-center md:text-start">
             <div className="flex items-center justify-center md:justify-start gap-3">
               <GitBranch className="h-4 w-4 text-primary animate-pulse" />
-              <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">EVALUATION_WORKFLOW_PROTOCOL</span>
+              <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">{t("workflows_protocol_label")}</span>
             </div>
             <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
-              STRATEGIC_WORKFLOWS
+              {t("workflows_title")}
             </h2>
-            <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4">Hierarchical evaluation and approval chain management.</p>
+            <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4">{t("workflows_subtitle")}</p>
           </div>
           
           {isManager && (
@@ -340,7 +341,7 @@ export default function WorkflowsPage() {
           <CardContent className="py-24 text-center space-y-4">
              <Terminal className="h-12 w-12 text-secondary/10 mx-auto" />
              <p className="font-mono text-xs text-secondary/30 uppercase tracking-[0.3em]">
-                NO_ACTIVE_DATA_STREAMS_DETECTED
+                {t("label_no_records")}
              </p>
           </CardContent>
           <CornerMarks />
@@ -367,23 +368,23 @@ export default function WorkflowsPage() {
                           {wf.title}
                         </h3>
                         <p className="text-[10px] font-mono text-secondary/40 uppercase tracking-widest">
-                           UNIT::{wf.department?.name ?? "GENERAL"}
+                           {t("workflows_unit")}::{wf.department?.name ?? t("workflows_general")}
                         </p>
                       </div>
-                      {statusBadge(wf.status)}
+                      {statusBadge(wf.status, t)}
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-6">
                     {wf.campaign && (
                       <div className="flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 w-fit">
                          <Activity className="h-3 w-3 text-primary" />
-                         <span className="text-[9px] font-mono font-black text-secondary/40 uppercase tracking-widest">CAMPAIGN::{wf.campaign.title}</span>
+                         <span className="text-[9px] font-mono font-black text-secondary/40 uppercase tracking-widest">{t("campaigns_col_type")}::{wf.campaign.title}</span>
                       </div>
                     )}
 
                     <div className="space-y-2">
                       <div className="flex items-center justify-between font-mono text-[9px] text-secondary/40 uppercase tracking-widest">
-                        <span>EXECUTION_PROGRESS</span>
+                        <span>{t("workflows_progress")}</span>
                         <span className="text-white">{progress}%</span>
                       </div>
                       <div className="h-1 bg-white/5 rounded-none overflow-hidden relative">
@@ -398,7 +399,7 @@ export default function WorkflowsPage() {
 
                     <div className="pt-6 border-t border-white/5 flex items-center justify-between">
                       <span className="font-mono text-[9px] text-secondary/20 uppercase">
-                        INIT_DATE::{new Date(wf.created_at).toLocaleDateString()}
+                        {t("workflows_init_date")}::{new Date(wf.created_at).toLocaleDateString()}
                       </span>
                       <div className="flex items-center gap-2">
                         {isManager && wf.status !== "Finalized" && (
@@ -429,7 +430,7 @@ export default function WorkflowsPage() {
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5" />
           <div className="relative z-10 flex flex-col h-full max-h-[90vh]">
             <div className="p-8 border-b border-white/10 bg-white/5 shrink-0">
-              <h2 className="font-headline font-black text-2xl text-white uppercase tracking-tighter">INITIALIZE_PROTOCOL_CHAIN</h2>
+              <h2 className="font-headline font-black text-2xl text-white uppercase tracking-tighter">{t("workflows_create_title")}</h2>
               <p className="text-[10px] font-mono text-primary tracking-[0.3em] mt-2 uppercase">STRAT_INIT_v9.4</p>
             </div>
             
@@ -502,7 +503,7 @@ export default function WorkflowsPage() {
                   {form.manager_id && (
                     <div className="flex items-center gap-2 text-[10px] font-mono font-black text-emerald-500 uppercase tracking-widest px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 w-fit">
                       <CheckCircle2 className="h-3 w-3" />
-                      AUTHORIZED::{users.find((u) => u.id === form.manager_id)?.full_name ?? "OPERATIVE"}
+                      {t("workflows_authorized")}::{users.find((u) => u.id === form.manager_id)?.full_name ?? "OPERATIVE"}
                     </div>
                   )}
                 </div>
@@ -644,7 +645,7 @@ export default function WorkflowsPage() {
                 disabled={saving}
                 className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase px-10 py-6 h-auto"
               >
-                {saving ? "INITIALIZING..." : "EXECUTE_DEPLOYMENT"}
+                {saving ? t("action_synchronizing") : t("workflows_new")}
               </Button>
             </div>
           </div>
@@ -655,19 +656,19 @@ export default function WorkflowsPage() {
       <AlertDialog open={!!deleteTarget} onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}>
         <AlertDialogContent className="bg-[#0A0A0A] border-2 border-rose-500/30 rounded-none text-white">
           <AlertDialogHeader>
-            <AlertDialogTitle className="font-headline font-black text-2xl text-white uppercase tracking-tighter">TERMINATE_PROTOCOL_STREAM?</AlertDialogTitle>
+            <AlertDialogTitle className="font-headline font-black text-2xl text-white uppercase tracking-tighter">{t("action_confirm_delete")}</AlertDialogTitle>
             <AlertDialogDescription className="text-secondary/40 font-mono text-xs uppercase tracking-widest">
-               This will permanently purge workflow "{deleteTarget?.title}" and all associated approval telemetry.
+               {t("workflows_delete_desc", { name: deleteTarget?.title })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="mt-8">
-            <AlertDialogCancel className="rounded-none border-white/10 bg-white/5 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-white/10 h-auto py-4 px-8">ABORT_TERMINATION</AlertDialogCancel>
+            <AlertDialogCancel className="rounded-none border-white/10 bg-white/5 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-white/10 h-auto py-4 px-8">{t("common_cancel")}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               disabled={deleting}
               className="rounded-none bg-rose-600 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-rose-700 px-8 h-auto py-4"
             >
-              {deleting ? "PURGING..." : "CONFIRM_PURGE"}
+              {deleting ? t("action_purging") : t("action_confirm_delete")}
             </AlertDialogAction>
           </AlertDialogFooter>
           <CornerMarks color="rose" />

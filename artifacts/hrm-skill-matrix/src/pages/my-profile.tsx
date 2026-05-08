@@ -123,7 +123,7 @@ export default function MyProfilePage() {
                 </span>
               )}
               <span className="bg-primary/10 text-primary px-3 py-1 border border-primary/20">
-                NODE_ID::{emp.employee_code || "UNKNOWN"}
+                {t("label_node_id")}::{emp.employee_code || t("profile_unknown")}
               </span>
             </div>
           </div>
@@ -162,7 +162,7 @@ export default function MyProfilePage() {
                         {sk.skill_name}
                       </span>
                       <span className="font-mono text-[9px] text-zinc-500 uppercase tracking-widest">
-                        {sk.score != null ? t(scoreLabels[sk.score]) : "UN_EVAL"}
+                        {sk.score != null ? t(scoreLabels[sk.score]) : t("score_uneval")}
                       </span>
                     </div>
                     {sk.score != null ? scoreBar(sk.score) : (
@@ -197,7 +197,7 @@ export default function MyProfilePage() {
                   <div key={s.id} className="p-6 hover:bg-zinc-800/50 transition-colors flex items-center justify-between group/eval">
                     <div className="space-y-1">
                       <p className="font-headline font-black text-sm text-white uppercase tracking-tight group-hover/eval:text-primary transition-colors">
-                        {s.campaign_title ?? "Campaign"}
+                        {s.campaign_title ?? t("nav_campaigns")}
                       </p>
                       <p className="font-mono text-[9px] text-zinc-600 uppercase tracking-widest">
                         {t("profile_skills_assessed", { count: s.evaluated_skills_count })} // {new Date(s.updated_at || "").toLocaleDateString()}

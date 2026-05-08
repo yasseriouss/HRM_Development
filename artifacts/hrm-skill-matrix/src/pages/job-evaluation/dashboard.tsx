@@ -68,10 +68,10 @@ const scatterData = [
 ];
 
 const gradeDist = [
-  { name: "Entry", value: 45 },
-  { name: "Mid", value: 30 },
-  { name: "Senior", value: 15 },
-  { name: "Executive", value: 10 },
+  { name: "entry", value: 45 },
+  { name: "mid", value: 30 },
+  { name: "senior", value: 15 },
+  { name: "executive", value: 10 },
 ];
 
 const COLORS = ["#D4AF37", "#A0A0A0", "#4A4A4A", "#1A1A1A"];
@@ -94,7 +94,7 @@ export default function JobEvaluationDashboard() {
           <div className="space-y-3 text-center md:text-start">
             <div className="flex items-center justify-center md:justify-start gap-3">
               <Activity className="h-4 w-4 text-primary animate-pulse" />
-              <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">EVALUATION_INTELLIGENCE_CENTER</span>
+              <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">{t("label_mission_control")}</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
               {isAr ? "ØªØ­Ù„ÙŠÙ„Ø§Øª ØªÙ‚ÙŠÙŠÙ… Ø§Ù„ÙˆØ¸Ø§Ø¦Ù" : "JOB_EVAL_ANALYTICS"}
@@ -122,10 +122,10 @@ export default function JobEvaluationDashboard() {
       {/* Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[
-          { label: isAr ? "Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„ÙˆØ¸Ø§Ø¦Ù" : "TOTAL_ROLES", value: "142", icon: Briefcase, trend: "+12%", up: true, color: "primary" },
-          { label: isAr ? "Ù…ØªÙˆØ³Ø· Ø§Ù„Ù†Ù‚Ø§Ø·" : "AVG_EVAL_PTS", value: "342", icon: BarChart3, trend: "+5.4%", up: true, color: "emerald-400" },
-          { label: isAr ? "Ø¹Ø¯Ø§Ù„Ø© Ø§Ù„Ø±ÙˆØ§ØªØ¨" : "EQUITY_INDEX", value: "92%", icon: TrendingUp, trend: "-2.1%", up: false, color: "amber-400" },
-          { label: isAr ? "Ø§Ù„Ù…ÙˆØ¸ÙÙŠÙ†" : "OPERATIVES", value: "1,284", icon: Users, trend: "+3%", up: true, color: "sky-400" },
+          { label: isAr ? "Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„ÙˆØ¸Ø§Ø¦Ù" : t("je_grade_executive"), value: "142", icon: Briefcase, trend: "+12%", up: true, color: "primary" },
+          { label: isAr ? "Ù…ØªÙˆØ³Ø· Ø§Ù„Ù†Ù‚Ø§Ø·" : t("je_col_points"), value: "342", icon: BarChart3, trend: "+5.4%", up: true, color: "emerald-400" },
+          { label: isAr ? "Ø¹Ø¯Ø§Ù„Ø© Ø§Ù„Ø±ÙˆØ§ØªØ¨" : t("skills_col_weight"), value: "92%", icon: TrendingUp, trend: "-2.1%", up: false, color: "amber-400" },
+          { label: isAr ? "Ø§Ù„Ù…ÙˆØ¸ÙÙŠÙ†" : t("employees_title"), value: "1,284", icon: Users, trend: "+3%", up: true, color: "sky-400" },
         ].map((stat, i) => (
           <motion.div key={i} variants={itemVariants}>
             <Card className="bg-[#0D0D0D] border-zinc-800 rounded-none relative group overflow-hidden hover:border-primary/40 transition-all">
@@ -163,7 +163,7 @@ export default function JobEvaluationDashboard() {
                   {isAr ? "ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø¹Ø¯Ø§Ù„Ø© Ø§Ù„Ø¯Ø§Ø®Ù„ÙŠØ©" : "EQUITY_REGRESSION_MATRIX"}
                 </CardTitle>
                 <CardDescription className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest mt-1">
-                   POINT_VALUATION_VS_COMPENSATION_TELEMETRY
+                   {t("je_scatter_title")}
                 </CardDescription>
               </div>
               <Button variant="ghost" size="icon" className="h-8 w-8 rounded-none border border-zinc-800 hover:bg-white/5"><Filter className="h-4 w-4" /></Button>
@@ -172,14 +172,14 @@ export default function JobEvaluationDashboard() {
               <ResponsiveContainer width="100%" height="100%">
                 <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#1A1A1A" />
-                  <XAxis type="number" dataKey="points" name="Points" unit="pts" stroke="#444" fontSize={10} fontStyle="italic" />
-                  <YAxis type="number" dataKey="salary" name="Salary" unit="$" stroke="#444" fontSize={10} />
-                  <ZAxis type="category" dataKey="name" name="Role" />
+                  <XAxis type="number" dataKey="points" name={t("je_col_points")} unit="pts" stroke="#444" fontSize={10} fontStyle="italic" />
+                  <YAxis type="number" dataKey="salary" name={t("je_col_salary_mid")} unit="$" stroke="#444" fontSize={10} />
+                  <ZAxis type="category" dataKey="name" name={t("field_name")} />
                   <Tooltip 
                     cursor={{ strokeDasharray: '3 3' }}
                     contentStyle={{ backgroundColor: '#0A0A0A', border: '1px solid #D4AF37', borderRadius: '0px', color: '#FFF', fontSize: '10px', fontFamily: 'monospace' }} 
                   />
-                  <Scatter name="Jobs" data={scatterData} fill="#D4AF37">
+                  <Scatter name={t("je_scatter_jobs")} data={scatterData} fill="#D4AF37">
                      {scatterData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={index % 2 === 0 ? 'var(--primary)' : '#555'} />
                     ))}
@@ -203,7 +203,7 @@ export default function JobEvaluationDashboard() {
                 {isAr ? "ØªÙˆØ²ÙŠØ¹ Ø§Ù„ÙØ¦Ø§Øª" : "GRADE_ARCH_DIST"}
               </CardTitle>
               <CardDescription className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest mt-1">
-                 STRUCTURAL_HIERARCHY_RATIOS
+                 {t("je_weight_title")}
               </CardDescription>
             </CardHeader>
             <CardContent className="p-8 flex flex-col items-center justify-center">
@@ -233,7 +233,7 @@ export default function JobEvaluationDashboard() {
                   <div key={i} className="flex items-center justify-between group">
                     <div className="flex items-center gap-3">
                       <div className="w-2 h-2" style={{ backgroundColor: COLORS[i] }} />
-                      <span className="text-[10px] font-headline font-black text-zinc-500 uppercase tracking-widest group-hover:text-white transition-colors">{item.name}</span>
+                      <span className="text-[10px] font-headline font-black text-zinc-500 uppercase tracking-widest group-hover:text-white transition-colors">{t(("je_pie_" + item.name) as any)}</span>
                     </div>
                     <span className="font-mono text-xs font-black text-white">{item.value}%</span>
                   </div>
@@ -268,11 +268,11 @@ export default function JobEvaluationDashboard() {
               <table className="w-full border-collapse">
                 <thead>
                   <tr className="bg-zinc-900/50 border-b border-zinc-800 text-start">
-                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{isAr ? "Ø§Ù„Ù…Ø³Ù…Ù‰ Ø§Ù„ÙˆØ¸ÙŠÙÙŠ" : "JOB_PROFILE_TITLE"}</th>
-                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{isAr ? "Ø§Ù„Ù†Ù‚Ø§Ø·" : "PTS_UNIT"}</th>
-                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{isAr ? "Ø§Ù„Ø¯Ø±Ø¬Ø©" : "TIER_GRADE"}</th>
-                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{isAr ? "Ø§Ù„Ø­Ø§Ù„Ø©" : "OPS_STATUS"}</th>
-                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase text-end">{isAr ? "Ø§Ù„Ø¥Ø¬Ø±Ø§Ø¡Ø§Øª" : "COMMAND"}</th>
+                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{isAr ? "Ø§Ù„Ù…Ø³Ù…Ù‰ Ø§Ù„ÙˆØ¸ÙŠÙÙŠ" : t("field_name")}</th>
+                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{isAr ? "Ø§Ù„Ù†Ù‚Ø§Ø·" : t("je_col_points")}</th>
+                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{isAr ? "Ø§Ù„Ø¯Ø±Ø¬Ø©" : t("je_guide_title")}</th>
+                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{isAr ? "Ø§Ù„Ø­Ø§Ù„Ø©" : t("field_status")}</th>
+                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase text-end">{isAr ? "Ø§Ù„Ø¥Ø¬Ø±Ø§Ø¡Ø§Øª" : t("common_actions")}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-zinc-900">
@@ -299,7 +299,7 @@ export default function JobEvaluationDashboard() {
                           job.status === "Pending" ? "bg-amber-500/10 text-amber-500" :
                           "bg-zinc-800 text-zinc-500"
                         }`}>
-                          {job.status === "Approved" ? "VERIFIED" : job.status.toUpperCase()}
+                          {job.status === "Approved" ? t("status_active") : job.status === "Pending" ? t("status_draft") : t("status_draft")}
                         </Badge>
                       </td>
                       <td className="px-8 py-5 text-end">

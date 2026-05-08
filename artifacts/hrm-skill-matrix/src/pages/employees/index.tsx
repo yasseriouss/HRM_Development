@@ -290,7 +290,7 @@ export default function EmployeesPage() {
                 <tbody className="divide-y divide-white/5">
                   {employees.map((emp) => (
                     <tr key={emp.id} className="group hover:bg-white/2 transition-colors">
-                      <td className="px-8 py-6">
+                      <td className="px-8 py-6 whitespace-nowrap">
                         <Link href={`/employees/${emp.id}`} className="group/link">
                           <p className="font-headline font-black text-white text-base tracking-tight group-hover/link:text-primary transition-colors uppercase">
                             {emp.full_name}
@@ -300,15 +300,15 @@ export default function EmployeesPage() {
                           </div>
                         </Link>
                       </td>
-                      <td className="px-8 py-6 font-mono text-[11px] text-primary/60">{emp.employee_code ?? "â€”"}</td>
-                      <td className="px-8 py-6">
+                      <td className="px-8 py-6 font-mono text-[11px] text-primary/60 whitespace-nowrap">{emp.employee_code ?? "â€”"}</td>
+                      <td className="px-8 py-6 whitespace-nowrap">
                         <Badge variant="outline" className="rounded-none border-white/5 bg-white/5 text-[9px] font-mono text-secondary/60 py-1 uppercase px-2">
                           {emp.department?.name ?? "UNASSIGNED"}
                         </Badge>
                       </td>
-                      <td className="px-8 py-6 font-headline font-black text-[10px] text-secondary/30 tracking-widest uppercase">{emp.job_title ?? "OPERATIVE"}</td>
-                      <td className="px-8 py-6">{classBadge(emp.current_class, t)}</td>
-                      <td className="px-8 py-6 text-end">
+                      <td className="px-8 py-6 font-headline font-black text-[10px] text-secondary/30 tracking-widest uppercase whitespace-nowrap">{emp.job_title ?? "OPERATIVE"}</td>
+                      <td className="px-8 py-6 whitespace-nowrap">{classBadge(emp.current_class, t)}</td>
+                      <td className="px-8 py-6 text-end whitespace-nowrap">
                         {isAdmin && (
                           <div className="flex items-center justify-end gap-2">
                             <Button size="icon" variant="ghost" className="h-10 w-10 rounded-none border border-transparent hover:border-primary/30 hover:bg-primary/5 text-secondary/30 hover:text-primary" onClick={() => openEdit(emp)}>
