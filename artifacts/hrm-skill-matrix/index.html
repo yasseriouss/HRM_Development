@@ -4,13 +4,57 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
     <title>HRM Development Suite | Created by yasserious.com</title>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/logo.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      #root:empty + #splash-screen {
+        display: flex;
+      }
+      #splash-screen {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background-color: #050505;
+        z-index: 9999;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: white;
+      }
+      .splash-logo {
+        width: 120px;
+        height: auto;
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+      @keyframes pulse {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: .5; transform: scale(0.95); }
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
+    <div id="splash-screen">
+      <img src="/logo.png" alt="System Logo" class="splash-logo" />
+      <div style="margin-top: 2rem; font-family: 'Inter', sans-serif; font-weight: 700; letter-spacing: 0.2em; font-size: 0.75rem; color: #D4AF37;">INITIALIZING_SYSTEM</div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Remove splash screen once React mounts
+      const observer = new MutationObserver((mutations) => {
+        if (document.getElementById('root').hasChildNodes()) {
+          const splash = document.getElementById('splash-screen');
+          if (splash) {
+            splash.style.opacity = '0';
+            splash.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => splash.remove(), 500);
+          }
+          observer.disconnect();
+        }
+      });
+      observer.observe(document.getElementById('root'), { childList: true });
+    </script>
   </body>
 </html>

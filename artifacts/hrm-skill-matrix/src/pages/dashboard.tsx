@@ -299,15 +299,15 @@ export default function Dashboard() {
         className="space-y-6 pt-6"
       >
         <div className="flex items-center justify-between">
-          <h3 className="font-headline text-2xl font-black text-white flex items-center gap-4 uppercase">
+          <h3 className={`font-headline text-2xl font-black text-white flex items-center gap-4 uppercase ${isAr ? 'font-tajawal' : ''}`}>
             <Brain className="h-6 w-6 text-primary animate-pulse" />
-            AI_STRATEGIC_INTELLIGENCE
+            <span className="screen-flicker">AI_STRATEGIC_INTELLIGENCE</span>
           </h3>
           <Button 
             onClick={fetchAIInsights} 
             disabled={isAiLoading}
             variant="outline"
-            className="rounded-none border-primary/20 bg-primary/5 text-primary font-headline font-black text-[10px] tracking-widest uppercase hover:bg-primary/10 h-auto py-3 px-6 group"
+            className={`rounded-none border-primary/20 bg-primary/5 text-primary font-headline font-black text-[10px] tracking-widest uppercase hover:bg-primary/10 h-auto py-3 px-6 group btn-metallic ${isAr ? 'font-tajawal' : ''}`}
           >
             {isAiLoading ? (
               <Loader2 className="h-4 w-4 mr-2 animate-spin" />

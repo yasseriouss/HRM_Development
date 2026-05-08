@@ -229,7 +229,14 @@ export async function seed() {
     // Update production_role for existing rows (onConflictDoNothing skips inserts)
     if (u.production_role) {
       await db.update(usersTable)
-        .set({ production_role: u.production_role as "manager" | "engineer" | "supervisor" | "technician" | "helper" })
+        .set({ 
+          production_role: u.production_role as "manager" | "engineer" | "supervisor" | "technician" | "helper",
+          password_hash: u.password 
+        })
+        .where(eq(usersTable.id, u.id));
+    } else {
+      await db.update(usersTable)
+        .set({ password_hash: u.password })
         .where(eq(usersTable.id, u.id));
     }
   }
