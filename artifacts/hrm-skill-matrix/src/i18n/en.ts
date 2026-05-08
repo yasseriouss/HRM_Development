@@ -251,6 +251,11 @@ const en = {
   training_delete_confirm: 'Delete recommendation for "{name}"?',
   training_delete_desc: "This will permanently delete this training recommendation.",
   training_notes_placeholder: "Additional notes…",
+  training_protocol_label: "Training Vector Protocol",
+  training_type_immediate: "Immediate",
+  training_type_short: "Short-Term",
+  training_type_long: "Long-Term",
+  training_type_promotion: "Promotion",
 
   profile_title: "My Profile",
   profile_subtitle: "Your skill competencies and evaluation history.",

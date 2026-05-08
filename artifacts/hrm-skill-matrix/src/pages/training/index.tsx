@@ -44,22 +44,29 @@ const CornerMarks = ({ color = "primary" }: { color?: string }) => (
   </>
 );
 
-function statusBadge(status: string) {
-  const map: Record<string, { bg: string; text: string }> = {
-    Pending: { bg: "bg-amber-500/10", text: "text-amber-500" },
-    "In Progress": { bg: "bg-sky-500/10", text: "text-sky-500" },
-    Completed: { bg: "bg-emerald-500/10", text: "text-emerald-500" },
-    Cancelled: { bg: "bg-zinc-500/10", text: "text-zinc-500" },
+function statusBadge(status: string, t: (k: any) => string) {
+  const map: Record<string, { bg: string; text: string; key: string }> = {
+    Pending: { bg: "bg-amber-500/10", text: "text-amber-500", key: "training_pending" },
+    "In Progress": { bg: "bg-sky-500/10", text: "text-sky-500", key: "training_in_progress" },
+    Completed: { bg: "bg-emerald-500/10", text: "text-emerald-500", key: "training_completed" },
+    Cancelled: { bg: "bg-zinc-500/10", text: "text-zinc-500", key: "training_cancelled" },
   };
   const config = map[status] ?? map.Pending;
   return (
-    <Badge variant="outline" className={`rounded-none font-mono text-[9px] font-black border-current/20 px-2 py-0.5 uppercase tracking-widest ${config.bg} ${config.text}`}>
-      {status}
+    <Badge variant="outline" className={`rounded-none font-mono text-[9px] font-black border-current/20 px-2 py-0.5 uppercase tracking-widest whitespace-nowrap ${config.bg} ${config.text}`}>
+      {t(config.key)}
     </Badge>
   );
 }
 
-function typeBadge(type: string) {
+const TRAINING_TYPE_KEYS: Record<string, string> = {
+  Immediate: "training_type_immediate",
+  "Short-term": "training_type_short",
+  "Long-term": "training_type_long",
+  Promotion: "training_type_promotion",
+};
+
+function typeBadge(type: string, t: (k: any) => string) {
   const map: Record<string, { bg: string; text: string }> = {
     Immediate: { bg: "bg-rose-500/10", text: "text-rose-500" },
     "Short-term": { bg: "bg-amber-500/10", text: "text-amber-500" },
@@ -68,8 +75,8 @@ function typeBadge(type: string) {
   };
   const config = map[type] ?? map.Immediate;
   return (
-    <Badge variant="outline" className={`rounded-none font-mono text-[9px] font-black border-current/20 px-2 py-0.5 uppercase tracking-widest ${config.bg} ${config.text}`}>
-      {type}
+    <Badge variant="outline" className={`rounded-none font-mono text-[9px] font-black border-current/20 px-2 py-0.5 uppercase tracking-widest whitespace-nowrap ${config.bg} ${config.text}`}>
+      {t((TRAINING_TYPE_KEYS[type] ?? "training_type_short") as any)}
     </Badge>
   );
 }
@@ -111,11 +118,11 @@ export default function TrainingPage() {
   ];
 
   const STATUS_LABELS: Record<string, string> = {
-    all: "ALL_VECTORS",
-    Pending: "STATUS_PENDING",
-    "In Progress": "STATUS_IN_PROGRESS",
-    Completed: "STATUS_COMPLETED",
-    Cancelled: "STATUS_CANCELLED",
+    all: t("all_statuses"),
+    Pending: t("training_pending"),
+    "In Progress": t("training_in_progress"),
+    Completed: t("training_completed"),
+    Cancelled: t("training_cancelled"),
   };
 
   const [statusFilter, setStatusFilter] = useState("all");
@@ -243,7 +250,7 @@ export default function TrainingPage() {
           <div className="space-y-3">
             <div className="flex items-center gap-3">
               <Activity className="h-4 w-4 text-primary animate-pulse" />
-              <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">TRAINING_VECTOR_PROTOCOL</span>
+              <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">{t("training_protocol_label")}</span>
             </div>
             <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
               {t("training_title")}
@@ -253,7 +260,7 @@ export default function TrainingPage() {
           
           {isAdmin && (
             <Button className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto hover:bg-primary/90" onClick={() => { setCreateForm(emptyCreateForm()); setShowCreate(true); }}>
-              <Plus className="h-4 w-4 me-2" /> INITIALIZE_NEW_VECTOR
+              <Plus className="h-4 w-4 me-2" /> {t("training_new")}
             </Button>
           )}
         </div>
@@ -263,9 +270,9 @@ export default function TrainingPage() {
       {/* Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {[
-          { label: "VECTORS_PENDING", value: pending, icon: Target, color: "text-amber-500" },
-          { label: "VECTORS_ACTIVE", value: inProgress, icon: Cpu, color: "text-sky-500" },
-          { label: "VECTORS_FINALIZED", value: completed, icon: Shield, color: "text-emerald-500" },
+          { label: t("training_pending"), value: pending, icon: Target, color: "text-amber-500" },
+          { label: t("training_in_progress"), value: inProgress, icon: Cpu, color: "text-sky-500" },
+          { label: t("training_completed"), value: completed, icon: Shield, color: "text-emerald-500" },
         ].map((m, i) => (
           <Card key={i} className="bg-[#121212] border border-white/10 rounded-none relative group overflow-hidden">
              <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
@@ -275,7 +282,7 @@ export default function TrainingPage() {
                 <p className="font-headline font-black text-[9px] tracking-[0.3em] text-secondary/40 uppercase mb-2">{m.label}</p>
                 <div className="flex items-baseline gap-2">
                    <p className={`text-4xl font-headline font-black tracking-tighter ${m.color}`}>{m.value}</p>
-                   <span className="text-[10px] font-mono text-secondary/20">UNIT_RECORDS</span>
+                   <span className="text-[10px] font-mono text-secondary/20 uppercase">{t("label_total_nodes")}</span>
                 </div>
              </CardContent>
           </Card>
@@ -287,7 +294,7 @@ export default function TrainingPage() {
         <CardContent className="p-8">
           <div className="flex flex-col md:flex-row items-center gap-6">
             <div className="w-full md:w-80 relative">
-              <Label className="font-headline font-black text-[9px] text-secondary/40 tracking-widest uppercase mb-2 block">PROTOCOL_FILTER</Label>
+              <Label className="font-headline font-black text-[9px] text-secondary/40 tracking-widest uppercase mb-2 block">{t("filter_by_status_label")}</Label>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
                 <SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
                   <SelectValue placeholder={t("filter_by_status")} />
@@ -316,43 +323,43 @@ export default function TrainingPage() {
         ) : items.length === 0 ? (
           <div className="p-20 text-center space-y-4">
             <HardDrive className="h-12 w-12 text-secondary/10 mx-auto" />
-            <p className="font-mono text-xs text-secondary/30 uppercase tracking-[0.3em]">NO_DATA_STREAMS_DETECTED</p>
+            <p className="font-mono text-xs text-secondary/30 uppercase tracking-[0.3em]">{t("label_no_records")}</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-start border-collapse text-sm">
               <thead>
                 <tr className="bg-white/5 border-b border-white/10">
-                  <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase">{t("field_employee")}</th>
-                  <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase">{t("field_skill")}</th>
-                  <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase">{t("field_type")}</th>
-                  <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase">{t("field_status")}</th>
-                  <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase">{t("training_col_target_date")}</th>
-                  <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase">{t("field_notes")}</th>
-                  <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase text-end">{t("common_actions")}</th>
+                  <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase whitespace-nowrap">{t("field_employee")}</th>
+                  <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase whitespace-nowrap">{t("field_skill")}</th>
+                  <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase whitespace-nowrap">{t("field_type")}</th>
+                  <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase whitespace-nowrap">{t("field_status")}</th>
+                  <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase whitespace-nowrap">{t("training_col_target_date")}</th>
+                  <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase whitespace-nowrap">{t("field_notes")}</th>
+                  <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase whitespace-nowrap text-end">{t("common_actions")}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
                 {items.map((r) => (
                   <tr key={r.id} className="group hover:bg-white/2 transition-colors">
-                    <td className="px-8 py-6">
+                    <td className="px-8 py-6 whitespace-nowrap">
                       <Link href={`/employees/${r.employee_id}`} className="group/link">
-                        <p className="font-headline font-black text-white text-base tracking-tight group-hover/link:text-primary transition-colors uppercase">
-                          {r.employee_name ?? "UNIDENTIFIED_OPERATOR"}
+                        <p className="font-headline font-black text-white text-base tracking-tight group-hover/link:text-primary transition-colors uppercase whitespace-nowrap">
+                          {r.employee_name ?? "—"}
                         </p>
-                        <div className="flex items-center gap-1 text-[9px] font-mono text-secondary/20 mt-1 uppercase">
-                          <ExternalLink className="h-3 w-3" /> NODE_PROFILE_LINK
+                        <div className="flex items-center gap-1 text-[9px] font-mono text-secondary/20 mt-1 uppercase whitespace-nowrap">
+                          <ExternalLink className="h-3 w-3" /> {t("label_node_profile")}
                         </div>
                       </Link>
                     </td>
-                    <td className="px-8 py-6 font-mono text-[11px] text-primary/60">{r.skill_name ?? "â€”"}</td>
-                    <td className="px-8 py-6">{typeBadge(r.recommendation_type)}</td>
-                    <td className="px-8 py-6">{statusBadge(r.status)}</td>
-                    <td className="px-8 py-6 font-mono text-[11px] text-secondary/40">
-                      {r.target_date ? new Date(r.target_date).toLocaleDateString() : "TBD"}
+                    <td className="px-8 py-6 font-mono text-[11px] text-primary/60 whitespace-nowrap">{r.skill_name ?? "—"}</td>
+                    <td className="px-8 py-6 whitespace-nowrap">{typeBadge(r.recommendation_type, t)}</td>
+                    <td className="px-8 py-6 whitespace-nowrap">{statusBadge(r.status, t)}</td>
+                    <td className="px-8 py-6 font-mono text-[11px] text-secondary/40 whitespace-nowrap">
+                      {r.target_date ? new Date(r.target_date).toLocaleDateString() : t("common_no_data")}
                     </td>
                     <td className="px-8 py-6">
-                       <p className="text-[11px] font-medium text-secondary/40 max-w-xs truncate italic">{r.notes ?? "NO_REMARKS"}</p>
+                       <p className="text-[11px] font-medium text-secondary/40 max-w-xs truncate italic">{r.notes ?? "—"}</p>
                     </td>
                     <td className="px-8 py-6 text-end">
                       {isAdmin && (
@@ -381,7 +388,7 @@ export default function TrainingPage() {
           <div className="relative z-10">
             <div className="p-8 border-b border-white/10 bg-white/5">
               <h2 className="font-headline font-black text-2xl text-white uppercase tracking-tighter">
-                INITIALIZE_TRAINING_VECTOR
+                {t("training_create_title")}
               </h2>
               <p className="text-[10px] font-mono text-primary tracking-[0.3em] mt-2 uppercase">PROTOCOL_SEQUENCE_v1.2</p>
             </div>
@@ -437,7 +444,7 @@ export default function TrainingPage() {
             <div className="p-8 border-t border-white/10 bg-white/5 flex justify-end gap-4">
               <Button variant="ghost" className="rounded-none font-headline font-black text-[10px] tracking-widest uppercase text-white hover:bg-white/5" onClick={() => setShowCreate(false)}>{t("common_cancel")}</Button>
               <Button onClick={handleCreate} disabled={saving} className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase px-10 py-6 h-auto">
-                {saving ? "SYNCHRONIZING..." : "EXECUTE_INIT"}
+                {saving ? t("action_synchronizing") : t("training_new")}
               </Button>
             </div>
           </div>
@@ -450,7 +457,7 @@ export default function TrainingPage() {
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5" />
           <div className="relative z-10">
             <div className="p-8 border-b border-white/10 bg-white/5">
-              <h2 className="font-headline font-black text-2xl text-white uppercase tracking-tighter">RECONFIGURE_VECTOR</h2>
+              <h2 className="font-headline font-black text-2xl text-white uppercase tracking-tighter">{t("action_reconfigure")}</h2>
               <p className="text-[10px] font-mono text-primary tracking-[0.3em] mt-2 uppercase">UPDATE_SEQUENCE</p>
             </div>
             
@@ -469,7 +476,7 @@ export default function TrainingPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">
-                    {STATUSES.map((s) => <SelectItem key={s} value={s} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{s}</SelectItem>)}
+                    {STATUSES.map((s) => <SelectItem key={s} value={s} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{STATUS_LABELS[s] ?? s}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>
@@ -486,7 +493,7 @@ export default function TrainingPage() {
             <div className="p-8 border-t border-white/10 bg-white/5 flex justify-end gap-4">
               <Button variant="ghost" className="rounded-none font-headline font-black text-[10px] tracking-widest uppercase text-white hover:bg-white/5" onClick={() => setEditTarget(null)}>{t("common_cancel")}</Button>
               <Button size="sm" onClick={handleEdit} disabled={saving} className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase px-10 py-6 h-auto">
-                {saving ? "SYNCING..." : "APPLY_CONFIG"}
+                {saving ? t("action_synchronizing") : t("action_apply_config")}
               </Button>
             </div>
           </div>
@@ -497,13 +504,13 @@ export default function TrainingPage() {
       <AlertDialog open={!!deleteTarget} onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}>
         <AlertDialogContent className="bg-[#0A0A0A] border-2 border-rose-500/30 rounded-none">
           <AlertDialogHeader>
-            <AlertDialogTitle className="font-headline font-black text-2xl text-white uppercase tracking-tighter">TERMINATE_VECTOR_SEQUENCE?</AlertDialogTitle>
+            <AlertDialogTitle className="font-headline font-black text-2xl text-white uppercase tracking-tighter">{t("action_confirm_delete")} — {deleteTarget?.name}</AlertDialogTitle>
             <AlertDialogDescription className="text-secondary/40 font-mono text-xs uppercase tracking-widest">{t("training_delete_desc")}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="mt-8">
             <AlertDialogCancel className="rounded-none border-white/10 bg-white/5 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-white/10 h-auto py-4 px-8">{t("common_cancel")}</AlertDialogCancel>
             <AlertDialogAction onClick={handleDelete} disabled={deleting} className="rounded-none bg-rose-600 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-rose-700 px-8 h-auto py-4">
-              {deleting ? "PURGING..." : "CONFIRM_TERMINATION"}
+              {deleting ? t("action_purging") : t("action_confirm_delete")}
             </AlertDialogAction>
           </AlertDialogFooter>
           <CornerMarks color="rose" />

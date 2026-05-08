@@ -279,12 +279,12 @@ export default function EmployeesPage() {
               <table className="w-full text-start border-collapse text-sm">
                 <thead>
                   <tr className="bg-white/5 border-b border-white/10">
-                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase">{t("employees_col_name")}</th>
+                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase whitespace-nowrap">{t("employees_col_name")}</th>
                     <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase whitespace-nowrap">{t("employees_col_code")}</th>
                     <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase whitespace-nowrap">{t("employees_col_department")}</th>
                     <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase whitespace-nowrap">{t("employees_col_job_title")}</th>
                     <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase whitespace-nowrap">{t("employees_col_class")}</th>
-                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase text-end">{t("common_actions")}</th>
+                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase whitespace-nowrap text-end">{t("common_actions")}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/5">

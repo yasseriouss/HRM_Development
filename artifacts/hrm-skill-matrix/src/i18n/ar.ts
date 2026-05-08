@@ -251,6 +251,11 @@ const ar = {
   training_delete_confirm: 'حذف توصية "{name}"؟',
   training_delete_desc: "سيؤدي ذلك إلى حذف توصية التدريب هذه بشكل دائم.",
   training_notes_placeholder: "ملاحظات إضافية...",
+  training_protocol_label: "\u0628\u0631\u0648\u062a\u0648\u0643\u0648\u0644 \u0627\u0644\u062a\u062f\u0631\u064a\u0628",
+  training_type_immediate: "\u0641\u0648\u0631\u064a",
+  training_type_short: "\u0642\u0635\u064a\u0631 \u0627\u0644\u0645\u062f\u0649",
+  training_type_long: "\u0637\u0648\u064a\u0644 \u0627\u0644\u0645\u062f\u0649",
+  training_type_promotion: "\u062a\u0631\u0642\u064a\u0629",
 
   profile_title: "ملفي الشخصي",
   profile_subtitle: "كفاءاتك المهارية وسجل التقييم.",

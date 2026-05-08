@@ -37,16 +37,20 @@ function classBadge(cls: EmployeeClass) {
   );
 }
 
-function statusBadge(status: string) {
+function statusBadge(status: string, t: (k: any) => string) {
   const map: Record<string, string> = {
     Active: "border-emerald-500/30 bg-emerald-500/10 text-emerald-500",
     Completed: "border-blue-500/30 bg-blue-500/10 text-blue-500",
     Draft: "border-amber-500/30 bg-amber-500/10 text-amber-500",
     Archived: "border-zinc-700 bg-zinc-900 text-zinc-500",
   };
+  const keyMap: Record<string, string> = {
+    Active: "status_active", Completed: "status_completed",
+    Draft: "status_draft", Archived: "status_archived",
+  };
   return (
-    <Badge variant="outline" className={`rounded-none font-mono text-[9px] font-black tracking-widest px-2 py-0.5 uppercase ${map[status] ?? ""}`}>
-      {status}
+    <Badge variant="outline" className={`rounded-none font-mono text-[9px] font-black tracking-widest px-2 py-0.5 uppercase whitespace-nowrap ${map[status] ?? ""}`}>
+      {t((keyMap[status] ?? "status_draft") as any)}
     </Badge>
   );
 }
@@ -118,7 +122,7 @@ function SummaryTable({ campaignId }: { campaignId: string }) {
               rows: items.map(r => [r.employee_name ?? "â€”", r.employee_code ?? "â€”", `${Number(r.total_score).toFixed(0)}/${Number(r.max_possible_score).toFixed(0)}`, `${Number(r.percentage).toFixed(1)}%`, r.class ?? "â€”"])
             })}
           >
-            <Download className="h-4 w-4 me-2 text-primary" /> PDF_EXPORT
+            <Download className="h-4 w-4 me-2 text-primary" /> PDF
           </Button>
           <Button
             variant="outline"
@@ -130,7 +134,7 @@ function SummaryTable({ campaignId }: { campaignId: string }) {
               rows: items.map(r => [r.employee_name ?? "â€”", r.employee_code ?? "â€”", `${Number(r.total_score).toFixed(0)}/${Number(r.max_possible_score).toFixed(0)}`, Number(r.percentage), r.class ?? "â€”"])
             })}
           >
-            <Table className="h-4 w-4 me-2 text-emerald-500" /> EXCEL_SYNC
+            <Table className="h-4 w-4 me-2 text-emerald-500" /> EXCEL
           </Button>
         </div>
       </div>
@@ -149,7 +153,7 @@ function SummaryTable({ campaignId }: { campaignId: string }) {
           <tbody className="divide-y divide-zinc-900">
             {items.map((row) => (
               <tr key={row.id} className="hover:bg-primary/5 transition-colors group">
-                <td className="px-6 py-4 font-headline font-black text-white uppercase group-hover:text-primary transition-colors">
+                <td className="px-6 py-4 font-headline font-black text-white uppercase group-hover:text-primary transition-colors whitespace-nowrap">
                   <Link href={`/employees/${row.employee_id}`}>
                     {row.employee_name ?? "â€”"}
                   </Link>
@@ -192,7 +196,7 @@ export default function EvaluationsPage() {
           <div className="space-y-3">
             <div className="flex items-center gap-3">
               <ClipboardList className="h-4 w-4 text-primary" />
-              <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">EVALUATION_INTELLIGENCE</span>
+              <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">{t("label_mission_control")}</span>
             </div>
             <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
               {t("evaluations_title")}
@@ -239,7 +243,7 @@ export default function EvaluationsPage() {
               className={`rounded-none font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto ${selectedCampaignId === "all" ? "bg-primary" : "text-zinc-500 hover:text-white"}`}
               onClick={() => setSelectedCampaignId("all")}
             >
-              ALL_MISSIONS
+              {t("evaluations_all_campaigns")}
             </Button>
             {activeCampaigns.map(c => (
               <Button 
@@ -266,14 +270,14 @@ export default function EvaluationsPage() {
                       </span>
                    </div>
                 </div>
-                {statusBadge(selectedCampaign.status)}
+                {statusBadge(selectedCampaign.status, t)}
               </div>
               <SummaryTable campaignId={selectedCampaign.id} />
               
               <div className="pt-6">
                 <Link href={`/campaigns/${selectedCampaign.id}`}>
                   <Button className="rounded-none border border-primary/30 bg-primary/10 hover:bg-primary/20 text-primary font-headline font-black text-[11px] tracking-widest uppercase h-auto py-5 px-10">
-                     ENTER_SCORE_INTERFACE <ExternalLink className="ms-3 h-4 w-4" />
+                     {t("campaign_enter_scores")} <ExternalLink className="ms-3 h-4 w-4" />
                   </Button>
                 </Link>
               </div>
@@ -290,7 +294,7 @@ export default function EvaluationsPage() {
                     <Card className="bg-[#0D0D0D] border-zinc-800 rounded-none p-8 hover:border-primary/50 transition-all relative group">
                        <div className="flex justify-between items-start mb-6">
                           <span className="text-[9px] font-mono text-zinc-600 uppercase tracking-widest">{c.type}</span>
-                          {statusBadge(c.status)}
+                          {statusBadge(c.status, t)}
                        </div>
                        <h4 className="text-xl font-headline font-black text-white uppercase group-hover:text-primary transition-colors tracking-tight leading-tight">{c.title}</h4>
                        <div className="mt-8 pt-6 border-t border-zinc-900 flex justify-between items-center text-[10px] font-mono uppercase tracking-widest">
@@ -311,12 +315,12 @@ export default function EvaluationsPage() {
             <div className="p-8 space-y-8 relative z-10">
               <div className="flex items-center gap-3 border-b border-white/5 pb-6">
                 <LayoutPanelLeft className="h-5 w-5 text-primary" />
-                <h3 className="font-headline font-black text-sm uppercase tracking-widest text-white">OPERATIONAL_TOOLS</h3>
+                <h3 className="font-headline font-black text-sm uppercase tracking-widest text-white">{t("evaluations_bulk_tools")}</h3>
               </div>
               
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <p className="text-[9px] font-mono text-zinc-500 uppercase tracking-[0.3em]">SPREADSHEET_MODULE</p>
+                  <p className="text-[9px] font-mono text-zinc-500 uppercase tracking-[0.3em]">t("evaluations_spreadsheet_tool")</p>
                   <Button asChild variant="outline" className="w-full justify-between h-auto py-5 rounded-none border-zinc-800 bg-zinc-900 hover:bg-zinc-800 group border-s-4 border-s-emerald-500">
                     <a href="/hrm-spreadsheet" className="flex items-center gap-3 w-full">
                       <Table className="h-5 w-5 text-emerald-500 group-hover:scale-110 transition-transform" />
@@ -330,7 +334,7 @@ export default function EvaluationsPage() {
                 </div>
 
                 <div className="space-y-2 pt-6 border-t border-white/5">
-                  <p className="text-[9px] font-mono text-zinc-500 uppercase tracking-[0.3em]">OFFLINE_SYNCHRONIZATION</p>
+                  <p className="text-[9px] font-mono text-zinc-500 uppercase tracking-[0.3em]">t("evaluations_download_template")</p>
                   <Button asChild variant="outline" className="w-full justify-between h-auto py-5 rounded-none border-zinc-800 bg-zinc-900 hover:bg-zinc-800 group border-s-4 border-s-blue-500">
                     <a href="/hrm-skill-matrix-template.xlsx" download className="flex items-center gap-3 w-full">
                       <FileText className="h-5 w-5 text-blue-500 group-hover:scale-110 transition-transform" />
@@ -351,7 +355,7 @@ export default function EvaluationsPage() {
                HRM Suite connects evaluation data directly to the analytics engine for real-time factory intelligence.
              </p>
              <div className="mt-8 flex items-center gap-3 group/link cursor-pointer">
-                <span className="font-headline font-black text-[10px] text-white tracking-widest uppercase border-b border-transparent group-hover/link:border-emerald-500 transition-all">ACCESS_ANALYTICS</span>
+                <span className="font-headline font-black text-[10px] text-white tracking-widest uppercase border-b border-transparent group-hover/link:border-emerald-500 transition-all">t("suite_dashboard")</span>
                 <TrendingUp className="h-3 w-3 text-emerald-500 group-hover/link:translate-x-1 transition-transform" />
              </div>
           </div>
