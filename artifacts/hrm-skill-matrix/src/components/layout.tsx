@@ -198,7 +198,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </DropdownMenu>
 
             <div className="flex items-center gap-3">
-              <img src="/logo.png" alt="System Logo" className="h-8 w-auto object-contain" />
+              <img src={`${import.meta.env.BASE_URL}logo.png`} alt="System Logo" className="h-8 w-auto object-contain" />
               <div className="flex flex-col">
                 <h1 className={`text-xl font-headline font-black text-white tracking-tighter uppercase leading-none ${isAr ? 'font-tajawal' : ''}`}>HRM_DEV</h1>
                 <span className="text-[8px] font-mono text-primary font-black tracking-[0.5em] mt-1 leading-none">WORKSTATION</span>

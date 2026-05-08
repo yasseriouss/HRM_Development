@@ -105,7 +105,7 @@ export default function Hub() {
               className="flex flex-col items-center screen-flicker"
             >
               <img 
-                src="/logo.png" 
+                src={`${import.meta.env.BASE_URL}logo.png`}
                 alt="Grand Line ERP Logo" 
                 className="w-48 h-48 object-contain mb-8 filter drop-shadow-[0_0_15px_rgba(212,175,55,0.5)]" 
               />
