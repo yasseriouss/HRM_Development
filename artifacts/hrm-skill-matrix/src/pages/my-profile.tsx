@@ -250,7 +250,7 @@ export default function MyProfilePage() {
             </Card>
           )}
           
-          <div className="p-8 border-2 border-primary/20 bg-primary/[0.03] relative overflow-hidden group">
+          <div className="p-8 border-2 border-primary/20 bg-primary/3 relative overflow-hidden group">
              <ShieldCheck className="absolute -right-4 -top-4 h-24 w-24 text-primary opacity-5 group-hover:opacity-10 transition-all duration-700" />
              <p className="font-headline font-black text-[11px] text-primary uppercase tracking-[0.3em] mb-4">PERSONNEL_SECURITY_STATUS</p>
              <p className="text-[10px] font-mono text-zinc-500 leading-relaxed uppercase tracking-tighter">

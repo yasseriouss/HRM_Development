@@ -201,7 +201,7 @@ export default function DepartmentsPage() {
                     )}
                   </div>
 
-                  <p className="text-secondary/30 font-medium text-xs line-clamp-2 uppercase tracking-wide leading-relaxed min-h-[3rem]">
+                  <p className="text-secondary/30 font-medium text-xs line-clamp-2 uppercase tracking-wide leading-relaxed min-h-12">
                     {dept.description ?? "NO_SYSTEM_DESCRIPTION_AVAILABLE"}
                   </p>
 

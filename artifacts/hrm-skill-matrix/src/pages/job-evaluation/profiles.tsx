@@ -277,7 +277,7 @@ export default function JobProfilesPage() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0, x: -20 }}
-                        className="hover:bg-white/[0.02] transition-colors group"
+                        className="hover:bg-white/2 transition-colors group"
                       >
                         <td className="px-8 py-5">
                           <div className="font-headline font-black text-white text-sm uppercase tracking-tight group-hover:text-primary transition-colors">{isAr ? p.title_ar : p.title}</div>
@@ -464,7 +464,7 @@ export default function JobProfilesPage() {
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: sfIdx * 0.05 }}
-                            className={`p-6 border transition-all relative group ${newProfile.scores[sf.id] ? 'border-primary/40 bg-primary/[0.03]' : 'border-zinc-900 bg-black/40 hover:border-zinc-800'}`}
+                            className={`p-6 border transition-all relative group ${newProfile.scores[sf.id] ? 'border-primary/40 bg-primary/3' : 'border-zinc-900 bg-black/40 hover:border-zinc-800'}`}
                           >
                             <div className="flex items-center justify-between mb-6">
                               <div className="space-y-1">

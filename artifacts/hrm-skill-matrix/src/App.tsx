@@ -11,6 +11,7 @@ import { Layout } from "@/components/layout";
 import { ErrorBoundary } from "@/components/error-boundary";
 import type { ComponentType } from "react";
 
+import Hub from "@/pages/hub";
 import Login from "@/pages/login";
 import Dashboard from "@/pages/dashboard";
 import EmployeesPage from "@/pages/employees/index";
@@ -92,7 +93,7 @@ function AppRoutes() {
             className="h-full"
           >
             <Switch location={location}>
-              <Route path="/" component={EmployeeRedirect} />
+              <Route path="/" component={() => <ProtectedRoute component={Hub} roles={ALL_ROLES} />} />
               <Route
                 path="/my-profile"
                 component={() => <ProtectedRoute component={MyProfilePage} roles={ALL_ROLES} />}

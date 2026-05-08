@@ -169,7 +169,7 @@ export default function JobEvaluationGuide() {
                       { cat: isAr ? "الجهد" : "EFFORT", factors: isAr ? "الجهد الذهني، الجهد البدني" : "Mental Effort, Physical Effort", weight: "20%", points: 200 },
                       { cat: isAr ? "ظروف العمل" : "CONDITIONS", factors: isAr ? "المخاطر، الساعات، البيئة، السفر" : "Hazards, Schedule, Environment, Travel", weight: "10%", points: 100 }
                     ].map((row, i) => (
-                      <tr key={i} className="group hover:bg-white/[0.02] transition-colors">
+                      <tr key={i} className="group hover:bg-white/2 transition-colors">
                         <td className="px-8 py-6">
                            <span className="font-headline font-black text-sm text-white uppercase tracking-tight group-hover:text-primary transition-colors">{row.cat}</span>
                         </td>
@@ -285,7 +285,7 @@ export default function JobEvaluationGuide() {
                       </thead>
                       <tbody className="divide-y divide-zinc-900">
                         {subset.map((row, i) => (
-                          <tr key={i} className="hover:bg-primary/[0.03] transition-colors">
+                          <tr key={i} className="hover:bg-primary/3 transition-colors">
                             <td className="px-6 py-4 font-mono text-xs text-zinc-400">{row.min} - {row.max}</td>
                             <td className="px-6 py-4 font-mono font-black text-primary text-sm">{row.grade}</td>
                             <td className="px-6 py-4 text-[10px] font-headline font-black text-zinc-500 uppercase tracking-widest">{row.category}</td>
@@ -304,7 +304,7 @@ export default function JobEvaluationGuide() {
         {/* Operational Intelligence */}
         <motion.div variants={itemVariants} className="lg:col-span-3">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-             <Card className="bg-primary/[0.03] border-primary/20 rounded-none relative overflow-hidden group">
+             <Card className="bg-primary/3 border-primary/20 rounded-none relative overflow-hidden group">
                 <CardHeader className="p-8 border-b border-primary/10">
                   <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
                     <Settings2 className="h-5 w-5 text-primary" />
@@ -363,7 +363,7 @@ export default function JobEvaluationGuide() {
       </div>
 
       {/* Telemetry Footer */}
-      <div className="p-10 border-2 border-primary/20 bg-primary/[0.03] relative overflow-hidden group">
+      <div className="p-10 border-2 border-primary/20 bg-primary/3 relative overflow-hidden group">
          <Terminal className="absolute -right-6 -top-6 h-32 w-32 text-primary opacity-5 group-hover:opacity-10 transition-all duration-1000" />
          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
             <div className="space-y-2">

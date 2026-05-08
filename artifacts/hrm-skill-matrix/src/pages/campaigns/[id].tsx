@@ -318,7 +318,7 @@ export default function CampaignDetailPage() {
         <motion.div 
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="p-8 bg-primary/[0.03] border-2 border-primary/30 relative overflow-hidden group"
+          className="p-8 bg-primary/3 border-2 border-primary/30 relative overflow-hidden group"
         >
           <Info className="absolute -right-4 -top-4 h-24 w-24 text-primary opacity-5" />
           <p className="font-headline font-black text-xs text-primary uppercase tracking-[0.3em] mb-4 flex items-center gap-2">
@@ -390,7 +390,7 @@ export default function CampaignDetailPage() {
                   }
 
                   return (
-                    <tr key={row.employee.id} className="group hover:bg-white/[0.02] transition-colors">
+                    <tr key={row.employee.id} className="group hover:bg-white/2 transition-colors">
                       <td className="px-8 py-4 sticky left-0 bg-[#0A0A0A] group-hover:bg-[#121212] transition-colors z-20 border-r border-zinc-900">
                         <Link href={`/employees/${row.employee.id}`} className="flex items-center gap-4 group/link">
                           <div className="w-8 h-8 bg-zinc-900 border border-zinc-800 flex items-center justify-center font-mono text-[10px] text-primary group-hover/link:border-primary/50 transition-colors">
@@ -437,7 +437,7 @@ export default function CampaignDetailPage() {
       )}
 
       {/* Deployment Metadata Footer */}
-      <div className="p-8 border-2 border-primary/20 bg-primary/[0.03] relative overflow-hidden group">
+      <div className="p-8 border-2 border-primary/20 bg-primary/3 relative overflow-hidden group">
          <Shield className="absolute -right-4 -top-4 h-24 w-24 text-primary opacity-5 group-hover:opacity-10 transition-all duration-700" />
          <p className="font-headline font-black text-[11px] text-primary uppercase tracking-[0.3em] mb-4">MISSION_TELEMETRY_LOG</p>
          <p className="text-[10px] font-mono text-zinc-500 leading-relaxed uppercase tracking-tighter">

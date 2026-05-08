@@ -170,7 +170,7 @@ export default function JobEvaluationManualPage() {
                 { lv: "L4", title: isAr ? "خبير" : "SYSTEM_EXPERT", desc: isAr ? "تقديم المشورة الفنية وقيادة الفرق." : "Technical advisory and tactical team leadership." },
                 { lv: "L5", title: isAr ? "رائد / استراتيجي" : "STRATEGIC_MASTER", desc: isAr ? "تحديد التوجهات الاستراتيجية للمؤسسة." : "Architecting strategic organizational direction." }
               ].map((l, i) => (
-                <div key={i} className="p-6 flex gap-6 hover:bg-primary/[0.02] transition-colors group">
+                <div key={i} className="p-6 flex gap-6 hover:bg-primary/2 transition-colors group">
                   <div className="h-12 w-12 shrink-0 border border-zinc-800 bg-black flex items-center justify-center font-mono font-black text-primary group-hover:border-primary transition-colors text-sm">
                     {l.lv}
                   </div>
@@ -184,7 +184,7 @@ export default function JobEvaluationManualPage() {
             <CornerMarks color="zinc" />
           </Card>
 
-          <div className="p-8 bg-amber-500/[0.03] border border-amber-500/20 relative overflow-hidden group">
+          <div className="p-8 bg-amber-500/3 border border-amber-500/20 relative overflow-hidden group">
             <Cpu className="absolute -right-4 -bottom-4 h-24 w-24 text-amber-500 opacity-5 group-hover:opacity-10 transition-all duration-700" />
             <div className="flex items-center gap-4 mb-4 relative z-10">
               <div className="p-2 bg-amber-500/10 border border-amber-500/30">
@@ -204,7 +204,7 @@ export default function JobEvaluationManualPage() {
       {/* Grade Mapping - Full Width Tactical Table */}
       <motion.div variants={item} className="mt-12">
         <Card className="bg-[#0A0A0A] border border-zinc-800 rounded-none relative overflow-hidden shadow-2xl">
-           <div className="absolute inset-0 bg-primary/[0.01] pointer-events-none" />
+           <div className="absolute inset-0 bg-primary/1 pointer-events-none" />
           <CardHeader className="text-center p-12 border-b border-zinc-900">
              <div className="flex items-center justify-center gap-3 mb-4">
                 <div className="h-px w-12 bg-primary/30" />
@@ -232,7 +232,7 @@ export default function JobEvaluationManualPage() {
                     { g: "G7-G8", range: "510 - 769", cat: isAr ? "إدارة وسطى / عليا" : "Middle / Senior Management" },
                     { g: "G9-G10", range: "770 - 1000", cat: isAr ? "تنفيذي / قيادي" : "Executive / Strategic Lead" },
                   ].map((row, i) => (
-                    <tr key={i} className="hover:bg-primary/[0.03] transition-colors group">
+                    <tr key={i} className="hover:bg-primary/3 transition-colors group">
                       <td className="p-8 text-center font-headline font-black text-2xl text-primary">{row.g}</td>
                       <td className="p-8 text-center text-lg font-black text-white">{row.range}</td>
                       <td className="p-8 text-left font-headline font-black text-[10px] text-zinc-500 uppercase tracking-widest group-hover:text-white transition-colors">{row.cat}</td>
@@ -252,7 +252,7 @@ export default function JobEvaluationManualPage() {
       </motion.div>
 
       {/* Telemetry Footer */}
-      <div className="p-10 border-2 border-primary/20 bg-primary/[0.03] relative overflow-hidden group">
+      <div className="p-10 border-2 border-primary/20 bg-primary/3 relative overflow-hidden group">
          <Terminal className="absolute -right-6 -top-6 h-32 w-32 text-primary opacity-5 group-hover:opacity-10 transition-all duration-1000" />
          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
             <div className="space-y-2">

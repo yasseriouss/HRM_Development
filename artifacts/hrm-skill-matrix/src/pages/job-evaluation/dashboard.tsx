@@ -282,7 +282,7 @@ export default function JobEvaluationDashboard() {
                     { title: "HR Business Partner", points: 420, grade: "G6", status: "Pending" },
                     { title: "Admin Assistant", points: 140, grade: "G1", status: "Draft" },
                   ].map((job, i) => (
-                    <tr key={i} className="group hover:bg-white/[0.02] transition-colors">
+                    <tr key={i} className="group hover:bg-white/2 transition-colors">
                       <td className="px-8 py-5">
                          <div className="font-headline font-black text-sm text-white uppercase tracking-tight group-hover:text-primary transition-colors">{job.title}</div>
                          <div className="font-mono text-[9px] text-zinc-600 uppercase tracking-widest mt-1">UUID::VAL-{Math.random().toString(36).substring(7).toUpperCase()}</div>
@@ -318,7 +318,7 @@ export default function JobEvaluationDashboard() {
       </motion.div>
 
       {/* Telemetry Footer */}
-      <div className="p-10 border-2 border-primary/20 bg-primary/[0.03] relative overflow-hidden group">
+      <div className="p-10 border-2 border-primary/20 bg-primary/3 relative overflow-hidden group">
          <Terminal className="absolute -right-6 -top-6 h-32 w-32 text-primary opacity-5 group-hover:opacity-10 transition-all duration-1000" />
          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
             <div className="space-y-2">

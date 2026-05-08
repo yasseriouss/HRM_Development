@@ -289,7 +289,7 @@ export default function EmployeesPage() {
                 </thead>
                 <tbody className="divide-y divide-white/5">
                   {employees.map((emp) => (
-                    <tr key={emp.id} className="group hover:bg-white/[0.02] transition-colors">
+                    <tr key={emp.id} className="group hover:bg-white/2 transition-colors">
                       <td className="px-8 py-6">
                         <Link href={`/employees/${emp.id}`} className="group/link">
                           <p className="font-headline font-black text-white text-base tracking-tight group-hover/link:text-primary transition-colors uppercase">

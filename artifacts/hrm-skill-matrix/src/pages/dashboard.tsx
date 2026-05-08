@@ -382,7 +382,7 @@ export default function Dashboard() {
             ) : deptPerformance ? (
               <div className="divide-y divide-white/5">
                 {deptPerformance.map(dept => (
-                  <div key={dept.department_id} className="p-8 hover:bg-white/[0.02] transition-colors flex items-center justify-between group">
+                  <div key={dept.department_id} className="p-8 hover:bg-white/2 transition-colors flex items-center justify-between group">
                     <div className="space-y-1">
                       <p className={`font-headline font-black text-lg text-white group-hover:text-primary transition-colors ${isAr ? 'font-tajawal' : ''}`}>{dept.department_name}</p>
                       <p className="text-[10px] font-mono text-secondary/30 uppercase tracking-widest">

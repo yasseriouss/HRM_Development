@@ -292,7 +292,7 @@ export default function SkillsPage() {
               </thead>
               <tbody className="divide-y divide-white/5">
                 {filteredSkills.map((sk) => (
-                  <tr key={sk.id} className="group hover:bg-white/[0.02] transition-colors">
+                  <tr key={sk.id} className="group hover:bg-white/2 transition-colors">
                     <td className="px-8 py-6">
                       <div className="flex items-center gap-4">
                         <div className="h-2 w-2 bg-primary/20 group-hover:bg-primary transition-colors" />
