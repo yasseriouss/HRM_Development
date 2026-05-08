@@ -140,14 +140,14 @@ export default function Dashboard() {
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               <div className="h-2 w-2 bg-primary animate-pulse" />
-              <span className="font-headline font-black tracking-[0.5em] text-[10px] text-primary uppercase">
+              <span className={`font-headline font-black tracking-[0.5em] text-[10px] text-primary uppercase ${isAr ? 'font-tajawal' : ''}`}>
                 {isAr ? "مركز القيادة الموحد" : "COMMAND_CENTER_v2.4"}
               </span>
             </div>
-            <h2 className="text-5xl md:text-7xl font-headline font-black tracking-tighter text-white uppercase leading-none">
+            <h2 className={`text-5xl md:text-7xl font-headline font-black tracking-tighter text-white uppercase leading-none ${isAr ? 'font-tajawal' : ''}`}>
               {t("dashboard_title")}
             </h2>
-            <p className="text-secondary/50 font-medium border-l-2 border-primary/20 pl-4">{t("dashboard_subtitle")}</p>
+            <p className={`text-secondary/50 font-medium border-l-2 border-primary/20 pl-4 ${isAr ? 'font-tajawal border-r-2 border-l-0 pr-4 pl-0' : ''}`}>{t("dashboard_subtitle")}</p>
           </div>
           <div className="flex gap-4">
             <div className="p-6 bg-white/5 border border-white/10 text-center min-w-[120px]">
@@ -179,9 +179,9 @@ export default function Dashboard() {
                 <CardContent className="p-8">
                   <div className="flex items-start justify-between">
                     <div>
-                      <p className="text-[10px] font-headline font-black tracking-widest text-secondary/40 uppercase">{t("dashboard_total_employees")}</p>
+                      <p className={`text-[10px] font-headline font-black tracking-widest text-secondary/40 uppercase ${isAr ? 'font-tajawal' : ''}`}>{t("dashboard_total_employees")}</p>
                       <h3 className="text-4xl font-mono font-black text-white mt-4 leading-none">{metrics.total_employees}</h3>
-                      <div className="flex items-center gap-2 mt-4 text-[10px] font-bold text-emerald-500">
+                      <div className={`flex items-center gap-2 mt-4 text-[10px] font-bold text-emerald-500 ${isAr ? 'font-tajawal' : ''}`}>
                         <Activity className="h-3 w-3" />
                         {metrics.active_employees} {t("dashboard_active")}
                       </div>
@@ -200,7 +200,7 @@ export default function Dashboard() {
                 <CardContent className="p-8">
                   <div className="flex items-start justify-between">
                     <div>
-                      <p className="text-[10px] font-headline font-black tracking-widest text-secondary/40 uppercase">{t("dashboard_avg_skill_match")}</p>
+                      <p className={`text-[10px] font-headline font-black tracking-widest text-secondary/40 uppercase ${isAr ? 'font-tajawal' : ''}`}>{t("dashboard_avg_skill_match")}</p>
                       <h3 className="text-4xl font-mono font-black text-white mt-4 leading-none">{metrics.average_skill_percentage}%</h3>
                       <div className="mt-4 w-full h-1 bg-white/5 overflow-hidden">
                         <motion.div 
@@ -224,9 +224,9 @@ export default function Dashboard() {
                 <CardContent className="p-8">
                   <div className="flex items-start justify-between">
                     <div>
-                      <p className="text-[10px] font-headline font-black tracking-widest text-secondary/40 uppercase">{t("dashboard_active_campaigns")}</p>
+                      <p className={`text-[10px] font-headline font-black tracking-widest text-secondary/40 uppercase ${isAr ? 'font-tajawal' : ''}`}>{t("dashboard_active_campaigns")}</p>
                       <h3 className="text-4xl font-mono font-black text-white mt-4 leading-none">{metrics.active_campaigns}</h3>
-                      <p className="mt-4 text-[10px] font-bold text-amber-500">SYSTEM_IN_SYNC</p>
+                      <p className={`mt-4 text-[10px] font-bold text-amber-500 ${isAr ? 'font-tajawal' : ''}`}>SYSTEM_IN_SYNC</p>
                     </div>
                     <div className="p-4 bg-white/5 border border-white/5 group-hover:border-amber-500/30 transition-colors">
                       <Zap className="h-6 w-6 text-amber-500" />
@@ -242,9 +242,9 @@ export default function Dashboard() {
                 <CardContent className="p-8">
                   <div className="flex items-start justify-between">
                     <div>
-                      <p className="text-[10px] font-headline font-black tracking-widest text-secondary/40 uppercase">THREAT_LEVEL</p>
+                      <p className={`text-[10px] font-headline font-black tracking-widest text-secondary/40 uppercase ${isAr ? 'font-tajawal' : ''}`}>THREAT_LEVEL</p>
                       <h3 className="text-4xl font-mono font-black text-white mt-4 leading-none">LOW</h3>
-                      <p className="mt-4 text-[10px] font-bold text-rose-500 uppercase">NO_FAILURES_DETECTED</p>
+                      <p className={`mt-4 text-[10px] font-bold text-rose-500 uppercase ${isAr ? 'font-tajawal' : ''}`}>NO_FAILURES_DETECTED</p>
                     </div>
                     <div className="p-4 bg-white/5 border border-white/5 group-hover:border-rose-500/30 transition-colors">
                       <ShieldAlert className="h-6 w-6 text-rose-500" />
@@ -273,12 +273,12 @@ export default function Dashboard() {
           >
             <Card className={`bg-[#0A0A0A] border border-white/5 border-t-4 border-t-${c.color}-500 rounded-none p-6 relative`}>
               <div className="flex justify-between items-center mb-6">
-                <span className={`font-headline font-black text-lg text-${c.color}-400`}>{c.tier}</span>
+                <span className={`font-headline font-black text-lg text-${c.color}-400 ${isAr ? 'font-tajawal' : ''}`}>{c.tier}</span>
                 <span className={`text-[9px] font-mono font-black px-2 py-1 bg-${c.color}-500/10 text-${c.color}-500 border border-${c.color}-500/20`}>LEVEL_{3-i}</span>
               </div>
               <div className="flex items-end justify-between">
                 <div>
-                  <p className="text-[10px] font-bold text-secondary/40 tracking-widest">{c.label}</p>
+                  <p className={`text-[10px] font-bold text-secondary/40 tracking-widest ${isAr ? 'font-tajawal' : ''}`}>{c.label}</p>
                   <p className="text-3xl font-mono font-black text-white mt-1">{c.count}</p>
                 </div>
                 <div className="text-right">
@@ -299,15 +299,15 @@ export default function Dashboard() {
         className="space-y-6 pt-6"
       >
         <div className="flex items-center justify-between">
-          <h3 className="font-headline text-2xl font-black text-white flex items-center gap-4 uppercase">
+          <h3 className={`font-headline text-2xl font-black text-white flex items-center gap-4 uppercase ${isAr ? 'font-tajawal' : ''}`}>
             <Brain className="h-6 w-6 text-primary animate-pulse" />
-            AI_STRATEGIC_INTELLIGENCE
+            <span className="screen-flicker">AI_STRATEGIC_INTELLIGENCE</span>
           </h3>
           <Button 
             onClick={fetchAIInsights} 
             disabled={isAiLoading}
             variant="outline"
-            className="rounded-none border-primary/20 bg-primary/5 text-primary font-headline font-black text-[10px] tracking-widest uppercase hover:bg-primary/10 h-auto py-3 px-6 group"
+            className={`rounded-none border-primary/20 bg-primary/5 text-primary font-headline font-black text-[10px] tracking-widest uppercase hover:bg-primary/10 h-auto py-3 px-6 group btn-metallic ${isAr ? 'font-tajawal' : ''}`}
           >
             {isAiLoading ? (
               <Loader2 className="h-4 w-4 mr-2 animate-spin" />
@@ -321,7 +321,7 @@ export default function Dashboard() {
         {!aiInsights && !isAiLoading ? (
           <Card className="bg-[#0A0A0A] border-2 border-dashed border-white/5 rounded-none p-12 text-center group hover:border-primary/20 transition-colors">
             <Sparkles className="h-12 w-12 text-secondary/10 mx-auto mb-6 group-hover:text-primary/20 transition-colors" />
-            <p className="text-secondary/40 font-mono text-xs uppercase tracking-widest max-w-md mx-auto leading-relaxed">
+            <p className={`text-secondary/40 font-mono text-xs uppercase tracking-widest max-w-md mx-auto leading-relaxed ${isAr ? 'font-tajawal' : ''}`}>
               Tactical insights engine idle. Initialize the stream to analyze organizational performance vectors and critical skill-gap trajectories.
             </p>
           </Card>
@@ -352,10 +352,10 @@ export default function Dashboard() {
                       </Badge>
                       <div className="w-1 h-8 bg-primary/20 group-hover:bg-primary transition-colors" />
                     </div>
-                    <h4 className="font-headline font-black text-white text-sm uppercase tracking-tighter mb-4 group-hover:text-primary transition-colors">
+                    <h4 className={`font-headline font-black text-white text-sm uppercase tracking-tighter mb-4 group-hover:text-primary transition-colors ${isAr ? 'font-tajawal' : ''}`}>
                       {insight.title}
                     </h4>
-                    <p className="text-secondary/40 font-mono text-xs leading-relaxed uppercase">
+                    <p className={`text-secondary/40 font-mono text-xs leading-relaxed uppercase ${isAr ? 'font-tajawal font-medium' : ''}`}>
                       {insight.content}
                     </p>
                   </CardContent>
@@ -371,7 +371,7 @@ export default function Dashboard() {
         {/* Performance Stream */}
         <Card className="lg:col-span-4 bg-[#0A0A0A] border border-white/10 rounded-none relative overflow-hidden">
           <CardHeader className="border-b border-white/5 py-8">
-            <CardTitle className="font-headline text-xl font-black uppercase flex items-center gap-3">
+            <CardTitle className={`font-headline text-xl font-black uppercase flex items-center gap-3 ${isAr ? 'font-tajawal' : ''}`}>
               <Cpu className="h-5 w-5 text-primary" />
               {t("dashboard_dept_performance")}
             </CardTitle>
@@ -384,7 +384,7 @@ export default function Dashboard() {
                 {deptPerformance.map(dept => (
                   <div key={dept.department_id} className="p-8 hover:bg-white/[0.02] transition-colors flex items-center justify-between group">
                     <div className="space-y-1">
-                      <p className="font-headline font-black text-lg text-white group-hover:text-primary transition-colors">{dept.department_name}</p>
+                      <p className={`font-headline font-black text-lg text-white group-hover:text-primary transition-colors ${isAr ? 'font-tajawal' : ''}`}>{dept.department_name}</p>
                       <p className="text-[10px] font-mono text-secondary/30 uppercase tracking-widest">
                         {dept.employee_count} OPERATORS // SEC_LEVEL_3
                       </p>
@@ -410,7 +410,7 @@ export default function Dashboard() {
         {/* Activity Intelligence */}
         <Card className="lg:col-span-3 bg-[#0A0A0A] border border-white/10 rounded-none relative">
           <CardHeader className="border-b border-white/5 py-8">
-            <CardTitle className="font-headline text-xl font-black uppercase flex items-center gap-3">
+            <CardTitle className={`font-headline text-xl font-black uppercase flex items-center gap-3 ${isAr ? 'font-tajawal' : ''}`}>
               <Activity className="h-5 w-5 text-blue-500" />
               {t("dashboard_recent_activity")}
             </CardTitle>
@@ -426,14 +426,14 @@ export default function Dashboard() {
                   <div key={i} className="flex gap-4 group">
                     <span className="text-secondary/20 font-black whitespace-nowrap">[{log.time}]</span>
                     <div className="flex-1">
-                      <p className="text-white group-hover:text-primary transition-colors">{log.msg}</p>
+                      <p className={`text-white group-hover:text-primary transition-colors ${isAr ? 'font-tajawal' : ''}`}>{log.msg}</p>
                       <span className="text-[9px] text-secondary/40 font-black tracking-widest uppercase mt-1 block">BY_IDENTITY :: {log.user}</span>
                     </div>
                   </div>
                 ))}
              </div>
              <div className="pt-8 border-t border-white/5">
-                <Button variant="ghost" className="w-full rounded-none border border-white/10 text-[10px] font-headline font-black tracking-widest uppercase hover:bg-white/5">
+                <Button variant="ghost" className={`w-full rounded-none border border-white/10 text-[10px] font-headline font-black tracking-widest uppercase hover:bg-white/5 ${isAr ? 'font-tajawal' : ''}`}>
                   VIEW_ALL_LOGS <ChevronRight className="h-4 w-4 ml-2" />
                 </Button>
              </div>
@@ -446,11 +446,11 @@ export default function Dashboard() {
       <div className="space-y-8 pt-10 border-t-2 border-white/5">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="font-headline text-3xl font-black text-white flex items-center gap-4 uppercase">
+            <h3 className={`font-headline text-3xl font-black text-white flex items-center gap-4 uppercase ${isAr ? 'font-tajawal' : ''}`}>
               <LayoutGrid className="h-8 w-8 text-primary" />
               {t("suite_title")}
             </h3>
-            <p className="text-secondary/50 font-medium text-sm mt-1">Cross-module operational synchronization layer.</p>
+            <p className={`text-secondary/50 font-medium text-sm mt-1 ${isAr ? 'font-tajawal' : ''}`}>Cross-module operational synchronization layer.</p>
           </div>
           <Badge className="bg-primary/10 text-primary border-primary/20 rounded-none px-4 py-2 font-mono text-[10px] font-black uppercase">
             CLUSTER_ACTIVE
@@ -465,7 +465,7 @@ export default function Dashboard() {
                     <app.icon className="h-10 w-10" />
                   </div>
                   <div>
-                    <h4 className="font-headline font-black text-sm text-white uppercase tracking-widest group-hover:text-primary transition-colors">
+                    <h4 className={`font-headline font-black text-sm text-white uppercase tracking-widest group-hover:text-primary transition-colors ${isAr ? 'font-tajawal' : ''}`}>
                       {t(app.labelKey as any)}
                     </h4>
                     <div className="flex items-center justify-center gap-2 mt-4 text-[9px] text-secondary/40 font-mono font-black uppercase tracking-[0.2em]">
