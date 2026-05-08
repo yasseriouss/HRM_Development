@@ -112,6 +112,34 @@ const GRADES = [
 
 export default function JobProfilesPage() {
   const t = useT();
+
+  const SUB_FACTORS = useMemo(() => [
+    { id: "edu", name: t("je_f_education"), category: "Skills", weight: 35 },
+    { id: "exp", name: t("je_f_experience"), category: "Skills", weight: 35 },
+    { id: "knw", name: t("je_f_knowledge"), category: "Skills", weight: 30 },
+    { id: "cmp", name: t("je_f_compliance"), category: "Responsibility", weight: 35 },
+    { id: "sup", name: t("je_f_supervisory"), category: "Responsibility", weight: 35 },
+    { id: "dec", name: t("je_f_decision"), category: "Responsibility", weight: 30 },
+    { id: "mnt", name: t("je_f_mental"), category: "Effort", weight: 50 },
+    { id: "phy", name: t("je_f_physical"), category: "Effort", weight: 50 },
+    { id: "haz", name: t("je_f_hazards"), category: "Conditions", weight: 25 },
+    { id: "sch", name: t("je_f_schedule"), category: "Conditions", weight: 25 },
+    { id: "env", name: t("je_f_environment"), category: "Conditions", weight: 25 },
+    { id: "trv", name: t("je_f_travel"), category: "Conditions", weight: 25 },
+  ], [t]);
+
+  const GRADES = useMemo(() => [
+    { g: "G1", min: 100, max: 149, category: t("je_grade_worker") },
+    { g: "G2", min: 150, max: 199, category: t("je_grade_junior") },
+    { g: "G3", min: 200, max: 259, category: t("je_grade_mid") },
+    { g: "G4", min: 260, max: 329, category: t("je_grade_supervisor") },
+    { g: "G5", min: 330, max: 409, category: t("je_grade_senior") },
+    { g: "G6", min: 410, max: 509, category: t("je_grade_section_head") },
+    { g: "G7", min: 510, max: 629, category: t("je_grade_manager") },
+    { g: "G8", min: 630, max: 769, category: t("je_grade_head_function") },
+    { g: "G9", min: 770, max: 929, category: t("je_grade_gm") },
+    { g: "G10", min: 930, max: 1000, category: t("je_grade_executive") },
+  ], [t]);
   const { toast } = useToast();
   const isAr = document.documentElement.dir === "rtl";
   
@@ -126,6 +154,10 @@ export default function JobProfilesPage() {
   const [isNewOpen, setIsNewOpen] = useState(false);
   const [showImport, setShowImport] = useState(false);
   const [evalStep, setEvalStep] = useState(0);
+  const [search, setSearch] = useState("");
+  const [deptFilter, setDeptFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
+
   const [newProfile, setNewProfile] = useState({
     title_en: "",
     title_ar: "",
@@ -186,25 +218,25 @@ export default function JobProfilesPage() {
           <div className="space-y-3">
             <div className="flex items-center gap-3">
               <Activity className="h-4 w-4 text-primary animate-pulse" />
-              <span className="font-headline font-black tracking-[0.4em] uppercase text-[9px] text-primary">{isAr ? "Ø¨Ø±ÙˆØªÙˆÙƒÙˆÙ„ Ø§Ù„ØªÙ‚ÙŠÙŠÙ…" : "EVALUATION_PROTOCOL"}</span>
+              <span className="font-headline font-black tracking-[0.4em] uppercase text-[9px] text-primary">{t("je_profiles_protocol")}</span>
             </div>
             <h1 className="text-4xl lg:text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
-              {isAr ? "Ø£ÙˆØµØ§Ù ÙˆØªÙ‚ÙŠÙŠÙ… Ø§Ù„ÙˆØ¸Ø§Ø¦Ù" : "JOB_PROFILE_REGISTRY"}
+              {t("je_profiles_registry")}
             </h1>
             <p className="text-secondary/40 font-medium text-sm border-s-2 border-primary/20 ps-4">
-              {isAr ? "Ø¥Ø¯Ø§Ø±Ø© ÙˆØªØ­Ù„ÙŠÙ„ Ø§Ù„ÙˆØ¸Ø§Ø¦Ù Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Ù…Ù†Ù‡Ø¬ÙŠØ© Ø§Ù„Ù†Ù‚Ø§Ø· Ø§Ù„ØµÙ†Ø§Ø¹ÙŠØ©." : "Industrial grade point-factor methodology management for structural integrity."}
+              {t("je_profiles_registry_desc")}
             </p>
           </div>
           
           <div className="flex flex-wrap items-center gap-3">
             <Button variant="outline" className="rounded-none border-white/10 bg-white/5 hover:bg-white/10 font-headline font-black text-[10px] tracking-widest px-6 h-12 uppercase" onClick={handleExportPDF}>
-              <Download className="h-4 w-4 me-2" /> PDF_EXPORT
+              <Download className="h-4 w-4 me-2" /> {t("je_profiles_pdf")}
             </Button>
             <Button variant="outline" className="rounded-none border-white/10 bg-white/5 hover:bg-white/10 font-headline font-black text-[10px] tracking-widest px-6 h-12 uppercase" onClick={handleExportExcel}>
-              <FileDown className="h-4 w-4 me-2" /> XLSX_STREAM
+              <FileDown className="h-4 w-4 me-2" /> {t("je_profiles_xlsx")}
             </Button>
             <Button className="rounded-none bg-primary hover:bg-primary/90 text-primary-foreground font-headline font-black tracking-widest text-[10px] px-10 h-12 uppercase shadow-[0_0_20px_rgba(212,175,55,0.3)]" onClick={() => { setEvalStep(0); setIsNewOpen(true); }}>
-              <Plus className="h-4 w-4 me-2" /> INITIALIZE_EVAL
+              <Plus className="h-4 w-4 me-2" /> {t("je_profiles_init")}
             </Button>
           </div>
         </div>
@@ -214,10 +246,10 @@ export default function JobProfilesPage() {
       {/* Stats - Tactical Modules */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[
-          { label: isAr ? 'Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„Ø³Ø¬Ù„Ø§Øª' : 'TOTAL_NODES', val: profiles.length, icon: Users, color: 'text-primary' },
-          { label: isAr ? 'Ù…ØªÙˆØ³Ø· Ø§Ù„ÙƒÙØ§Ø¡Ø©' : 'AVG_EQUITY_PTS', val: Math.round(profiles.reduce((a, b) => a + b.points, 0) / profiles.length), icon: Target, color: 'text-emerald-500' },
-          { label: isAr ? 'Ø£Ø¹Ù„Ù‰ ÙØ¦Ø©' : 'MAX_TIER_IDENTIFIED', val: 'G7', icon: TrendingUp, color: 'text-amber-500' },
-          { label: isAr ? 'Ø­Ø§Ù„Ø© Ø§Ù„Ø¨Ø±ÙˆØªÙˆÙƒÙˆÙ„' : 'PROTOCOL_STATUS', val: 'SECURE', icon: Crosshair, color: 'text-sky-500' },
+          { label: t('je_stat_total_nodes'), val: profiles.length, icon: Users, color: 'text-primary' },
+          { label: t('je_stat_avg_equity'), val: Math.round(profiles.reduce((a, b) => a + b.points, 0) / profiles.length), icon: Target, color: 'text-emerald-500' },
+          { label: t('je_stat_max_tier'), val: 'G7', icon: TrendingUp, color: 'text-amber-500' },
+          { label: t('je_stat_protocol_status'), val: 'SECURE', icon: Crosshair, color: 'text-sky-500' },
         ].map((stat, i) => (
           <motion.div
             key={i}
@@ -249,11 +281,42 @@ export default function JobProfilesPage() {
           <CardHeader className="border-b border-zinc-900 flex flex-row items-center justify-between p-8">
             <CardTitle className="font-headline text-xl font-black uppercase flex items-center gap-3">
               <Shield className="h-5 w-5 text-primary" />
-              {isAr ? "Ø³Ø¬Ù„ Ø°ÙƒØ§Ø¡ Ø§Ù„ÙˆØ¸Ø§Ø¦Ù" : "JOB_VALUATION_STREAM"}
+              {t("je_profiles_stream")}
             </CardTitle>
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-600" />
-              <Input placeholder={isAr ? "ÙÙ„ØªØ±Ø© Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª..." : "QUERY_LOGS..."} className="ps-10 h-12 w-[240px] bg-white/5 border-zinc-800 rounded-none font-mono text-xs uppercase tracking-widest focus:border-primary/50 text-white" />
+            <div className="flex flex-wrap items-center gap-4">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-600" />
+                <Input 
+                  placeholder={t("search_placeholder")} 
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="ps-10 h-12 w-[240px] bg-white/5 border-zinc-800 rounded-none font-mono text-xs uppercase tracking-widest focus:border-primary/50 text-white" 
+                />
+              </div>
+              
+              <Select value={deptFilter} onValueChange={setDeptFilter}>
+                <SelectTrigger className="h-12 w-[180px] bg-white/5 border-zinc-800 rounded-none font-mono text-xs uppercase tracking-widest focus:border-primary/50 text-white">
+                  <SelectValue placeholder={t("field_department")} />
+                </SelectTrigger>
+                <SelectContent className="bg-[#0A0A0A] border-zinc-800 rounded-none">
+                  <SelectItem value="all" className="font-mono text-xs uppercase tracking-widest">{t("filter_all_depts")}</SelectItem>
+                  {Array.from(new Set(profiles.map(p => isAr ? p.department_ar : p.department))).map(d => (
+                    <SelectItem key={d} value={d} className="font-mono text-xs uppercase tracking-widest">{d}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="h-12 w-[150px] bg-white/5 border-zinc-800 rounded-none font-mono text-xs uppercase tracking-widest focus:border-primary/50 text-white">
+                  <SelectValue placeholder={t("field_status")} />
+                </SelectTrigger>
+                <SelectContent className="bg-[#0A0A0A] border-zinc-800 rounded-none">
+                  <SelectItem value="all" className="font-mono text-xs uppercase tracking-widest">{t("filter_all_status")}</SelectItem>
+                  <SelectItem value="Approved" className="font-mono text-xs uppercase tracking-widest text-emerald-500">{t("status_approved")}</SelectItem>
+                  <SelectItem value="Pending" className="font-mono text-xs uppercase tracking-widest text-amber-500">{t("status_pending")}</SelectItem>
+                  <SelectItem value="Draft" className="font-mono text-xs uppercase tracking-widest text-zinc-500">{t("status_draft")}</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </CardHeader>
           <CardContent className="p-0">
@@ -261,16 +324,21 @@ export default function JobProfilesPage() {
               <table className="w-full border-collapse">
                 <thead className="bg-zinc-900/50 text-zinc-500 font-headline font-black text-[10px] uppercase tracking-widest border-b border-zinc-800">
                   <tr>
-                    <th className="px-8 py-5 text-start">{isAr ? "Ø§Ù„Ù…Ø³Ù…Ù‰" : "PROFILE_ID"}</th>
-                    <th className="px-8 py-5 text-start">{isAr ? "Ø§Ù„Ù‚Ø³Ù…" : "UNIT_DOMAIN"}</th>
-                    <th className="px-8 py-5 text-center">{isAr ? "Ø§Ù„Ù†Ù‚Ø§Ø·" : "PTS_VAL"}</th>
-                    <th className="px-8 py-5 text-center">{isAr ? "Ø§Ù„Ø¯Ø±Ø¬Ø©" : "TIER"}</th>
-                    <th className="px-8 py-5 text-end">{isAr ? "Ø§Ù„Ø¹Ù…Ù„ÙŠØ§Øª" : "COMMAND"}</th>
+                    <th className="px-8 py-5 text-start">{t("je_col_profile_id")}</th>
+                    <th className="px-8 py-5 text-start">{t("je_col_unit")}</th>
+                    <th className="px-8 py-5 text-center">{t("je_col_pts_val")}</th>
+                    <th className="px-8 py-5 text-center">{t("je_col_tier")}</th>
+                    <th className="px-8 py-5 text-end">{t("je_col_command")}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-zinc-900">
                   <AnimatePresence mode="popLayout">
-                    {profiles.map((p) => (
+                    {profiles.filter(p => {
+                      const matchesSearch = (isAr ? p.title_ar : p.title).toLowerCase().includes(search.toLowerCase()) || p.id.includes(search);
+                      const matchesDept = deptFilter === "all" || (isAr ? p.department_ar : p.department) === deptFilter;
+                      const matchesStatus = statusFilter === "all" || p.status === statusFilter;
+                      return matchesSearch && matchesDept && matchesStatus;
+                    }).map((p) => (
                       <motion.tr 
                         key={p.id} 
                         layout
@@ -317,7 +385,7 @@ export default function JobProfilesPage() {
           <CardHeader className="p-8 border-b border-zinc-900">
             <CardTitle className="font-headline text-lg font-black uppercase flex items-center gap-3">
               <TrendingUp className="h-5 w-5 text-emerald-500" />
-              {isAr ? "ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø¹Ø¯Ø§Ù„Ø©" : "EQUITY_ANALYTICS"}
+              {t("je_equity_analytics")}
             </CardTitle>
           </CardHeader>
           <CardContent className="h-[400px] p-8">
@@ -357,10 +425,10 @@ export default function JobProfilesPage() {
                   <div className="p-3 bg-primary/10 border border-primary text-primary">
                     <Calculator className="h-8 w-8" />
                   </div>
-                  {isAr ? "Ù…Ø­Ø±Ùƒ ØªÙ‚ÙŠÙŠÙ… Ø§Ù„Ø¹ÙˆØ§Ù…Ù„" : "FACTOR_EVAL_ENGINE"}
+                  {t("je_eval_engine")}
                 </DialogTitle>
                 <DialogDescription className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest">
-                  {isAr ? "Ø¨Ø±ÙˆØªÙˆÙƒÙˆÙ„ Ø§Ù„Ù†Ù‚Ø§Ø· Ø§Ù„Ù…ÙˆØ²ÙˆÙ†Ø© (SC-2026)" : "WEIGHTED_FACTOR_PROTOCOL_v4.2_ACTIVE"}
+                  "{t("je_profiles_protocol")} v4.2"
                 </DialogDescription>
               </div>
               
@@ -390,7 +458,7 @@ export default function JobProfilesPage() {
                 >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                     <div className="space-y-4">
-                      <label className="text-[10px] font-headline font-black uppercase tracking-[0.3em] text-primary">{isAr ? "ØªØ¹Ø±ÙŠÙ Ø§Ù„Ù‡ÙˆÙŠØ© (EN)" : "PROFILE_LABEL (EN) *"}</label>
+                      <label className="text-[10px] font-headline font-black uppercase tracking-[0.3em] text-primary">{t("je_profile_label")} (EN)</label>
                       <Input 
                         placeholder="e.g. SENIOR_SYSTEM_OPERATIVE" 
                         className="bg-white/5 border-zinc-800 h-14 text-xl font-black rounded-none border-s-4 border-s-primary focus:border-primary/50 text-white transition-all uppercase placeholder:text-zinc-800" 
@@ -399,7 +467,7 @@ export default function JobProfilesPage() {
                       />
                     </div>
                     <div className="space-y-4">
-                      <label className="text-[10px] font-headline font-black uppercase tracking-[0.3em] text-primary">{isAr ? "ØªØ¹Ø±ÙŠÙ Ø§Ù„Ù‡ÙˆÙŠØ© (AR)" : "PROFILE_LABEL (AR) *"}</label>
+                      <label className="text-[10px] font-headline font-black uppercase tracking-[0.3em] text-primary">{t("je_profile_label")} (AR)</label>
                       <Input 
                         placeholder="Ø§Ù„Ù…Ø³Ù…Ù‰ Ø§Ù„Ø¹Ø±Ø¨ÙŠ" 
                         className="text-end bg-white/5 border-zinc-800 h-14 text-xl font-black rounded-none border-e-4 border-e-primary focus:border-primary/50 text-white transition-all" 
@@ -408,10 +476,10 @@ export default function JobProfilesPage() {
                       />
                     </div>
                     <div className="space-y-4 md:col-span-2">
-                      <label className="text-[10px] font-headline font-black uppercase tracking-[0.3em] text-zinc-600">{isAr ? "ØªØ®ØµÙŠØµ Ø§Ù„ÙˆØ­Ø¯Ø©" : "DEPLOYMENT_DOMAIN (DEPT) *"}</label>
+                      <label className="text-[10px] font-headline font-black uppercase tracking-[0.3em] text-zinc-600">{t("je_deployment_domain")}</label>
                       <Select value={newProfile.department_id} onValueChange={(val) => setNewProfile({ ...newProfile, department_id: val })}>
                         <SelectTrigger className="bg-white/5 border-zinc-800 h-14 rounded-none text-white font-bold uppercase text-[10px] tracking-widest">
-                          <SelectValue placeholder="SELECT_OPERATIONAL_DOMAIN" />
+                          <SelectValue placeholder={t("je_deployment_domain")} />
                         </SelectTrigger>
                         <SelectContent className="bg-[#0A0A0A] border-zinc-800 rounded-none text-white font-headline font-black text-[9px] uppercase tracking-widest">
                           <SelectItem value="it" className="focus:bg-primary/20">CORE_IT_INFRA</SelectItem>
@@ -431,7 +499,7 @@ export default function JobProfilesPage() {
                       <div>
                         <h4 className="font-headline font-black text-sm uppercase tracking-[0.2em] text-white">EVALUATION_PROTOCOL_NOTICE</h4>
                         <p className="text-[11px] text-zinc-500 mt-2 leading-relaxed font-sans font-medium">
-                          {isAr ? "ÙŠØªØ·Ù„Ø¨ Ù…Ø­Ø±Ùƒ Ø§Ù„ØªÙ‚ÙŠÙŠÙ… Ø¥Ø¯Ø®Ø§Ù„ Ù…Ø³ØªÙˆÙŠØ§Øª Ø¯Ù‚ÙŠÙ‚Ø© Ù„Ù€ 12 Ø¹Ø§Ù…Ù„Ø§Ù‹ ÙØ±Ø¹ÙŠØ§Ù‹ Ù…ÙˆØ²Ø¹Ø© Ø¹Ù„Ù‰ 4 Ù…Ø­Ø§ÙˆØ± Ø£Ø³Ø§Ø³ÙŠØ© Ù„Ø¶Ù…Ø§Ù† Ø§Ù„Ø§Ù…ØªØ«Ø§Ù„ Ù„Ù„Ù…Ø¹Ø§ÙŠÙŠØ± Ø§Ù„ØµÙ†Ø§Ø¹ÙŠØ©." : "The valuation engine requires high-fidelity calibration across 12 unique sub-factors. All inputs are cryptographically logged for structural integrity audit trails."}
+                          {t("je_eval_notice_desc")}
                         </p>
                       </div>
                     </div>
@@ -468,7 +536,7 @@ export default function JobProfilesPage() {
                           >
                             <div className="flex items-center justify-between mb-6">
                               <div className="space-y-1">
-                                <label className="font-headline font-black text-sm uppercase tracking-widest text-white block">{isAr ? sf.name_ar : sf.name}</label>
+                                <label className="font-headline font-black text-sm uppercase tracking-widest text-white block">{sf.name}</label>
                                 <span className="text-[9px] text-zinc-600 font-mono uppercase tracking-[0.2em]">{sf.id.toUpperCase()}::VECTOR</span>
                               </div>
                               <div className={`h-10 w-12 border flex items-center justify-center font-mono text-sm font-black transition-colors ${newProfile.scores[sf.id] ? 'bg-primary text-black border-primary' : 'bg-black text-zinc-800 border-zinc-800 group-hover:border-zinc-700'}`}>
@@ -505,12 +573,12 @@ export default function JobProfilesPage() {
           <DialogFooter className="p-8 border-t border-zinc-900 bg-white/[0.02] relative z-10">
             <div className="flex items-center justify-between w-full">
               <Button variant="ghost" onClick={() => setIsNewOpen(false)} className="rounded-none border border-zinc-800 hover:bg-rose-500/10 hover:text-rose-500 font-headline font-black text-[10px] tracking-widest px-8 uppercase h-12">
-                TERMINATE_INIT
+                {t("je_terminate_init")}
               </Button>
               <div className="flex items-center gap-4">
                 {evalStep === 1 && (
                   <Button variant="outline" onClick={() => setEvalStep(0)} className="rounded-none border-zinc-800 bg-white/5 hover:bg-white/10 font-headline font-black text-[10px] tracking-widest px-8 uppercase h-12">
-                    BACK_TO_ID
+                    {t("je_back_to_id")}
                   </Button>
                 )}
                 {evalStep === 0 ? (
@@ -519,7 +587,7 @@ export default function JobProfilesPage() {
                     disabled={!newProfile.title_en}
                     className="rounded-none bg-white text-black hover:bg-white/90 font-headline font-black text-[10px] tracking-widest px-12 uppercase h-12"
                   >
-                    DEPLOY_FACTORS <ChevronRight className="h-4 w-4 ms-2" />
+                    {t("je_deploy_factors")} <ChevronRight className="h-4 w-4 ms-2" />
                   </Button>
                 ) : (
                   <Button 
@@ -543,7 +611,7 @@ export default function JobProfilesPage() {
                       toast({ title: "LOG_COMMITTED", description: "Valuation protocol successfully written to registry." });
                     }}
                   >
-                    <CheckCircle2 className="h-4 w-4 me-2" /> COMMIT_REGISTRY
+                    <CheckCircle2 className="h-4 w-4 me-2" /> {t("je_commit_registry")}
                   </Button>
                 )}
               </div>

@@ -64,7 +64,7 @@ export default function JobEvaluationManualPage() {
                 <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">OPERATIONAL_MANUAL_v9.4</span>
              </div>
              <h1 className="text-4xl md:text-6xl font-headline font-black tracking-tighter text-white uppercase leading-none">
-               {isAr ? "Ø¯Ù„ÙŠÙ„ Ø¨Ø±ÙˆØªÙˆÙƒÙˆÙ„ ØªÙ‚ÙŠÙŠÙ… Ø§Ù„ÙˆØ¸Ø§Ø¦Ù" : "VALUATION_PROTOCOL_MANUAL"}
+               {t("je_manual_title")}
              </h1>
              <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4 text-lg max-w-2xl mx-auto md:mx-0">
                {isAr 
@@ -82,9 +82,9 @@ export default function JobEvaluationManualPage() {
       {/* Methodology Overview - Tactical Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {[
-          { icon: Target, title: isAr ? "Ø§Ù„ØºØ±Ø¶ Ù…Ù† Ø§Ù„ØªÙ‚ÙŠÙŠÙ…" : "EVALUATION_PURPOSE", val: "EQUITY", color: "sky-400", desc: isAr ? "ØªØ­Ù‚ÙŠÙ‚ Ø§Ù„Ø¹Ø¯Ø§Ù„Ø© Ø§Ù„Ø¯Ø§Ø®Ù„ÙŠØ© Ù…Ù† Ø®Ù„Ø§Ù„ Ù…Ù‚Ø§Ø±Ù†Ø© Ø§Ù„Ù…ØªØ·Ù„Ø¨Ø§Øª Ø¨Ø´ÙƒÙ„ Ù…ÙˆØ¶ÙˆØ¹ÙŠ." : "Achieving absolute internal equity by objectively comparing mental and physical requirement streams." },
-          { icon: ShieldCheck, title: isAr ? "Ø§Ù„Ù…ÙˆØ¶ÙˆØ¹ÙŠØ© ÙˆØ§Ù„Ø­ÙŠØ§Ø¯" : "SYSTEM_NEUTRALITY", val: "OBJECTIVE", color: "emerald-400", desc: isAr ? "ÙŠØªÙ… ØªÙ‚ÙŠÙŠÙ… Ø§Ù„ÙˆØ¸ÙŠÙØ© Ù†ÙØ³Ù‡Ø§ ÙˆÙ„ÙŠØ³ Ø´Ø§ØºÙ„ Ø§Ù„ÙˆØ¸ÙŠÙØ©." : "The architectural node is evaluated, not the operative. Focusing on minimum structural requirements." },
-          { icon: Scale, title: isAr ? "Ù‡ÙŠÙƒÙ„ Ø§Ù„Ø¯Ø±Ø¬Ø§Øª" : "GRADING_ARCH", val: "SCALABLE", color: "amber-400", desc: isAr ? "ØªØ­ÙˆÙŠÙ„ Ø§Ù„Ù†Ù‚Ø§Ø· Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠØ© Ø¥Ù„Ù‰ Ø¯Ø±Ø¬Ø§Øª ÙˆØ¸ÙŠÙÙŠØ© (G1-G10)." : "Seamless conversion of aggregated point streams into hierarchical grades for fiscal calibration." },
+          { icon: Target, title: t("je_purpose_title"), val: t("je_val_equity"), color: "sky-400", desc: t("je_purpose_desc") },
+          { icon: ShieldCheck, title: t("je_neutrality_title"), val: t("je_val_objective"), color: "emerald-400", desc: t("je_neutrality_desc") },
+          { icon: Scale, title: t("je_grading_arch_title"), val: t("je_val_scalable"), color: "amber-400", desc: t("je_grading_arch_desc") },
         ].map((stat, i) => (
           <motion.div key={i} variants={item}>
             <Card className="bg-[#0D0D0D] border-zinc-800 rounded-none relative group hover:border-current transition-all overflow-hidden h-full" style={{ color: `var(--${stat.color})` } as any}>
@@ -110,31 +110,31 @@ export default function JobEvaluationManualPage() {
         <motion.div variants={item} className="space-y-8">
           <div className="flex items-center gap-4">
             <div className="h-2 w-2 bg-primary rotate-45" />
-            <h2 className="font-headline text-2xl font-black uppercase tracking-widest">{isAr ? "Ø¹ÙˆØ§Ù…Ù„ Ø§Ù„ØªÙ‚ÙŠÙŠÙ… Ø§Ù„Ø£Ø±Ø¨Ø¹Ø©" : "COMPENSABLE_FACTORS"}</h2>
+            <h2 className="font-headline text-2xl font-black uppercase tracking-widest">{t("je_manual_factors")}</h2>
             <div className="flex-1 h-px bg-zinc-900" />
           </div>
 
           <div className="space-y-6">
             {[
               { 
-                title: isAr ? "Ø§Ù„Ù…Ù‡Ø§Ø±Ø§Øª (35%)" : "SKILLS_MATRIX (35%)", 
-                desc: isAr ? "ØªØ´Ù…Ù„ Ø§Ù„ØªØ¹Ù„ÙŠÙ…ØŒ Ø§Ù„Ø®Ø¨Ø±Ø©ØŒ ÙˆØ§Ù„Ù…Ø¹Ø±ÙØ© Ø§Ù„ØªÙ‚Ù†ÙŠØ© Ø§Ù„Ù…Ø·Ù„ÙˆØ¨Ø©." : "Includes required education, experience, and technical knowledge streams.",
-                sub: ["EDUCATION", "EXPERIENCE", "TECH_KNOWLEDGE"]
+                title: t("je_factor_skills_title"), 
+                desc: t("je_factor_skills_desc"),
+                sub: [t("je_f_education"), t("je_f_experience"), t("je_f_knowledge")]
               },
               { 
-                title: isAr ? "المسؤولية (35%)" : "RESPONSIBILITY_DOMAIN (35%)", 
-                desc: isAr ? "تشمل صنع القرار، الإشراف على الآخرين، والمسؤولية المالية." : "Includes decision-making, supervision of others, and fiscal responsibility protocols.",
-                sub: ["DECISION_MAKING", "SUPERVISION", "CONFIDENTIALITY"]
+                title: t("je_factor_resp_title"), 
+                desc: t("je_factor_resp_desc"),
+                sub: [t("je_f_decision"), t("je_f_supervisory"), t("je_f_compliance")]
               },
               { 
-                title: isAr ? "المجهود (10%)" : "EFFORT_VECTOR (10%)", 
-                desc: isAr ? "تشمل المجهود الذهني والبدني المبذول في العمل." : "Includes mental concentration and physical exertion bandwidth.",
-                sub: ["MENTAL_CONCENTRATION", "PHYSICAL_DEMAND"]
+                title: t("je_factor_effort_title"), 
+                desc: t("je_factor_effort_desc"),
+                sub: [t("je_f_mental"), t("je_f_physical")]
               },
               { 
-                title: isAr ? "ظروف العمل (20%)" : "ENVIRONMENT_LOGS (20%)", 
-                desc: isAr ? "تشمل المخاطر والبيئة المادية المحيطة بالعمل." : "Includes hazards and the physical surrounding operational environment.",
-                sub: ["HAZARDS", "ENVIRONMENT", "WORK_SCHEDULE"]
+                title: t("je_factor_env_title"), 
+                desc: t("je_factor_env_desc"),
+                sub: [t("je_f_hazards"), t("je_f_environment"), t("je_f_schedule")]
               }
             ].map((f, i) => (
               <div key={i} className="p-8 bg-[#0D0D0D] border border-zinc-900 group hover:border-primary/40 transition-all relative overflow-hidden">
@@ -157,18 +157,18 @@ export default function JobEvaluationManualPage() {
         <motion.div variants={item} className="space-y-8">
           <div className="flex items-center gap-4">
             <div className="h-2 w-2 bg-amber-500 rotate-45" />
-            <h2 className="font-headline text-2xl font-black uppercase tracking-widest">{isAr ? "مستويات التقييم" : "LEVEL_SCORING_v9.2"}</h2>
+            <h2 className="font-headline text-2xl font-black uppercase tracking-widest">{t("je_rubric_title")}</h2>
             <div className="flex-1 h-px bg-zinc-900" />
           </div>
 
           <Card className="bg-[#0A0A0A] border border-zinc-800 rounded-none overflow-hidden relative">
             <div className="divide-y divide-zinc-900">
               {[
-                { lv: "L1", title: isAr ? "مبتدئ / أساسي" : "BASIC_ENTRY", desc: isAr ? "مهام بسيطة تتطلب إشرافاً مباشراً." : "Simple tasks requiring direct supervision protocols." },
-                { lv: "L2", title: isAr ? "متوسط" : "INTERMEDIATE", desc: isAr ? "فهم جيد للمهام مع استقلالية محدودة." : "Proficient understanding with limited node autonomy." },
-                { lv: "L3", title: isAr ? "ماهر" : "PROFICIENT", desc: isAr ? "أداء مهام معقدة بشكل مستقل." : "Independent performance of complex operational tasks." },
-                { lv: "L4", title: isAr ? "خبير" : "SYSTEM_EXPERT", desc: isAr ? "تقديم المشورة الفنية وقيادة الفرق." : "Technical advisory and tactical team leadership." },
-                { lv: "L5", title: isAr ? "رائد / استراتيجي" : "STRATEGIC_MASTER", desc: isAr ? "تحديد التوجهات الاستراتيجية للمؤسسة." : "Architecting strategic organizational direction." }
+                { lv: "L1", title: t("je_level_basic"), desc: t("je_level_basic_desc") },
+                { lv: "L2", title: t("je_level_intermediate"), desc: t("je_level_intermediate_desc") },
+                { lv: "L3", title: t("je_level_proficient"), desc: t("je_level_proficient_desc") },
+                { lv: "L4", title: t("je_level_expert"), desc: t("je_level_expert_desc") },
+                { lv: "L5", title: t("je_level_strategic"), desc: t("je_level_strategic_desc") }
               ].map((l, i) => (
                 <div key={i} className="p-6 flex gap-6 hover:bg-white/5 transition-colors group">
                   <div className="h-12 w-12 shrink-0 border border-zinc-800 bg-black flex items-center justify-center font-mono font-black text-primary group-hover:border-primary transition-colors text-sm">
@@ -190,7 +190,7 @@ export default function JobEvaluationManualPage() {
               <div className="p-2 bg-amber-500/10 border border-amber-500/30">
                  <Info className="h-5 w-5 text-amber-500" />
               </div>
-              <h4 className="font-headline font-black text-sm text-white uppercase tracking-[0.2em]">{isAr ? "معادلة الاحتساب" : "CALCULATION_LOGIC"}</h4>
+              <h4 className="font-headline font-black text-sm text-white uppercase tracking-[0.2em]">{t("je_calc_logic")}</h4>
             </div>
             <p className="text-[11px] font-sans font-medium text-zinc-500 leading-relaxed relative z-10">
               {isAr 
@@ -211,26 +211,26 @@ export default function JobEvaluationManualPage() {
                 <span className="font-headline font-black text-[10px] text-primary tracking-[0.4em] uppercase">SYSTEM_TIER_MAPPING</span>
                 <div className="h-px w-12 bg-primary/30" />
              </div>
-             <CardTitle className="font-headline font-black text-4xl text-white uppercase tracking-tighter">{isAr ? "جدول الدرجات الوظيفية" : "STANDARD_GRADE_MATRIX"}</CardTitle>
+             <CardTitle className="font-headline font-black text-4xl text-white uppercase tracking-tighter">{t("je_matrix_title")}</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-zinc-900/50 text-zinc-500 uppercase text-[10px] font-headline font-black tracking-widest border-b border-zinc-800">
-                    <th className="p-8 text-center">{isAr ? "الدرجة" : "TIER_GRADE"}</th>
-                    <th className="p-8 text-center">{isAr ? "نطاق النقاط" : "POINT_BAND"}</th>
-                    <th className="p-8 text-start">{isAr ? "التصنيف الإداري" : "H_CATEGORY"}</th>
-                    <th className="p-8 text-end">{isAr ? "الحالة" : "STATUS"}</th>
+                    <th className="p-8 text-center">{t("je_col_tier")}</th>
+                    <th className="p-8 text-center">{t("je_col_band")}</th>
+                    <th className="p-8 text-start">{t("je_col_cat")}</th>
+                    <th className="p-8 text-end">{t("common_status")}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-zinc-900 font-mono">
                   {[
-                    { g: "G1-G2", range: "100 - 199", cat: isAr ? "عمالي / مساعد" : "Labor / Support Node" },
-                    { g: "G3-G4", range: "200 - 329", cat: isAr ? "موظف فني / إداري" : "Technical / Admin Operative" },
-                    { g: "G5-G6", range: "330 - 509", cat: isAr ? "أخصائي / مهني" : "Professional / Specialist" },
-                    { g: "G7-G8", range: "510 - 769", cat: isAr ? "إدارة وسطى / عليا" : "Middle / Senior Management" },
-                    { g: "G9-G10", range: "770 - 1000", cat: isAr ? "تنفيذي / قيادي" : "Executive / Strategic Lead" },
+                    { g: "G1-G2", range: "100 - 199", cat: t("je_cat_labor") },
+                    { g: "G3-G4", range: "200 - 329", cat: t("je_cat_tech") },
+                    { g: "G5-G6", range: "330 - 509", cat: t("je_cat_spec") },
+                    { g: "G7-G8", range: "510 - 769", cat: t("je_cat_mgmt") },
+                    { g: "G9-G10", range: "770 - 1000", cat: t("je_cat_exec") },
                   ].map((row, i) => (
                     <tr key={i} className="hover:bg-white/5 transition-colors group">
                       <td className="p-8 text-center font-headline font-black text-2xl text-primary">{row.g}</td>
@@ -238,7 +238,7 @@ export default function JobEvaluationManualPage() {
                       <td className="p-8 text-start font-headline font-black text-[10px] text-zinc-500 uppercase tracking-widest group-hover:text-white transition-colors">{row.cat}</td>
                       <td className="p-8 text-end">
                          <div className="flex items-center justify-end gap-2 text-emerald-500 font-black text-[9px] tracking-tighter">
-                            <Activity className="h-3 w-3 animate-pulse" /> ACTIVE_TIER
+                            <Activity className="h-3 w-3 animate-pulse" /> {t("je_active_tier")}
                          </div>
                       </td>
                     </tr>
@@ -263,7 +263,7 @@ export default function JobEvaluationManualPage() {
             </div>
             <div className="flex items-center gap-4">
                <Button variant="outline" className="rounded-none border-zinc-800 font-headline font-black text-[10px] tracking-widest uppercase h-10 px-6">
-                  INITIALIZE_PROTOCOL <ChevronRight className="ms-2 h-3 w-3" />
+                  {t("je_initial_protocol")} <ChevronRight className="ms-2 h-3 w-3" />
                </Button>
             </div>
          </div>

@@ -66,16 +66,16 @@ const categoryData = [
 ];
 
 const gradeData = [
-  { grade: "G1", min: 100, max: 149, category: "Worker" },
-  { grade: "G2", min: 150, max: 199, category: "Junior Tech" },
-  { grade: "G3", min: 200, max: 259, category: "Mid Tech" },
-  { grade: "G4", min: 260, max: 329, category: "Supervisor" },
-  { grade: "G5", min: 330, max: 409, category: "Senior" },
-  { grade: "G6", min: 410, max: 509, category: "Section Head" },
-  { grade: "G7", min: 510, max: 629, category: "Manager" },
-  { grade: "G8", min: 630, max: 769, category: "Head of Function" },
-  { grade: "G9", min: 770, max: 929, category: "General Manager" },
-  { grade: "G10", min: 930, max: 1000, category: "Executive" }
+  { grade: "G1", min: 100, max: 149, category: "worker" },
+  { grade: "G2", min: 150, max: 199, category: "junior" },
+  { grade: "G3", min: 200, max: 259, category: "mid" },
+  { grade: "G4", min: 260, max: 329, category: "supervisor" },
+  { grade: "G5", min: 330, max: 409, category: "senior" },
+  { grade: "G6", min: 410, max: 509, category: "section_head" },
+  { grade: "G7", min: 510, max: 629, category: "manager" },
+  { grade: "G8", min: 630, max: 769, category: "head_function" },
+  { grade: "G9", min: 770, max: 929, category: "gm" },
+  { grade: "G10", min: 930, max: 1000, category: "executive" }
 ];
 
 export default function JobEvaluationGuide() {
@@ -102,10 +102,10 @@ export default function JobEvaluationGuide() {
                <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">METHODOLOGY_CORE_DOCUMENTATION</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
-              {isAr ? "Ù…Ù†Ù‡Ø¬ÙŠØ© ØªÙ‚ÙŠÙŠÙ… Ø§Ù„ÙˆØ¸Ø§Ø¦Ù Ø¨Ø§Ù„Ù†Ù‚Ø§Ø·" : "POINT_FACTOR_METHODOLOGY"}
+              {t("je_guide_title")}
             </h1>
             <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4 text-lg">
-              {isAr ? "Ù…Ù†Ù‡Ø¬ÙŠØ© ÙƒÙ…ÙŠØ© Ù…Ù†Ø¸Ù…Ø© Ù„ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù‚ÙŠÙ…Ø© Ø§Ù„Ù†Ø³Ø¨ÙŠØ© Ù„Ù„ÙˆØ¸Ø§Ø¦Ù Ø¯Ø§Ø®Ù„ Ø§Ù„Ù…Ù†Ø¸Ù…Ø©." : "Structural, quantitative framework for determining relative organizational value metrics."}
+              {t("je_guide_subtitle")}
             </p>
           </div>
         </div>
@@ -115,10 +115,10 @@ export default function JobEvaluationGuide() {
       {/* Pillar Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[
-          { icon: BrainCircuit, title: isAr ? "Ø§Ù„Ù…Ù‡Ø§Ø±Ø§Øª" : "SKILLS_DOMAIN", value: "35%", color: "primary" },
-          { icon: ShieldCheck, title: isAr ? "Ø§Ù„Ù…Ø³Ø¤ÙˆÙ„ÙŠØ©" : "RESPONSIBILITY_DOMAIN", value: "35%", color: "zinc-400" },
-          { icon: Zap, title: isAr ? "Ø§Ù„Ø¬Ù‡Ø¯" : "EFFORT_DOMAIN", value: "20%", color: "amber-400" },
-          { icon: BarChart3, title: isAr ? "Ø¸Ø±ÙˆÙ Ø§Ù„Ø¹Ù…Ù„" : "ENV_CONDITIONS", value: "10%", color: "rose-400" }
+          { icon: BrainCircuit, title: t("je_cat_skills"), value: "35%", color: "primary" },
+          { icon: ShieldCheck, title: t("je_cat_responsibility"), value: "35%", color: "zinc-400" },
+          { icon: Zap, title: t("je_cat_effort"), value: "20%", color: "amber-400" },
+          { icon: BarChart3, title: t("je_cat_conditions"), value: "10%", color: "rose-400" }
         ].map((stat, i) => (
           <motion.div key={i} variants={itemVariants}>
             <Card className={`bg-[#0D0D0D] border-zinc-800 rounded-none relative group hover:border-${stat.color}/40 transition-all`}>
@@ -148,7 +148,7 @@ export default function JobEvaluationGuide() {
             <CardHeader className="p-8 border-b border-zinc-900">
               <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
                 <Layers className="h-5 w-5 text-primary" />
-                {isAr ? "ØªÙˆØ²ÙŠØ¹ Ø§Ù„Ø£ÙˆØ²Ø§Ù† ÙˆØ§Ù„Ù†Ù‚Ø§Ø·" : "STRUCTURAL_WEIGHT_DISTRIBUTION"}
+                {t("je_weight_title")}
               </CardTitle>
             </CardHeader>
             <CardContent className="p-0">
@@ -156,18 +156,18 @@ export default function JobEvaluationGuide() {
                 <table className="w-full border-collapse">
                   <thead>
                     <tr className="bg-zinc-900/50 border-b border-zinc-800 text-start">
-                      <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{isAr ? "Ø§Ù„ÙØ¦Ø© Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©" : "CORE_PILLAR"}</th>
-                      <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{isAr ? "Ø§Ù„Ø¹ÙˆØ§Ù…Ù„ Ø§Ù„ÙØ±Ø¹ÙŠØ©" : "SUB_VECTORS"}</th>
-                      <th className="px-8 py-5 text-center font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{isAr ? "Ø§Ù„Ù†Ø³Ø¨Ø©" : "WEIGHT"}</th>
-                      <th className="px-8 py-5 text-center font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{isAr ? "Ø§Ù„Ù†Ù‚Ø§Ø·" : "MAX_PTS"}</th>
+                      <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{t("je_col_pillar")}</th>
+                      <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{t("je_col_vectors")}</th>
+                      <th className="px-8 py-5 text-center font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{t("je_col_weight")}</th>
+                      <th className="px-8 py-5 text-center font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{t("je_col_max_pts")}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-zinc-900">
                     {[
-                      { cat: isAr ? "Ø§Ù„Ù…Ù‡Ø§Ø±Ø§Øª" : "SKILLS", factors: isAr ? "Ø§Ù„ØªØ¹Ù„ÙŠÙ…ØŒ Ø§Ù„Ø®Ø¨Ø±Ø©ØŒ Ø§Ù„Ù…Ø¹Ø±ÙØ©" : "Education, Experience, Knowledge", weight: "35%", points: 350 },
-                      { cat: isAr ? "Ø§Ù„Ù…Ø³Ø¤ÙˆÙ„ÙŠØ©" : "RESPONSIBILITY", factors: isAr ? "Ø§Ù„Ø§Ù„ØªØ²Ø§Ù…ØŒ Ø§Ù„Ø¥Ø´Ø±Ø§ÙØŒ Ø§ØªØ®Ø§Ø° Ø§Ù„Ù‚Ø±Ø§Ø±" : "Compliance, Supervisory, Decision-Making", weight: "35%", points: 350 },
-                      { cat: isAr ? "Ø§Ù„Ø¬Ù‡Ø¯" : "EFFORT", factors: isAr ? "Ø§Ù„Ø¬Ù‡Ø¯ Ø§Ù„Ø°Ù‡Ù†ÙŠØŒ Ø§Ù„Ø¬Ù‡Ø¯ Ø§Ù„Ø¨Ø¯Ù†ÙŠ" : "Mental Effort, Physical Effort", weight: "20%", points: 200 },
-                      { cat: isAr ? "Ø¸Ø±ÙˆÙ Ø§Ù„Ø¹Ù…Ù„" : "CONDITIONS", factors: isAr ? "Ø§Ù„Ù…Ø®Ø§Ø·Ø±ØŒ Ø§Ù„Ø³Ø§Ø¹Ø§ØªØŒ Ø§Ù„Ø¨ÙŠØ¦Ø©ØŒ Ø§Ù„Ø³ÙØ±" : "Hazards, Schedule, Environment, Travel", weight: "10%", points: 100 }
+                      { cat: t("je_cat_skills"), factors: t("je_f_education") + ", " + t("je_f_experience") + ", " + t("je_f_knowledge"), weight: "35%", points: 350 },
+                      { cat: t("je_cat_responsibility"), factors: t("je_f_compliance") + ", " + t("je_f_supervisory") + ", " + t("je_f_decision"), weight: "35%", points: 350 },
+                      { cat: t("je_cat_effort"), factors: t("je_f_mental") + ", " + t("je_f_physical"), weight: "20%", points: 200 },
+                      { cat: t("je_cat_conditions"), factors: t("je_f_hazards") + ", " + t("je_f_schedule") + ", " + t("je_f_environment") + ", " + t("je_f_travel"), weight: "10%", points: 100 }
                     ].map((row, i) => (
                       <tr key={i} className="group hover:bg-white/2 transition-colors">
                         <td className="px-8 py-6">
@@ -188,7 +188,7 @@ export default function JobEvaluationGuide() {
                 </table>
               </div>
               <div className="p-6 bg-primary/[0.02] border-t border-zinc-900 flex items-center justify-between">
-                <span className="font-headline font-black text-[10px] text-zinc-600 uppercase tracking-[0.2em]">{isAr ? "Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„Ù†Ù‚Ø§Ø· Ø§Ù„Ø£Ù‚ØµÙ‰" : "TOTAL_AGGREGATED_POINTS"}</span>
+                <span className="font-headline font-black text-[10px] text-zinc-600 uppercase tracking-[0.2em]">{t("je_total_pts")}</span>
                 <span className="text-primary font-mono font-black text-xl tracking-tighter">1000.00 PTS</span>
               </div>
             </CardContent>
@@ -202,7 +202,7 @@ export default function JobEvaluationGuide() {
             <CardHeader className="p-8 border-b border-zinc-900">
               <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
                 <Target className="h-5 w-5 text-primary" />
-                {isAr ? "ØªÙˆØ²ÙŠØ¹ Ø§Ù„Ù†Ù‚Ø§Ø· Ø¨ÙŠØ§Ù†ÙŠØ§Ù‹" : "VECTOR_ALLOCATION"}
+                {t("je_weight_title")}
               </CardTitle>
             </CardHeader>
             <CardContent className="p-8 flex flex-col items-center justify-center h-[calc(100%-80px)]">
@@ -232,7 +232,7 @@ export default function JobEvaluationGuide() {
                    <div key={i} className="flex items-center justify-between text-[10px] font-headline font-black text-zinc-500 uppercase tracking-widest">
                       <div className="flex items-center gap-3">
                          <div className="h-2 w-2" style={{ backgroundColor: cat.color }} />
-                         <span>{cat.name}</span>
+                         <span>{t(("je_cat_" + cat.name.toLowerCase()) as any)}</span>
                       </div>
                       <span className="font-mono text-white">{cat.value} PTS</span>
                    </div>
@@ -249,7 +249,7 @@ export default function JobEvaluationGuide() {
             <CardHeader className="p-8 border-b border-zinc-900">
               <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
                 <Scaling className="h-5 w-5 text-primary" />
-                {isAr ? "Ø³Ù„Ù… Ø§Ù„Ø¯Ø±Ø¬Ø§Øª Ø§Ù„ÙˆØ¸ÙŠÙÙŠØ©" : "ARCHITECTURAL_GRADING_SCALE"}
+                {t("je_grading_title")}
               </CardTitle>
             </CardHeader>
             <CardContent className="p-8">
@@ -278,9 +278,9 @@ export default function JobEvaluationGuide() {
                     <table className="w-full text-start">
                       <thead className="bg-zinc-900/80 font-headline font-black text-[9px] uppercase tracking-widest text-zinc-500">
                         <tr>
-                          <th className="px-6 py-4">{isAr ? "Ø§Ù„Ù†Ù‚Ø§Ø·" : "PT_RANGE"}</th>
-                          <th className="px-6 py-4">{isAr ? "Ø§Ù„Ø¯Ø±Ø¬Ø©" : "TIER"}</th>
-                          <th className="px-6 py-4">{isAr ? "Ø§Ù„ÙØ¦Ø©" : "DESIGNATION"}</th>
+                          <th className="px-6 py-4">{t("je_col_range")}</th>
+                          <th className="px-6 py-4">{t("je_col_tier")}</th>
+                          <th className="px-6 py-4">{t("je_col_designation")}</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-zinc-900">
@@ -288,7 +288,7 @@ export default function JobEvaluationGuide() {
                           <tr key={i} className="hover:bg-primary/3 transition-colors">
                             <td className="px-6 py-4 font-mono text-xs text-zinc-400">{row.min} - {row.max}</td>
                             <td className="px-6 py-4 font-mono font-black text-primary text-sm">{row.grade}</td>
-                            <td className="px-6 py-4 text-[10px] font-headline font-black text-zinc-500 uppercase tracking-widest">{row.category}</td>
+                            <td className="px-6 py-4 text-[10px] font-headline font-black text-zinc-500 uppercase tracking-widest">{t(("je_grade_" + row.category) as any)}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -308,15 +308,15 @@ export default function JobEvaluationGuide() {
                 <CardHeader className="p-8 border-b border-primary/10">
                   <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
                     <Settings2 className="h-5 w-5 text-primary" />
-                    {isAr ? "Ø§Ù„Ø­ÙˆÙƒÙ…Ø© ÙˆØ§Ù„Ø¹Ù…Ù„ÙŠØ§Øª" : "GOVERNANCE_PROTOCOL"}
+                    {t("je_gov_title")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-8 space-y-6">
                   {[
-                    { t: isAr ? "ØªØ­Ù„ÙŠÙ„ Ø§Ù„ÙˆØ¸ÙŠÙØ©" : "NODE_ANALYSIS", d: isAr ? "Ø¬Ù…Ø¹ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ù…Ù† Ø§Ù„Ø£ÙˆØµØ§Ù Ø§Ù„ÙˆØ¸ÙŠÙÙŠØ© ÙˆØ§Ù„Ù…Ù‚Ø§Ø¨Ù„Ø§Øª." : "Granular data harvesting from active JD streams and stakeholder interviews." },
-                    { t: isAr ? "Ù„Ø¬Ù†Ø© Ø§Ù„ØªÙ‚ÙŠÙŠÙ…" : "VALUATION_COUNCIL", d: isAr ? "ØªØªÙƒÙˆÙ† Ù…Ù† 3 Ø£Ø¹Ø¶Ø§Ø¡ Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„ Ù„ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ø¯Ø±Ø¬Ø§Øª." : "Minimum 3-member quorum required for structural point allocation." },
-                    { t: isAr ? "Ø§Ù„Ù…Ø±Ø§Ø¬Ø¹Ø©" : "AUDIT_CYCLE", d: isAr ? "Ø§Ø¬ØªÙ…Ø§Ø¹Ø§Øª Ø¯ÙˆØ±ÙŠØ© ÙƒÙ„ Ø³ØªØ© Ø£Ø´Ù‡Ø± Ù„Ù…Ø±Ø§Ø¬Ø¹Ø© Ø§Ù„Ø£Ø¯ÙˆØ§Ø± Ø§Ù„Ø¬Ø¯ÙŠØ¯Ø©." : "Bi-annual recursive audit to calibrate new or evolving organizational nodes." },
-                    { t: isAr ? "Ø§Ù„Ù…Ø®Ø±Ø¬Ø§Øª" : "OUTPUT_MAP", d: isAr ? "Ø®Ø±ÙŠØ·Ø© Ø´ÙØ§ÙØ© Ù…Ø±ØªØ¨Ø·Ø© Ù…Ø¨Ø§Ø´Ø±Ø© Ø¨Ø³Ù„Ù… Ø§Ù„Ø±ÙˆØ§ØªØ¨." : "High-transparency mapping linking structural points to fiscal compensation tiers." }
+                    { t: t("je_gov_node"), d: t("je_gov_node_desc") },
+                    { t: t("je_gov_council"), d: t("je_gov_council_desc") },
+                    { t: t("je_gov_audit"), d: t("je_gov_audit_desc") },
+                    { t: t("je_gov_output"), d: t("je_gov_output_desc") }
                   ].map((item, i) => (
                     <div key={i} className="flex gap-4">
                       <div className="mt-1"><CheckCircle2 className="h-4 w-4 text-primary" /></div>
@@ -334,7 +334,7 @@ export default function JobEvaluationGuide() {
                 <CardHeader className="p-8 border-b border-zinc-900">
                   <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
                     <Cpu className="h-5 w-5 text-zinc-400" />
-                    {isAr ? "Ù…Ù‚ÙŠØ§Ø³ Ø§Ù„ØªÙ‚ÙŠÙŠÙ… Ø§Ù„Ø®Ù…Ø§Ø³ÙŠ" : "LEVEL_RUBRIC_v4.2"}
+                    {t("je_rubric_title")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-8 space-y-4">
@@ -350,8 +350,8 @@ export default function JobEvaluationGuide() {
                         L{level.l}
                       </div>
                       <div className="text-end">
-                        <p className="font-headline font-black text-[10px] text-white uppercase tracking-widest">{isAr ? level.a : level.e}</p>
-                        <p className="font-mono text-[8px] text-zinc-600 uppercase tracking-tighter mt-1">{isAr ? level.e : level.a}</p>
+                        <p className="font-headline font-black text-[10px] text-white uppercase tracking-widest">{t(("je_rubric_l" + level.l) as any)}</p>
+                        <p className="font-mono text-[8px] text-zinc-600 uppercase tracking-tighter mt-1">{t(("je_rubric_l" + level.l + "_desc") as any)}</p>
                       </div>
                     </div>
                   ))}
