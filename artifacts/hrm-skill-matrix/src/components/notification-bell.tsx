@@ -112,12 +112,10 @@ export function NotificationBell() {
                   key={n.id}
                   className={`px-3 py-2.5 border-b border-border/40 last:border-0 hover:bg-muted/30 transition-colors ${!n.is_read ? "bg-primary/5" : ""}`}
                 >
-                  <div className="flex items-start gap-2">
-                    {!n.is_read && (
+                  <div className="flex items-start gap-2">{!n.is_read && (
                       <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary shrink-0" />
                     )}
-                    <div className="flex-1 min-w-0">
-                      {n.workflow_id ? (
+                    <div className="flex-1 min-w-0">{n.workflow_id ? (
                         <Link
                           href={`/workflows/${n.workflow_id}`}
                           onClick={() => { markRead(n.id); setOpen(false); }}
@@ -128,11 +126,9 @@ export function NotificationBell() {
                       ) : (
                         <p className="text-xs leading-snug">{n.message}</p>
                       )}
-                      <p className="text-[10px] text-muted-foreground mt-0.5">
-                        {new Date(n.created_at).toLocaleString()}
+                      <p className="text-[10px] text-muted-foreground mt-0.5">{new Date(n.created_at).toLocaleString()}
                       </p>
-                    </div>
-                    {!n.is_read && (
+                    </div>{!n.is_read && (
                       <button
                         onClick={() => markRead(n.id)}
                         className="shrink-0 text-muted-foreground hover:text-primary mt-0.5"

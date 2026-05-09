@@ -88,7 +88,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     setIsMobileMenuOpen(false);
   }, [location]);
 
-  const roleNavKeys: Record<Role, string> = {
+  const roleNavKeys: Record<Role, string>= {
     super_admin: "role_super_admin",
     dept_head: "role_dept_head",
     hr_coordinator: "role_hr_coordinator",
@@ -151,12 +151,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
               >
                 <div className="px-3 py-4 border-b border-white/10 mb-4">
                   <DropdownMenuLabel className="text-[10px] font-headline font-black uppercase tracking-[0.4em] text-primary flex items-center gap-3">
-                    <div className="h-2 w-2 bg-primary animate-pulse" />
-                    {t("suite_title")}
+                    <div className="h-2 w-2 bg-primary animate-pulse" />{t("suite_title")}
                   </DropdownMenuLabel>
                 </div>
-                <div className="grid grid-cols-1 gap-2">
-                  {SUITE_APPS.map((app) => (
+                <div className="grid grid-cols-1 gap-2">{SUITE_APPS.map((app) => (
                     <DropdownMenuItem
                       key={app.id}
                       asChild
@@ -190,8 +188,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   ))}
                 </div>
                 <div className="mt-4 pt-4 border-t border-white/10 flex justify-center">
-                  <p className="text-[9px] text-secondary/20 font-mono tracking-[0.2em] uppercase">
-                    HRM_INDUSTRIAL_NODE_v2.0.4 // SECURED
+                  <p className="text-[9px] text-secondary/20 font-mono tracking-[0.2em] uppercase">HRM INDUSTRIAL NODE_v2.0.4 // SECURED
                   </p>
                 </div>
               </DropdownMenuContent>
@@ -200,7 +197,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <div className="flex items-center gap-3">
               <img src={`${import.meta.env.BASE_URL}logo.png`} alt="System Logo" className="h-8 w-auto object-contain" />
               <div className="flex flex-col">
-                <h1 className={`text-xl font-headline font-black text-white tracking-tighter uppercase leading-none ${isAr ? 'font-tajawal' : ''}`}>HRM_DEV</h1>
+                <h1 className={`text-xl font-headline font-black text-white tracking-tighter uppercase leading-none ${isAr ? 'font-tajawal' : ''}`}>HRM DEV</h1>
                 <span className="text-[8px] font-mono text-primary font-black tracking-[0.5em] mt-1 leading-none">WORKSTATION</span>
               </div>
             </div>
@@ -227,8 +224,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="flex items-center gap-4 shrink-0">
           {/* User Profile Info */}
           <div className="hidden lg:flex flex-col items-end me-4">
-            <span className="text-[11px] font-headline font-black text-white uppercase tracking-wider leading-none">
-              {user?.full_name}
+            <span className="text-[11px] font-headline font-black text-white uppercase tracking-wider leading-none">{user?.full_name}
             </span>
             <span className="text-[9px] font-mono text-primary/60 font-black tracking-widest mt-1 uppercase leading-none">
               {t(roleNavKeys[role] as any)}
@@ -265,8 +261,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               onClick={handleLogout}
               className="h-10 px-4 border border-rose-500/30 bg-rose-500/5 text-rose-500 hover:bg-rose-500 hover:text-white rounded-none font-headline font-black text-[10px] tracking-widest uppercase transition-all"
             >
-              <LogOut className="h-3 w-3 me-2" />
-              {t("nav_logout")}
+              <LogOut className="h-3 w-3 me-2" />{t("nav_logout")}
             </Button>
 
             {/* Mobile Menu Toggle */}
@@ -330,8 +325,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="max-w-[1600px] mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="flex items-center gap-6">
             <div className="flex flex-col">
-              <p className="text-[10px] font-headline font-black text-white tracking-[0.3em] uppercase">HRM_SYSTEM_OPERATIONAL</p>
-              <p className="text-[8px] font-mono text-secondary/30 mt-1">NODE: CLUSTER_01 // STATUS: ONLINE // UPTIME: 99.98%</p>
+              <p className="text-[10px] font-headline font-black text-white tracking-[0.3em] uppercase">HRM SYSTEM OPERATIONAL</p>
+              <p className="text-[8px] font-mono text-secondary/30 mt-1">NODE: CLUSTER 01 // STATUS: ONLINE // UPTIME: 99.98%</p>
             </div>
           </div>
 
@@ -342,11 +337,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
               rel="noopener noreferrer"
               className="group flex flex-col items-end"
             >
-              <span className="text-[9px] font-headline font-black text-secondary/40 group-hover:text-primary transition-colors tracking-widest uppercase">
-                {t("created_by")}
+              <span className="text-[9px] font-headline font-black text-secondary/40 group-hover:text-primary transition-colors tracking-widest uppercase">{t("created_by")}
               </span>
-              <span className="text-[11px] font-headline font-black text-white group-hover:text-primary transition-all mt-1">
-                YASSERIOUS_ENGINEERING
+              <span className="text-[11px] font-headline font-black text-white group-hover:text-primary transition-all mt-1">YASSERIOUS ENGINEERING
               </span>
             </a>
             

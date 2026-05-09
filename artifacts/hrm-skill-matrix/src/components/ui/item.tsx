@@ -67,8 +67,7 @@ function Item({
       data-size={size}
       className={cn(itemVariants({ variant, size, className }))}
       {...props}
-    />
-  )
+    />)
 }
 
 const itemMediaVariants = cva(

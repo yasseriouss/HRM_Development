@@ -72,10 +72,8 @@ export default function MyProfilePage() {
 
   if (isError || !profile) {
     return (
-      <div className="p-20 text-center border-2 border-zinc-900 bg-black/20 font-mono text-xs uppercase tracking-[0.3em] text-zinc-600">
-        {t("profile_no_record")}
-      </div>
-    );
+      <div className="p-20 text-center border-2 border-zinc-900 bg-black/20 font-mono text-xs uppercase tracking-[0.3em] text-zinc-600">{t("profile_no_record")}
+      </div>);
   }
 
   const emp = profile.employee;
@@ -91,39 +89,32 @@ export default function MyProfilePage() {
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
         <div className="relative z-10 flex flex-col md:flex-row items-center gap-10">
           <div className="relative group">
-            <div className="w-24 h-24 rounded-none bg-zinc-900 border border-zinc-800 flex items-center justify-center text-4xl font-headline font-black text-primary transition-transform group-hover:scale-105">
-              {emp.full_name?.charAt(0) ?? "?"}
+            <div className="w-24 h-24 rounded-none bg-zinc-900 border border-zinc-800 flex items-center justify-center text-4xl font-headline font-black text-primary transition-transform group-hover:scale-105">{emp.full_name?.charAt(0) ?? "?"}
             </div>
             <CornerMarks />
           </div>
           
           <div className="flex-1 space-y-4 text-center md:text-start">
             <div className="flex flex-col md:flex-row items-center gap-4">
-              <h2 className="text-5xl font-headline font-black tracking-tighter uppercase leading-none">{emp.full_name}</h2>
-              {classBadge(emp.current_class as EmployeeClass)}
+              <h2 className="text-5xl font-headline font-black tracking-tighter uppercase leading-none">{emp.full_name}</h2>{classBadge(emp.current_class as EmployeeClass)}
             </div>
             
-            <div className="flex flex-wrap justify-center md:justify-start gap-6 text-[10px] font-mono font-black text-zinc-500 uppercase tracking-widest">
-              {emp.job_title && (
+            <div className="flex flex-wrap justify-center md:justify-start gap-6 text-[10px] font-mono font-black text-zinc-500 uppercase tracking-widest">{emp.job_title && (
                 <span className="flex items-center gap-2 border-r border-zinc-800 pe-6 last:border-0">
-                  <Briefcase className="h-3.5 w-3.5 text-primary" />
-                  {emp.job_title}
+                  <Briefcase className="h-3.5 w-3.5 text-primary" />{emp.job_title}
                 </span>
               )}
               {emp.department?.name && (
                 <span className="flex items-center gap-2 border-r border-zinc-800 pe-6 last:border-0">
                   <Building2 className="h-3.5 w-3.5 text-primary" />
                   {emp.department.name}
-                </span>
-              )}
+                </span>)}
               {emp.joined_date && (
                 <span className="flex items-center gap-2 border-r border-zinc-800 pe-6 last:border-0">
-                  <CalendarDays className="h-3.5 w-3.5 text-primary" />
-                  {t("profile_joined")} {new Date(emp.joined_date).toLocaleDateString()}
+                  <CalendarDays className="h-3.5 w-3.5 text-primary" />{t("profile_joined")} {new Date(emp.joined_date).toLocaleDateString()}
                 </span>
               )}
-              <span className="bg-primary/10 text-primary px-3 py-1 border border-primary/20">
-                {t("label_node_id")}::{emp.employee_code || t("profile_unknown")}
+              <span className="bg-primary/10 text-primary px-3 py-1 border border-primary/20">{t("label_node_id")}::{emp.employee_code || t("profile_unknown")}
               </span>
             </div>
           </div>
@@ -143,26 +134,22 @@ export default function MyProfilePage() {
         <Card className="lg:col-span-4 bg-[#0D0D0D] border-zinc-800 rounded-none relative overflow-hidden group">
           <CardHeader className="border-b border-zinc-900 py-8 flex flex-row items-center justify-between">
             <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
-              <Target className="h-5 w-5 text-primary" />
-              {t("profile_skill_competencies")}
+              <Target className="h-5 w-5 text-primary" />{t("profile_skill_competencies")}
             </CardTitle>
             <Zap className="h-4 w-4 text-amber-500 animate-pulse" />
           </CardHeader>
           <CardContent className="p-8 space-y-6">
             {skillScores.length === 0 ? (
-              <div className="py-10 text-center font-mono text-[10px] text-zinc-600 uppercase tracking-widest italic">
-                {t("label_no_skill_sync")}
+              <div className="py-10 text-center font-mono text-[10px] text-zinc-600 uppercase tracking-widest italic">{t("label_no_skill_sync")}
               </div>
             ) : (
               <div className="grid gap-6">
                 {skillScores.map((sk) => (
                   <div key={sk.skill_id} className="group/skill">
                     <div className="flex justify-between items-end mb-2">
-                      <span className="font-headline font-black text-xs text-white uppercase tracking-tight group-hover/skill:text-primary transition-colors">
-                        {sk.skill_name}
+                      <span className="font-headline font-black text-xs text-white uppercase tracking-tight group-hover/skill:text-primary transition-colors">{sk.skill_name}
                       </span>
-                      <span className="font-mono text-[9px] text-zinc-500 uppercase tracking-widest">
-                        {sk.score != null ? t(scoreLabels[sk.score]) : t("score_uneval")}
+                      <span className="font-mono text-[9px] text-zinc-500 uppercase tracking-widest">{sk.score != null ? t(scoreLabels[sk.score]) : t("score_uneval")}
                       </span>
                     </div>
                     {sk.score != null ? scoreBar(sk.score) : (
@@ -183,24 +170,20 @@ export default function MyProfilePage() {
           <Card className="bg-[#0D0D0D] border-zinc-800 rounded-none relative group overflow-hidden">
             <CardHeader className="border-b border-zinc-900 py-8">
               <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
-                <History className="h-5 w-5 text-blue-500" />
-                {t("profile_eval_history")}
+                <History className="h-5 w-5 text-blue-500" />{t("profile_eval_history")}
               </CardTitle>
             </CardHeader>
             <CardContent className="p-0 divide-y divide-zinc-900">
               {historicalSummaries.length === 0 ? (
-                <div className="p-12 text-center font-mono text-[10px] text-zinc-600 uppercase tracking-widest italic">
-                   {t("label_empty_log_stream")}
+                <div className="p-12 text-center font-mono text-[10px] text-zinc-600 uppercase tracking-widest italic">{t("label_empty_log_stream")}
                 </div>
               ) : (
                 historicalSummaries.slice(0, 5).map((s) => (
                   <div key={s.id} className="p-6 hover:bg-zinc-800/50 transition-colors flex items-center justify-between group/eval">
                     <div className="space-y-1">
-                      <p className="font-headline font-black text-sm text-white uppercase tracking-tight group-hover/eval:text-primary transition-colors">
-                        {s.campaign_title ?? t("nav_campaigns")}
+                      <p className="font-headline font-black text-sm text-white uppercase tracking-tight group-hover/eval:text-primary transition-colors">{s.campaign_title ?? t("nav_campaigns")}
                       </p>
-                      <p className="font-mono text-[9px] text-zinc-600 uppercase tracking-widest">
-                        {t("profile_skills_assessed", { count: s.evaluated_skills_count })} // {new Date(s.updated_at || "").toLocaleDateString()}
+                      <p className="font-mono text-[9px] text-zinc-600 uppercase tracking-widest">{t("profile_skills_assessed", { count: s.evaluated_skills_count })} // {new Date(s.updated_at || "").toLocaleDateString()}
                       </p>
                     </div>
                     <div className="text-end flex flex-col items-end gap-2">
@@ -219,8 +202,7 @@ export default function MyProfilePage() {
               <div className="absolute inset-0 bg-emerald-500/5 pointer-events-none" />
               <CardHeader className="border-b border-zinc-900 py-8">
                 <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
-                  <GraduationCap className="h-5 w-5 text-emerald-500" />
-                  {t("profile_training_recs")}
+                  <GraduationCap className="h-5 w-5 text-emerald-500" />{t("profile_training_recs")}
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-8 space-y-4">
@@ -230,8 +212,7 @@ export default function MyProfilePage() {
                     className="flex items-center justify-between p-4 bg-black/40 border border-zinc-800 hover:border-emerald-500/50 transition-all group/rec"
                   >
                     <div className="flex-1">
-                      <p className="font-headline font-black text-xs text-white uppercase tracking-tight group-hover/rec:text-emerald-500 transition-colors">
-                        {rec.skill_name ?? rec.recommendation_type}
+                      <p className="font-headline font-black text-xs text-white uppercase tracking-tight group-hover/rec:text-emerald-500 transition-colors">{rec.skill_name ?? rec.recommendation_type}
                       </p>
                       {rec.notes && (
                         <p className="font-mono text-[9px] text-zinc-500 mt-1 uppercase leading-relaxed line-clamp-1 italic">{rec.notes}</p>
@@ -253,8 +234,7 @@ export default function MyProfilePage() {
           <div className="p-8 border-2 border-primary/20 bg-primary/3 relative overflow-hidden group">
              <ShieldCheck className="absolute -right-4 -top-4 h-24 w-24 text-primary opacity-5 group-hover:opacity-10 transition-all duration-700" />
              <p className="font-headline font-black text-[11px] text-primary uppercase tracking-[0.3em] mb-4">{t("label_security_status")}</p>
-             <p className="text-[10px] font-mono text-zinc-500 leading-relaxed uppercase tracking-tighter">
-               {t("label_profile_verified")}
+             <p className="text-[10px] font-mono text-zinc-500 leading-relaxed uppercase tracking-tighter">{t("label_profile_verified")}
              </p>
              <div className="mt-8 flex items-center justify-between text-[9px] font-mono font-black text-zinc-600 uppercase tracking-widest">
                  <span>{t("label_identity_sync")}</span>

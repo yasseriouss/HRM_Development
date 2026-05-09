@@ -61,7 +61,7 @@ function SidebarProvider({
   style,
   children,
   ...props
-}: React.ComponentProps<"div"> & {
+}: React.ComponentProps<"div">& {
   defaultOpen?: boolean
   open?: boolean
   onOpenChange?: (open: boolean) => void
@@ -470,8 +470,7 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<"li">) {
       data-sidebar="menu-item"
       className={cn("group/menu-item relative", className)}
       {...props}
-    />
-  )
+    />)
 }
 
 const sidebarMenuButtonVariants = cva(
@@ -481,7 +480,7 @@ const sidebarMenuButtonVariants = cva(
       variant: {
         default: "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
         outline:
-          "bg-background shadow-[0_0_0_1px_hsl(var(--sidebar-border))] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0_0_0_1px_hsl(var(--sidebar-accent))]",
+          "bg-background shadow-[0 0 0 1px_hsl(var(--sidebar-border))] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0 0 0 1px_hsl(var(--sidebar-accent))]",
       },
       size: {
         default: "h-8 text-sm",

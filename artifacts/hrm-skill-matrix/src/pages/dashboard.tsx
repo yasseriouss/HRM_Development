@@ -38,8 +38,7 @@ const CornerMarks = ({ color = "primary" }: { color?: string }) => (
     <div className={`absolute top-0 right-0 w-3 h-3 border-t border-r border-${color}/40`} />
     <div className={`absolute bottom-0 left-0 w-3 h-3 border-b border-l border-${color}/40`} />
     <div className={`absolute bottom-0 right-0 w-3 h-3 border-b border-r border-${color}/40`} />
-  </>
-);
+  </>);
 
 const SUITE_APPS = [
   {
@@ -140,12 +139,10 @@ export default function Dashboard() {
           <div className="space-y-4 text-center md:text-start">
             <div className="flex items-center justify-center md:justify-start gap-3">
               <div className="h-2 w-2 bg-primary animate-pulse" />
-              <span className={`font-headline font-black tracking-[0.5em] text-[10px] text-primary uppercase ${isAr ? 'font-tajawal' : ''}`}>
-                {t("dash_command_center")}
+              <span className={`font-headline font-black tracking-[0.5em] text-[10px] text-primary uppercase ${isAr ? 'font-tajawal' : ''}`}>{t("dash_command_center")}
               </span>
             </div>
-            <h2 className={`text-5xl md:text-7xl font-headline font-black tracking-tighter text-white uppercase leading-none ${isAr ? 'font-tajawal' : ''}`}>
-              {t("dashboard_title")}
+            <h2 className={`text-5xl md:text-7xl font-headline font-black tracking-tighter text-white uppercase leading-none ${isAr ? 'font-tajawal' : ''}`}>{t("dashboard_title")}
             </h2>
             <p className={`text-secondary/50 font-medium border-primary/20 ${isAr ? 'font-tajawal border-e-2 pe-4 ps-0' : 'border-s-2 ps-4'}`}>{t("dashboard_subtitle")}</p>
           </div>
@@ -169,8 +166,7 @@ export default function Dashboard() {
         initial="hidden"
         animate="show"
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-      >
-        {isMetricsLoading ? (
+      >{isMetricsLoading ? (
           Array(4).fill(0).map((_, i) => <Skeleton key={i} className="h-40 w-full bg-white/5 rounded-none" />)
         ) : metrics ? (
           <>
@@ -185,8 +181,7 @@ export default function Dashboard() {
                       <p className={`text-[10px] font-headline font-black tracking-widest text-secondary/40 uppercase ${isAr ? 'font-tajawal' : ''}`}>{t("dashboard_total_employees")}</p>
                       <h3 className="text-5xl font-mono font-black text-white mt-4 leading-none">{metrics.total_employees}</h3>
                       <div className={`flex items-center justify-center gap-2 mt-6 text-[10px] font-bold text-emerald-500 ${isAr ? 'font-tajawal' : ''}`}>
-                        <Activity className="h-3 w-3" />
-                        {metrics.active_employees} {t("dashboard_active")}
+                        <Activity className="h-3 w-3" />{metrics.active_employees} {t("dashboard_active")}
                       </div>
                     </div>
                   </div>
@@ -259,8 +254,7 @@ export default function Dashboard() {
       </motion.div>
 
       {/* Class Distribution Breakdown */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {metrics && [
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">{metrics && [
           { label: t("dashboard_class_a"), count: metrics.class_a_count, pct: metrics.class_a_percentage, color: "emerald", tier: t("dash_expert") },
           { label: t("dashboard_class_b"), count: metrics.class_b_count, pct: metrics.class_b_percentage, color: "amber", tier: t("dash_developing") },
           { label: t("dashboard_class_c"), count: metrics.class_c_count, pct: metrics.class_c_percentage, color: "rose", tier: t("dash_trainee") }
@@ -306,16 +300,14 @@ export default function Dashboard() {
             disabled={isAiLoading}
             variant="outline"
             className={`rounded-none border-primary/20 bg-primary/5 text-primary font-headline font-black text-[10px] tracking-widest uppercase hover:bg-primary/10 h-auto py-3 px-6 group btn-metallic ${isAr ? 'font-tajawal' : ''}`}
-          >
-            {aiInsights ? t("dash_regenerate") : t("dash_init_intelligence")}
+          >{aiInsights ? t("dash_regenerate") : t("dash_init_intelligence")}
           </Button>
         </div>
 
         {!aiInsights && !isAiLoading ? (
           <Card className="bg-[#0A0A0A] border-2 border-dashed border-white/5 rounded-none p-12 text-center group hover:border-primary/20 transition-colors">
             <Sparkles className="h-12 w-12 text-secondary/10 mx-auto mb-6 group-hover:text-primary/20 transition-colors" />
-            <p className={`text-secondary/40 font-mono text-xs uppercase tracking-widest max-w-md mx-auto leading-relaxed ${isAr ? 'font-tajawal' : ''}`}>
-              {t("dash_ai_idle")}
+            <p className={`text-secondary/40 font-mono text-xs uppercase tracking-widest max-w-md mx-auto leading-relaxed ${isAr ? 'font-tajawal' : ''}`}>{t("dash_ai_idle")}
             </p>
           </Card>
         ) : isAiLoading ? (
@@ -340,8 +332,7 @@ export default function Dashboard() {
                         insight.priority === 'High' ? 'bg-rose-500/10 text-rose-500 border-rose-500/20' :
                         insight.priority === 'Medium' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' :
                         'bg-blue-500/10 text-blue-500 border-blue-500/20'
-                      }`}>
-                        {t("dash_priority")}_{insight.priority.toUpperCase()}
+                      }`}>{t("dash_priority")} {insight.priority.toUpperCase()}
                       </Badge>
                       <div className="w-12 h-1 bg-primary/20 group-hover:bg-primary transition-colors" />
                     </div>
@@ -365,8 +356,7 @@ export default function Dashboard() {
         <Card className="lg:col-span-4 bg-[#0A0A0A] border border-white/10 rounded-none relative overflow-hidden">
           <CardHeader className="border-b border-white/5 py-8 flex items-center justify-center text-center">
             <CardTitle className={`font-headline text-xl font-black uppercase flex items-center gap-3 ${isAr ? 'font-tajawal' : ''}`}>
-              <Cpu className="h-5 w-5 text-primary" />
-              {t("dashboard_dept_performance")}
+              <Cpu className="h-5 w-5 text-primary" />{t("dashboard_dept_performance")}
             </CardTitle>
           </CardHeader>
           <CardContent className="p-0">
@@ -378,8 +368,7 @@ export default function Dashboard() {
                   <div key={dept.department_id} className="p-8 hover:bg-white/2 transition-colors flex items-center justify-between group">
                     <div className="space-y-1">
                       <p className={`font-headline font-black text-lg text-white group-hover:text-primary transition-colors ${isAr ? 'font-tajawal' : ''}`}>{dept.department_name}</p>
-                      <p className="text-[10px] font-mono text-secondary/30 uppercase tracking-widest">
-                        {dept.employee_count} {t("dash_operators")} // {t("dash_sec_level")}_3
+                      <p className="text-[10px] font-mono text-secondary/30 uppercase tracking-widest">{dept.employee_count} {t("dash_operators")} // {t("dash_sec_level")}_3
                       </p>
                     </div>
                     <div className="text-end">
@@ -392,8 +381,7 @@ export default function Dashboard() {
                 ))}
               </div>
             ) : (
-              <div className="p-12 text-center text-secondary/30 font-mono text-xs italic">
-                {t("dash_no_analytics")}
+              <div className="p-12 text-center text-secondary/30 font-mono text-xs italic">{t("dash_no_analytics")}
               </div>
             )}
           </CardContent>
@@ -404,30 +392,27 @@ export default function Dashboard() {
         <Card className="lg:col-span-3 bg-[#0A0A0A] border border-white/10 rounded-none relative">
           <CardHeader className="border-b border-white/5 py-8 flex items-center justify-center text-center">
             <CardTitle className={`font-headline text-xl font-black uppercase flex items-center gap-3 ${isAr ? 'font-tajawal' : ''}`}>
-              <Activity className="h-5 w-5 text-blue-500" />
-              {t("dashboard_recent_activity")}
+              <Activity className="h-5 w-5 text-blue-500" />{t("dashboard_recent_activity")}
             </CardTitle>
           </CardHeader>
           <CardContent className="p-8 space-y-6">
-             <div className="font-mono text-[11px] space-y-6">
-                {[
-                  { time: "09:42:11", msg: t("log_skill_matrix_update"), user: "SYS_ADMIN" },
-                  { time: "08:15:04", msg: t("log_campaign_launched"), user: "HR_COORD" },
+             <div className="font-mono text-[11px] space-y-6">{[
+                  { time: "09:42:11", msg: t("log_skill_matrix_update"), user: "SYS ADMIN" },
+                  { time: "08:15:04", msg: t("log_campaign_launched"), user: "HR COORD" },
                   { time: "07:55:59", msg: t("log_security_verified"), user: "SYSTEM" },
-                  { time: "05:12:33", msg: t("log_export_generated"), user: "DEPT_HEAD" }
+                  { time: "05:12:33", msg: t("log_export_generated"), user: "DEPT HEAD" }
                 ].map((log, i) => (
                   <div key={i} className="flex gap-4 group">
                     <span className="text-secondary/20 font-black whitespace-nowrap">[{log.time}]</span>
                     <div className="flex-1">
                       <p className={`text-white group-hover:text-primary transition-colors ${isAr ? 'font-tajawal' : ''}`}>{log.msg}</p>
-                      <span className="text-[9px] text-secondary/40 font-black tracking-widest uppercase mt-1 block">BY_IDENTITY :: {log.user}</span>
+                      <span className="text-[9px] text-secondary/40 font-black tracking-widest uppercase mt-1 block">BY IDENTITY :: {log.user}</span>
                     </div>
                   </div>
                 ))}
              </div>
              <div className="pt-8 border-t border-white/5">
-                <Button variant="ghost" className={`w-full rounded-none border border-white/10 text-[10px] font-headline font-black tracking-widest uppercase hover:bg-white/5 ${isAr ? 'font-tajawal' : ''}`}>
-                  {t("dash_view_all_logs")} <ChevronRight className="h-4 w-4 ms-2" />
+                <Button variant="ghost" className={`w-full rounded-none border border-white/10 text-[10px] font-headline font-black tracking-widest uppercase hover:bg-white/5 ${isAr ? 'font-tajawal' : ''}`}>{t("dash_view_all_logs")} <ChevronRight className="h-4 w-4 ms-2" />
                 </Button>
              </div>
           </CardContent>
@@ -440,17 +425,14 @@ export default function Dashboard() {
         <div className="flex items-center justify-between">
           <div>
             <h3 className={`font-headline text-3xl font-black text-white flex items-center gap-4 uppercase ${isAr ? 'font-tajawal' : ''}`}>
-              <LayoutGrid className="h-8 w-8 text-primary" />
-              {t("suite_title")}
+              <LayoutGrid className="h-8 w-8 text-primary" />{t("suite_title")}
             </h3>
             <p className={`text-secondary/50 font-medium text-sm mt-1 ${isAr ? 'font-tajawal' : ''}`}>{t("dash_suite_desc")}</p>
           </div>
-          <Badge className="bg-primary/10 text-primary border-primary/20 rounded-none px-4 py-2 font-mono text-[10px] font-black uppercase">
-            {t("dash_cluster_active")}
+          <Badge className="bg-primary/10 text-primary border-primary/20 rounded-none px-4 py-2 font-mono text-[10px] font-black uppercase">{t("dash_cluster_active")}
           </Badge>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-          {SUITE_APPS.map((app) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">{SUITE_APPS.map((app) => (
             <a key={app.id} href={app.href} className="block group">
               <Card className={`h-full border border-white/10 bg-[#121212] transition-all hover:border-primary/50 rounded-none relative`}>
                 <CardContent className="p-8 flex flex-col items-center justify-center text-center gap-6">

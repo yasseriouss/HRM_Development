@@ -65,8 +65,7 @@ const CornerMarks = ({ color = "primary" }: { color?: string }) => (
     <div className={`absolute top-0 right-0 w-2 h-2 border-t border-r border-${color}/40`} />
     <div className={`absolute bottom-0 left-0 w-2 h-2 border-b border-l border-${color}/40`} />
     <div className={`absolute bottom-0 right-0 w-2 h-2 border-b border-r border-${color}/40`} />
-  </>
-);
+  </>);
 
 // Types
 interface JobProfile {
@@ -162,8 +161,7 @@ export default function JobProfilesPage() {
     title_en: "",
     title_ar: "",
     department_id: "",
-    scores: {} as Record<string, number>
-  });
+    scores: {} as Record<string, number>});
 
   const currentTotal = useMemo(() => {
     let total = 0;
@@ -187,7 +185,7 @@ export default function JobProfilesPage() {
     return grade ? grade.g : "N/A";
   }, [currentTotal]);
 
-  const handleExportExcel = () => {
+  const handleExportExcel = () =>{
     exportToExcel({
       title: t("je_export_title"),
       filename: "Job_Evaluation_Profiles",
@@ -220,23 +218,21 @@ export default function JobProfilesPage() {
               <Activity className="h-4 w-4 text-primary animate-pulse" />
               <span className="font-headline font-black tracking-[0.4em] uppercase text-[9px] text-primary">{t("je_profiles_protocol")}</span>
             </div>
-            <h1 className="text-4xl lg:text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
-              {t("je_profiles_registry")}
+            <h1 className="text-4xl lg:text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">{t("je_profiles_registry")}
             </h1>
-            <p className="text-secondary/40 font-medium text-sm border-s-2 border-primary/20 ps-4">
-              {t("je_profiles_registry_desc")}
+            <p className="text-secondary/40 font-medium text-sm border-s-2 border-primary/20 ps-4">{t("je_profiles_registry_desc")}
             </p>
           </div>
           
           <div className="flex flex-wrap items-center gap-3">
             <Button variant="outline" className="rounded-none border-white/10 bg-white/5 hover:bg-white/10 font-headline font-black text-[10px] tracking-widest px-6 h-12 uppercase" onClick={handleExportPDF}>
-              <Download className="h-4 w-4 me-2" /> {t("je_profiles_pdf")}
+              <Download className="h-4 w-4 me-2" />{t("je_profiles_pdf")}
             </Button>
             <Button variant="outline" className="rounded-none border-white/10 bg-white/5 hover:bg-white/10 font-headline font-black text-[10px] tracking-widest px-6 h-12 uppercase" onClick={handleExportExcel}>
-              <FileDown className="h-4 w-4 me-2" /> {t("je_profiles_xlsx")}
+              <FileDown className="h-4 w-4 me-2" />{t("je_profiles_xlsx")}
             </Button>
             <Button className="rounded-none bg-primary hover:bg-primary/90 text-primary-foreground font-headline font-black tracking-widest text-[10px] px-10 h-12 uppercase shadow-[0_0_20px_rgba(212,175,55,0.3)]" onClick={() => { setEvalStep(0); setIsNewOpen(true); }}>
-              <Plus className="h-4 w-4 me-2" /> {t("je_profiles_init")}
+              <Plus className="h-4 w-4 me-2" />{t("je_profiles_init")}
             </Button>
           </div>
         </div>
@@ -244,8 +240,7 @@ export default function JobProfilesPage() {
       </motion.div>
 
       {/* Stats - Tactical Modules */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {[
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">{[
           { label: t('je_stat_total_nodes'), val: profiles.length, icon: Users, color: 'text-primary' },
           { label: t('je_stat_avg_equity'), val: Math.round(profiles.reduce((a, b) => a + b.points, 0) / profiles.length), icon: Target, color: 'text-emerald-500' },
           { label: t('je_stat_max_tier'), val: 'G7', icon: TrendingUp, color: 'text-amber-500' },
@@ -280,8 +275,7 @@ export default function JobProfilesPage() {
         <Card className="lg:col-span-2 bg-[#0A0A0A] border border-zinc-800 rounded-none relative overflow-hidden">
           <CardHeader className="border-b border-zinc-900 flex flex-row items-center justify-between p-8">
             <CardTitle className="font-headline text-xl font-black uppercase flex items-center gap-3">
-              <Shield className="h-5 w-5 text-primary" />
-              {t("je_profiles_stream")}
+              <Shield className="h-5 w-5 text-primary" />{t("je_profiles_stream")}
             </CardTitle>
             <div className="flex flex-wrap items-center gap-4">
               <div className="relative">
@@ -299,8 +293,7 @@ export default function JobProfilesPage() {
                   <SelectValue placeholder={t("field_department")} />
                 </SelectTrigger>
                 <SelectContent className="bg-[#0A0A0A] border-zinc-800 rounded-none">
-                  <SelectItem value="all" className="font-mono text-xs uppercase tracking-widest">{t("filter_all_depts")}</SelectItem>
-                  {Array.from(new Set(profiles.map(p => isAr ? p.department_ar : p.department))).map(d => (
+                  <SelectItem value="all" className="font-mono text-xs uppercase tracking-widest">{t("filter_all_depts")}</SelectItem>{Array.from(new Set(profiles.map(p => isAr ? p.department_ar : p.department))).map(d => (
                     <SelectItem key={d} value={d} className="font-mono text-xs uppercase tracking-widest">{d}</SelectItem>
                   ))}
                 </SelectContent>
@@ -332,8 +325,7 @@ export default function JobProfilesPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-zinc-900">
-                  <AnimatePresence mode="popLayout">
-                    {profiles.filter(p => {
+                  <AnimatePresence mode="popLayout">{profiles.filter(p => {
                       const matchesSearch = (isAr ? p.title_ar : p.title).toLowerCase().includes(search.toLowerCase()) || p.id.includes(search);
                       const matchesDept = deptFilter === "all" || (isAr ? p.department_ar : p.department) === deptFilter;
                       const matchesStatus = statusFilter === "all" || p.status === statusFilter;
@@ -352,8 +344,7 @@ export default function JobProfilesPage() {
                           <div className="text-[9px] font-mono text-zinc-600 tracking-[0.2em] mt-1 uppercase">ARCH::{p.id.padStart(4, '0')}</div>
                         </td>
                         <td className="px-8 py-5 whitespace-nowrap">
-                          <span className="px-3 py-1 bg-zinc-900 border border-zinc-800 text-zinc-400 font-mono text-[9px] uppercase tracking-widest">
-                            {isAr ? p.department_ar : p.department}
+                          <span className="px-3 py-1 bg-zinc-900 border border-zinc-800 text-zinc-400 font-mono text-[9px] uppercase tracking-widest">{isAr ? p.department_ar : p.department}
                           </span>
                         </td>
                         <td className="px-8 py-5 text-center whitespace-nowrap">
@@ -384,8 +375,7 @@ export default function JobProfilesPage() {
         <Card className="bg-[#0D0D0D] border border-zinc-800 rounded-none relative group overflow-hidden h-full">
           <CardHeader className="p-8 border-b border-zinc-900">
             <CardTitle className="font-headline text-lg font-black uppercase flex items-center gap-3">
-              <TrendingUp className="h-5 w-5 text-emerald-500" />
-              {t("je_equity_analytics")}
+              <TrendingUp className="h-5 w-5 text-emerald-500" />{t("je_equity_analytics")}
             </CardTitle>
           </CardHeader>
           <CardContent className="h-[400px] p-8">
@@ -398,7 +388,7 @@ export default function JobProfilesPage() {
                   cursor={{ strokeDasharray: '3 3' }} 
                   contentStyle={{ backgroundColor: '#0A0A0A', border: '1px solid #D4AF37', borderRadius: '0px', color: '#FFF', fontSize: '10px', fontFamily: 'monospace' }} 
                 />
-                <Scatter name="Jobs" data={profiles.map(p => ({ points: p.points, salary: p.salary_mid, name: isAr ? p.title_ar : p.title }))} fill="#D4AF37">
+                <Scatter name="Jobs" data={profiles.map(p =>({ points: p.points, salary: p.salary_mid, name: isAr ? p.title_ar : p.title }))} fill="#D4AF37">
                    {profiles.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={index % 2 === 0 ? 'var(--primary)' : '#444'} strokeWidth={2} />
                   ))}
@@ -406,7 +396,7 @@ export default function JobProfilesPage() {
               </ScatterChart>
             </ResponsiveContainer>
             <div className="mt-8 p-4 bg-white/[0.02] border border-zinc-900 font-mono text-[9px] text-zinc-600 leading-relaxed uppercase tracking-widest flex items-center justify-between">
-              <span>// SCATTER_PLOT_ACTIVE</span>
+              <span>// SCATTER PLOT ACTIVE</span>
               <Activity className="h-3 w-3 text-primary animate-pulse" />
             </div>
           </CardContent>
@@ -424,22 +414,20 @@ export default function JobProfilesPage() {
                 <DialogTitle className="font-headline font-black text-3xl text-white uppercase flex items-center gap-4">
                   <div className="p-3 bg-primary/10 border border-primary text-primary">
                     <Calculator className="h-8 w-8" />
-                  </div>
-                  {t("je_eval_engine")}
+                  </div>{t("je_eval_engine")}
                 </DialogTitle>
-                <DialogDescription className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest">
-                  "{t("je_profiles_protocol")} v4.2"
+                <DialogDescription className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest">"{t("je_profiles_protocol")} v4.2"
                 </DialogDescription>
               </div>
               
               <div className="flex items-center gap-8 p-6 bg-black border border-zinc-800 min-w-[320px]">
                 <div className="flex-1">
-                  <p className="text-[9px] font-headline font-black text-primary tracking-[0.2em] uppercase">{isAr ? 'Ù†Ù‚Ø§Ø· Ø§Ù„ØªÙ‚ÙŠÙŠÙ…' : 'PTS_ACCUMULATED'}</p>
+                  <p className="text-[9px] font-headline font-black text-primary tracking-[0.2em] uppercase">{isAr ? 'Ù†Ù‚Ø§Ø· Ø§Ù„ØªÙ‚ÙŠÙŠÙ…' : 'PTS ACCUMULATED'}</p>
                   <p className="text-4xl font-mono font-black text-white leading-none mt-2">{currentTotal}</p>
                 </div>
                 <div className="h-12 w-px bg-zinc-800" />
                 <div className="flex-1">
-                  <p className="text-[9px] font-headline font-black text-zinc-500 tracking-[0.2em] uppercase">{isAr ? 'Ø§Ù„Ø¯Ø±Ø¬Ø© Ø§Ù„Ù…Ø³ØªØ­Ù‚Ø©' : 'TIER_GRADE'}</p>
+                  <p className="text-[9px] font-headline font-black text-zinc-500 tracking-[0.2em] uppercase">{isAr ? 'Ø§Ù„Ø¯Ø±Ø¬Ø© Ø§Ù„Ù…Ø³ØªØ­Ù‚Ø©' : 'TIER GRADE'}</p>
                   <p className="text-4xl font-mono font-black text-primary leading-none mt-2">{currentGrade}</p>
                 </div>
               </div>
@@ -460,10 +448,10 @@ export default function JobProfilesPage() {
                     <div className="space-y-4">
                       <label className="text-[10px] font-headline font-black uppercase tracking-[0.3em] text-primary">{t("je_profile_label")} (EN)</label>
                       <Input 
-                        placeholder="e.g. SENIOR_SYSTEM_OPERATIVE" 
+                        placeholder="e.g. SENIOR SYSTEM OPERATIVE" 
                         className="bg-white/5 border-zinc-800 h-14 text-xl font-black rounded-none border-s-4 border-s-primary focus:border-primary/50 text-white transition-all uppercase placeholder:text-zinc-800" 
                         value={newProfile.title_en}
-                        onChange={(e) => setNewProfile({ ...newProfile, title_en: e.target.value })}
+                        onChange={(e) =>setNewProfile({ ...newProfile, title_en: e.target.value })}
                       />
                     </div>
                     <div className="space-y-4">
@@ -472,20 +460,20 @@ export default function JobProfilesPage() {
                         placeholder="Ø§Ù„Ù…Ø³Ù…Ù‰ Ø§Ù„Ø¹Ø±Ø¨ÙŠ" 
                         className="text-end bg-white/5 border-zinc-800 h-14 text-xl font-black rounded-none border-e-4 border-e-primary focus:border-primary/50 text-white transition-all" 
                         value={newProfile.title_ar}
-                        onChange={(e) => setNewProfile({ ...newProfile, title_ar: e.target.value })}
+                        onChange={(e) =>setNewProfile({ ...newProfile, title_ar: e.target.value })}
                       />
                     </div>
                     <div className="space-y-4 md:col-span-2">
                       <label className="text-[10px] font-headline font-black uppercase tracking-[0.3em] text-zinc-600">{t("je_deployment_domain")}</label>
-                      <Select value={newProfile.department_id} onValueChange={(val) => setNewProfile({ ...newProfile, department_id: val })}>
+                      <Select value={newProfile.department_id} onValueChange={(val) =>setNewProfile({ ...newProfile, department_id: val })}>
                         <SelectTrigger className="bg-white/5 border-zinc-800 h-14 rounded-none text-white font-bold uppercase text-[10px] tracking-widest">
                           <SelectValue placeholder={t("je_deployment_domain")} />
                         </SelectTrigger>
                         <SelectContent className="bg-[#0A0A0A] border-zinc-800 rounded-none text-white font-headline font-black text-[9px] uppercase tracking-widest">
-                          <SelectItem value="it" className="focus:bg-primary/20">CORE_IT_INFRA</SelectItem>
-                          <SelectItem value="hr" className="focus:bg-primary/20">HUMAN_CAPITAL</SelectItem>
-                          <SelectItem value="fin" className="focus:bg-primary/20">FISCAL_OPS</SelectItem>
-                          <SelectItem value="ops" className="focus:bg-primary/20">PRODUCTION_LINE</SelectItem>
+                          <SelectItem value="it" className="focus:bg-primary/20">CORE IT INFRA</SelectItem>
+                          <SelectItem value="hr" className="focus:bg-primary/20">HUMAN CAPITAL</SelectItem>
+                          <SelectItem value="fin" className="focus:bg-primary/20">FISCAL OPS</SelectItem>
+                          <SelectItem value="ops" className="focus:bg-primary/20">PRODUCTION LINE</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -497,9 +485,8 @@ export default function JobProfilesPage() {
                         <Info className="h-6 w-6 text-primary" />
                       </div>
                       <div>
-                        <h4 className="font-headline font-black text-sm uppercase tracking-[0.2em] text-white">EVALUATION_PROTOCOL_NOTICE</h4>
-                        <p className="text-[11px] text-zinc-500 mt-2 leading-relaxed font-sans font-medium">
-                          {t("je_eval_notice_desc")}
+                        <h4 className="font-headline font-black text-sm uppercase tracking-[0.2em] text-white">EVALUATION PROTOCOL NOTICE</h4>
+                        <p className="text-[11px] text-zinc-500 mt-2 leading-relaxed font-sans font-medium">{t("je_eval_notice_desc")}
                         </p>
                       </div>
                     </div>
@@ -518,15 +505,13 @@ export default function JobProfilesPage() {
                     <div key={cat} className="space-y-8">
                       <div className="flex items-center gap-6">
                         <div className="h-2 w-2 bg-primary rotate-45" />
-                        <h3 className="font-headline text-2xl font-black uppercase tracking-[0.3em] text-primary whitespace-nowrap">
-                          {cat}_DOMAIN
+                        <h3 className="font-headline text-2xl font-black uppercase tracking-[0.3em] text-primary whitespace-nowrap">{cat}_DOMAIN
                         </h3>
                         <div className="flex-1 h-px bg-zinc-900" />
                         <span className="font-mono text-[9px] text-zinc-700 tracking-widest uppercase">{catIdx + 1}/4</span>
                       </div>
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {SUB_FACTORS.filter(sf => sf.category === cat).map((sf, sfIdx) => (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">{SUB_FACTORS.filter(sf => sf.category === cat).map((sf, sfIdx) => (
                           <motion.div 
                             key={sf.id}
                             initial={{ opacity: 0, y: 10 }}
@@ -547,7 +532,7 @@ export default function JobProfilesPage() {
                               {[1, 2, 3, 4, 5].map(lv => (
                                 <button 
                                   key={lv}
-                                  onClick={() => setNewProfile({ ...newProfile, scores: { ...newProfile.scores, [sf.id]: lv } })}
+                                  onClick={() =>setNewProfile({ ...newProfile, scores: { ...newProfile.scores, [sf.id]: lv } })}
                                   className={`flex-1 h-12 border font-black font-mono text-[11px] transition-all relative overflow-hidden active:scale-95 ${
                                     newProfile.scores[sf.id] === lv 
                                     ? 'bg-primary border-primary text-black' 
@@ -572,18 +557,18 @@ export default function JobProfilesPage() {
 
           <DialogFooter className="p-8 border-t border-zinc-900 bg-white/[0.02] relative z-10">
             <div className="flex items-center justify-between w-full">
-              <Button variant="ghost" onClick={() => setIsNewOpen(false)} className="rounded-none border border-zinc-800 hover:bg-rose-500/10 hover:text-rose-500 font-headline font-black text-[10px] tracking-widest px-8 uppercase h-12">
+              <Button variant="ghost" onClick={() =>setIsNewOpen(false)} className="rounded-none border border-zinc-800 hover:bg-rose-500/10 hover:text-rose-500 font-headline font-black text-[10px] tracking-widest px-8 uppercase h-12">
                 {t("je_terminate_init")}
               </Button>
               <div className="flex items-center gap-4">
                 {evalStep === 1 && (
-                  <Button variant="outline" onClick={() => setEvalStep(0)} className="rounded-none border-zinc-800 bg-white/5 hover:bg-white/10 font-headline font-black text-[10px] tracking-widest px-8 uppercase h-12">
+                  <Button variant="outline" onClick={() =>setEvalStep(0)} className="rounded-none border-zinc-800 bg-white/5 hover:bg-white/10 font-headline font-black text-[10px] tracking-widest px-8 uppercase h-12">
                     {t("je_back_to_id")}
                   </Button>
                 )}
                 {evalStep === 0 ? (
                   <Button 
-                    onClick={() => setEvalStep(1)} 
+                    onClick={() =>setEvalStep(1)} 
                     disabled={!newProfile.title_en}
                     className="rounded-none bg-white text-black hover:bg-white/90 font-headline font-black text-[10px] tracking-widest px-12 uppercase h-12"
                   >
@@ -593,12 +578,12 @@ export default function JobProfilesPage() {
                   <Button 
                     disabled={Object.keys(newProfile.scores).length < SUB_FACTORS.length}
                     className="rounded-none bg-primary text-black hover:bg-primary/90 font-headline font-black text-[10px] tracking-widest px-16 h-12 uppercase shadow-[0_0_30px_rgba(212,175,55,0.4)]"
-                    onClick={() => {
+                    onClick={() =>{
                       const newP: JobProfile = {
                         id: (profiles.length + 1).toString(),
                         title: newProfile.title_en,
                         title_ar: newProfile.title_ar,
-                        department: "DOMAIN_DEPLOYED",
+                        department: "DOMAIN DEPLOYED",
                         department_ar: "Ù‚Ø³Ù… Ø¬Ø¯ÙŠØ¯",
                         points: currentTotal,
                         grade: currentGrade,
@@ -608,10 +593,10 @@ export default function JobProfilesPage() {
                       };
                       setProfiles([newP, ...profiles]);
                       setIsNewOpen(false);
-                      toast({ title: "LOG_COMMITTED", description: "Valuation protocol successfully written to registry." });
+                      toast({ title: "LOG COMMITTED", description: "Valuation protocol successfully written to registry." });
                     }}
                   >
-                    <CheckCircle2 className="h-4 w-4 me-2" /> {t("je_commit_registry")}
+                    <CheckCircle2 className="h-4 w-4 me-2" />{t("je_commit_registry")}
                   </Button>
                 )}
               </div>

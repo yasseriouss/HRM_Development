@@ -45,7 +45,7 @@ const CornerMarks = ({ color = "primary" }: { color?: string }) => (
 );
 
 function statusBadge(status: string, t: (k: any) => string) {
-  const map: Record<string, { bg: string; text: string; key: string }> = {
+  const map: Record<string, { bg: string; text: string; key: string }>= {
     Pending: { bg: "bg-amber-500/10", text: "text-amber-500", key: "training_pending" },
     "In Progress": { bg: "bg-sky-500/10", text: "text-sky-500", key: "training_in_progress" },
     Completed: { bg: "bg-emerald-500/10", text: "text-emerald-500", key: "training_completed" },
@@ -55,11 +55,10 @@ function statusBadge(status: string, t: (k: any) => string) {
   return (
     <Badge variant="outline" className={`rounded-none font-mono text-[9px] font-black border-current/20 px-2 py-0.5 uppercase tracking-widest whitespace-nowrap ${config.bg} ${config.text}`}>
       {t(config.key)}
-    </Badge>
-  );
+    </Badge>);
 }
 
-const TRAINING_TYPE_KEYS: Record<string, string> = {
+const TRAINING_TYPE_KEYS: Record<string, string>= {
   Immediate: "training_type_immediate",
   "Short-term": "training_type_short",
   "Long-term": "training_type_long",
@@ -75,10 +74,8 @@ function typeBadge(type: string, t: (k: any) => string) {
   };
   const config = map[type] ?? map.Immediate;
   return (
-    <Badge variant="outline" className={`rounded-none font-mono text-[9px] font-black border-current/20 px-2 py-0.5 uppercase tracking-widest whitespace-nowrap ${config.bg} ${config.text}`}>
-      {t((TRAINING_TYPE_KEYS[type] ?? "training_type_short") as any)}
-    </Badge>
-  );
+    <Badge variant="outline" className={`rounded-none font-mono text-[9px] font-black border-current/20 px-2 py-0.5 uppercase tracking-widest whitespace-nowrap ${config.bg} ${config.text}`}>{t((TRAINING_TYPE_KEYS[type] ?? "training_type_short") as any)}
+    </Badge>);
 }
 
 type StatusOption = { value: string; apiValue?: ListTrainingRecommendationsStatus };
@@ -117,7 +114,7 @@ export default function TrainingPage() {
     { value: "Cancelled", apiValue: "Cancelled" },
   ];
 
-  const STATUS_LABELS: Record<string, string> = {
+  const STATUS_LABELS: Record<string, string>= {
     all: t("all_statuses"),
     Pending: t("training_pending"),
     "In Progress": t("training_in_progress"),
@@ -252,15 +249,14 @@ export default function TrainingPage() {
               <Activity className="h-4 w-4 text-primary animate-pulse" />
               <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">{t("training_protocol_label")}</span>
             </div>
-            <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
-              {t("training_title")}
+            <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">{t("training_title")}
             </h2>
             <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4">{t("training_subtitle")}</p>
           </div>
           
           {isAdmin && (
             <Button className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto hover:bg-primary/90" onClick={() => { setCreateForm(emptyCreateForm()); setShowCreate(true); }}>
-              <Plus className="h-4 w-4 me-2" /> {t("training_new")}
+              <Plus className="h-4 w-4 me-2" />{t("training_new")}
             </Button>
           )}
         </div>
@@ -268,8 +264,7 @@ export default function TrainingPage() {
       </div>
 
       {/* Metrics Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {[
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">{[
           { label: t("training_pending"), value: pending, icon: Target, color: "text-amber-500" },
           { label: t("training_in_progress"), value: inProgress, icon: Cpu, color: "text-sky-500" },
           { label: t("training_completed"), value: completed, icon: Shield, color: "text-emerald-500" },
@@ -299,10 +294,8 @@ export default function TrainingPage() {
                 <SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
                   <SelectValue placeholder={t("filter_by_status")} />
                 </SelectTrigger>
-                <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">
-                  {STATUS_OPTIONS.map((opt) => (
-                    <SelectItem key={opt.value} value={opt.value} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">
-                      {STATUS_LABELS[opt.value]}
+                <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">{STATUS_OPTIONS.map((opt) => (
+                    <SelectItem key={opt.value} value={opt.value} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{STATUS_LABELS[opt.value]}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -315,8 +308,7 @@ export default function TrainingPage() {
       {/* Data Table */}
       <div className="relative border border-white/10 bg-[#0A0A0A] overflow-hidden">
         {isLoading ? (
-          <div className="p-8 space-y-4">
-             {Array.from({ length: 6 }).map((_, i) => (
+          <div className="p-8 space-y-4">{Array.from({ length: 6 }).map((_, i) => (
                 <Skeleton key={i} className="h-16 w-full bg-white/5 rounded-none" />
              ))}
           </div>
@@ -344,19 +336,17 @@ export default function TrainingPage() {
                   <tr key={r.id} className="group hover:bg-white/2 transition-colors">
                     <td className="px-8 py-6 whitespace-nowrap">
                       <Link href={`/employees/${r.employee_id}`} className="group/link">
-                        <p className="font-headline font-black text-white text-base tracking-tight group-hover/link:text-primary transition-colors uppercase whitespace-nowrap">
-                          {r.employee_name ?? "—"}
+                        <p className="font-headline font-black text-white text-base tracking-tight group-hover/link:text-primary transition-colors uppercase whitespace-nowrap">{r.employee_name ?? "—"}
                         </p>
                         <div className="flex items-center gap-1 text-[9px] font-mono text-secondary/20 mt-1 uppercase whitespace-nowrap">
-                          <ExternalLink className="h-3 w-3" /> {t("label_node_profile")}
+                          <ExternalLink className="h-3 w-3" />{t("label_node_profile")}
                         </div>
                       </Link>
                     </td>
                     <td className="px-8 py-6 font-mono text-[11px] text-primary/60 whitespace-nowrap">{r.skill_name ?? "—"}</td>
                     <td className="px-8 py-6 whitespace-nowrap">{typeBadge(r.recommendation_type, t)}</td>
                     <td className="px-8 py-6 whitespace-nowrap">{statusBadge(r.status, t)}</td>
-                    <td className="px-8 py-6 font-mono text-[11px] text-secondary/40 whitespace-nowrap">
-                      {r.target_date ? new Date(r.target_date).toLocaleDateString() : t("common_no_data")}
+                    <td className="px-8 py-6 font-mono text-[11px] text-secondary/40 whitespace-nowrap">{r.target_date ? new Date(r.target_date).toLocaleDateString() : t("common_no_data")}
                     </td>
                     <td className="px-8 py-6">
                        <p className="text-[11px] font-medium text-secondary/40 max-w-xs truncate italic">{r.notes ?? "—"}</p>
@@ -367,7 +357,7 @@ export default function TrainingPage() {
                           <Button size="icon" variant="ghost" className="h-10 w-10 rounded-none border border-transparent hover:border-primary/30 hover:bg-primary/5 text-secondary/30 hover:text-primary" onClick={() => openEdit(r)}>
                             <Pencil className="h-4 w-4" />
                           </Button>
-                          <Button size="icon" variant="ghost" className="h-10 w-10 rounded-none border border-transparent hover:border-rose-500/30 hover:bg-rose-500/5 text-secondary/30 hover:text-rose-500" onClick={() => setDeleteTarget({ id: r.id, name: r.employee_name ?? r.id })}>
+                          <Button size="icon" variant="ghost" className="h-10 w-10 rounded-none border border-transparent hover:border-rose-500/30 hover:bg-rose-500/5 text-secondary/30 hover:text-rose-500" onClick={() =>setDeleteTarget({ id: r.id, name: r.employee_name ?? r.id })}>
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>
@@ -387,8 +377,7 @@ export default function TrainingPage() {
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5" />
           <div className="relative z-10">
             <div className="p-8 border-b border-white/10 bg-white/5">
-              <h2 className="font-headline font-black text-2xl text-white uppercase tracking-tighter">
-                {t("training_create_title")}
+              <h2 className="font-headline font-black text-2xl text-white uppercase tracking-tighter">{t("training_create_title")}
               </h2>
               <p className="text-[10px] font-mono text-primary tracking-[0.3em] mt-2 uppercase">{t("label_protocol_sequence")}</p>
             </div>
@@ -396,7 +385,7 @@ export default function TrainingPage() {
             <div className="p-10 grid grid-cols-2 gap-8">
               <div className="col-span-2 space-y-3">
                 <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_employee")} *</Label>
-                <Select value={createForm.employee_id || "none"} onValueChange={(v) => setCreateForm({ ...createForm, employee_id: v === "none" ? "" : v })}>
+                <Select value={createForm.employee_id || "none"} onValueChange={(v) =>setCreateForm({ ...createForm, employee_id: v === "none" ? "" : v })}>
                   <SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
                     <SelectValue placeholder={t("select_none")} />
                   </SelectTrigger>
@@ -410,7 +399,7 @@ export default function TrainingPage() {
               </div>
               <div className="space-y-3">
                 <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_type")} *</Label>
-                <Select value={createForm.recommendation_type} onValueChange={(v) => setCreateForm({ ...createForm, recommendation_type: v as TrainingType })}>
+                <Select value={createForm.recommendation_type} onValueChange={(v) =>setCreateForm({ ...createForm, recommendation_type: v as TrainingType })}>
                   <SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
                     <SelectValue />
                   </SelectTrigger>
@@ -421,7 +410,7 @@ export default function TrainingPage() {
               </div>
               <div className="space-y-3">
                 <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_related_skill")}</Label>
-                <Select value={createForm.skill_id || "none"} onValueChange={(v) => setCreateForm({ ...createForm, skill_id: v === "none" ? "" : v })}>
+                <Select value={createForm.skill_id || "none"} onValueChange={(v) =>setCreateForm({ ...createForm, skill_id: v === "none" ? "" : v })}>
                   <SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
                     <SelectValue placeholder={t("optional")} />
                   </SelectTrigger>
@@ -433,7 +422,7 @@ export default function TrainingPage() {
               </div>
               <div className="space-y-3">
                 <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("training_col_target_date")}</Label>
-                <Input type="date" value={createForm.target_date} onChange={(e) => setCreateForm({ ...createForm, target_date: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white uppercase" />
+                <Input type="date" value={createForm.target_date} onChange={(e) =>setCreateForm({ ...createForm, target_date: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white uppercase" />
               </div>
               <div className="col-span-2 space-y-3">
                 <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_notes")}</Label>
@@ -442,9 +431,8 @@ export default function TrainingPage() {
             </div>
             
             <div className="p-8 border-t border-white/10 bg-white/5 flex justify-end gap-4">
-              <Button variant="ghost" className="rounded-none font-headline font-black text-[10px] tracking-widest uppercase text-white hover:bg-white/5" onClick={() => setShowCreate(false)}>{t("common_cancel")}</Button>
-              <Button onClick={handleCreate} disabled={saving} className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase px-10 py-6 h-auto">
-                {saving ? t("action_synchronizing") : t("training_new")}
+              <Button variant="ghost" className="rounded-none font-headline font-black text-[10px] tracking-widest uppercase text-white hover:bg-white/5" onClick={() =>setShowCreate(false)}>{t("common_cancel")}</Button>
+              <Button onClick={handleCreate} disabled={saving} className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase px-10 py-6 h-auto">{saving ? t("action_synchronizing") : t("training_new")}
               </Button>
             </div>
           </div>
@@ -482,7 +470,7 @@ export default function TrainingPage() {
               </div>
               <div className="space-y-3">
                 <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("training_col_target_date")}</Label>
-                <Input type="date" value={editForm.target_date} onChange={(e) => setEditForm({ ...editForm, target_date: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white uppercase" />
+                <Input type="date" value={editForm.target_date} onChange={(e) =>setEditForm({ ...editForm, target_date: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white uppercase" />
               </div>
               <div className="space-y-3">
                 <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_notes")}</Label>
@@ -491,9 +479,8 @@ export default function TrainingPage() {
             </div>
             
             <div className="p-8 border-t border-white/10 bg-white/5 flex justify-end gap-4">
-              <Button variant="ghost" className="rounded-none font-headline font-black text-[10px] tracking-widest uppercase text-white hover:bg-white/5" onClick={() => setEditTarget(null)}>{t("common_cancel")}</Button>
-              <Button size="sm" onClick={handleEdit} disabled={saving} className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase px-10 py-6 h-auto">
-                {saving ? t("action_synchronizing") : t("action_apply_config")}
+              <Button variant="ghost" className="rounded-none font-headline font-black text-[10px] tracking-widest uppercase text-white hover:bg-white/5" onClick={() =>setEditTarget(null)}>{t("common_cancel")}</Button>
+              <Button size="sm" onClick={handleEdit} disabled={saving} className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase px-10 py-6 h-auto">{saving ? t("action_synchronizing") : t("action_apply_config")}
               </Button>
             </div>
           </div>
@@ -509,8 +496,7 @@ export default function TrainingPage() {
           </AlertDialogHeader>
           <AlertDialogFooter className="mt-8">
             <AlertDialogCancel className="rounded-none border-white/10 bg-white/5 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-white/10 h-auto py-4 px-8">{t("common_cancel")}</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete} disabled={deleting} className="rounded-none bg-rose-600 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-rose-700 px-8 h-auto py-4">
-              {deleting ? t("action_purging") : t("action_confirm_delete")}
+            <AlertDialogAction onClick={handleDelete} disabled={deleting} className="rounded-none bg-rose-600 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-rose-700 px-8 h-auto py-4">{deleting ? t("action_purging") : t("action_confirm_delete")}
             </AlertDialogAction>
           </AlertDialogFooter>
           <CornerMarks color="rose" />

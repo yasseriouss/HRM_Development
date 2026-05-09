@@ -1,6 +1,6 @@
 import type { UserWithDepartment } from "@hrm-development/api-client-react";
 
-export const getAuthToken = () => localStorage.getItem("hrm_user_token");
+export const getAuthToken = () =>localStorage.getItem("hrm_user_token");
 export const setAuthToken = (token: string) => localStorage.setItem("hrm_user_token", token);
 export const clearAuthToken = () => localStorage.removeItem("hrm_user_token");
 

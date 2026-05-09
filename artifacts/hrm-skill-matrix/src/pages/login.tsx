@@ -19,8 +19,7 @@ const CornerMarks = ({ color = "primary" }: { color?: string }) => (
     <div className={`absolute top-0 right-0 w-3 h-3 border-t border-r border-${color}/40`} />
     <div className={`absolute bottom-0 left-0 w-3 h-3 border-b border-l border-${color}/40`} />
     <div className={`absolute bottom-0 right-0 w-3 h-3 border-b border-r border-${color}/40`} />
-  </>
-);
+  </>);
 
 export default function Login() {
   const [, setLocation] = useLocation();
@@ -98,8 +97,7 @@ export default function Login() {
           </div>
           
           <div className="space-y-2">
-            <h1 className="text-6xl font-headline font-black text-white tracking-tighter uppercase leading-none">
-               {t("login_brand")}
+            <h1 className="text-6xl font-headline font-black text-white tracking-tighter uppercase leading-none">{t("login_brand")}
             </h1>
             <div className="flex items-center justify-center gap-4">
                <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-primary/20" />
@@ -116,7 +114,7 @@ export default function Login() {
           <CardHeader className="relative p-12 pb-6 text-center">
             <CardTitle className="font-headline font-black text-3xl text-white uppercase tracking-tighter leading-none">{t("login_sign_in")}</CardTitle>
             <CardDescription className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest mt-4 flex items-center justify-center gap-2">
-              <Lock className="h-3 w-3" /> {t("login_sign_in_desc")}
+              <Lock className="h-3 w-3" />{t("login_sign_in_desc")}
             </CardDescription>
           </CardHeader>
           
@@ -124,7 +122,7 @@ export default function Login() {
             <CardContent className="p-12 space-y-10">
               <div className="space-y-4">
                 <Label className="font-headline font-black text-[10px] text-zinc-600 tracking-[0.3em] uppercase flex items-center gap-3">
-                  <User className="h-3.5 w-3.5 text-primary" /> {t("login_email")}
+                  <User className="h-3.5 w-3.5 text-primary" />{t("login_email")}
                 </Label>
                 <div className="relative group">
                   <Input
@@ -142,7 +140,7 @@ export default function Login() {
               
               <div className="space-y-4">
                 <Label className="font-headline font-black text-[10px] text-zinc-600 tracking-[0.3em] uppercase flex items-center gap-3">
-                  <Lock className="h-3.5 w-3.5 text-primary" /> {t("login_password")}
+                  <Lock className="h-3.5 w-3.5 text-primary" />{t("login_password")}
                 </Label>
                 <div className="relative group">
                   <Input
@@ -168,11 +166,10 @@ export default function Login() {
               >
                 {loginMutation.isPending ? (
                   <span className="flex items-center gap-3 animate-pulse">
-                    <Zap className="h-4 w-4 animate-spin" /> {t("action_authorizing_stream")}
+                    <Zap className="h-4 w-4 animate-spin" />{t("action_authorizing_stream")}
                   </span>
                 ) : (
-                  <span className="flex items-center gap-3">
-                    {t("action_execute_login")} <Zap className="h-4 w-4 group-hover:text-amber-300 transition-colors" />
+                  <span className="flex items-center gap-3">{t("action_execute_login")} <Zap className="h-4 w-4 group-hover:text-amber-300 transition-colors" />
                   </span>
                 )}
               </Button>
@@ -188,11 +185,11 @@ export default function Login() {
                   <AlertCircle className="absolute -right-2 -top-2 h-6 w-6 text-primary opacity-20" />
                   <div className="space-y-3 font-mono text-[9px] text-zinc-600 uppercase tracking-tighter">
                     <div className="flex flex-col sm:flex-row justify-between gap-2 border-b border-zinc-900 pb-3">
-                      <span className="font-black text-primary">ADMIN_NODE:</span>
+                      <span className="font-black text-primary">ADMIN NODE:</span>
                       <span className="text-zinc-400">super_admin@hrm-dev.com // admin123</span>
                     </div>
                     <div className="flex flex-col sm:flex-row justify-between gap-2">
-                      <span className="font-black text-primary">COORD_NODE:</span>
+                      <span className="font-black text-primary">COORD NODE:</span>
                       <span className="text-zinc-400">hr@hrm-dev.com // hr123</span>
                     </div>
                   </div>

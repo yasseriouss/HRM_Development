@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 
 type Role = "super_admin" | "dept_head" | "hr_coordinator" | "employee";
 
-const roleBadgeClass: Record<Role, string> = {
+const roleBadgeClass: Record<Role, string>= {
   super_admin: "bg-amber-500/20 text-amber-500 border-amber-500/30",
   dept_head: "bg-blue-500/20 text-blue-500 border-blue-500/30",
   hr_coordinator: "bg-emerald-500/20 text-emerald-500 border-emerald-500/30",
@@ -86,11 +86,9 @@ export default function SettingsPage() {
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <h2 className="text-4xl font-black tracking-tighter uppercase italic text-white flex items-center gap-3">
-              <Cpu className="h-8 w-8 text-amber-500" />
-              {t("settings_title")}
+              <Cpu className="h-8 w-8 text-amber-500" />{t("settings_title")}
             </h2>
-            <p className="text-zinc-500 font-mono text-sm mt-1 uppercase tracking-widest">
-              SYSTEM_CONFIG // WORKSTATION_PARAMETERS
+            <p className="text-zinc-500 font-mono text-sm mt-1 uppercase tracking-widest">SYSTEM CONFIG // WORKSTATION PARAMETERS
             </p>
           </div>
         </div>
@@ -104,14 +102,12 @@ export default function SettingsPage() {
           </div>
           <CardHeader className="border-b border-zinc-900 pb-4">
             <CardTitle className="text-sm font-mono uppercase tracking-widest text-zinc-400 flex items-center gap-2">
-              <TerminalIcon className="h-4 w-4 text-amber-500" />
-              {t("settings_account")}
+              <TerminalIcon className="h-4 w-4 text-amber-500" />{t("settings_account")}
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-6 space-y-6">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-zinc-900 border border-zinc-800 flex items-center justify-center text-3xl font-black text-white shadow-[0_0_15px_rgba(255,255,255,0.05)]">
-                {user?.full_name?.charAt(0) ?? "?"}
+              <div className="w-16 h-16 bg-zinc-900 border border-zinc-800 flex items-center justify-center text-3xl font-black text-white shadow-[0_0_15px_rgba(255,255,255,0.05)]">{user?.full_name?.charAt(0) ?? "?"}
               </div>
               <div>
                 <p className="font-bold text-xl text-white tracking-tight">{user?.full_name}</p>
@@ -138,8 +134,7 @@ export default function SettingsPage() {
         <Card className="bg-[#0D0D0D] border-zinc-800 rounded-none relative overflow-hidden">
           <CardHeader className="border-b border-zinc-900 pb-4">
             <CardTitle className="text-sm font-mono uppercase tracking-widest text-zinc-400 flex items-center gap-2">
-              <Shield className="h-4 w-4 text-amber-500" />
-              {t("settings_role_permissions")}
+              <Shield className="h-4 w-4 text-amber-500" />{t("settings_role_permissions")}
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-6">
@@ -153,26 +148,21 @@ export default function SettingsPage() {
             </ul>
           </CardContent>
         </Card>
-      </div>
-
-      {/* Demo Mode Section (Super Admin Only) */}
+      </div>{/* Demo Mode Section (Super Admin Only) */}
       {role === "super_admin" && (
         <Card className="bg-[#0D0D0D] border-red-900/30 rounded-none relative overflow-hidden border-2 shadow-[0_0_30px_rgba(220,38,38,0.05)]">
           <div className="absolute top-0 right-0 w-32 h-32 bg-red-600/5 rotate-45 translate-x-16 -translate-y-16" />
           <CardHeader className="border-b border-red-900/20 pb-4">
             <CardTitle className="text-sm font-mono uppercase tracking-widest text-red-500 flex items-center gap-2">
-              <Database className="h-4 w-4" />
-              {t("settings_demo_mode")}
+              <Database className="h-4 w-4" />{t("settings_demo_mode")}
             </CardTitle>
-            <CardDescription className="text-zinc-500 text-xs uppercase font-mono mt-1">
-              {t("settings_demo_mode_desc")}
+            <CardDescription className="text-zinc-500 text-xs uppercase font-mono mt-1">{t("settings_demo_mode_desc")}
             </CardDescription>
           </CardHeader>
           <CardContent className="pt-6 space-y-6">
             <div className="p-4 bg-red-950/20 border border-red-900/30 flex gap-4 items-start">
               <AlertTriangle className="h-5 w-5 text-red-500 flex-shrink-0 mt-0.5" />
-              <p className="text-xs font-mono text-red-400 leading-relaxed uppercase">
-                {t("settings_demo_warning")}
+              <p className="text-xs font-mono text-red-400 leading-relaxed uppercase">{t("settings_demo_warning")}
               </p>
             </div>
             
@@ -181,8 +171,7 @@ export default function SettingsPage() {
                 onClick={handleSeed}
                 disabled={isSeeding || isResetting}
                 className="flex-1 bg-zinc-900 hover:bg-zinc-800 text-white border border-zinc-800 rounded-none font-mono uppercase text-xs tracking-widest h-12"
-              >
-                {isSeeding ? t("settings_demo_seeding") : t("settings_seed_demo")}
+              >{isSeeding ? t("settings_demo_seeding") : t("settings_seed_demo")}
               </Button>
               <Button 
                 variant="destructive"
@@ -190,8 +179,7 @@ export default function SettingsPage() {
                 disabled={isSeeding || isResetting}
                 className="flex-1 rounded-none font-mono uppercase text-xs tracking-widest h-12 border border-red-600/50"
               >
-                <Trash2 className="me-2 h-4 w-4" />
-                {isResetting ? t("settings_demo_resetting") : t("settings_reset_system")}
+                <Trash2 className="me-2 h-4 w-4" />{isResetting ? t("settings_demo_resetting") : t("settings_reset_system")}
               </Button>
             </div>
           </CardContent>
@@ -202,12 +190,10 @@ export default function SettingsPage() {
       <Card className="bg-[#0D0D0D] border-zinc-800 rounded-none">
         <CardHeader className="border-b border-zinc-900 pb-4">
           <CardTitle className="text-sm font-mono uppercase tracking-widest text-zinc-400 flex items-center gap-2">
-            <TerminalIcon className="h-4 w-4 text-zinc-600" />
-            {t("settings_system_info")}
+            <TerminalIcon className="h-4 w-4 text-zinc-600" />{t("settings_system_info")}
           </CardTitle>
         </CardHeader>
-        <CardContent className="pt-6 grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-4">
-          {[
+        <CardContent className="pt-6 grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-4">{[
             { label: t("settings_system"), value: t("settings_system_value") },
             { label: t("settings_industry"), value: t("settings_industry_value") },
             { label: t("settings_skill_scale"), value: t("settings_skill_scale_value") },

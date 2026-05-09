@@ -37,8 +37,7 @@ const CornerMarks = ({ color = "primary" }: { color?: string }) => (
     <div className={`absolute top-0 right-0 w-2 h-2 border-t border-r border-${color}/40`} />
     <div className={`absolute bottom-0 left-0 w-2 h-2 border-b border-l border-${color}/40`} />
     <div className={`absolute bottom-0 right-0 w-2 h-2 border-b border-r border-${color}/40`} />
-  </>
-);
+  </>);
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -101,11 +100,9 @@ export default function JobEvaluationGuide() {
                <Activity className="h-4 w-4 text-primary animate-pulse" />
                <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">{t("je_methodology_core")}</span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
-              {t("je_guide_title")}
+            <h1 className="text-4xl md:text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">{t("je_guide_title")}
             </h1>
-            <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4 text-lg">
-              {t("je_guide_subtitle")}
+            <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4 text-lg">{t("je_guide_subtitle")}
             </p>
           </div>
         </div>
@@ -113,8 +110,7 @@ export default function JobEvaluationGuide() {
       </motion.div>
 
       {/* Pillar Overview Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {[
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">{[
           { icon: BrainCircuit, title: t("je_cat_skills"), value: "35%", color: "primary" },
           { icon: ShieldCheck, title: t("je_cat_responsibility"), value: "35%", color: "zinc-400" },
           { icon: Zap, title: t("je_cat_effort"), value: "20%", color: "amber-400" },
@@ -147,8 +143,7 @@ export default function JobEvaluationGuide() {
           <Card className="h-full bg-[#0A0A0A] border border-zinc-800 rounded-none relative overflow-hidden">
             <CardHeader className="p-8 border-b border-zinc-900">
               <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
-                <Layers className="h-5 w-5 text-primary" />
-                {t("je_weight_title")}
+                <Layers className="h-5 w-5 text-primary" />{t("je_weight_title")}
               </CardTitle>
             </CardHeader>
             <CardContent className="p-0">
@@ -162,8 +157,7 @@ export default function JobEvaluationGuide() {
                       <th className="px-8 py-5 text-center font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{t("je_col_max_pts")}</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-900">
-                    {[
+                  <tbody className="divide-y divide-zinc-900">{[
                       { cat: t("je_cat_skills"), factors: t("je_f_education") + ", " + t("je_f_experience") + ", " + t("je_f_knowledge"), weight: "35%", points: 350 },
                       { cat: t("je_cat_responsibility"), factors: t("je_f_compliance") + ", " + t("je_f_supervisory") + ", " + t("je_f_decision"), weight: "35%", points: 350 },
                       { cat: t("je_cat_effort"), factors: t("je_f_mental") + ", " + t("je_f_physical"), weight: "20%", points: 200 },
@@ -201,8 +195,7 @@ export default function JobEvaluationGuide() {
           <Card className="h-full bg-[#0A0A0A] border border-zinc-800 rounded-none relative overflow-hidden">
             <CardHeader className="p-8 border-b border-zinc-900">
               <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
-                <Target className="h-5 w-5 text-primary" />
-                {t("je_weight_title")}
+                <Target className="h-5 w-5 text-primary" />{t("je_weight_title")}
               </CardTitle>
             </CardHeader>
             <CardContent className="p-8 flex flex-col items-center justify-center h-[calc(100%-80px)]">
@@ -248,8 +241,7 @@ export default function JobEvaluationGuide() {
           <Card className="bg-[#0A0A0A] border border-zinc-800 rounded-none relative overflow-hidden">
             <CardHeader className="p-8 border-b border-zinc-900">
               <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
-                <Scaling className="h-5 w-5 text-primary" />
-                {t("je_grading_title")}
+                <Scaling className="h-5 w-5 text-primary" />{t("je_grading_title")}
               </CardTitle>
             </CardHeader>
             <CardContent className="p-8">
@@ -307,12 +299,10 @@ export default function JobEvaluationGuide() {
              <Card className="bg-primary/3 border-primary/20 rounded-none relative overflow-hidden group">
                 <CardHeader className="p-8 border-b border-primary/10">
                   <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
-                    <Settings2 className="h-5 w-5 text-primary" />
-                    {t("je_gov_title")}
+                    <Settings2 className="h-5 w-5 text-primary" />{t("je_gov_title")}
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="p-8 space-y-6">
-                  {[
+                <CardContent className="p-8 space-y-6">{[
                     { t: t("je_gov_node"), d: t("je_gov_node_desc") },
                     { t: t("je_gov_council"), d: t("je_gov_council_desc") },
                     { t: t("je_gov_audit"), d: t("je_gov_audit_desc") },
@@ -333,17 +323,16 @@ export default function JobEvaluationGuide() {
              <Card className="bg-[#0D0D0D] border-zinc-800 rounded-none relative overflow-hidden">
                 <CardHeader className="p-8 border-b border-zinc-900">
                   <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
-                    <Cpu className="h-5 w-5 text-zinc-400" />
-                    {t("je_rubric_title")}
+                    <Cpu className="h-5 w-5 text-zinc-400" />{t("je_rubric_title")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-8 space-y-4">
                   {[
-                    { l: 1, e: "CRITICAL_MINIMUM_REQS", a: "Ù…ØªØ·Ù„Ø¨Ø§Øª Ø¨Ø³ÙŠØ·Ø© Ø¬Ø¯Ø§Ù‹" },
-                    { l: 2, e: "BASIC_OPERATIONAL_THRESHOLD", a: "Ù…ØªØ·Ù„Ø¨Ø§Øª Ù…Ø­Ø¯ÙˆØ¯Ø©" },
-                    { l: 3, e: "STANDARD_PROFICIENCY_NODE", a: "Ù…ØªØ·Ù„Ø¨Ø§Øª Ù…ØªÙˆØ³Ø·Ø©" },
-                    { l: 4, e: "ADVANCED_SYSTEM_COMMAND", a: "Ù…ØªØ·Ù„Ø¨Ø§Øª Ø¹Ø§Ù„ÙŠØ©" },
-                    { l: 5, e: "STRATEGIC_LEAD_EXCELLENCE", a: "Ù…ØªØ·Ù„Ø¨Ø§Øª Ù‚ÙŠØ§Ø¯ÙŠØ©" }
+                    { l: 1, e: "CRITICAL MINIMUM REQS", a: "Ù…ØªØ·Ù„Ø¨Ø§Øª Ø¨Ø³ÙŠØ·Ø© Ø¬Ø¯Ø§Ù‹" },
+                    { l: 2, e: "BASIC OPERATIONAL THRESHOLD", a: "Ù…ØªØ·Ù„Ø¨Ø§Øª Ù…Ø­Ø¯ÙˆØ¯Ø©" },
+                    { l: 3, e: "STANDARD PROFICIENCY NODE", a: "Ù…ØªØ·Ù„Ø¨Ø§Øª Ù…ØªÙˆØ³Ø·Ø©" },
+                    { l: 4, e: "ADVANCED SYSTEM COMMAND", a: "Ù…ØªØ·Ù„Ø¨Ø§Øª Ø¹Ø§Ù„ÙŠØ©" },
+                    { l: 5, e: "STRATEGIC LEAD EXCELLENCE", a: "Ù…ØªØ·Ù„Ø¨Ø§Øª Ù‚ÙŠØ§Ø¯ÙŠØ©" }
                   ].map((level) => (
                     <div key={level.l} className="flex items-center justify-between p-4 bg-zinc-900/50 border border-zinc-800 group hover:border-primary/30 transition-all">
                       <div className="h-10 w-10 flex items-center justify-center bg-black border border-zinc-800 font-mono font-black text-xs text-primary group-hover:border-primary transition-colors">
@@ -368,8 +357,7 @@ export default function JobEvaluationGuide() {
          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
             <div className="space-y-2">
                <p className="font-headline font-black text-sm text-primary uppercase tracking-[0.3em]">{t("je_guide_sync")}</p>
-               <p className="text-[10px] font-mono text-zinc-600 leading-relaxed uppercase tracking-widest">
-                  DOC_REF_v4.2 // SECURITY_LAYER_ACTIVE // AUTHORIZED_ACCESS_ONLY
+               <p className="text-[10px] font-mono text-zinc-600 leading-relaxed uppercase tracking-widest">DOC REF_v4.2 // SECURITY LAYER ACTIVE // AUTHORIZED ACCESS ONLY
                </p>
             </div>
             <div className="flex items-center gap-6 font-mono text-[9px] text-zinc-500 uppercase tracking-widest">

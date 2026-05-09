@@ -61,10 +61,9 @@ export default function JobEvaluationManualPage() {
           <div className="space-y-4">
              <div className="flex items-center justify-center md:justify-start gap-3">
                 <Activity className="h-4 w-4 text-primary animate-pulse" />
-                <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">OPERATIONAL_MANUAL_v9.4</span>
+                <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">OPERATIONAL MANUAL_v9.4</span>
              </div>
-             <h1 className="text-4xl md:text-6xl font-headline font-black tracking-tighter text-white uppercase leading-none">
-               {t("je_manual_title")}
+             <h1 className="text-4xl md:text-6xl font-headline font-black tracking-tighter text-white uppercase leading-none">{t("je_manual_title")}
              </h1>
              <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4 text-lg max-w-2xl mx-auto md:mx-0">
                {isAr 
@@ -80,8 +79,7 @@ export default function JobEvaluationManualPage() {
       </motion.div>
 
       {/* Methodology Overview - Tactical Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {[
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">{[
           { icon: Target, title: t("je_purpose_title"), val: t("je_val_equity"), color: "sky-400", desc: t("je_purpose_desc") },
           { icon: ShieldCheck, title: t("je_neutrality_title"), val: t("je_val_objective"), color: "emerald-400", desc: t("je_neutrality_desc") },
           { icon: Scale, title: t("je_grading_arch_title"), val: t("je_val_scalable"), color: "amber-400", desc: t("je_grading_arch_desc") },
@@ -93,7 +91,7 @@ export default function JobEvaluationManualPage() {
                   <stat.icon className="h-6 w-6" style={{ color: 'currentColor' }} />
                 </div>
                 <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter">{stat.title}</CardTitle>
-                <div className="font-mono text-[9px] uppercase tracking-widest mt-1 opacity-50">NODE_STATUS::{stat.val}</div>
+                <div className="font-mono text-[9px] uppercase tracking-widest mt-1 opacity-50">NODE STATUS::{stat.val}</div>
               </CardHeader>
               <CardContent className="p-8 font-sans font-medium text-zinc-500 text-sm leading-relaxed">
                 {stat.desc}
@@ -114,8 +112,7 @@ export default function JobEvaluationManualPage() {
             <div className="flex-1 h-px bg-zinc-900" />
           </div>
 
-          <div className="space-y-6">
-            {[
+          <div className="space-y-6">{[
               { 
                 title: t("je_factor_skills_title"), 
                 desc: t("je_factor_skills_desc"),
@@ -162,8 +159,7 @@ export default function JobEvaluationManualPage() {
           </div>
 
           <Card className="bg-[#0A0A0A] border border-zinc-800 rounded-none overflow-hidden relative">
-            <div className="divide-y divide-zinc-900">
-              {[
+            <div className="divide-y divide-zinc-900">{[
                 { lv: "L1", title: t("je_level_basic"), desc: t("je_level_basic_desc") },
                 { lv: "L2", title: t("je_level_intermediate"), desc: t("je_level_intermediate_desc") },
                 { lv: "L3", title: t("je_level_proficient"), desc: t("je_level_proficient_desc") },
@@ -208,7 +204,7 @@ export default function JobEvaluationManualPage() {
           <CardHeader className="text-center p-12 border-b border-zinc-900">
              <div className="flex items-center justify-center gap-3 mb-4">
                 <div className="h-px w-12 bg-primary/30" />
-                <span className="font-headline font-black text-[10px] text-primary tracking-[0.4em] uppercase">SYSTEM_TIER_MAPPING</span>
+                <span className="font-headline font-black text-[10px] text-primary tracking-[0.4em] uppercase">SYSTEM TIER MAPPING</span>
                 <div className="h-px w-12 bg-primary/30" />
              </div>
              <CardTitle className="font-headline font-black text-4xl text-white uppercase tracking-tighter">{t("je_matrix_title")}</CardTitle>
@@ -224,8 +220,7 @@ export default function JobEvaluationManualPage() {
                     <th className="p-8 text-end">{t("common_status")}</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-zinc-900 font-mono">
-                  {[
+                <tbody className="divide-y divide-zinc-900 font-mono">{[
                     { g: "G1-G2", range: "100 - 199", cat: t("je_cat_labor") },
                     { g: "G3-G4", range: "200 - 329", cat: t("je_cat_tech") },
                     { g: "G5-G6", range: "330 - 509", cat: t("je_cat_spec") },
@@ -238,7 +233,7 @@ export default function JobEvaluationManualPage() {
                       <td className="p-8 text-start font-headline font-black text-[10px] text-zinc-500 uppercase tracking-widest group-hover:text-white transition-colors">{row.cat}</td>
                       <td className="p-8 text-end">
                          <div className="flex items-center justify-end gap-2 text-emerald-500 font-black text-[9px] tracking-tighter">
-                            <Activity className="h-3 w-3 animate-pulse" /> {t("je_active_tier")}
+                            <Activity className="h-3 w-3 animate-pulse" />{t("je_active_tier")}
                          </div>
                       </td>
                     </tr>
@@ -256,14 +251,12 @@ export default function JobEvaluationManualPage() {
          <Terminal className="absolute -right-6 -top-6 h-32 w-32 text-primary opacity-5 group-hover:opacity-10 transition-all duration-1000" />
          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
             <div className="space-y-2">
-               <p className="font-headline font-black text-sm text-primary uppercase tracking-[0.3em]">MANUAL_READY_FOR_OPERATIVES</p>
-               <p className="text-[10px] font-mono text-zinc-600 leading-relaxed uppercase tracking-widest">
-                  DOC_REF::94.2.0 // SECURITY_VERIFIED // ARCHITECT_AUTHORIZED
+               <p className="font-headline font-black text-sm text-primary uppercase tracking-[0.3em]">MANUAL READY FOR OPERATIVES</p>
+               <p className="text-[10px] font-mono text-zinc-600 leading-relaxed uppercase tracking-widest">DOC REF::94.2.0 // SECURITY VERIFIED // ARCHITECT AUTHORIZED
                </p>
             </div>
             <div className="flex items-center gap-4">
-               <Button variant="outline" className="rounded-none border-zinc-800 font-headline font-black text-[10px] tracking-widest uppercase h-10 px-6">
-                  {t("je_initial_protocol")} <ChevronRight className="ms-2 h-3 w-3" />
+               <Button variant="outline" className="rounded-none border-zinc-800 font-headline font-black text-[10px] tracking-widest uppercase h-10 px-6">{t("je_initial_protocol")} <ChevronRight className="ms-2 h-3 w-3" />
                </Button>
             </div>
          </div>

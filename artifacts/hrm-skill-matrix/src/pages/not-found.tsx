@@ -37,16 +37,14 @@ export default function NotFound() {
             </div>
             <div className="flex items-center gap-3">
               <div className="h-1 w-8 bg-rose-500" />
-              <span className="font-headline font-black tracking-[0.4em] uppercase text-[10px] text-rose-500">
-                ACCESS_DENIED // PATH_NOT_FOUND
+              <span className="font-headline font-black tracking-[0.4em] uppercase text-[10px] text-rose-500">ACCESS DENIED // PATH NOT FOUND
               </span>
               <div className="h-1 w-8 bg-rose-500" />
             </div>
           </div>
 
           <div className="space-y-4">
-            <h1 className="text-8xl font-headline font-black tracking-tighter text-white uppercase leading-none">
-              404_ERR
+            <h1 className="text-8xl font-headline font-black tracking-tighter text-white uppercase leading-none">404 ERR
             </h1>
             <p className="text-secondary/40 font-mono text-sm max-w-sm mx-auto uppercase tracking-widest leading-relaxed">
               The requested node does not exist within the current sector or has been permanently decommissioned.
@@ -56,10 +54,10 @@ export default function NotFound() {
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6 border-t border-white/5">
           <Button 
-            onClick={() => navigate("/")} 
-            className="w-full sm:w-auto rounded-none bg-primary text-primary-foreground font-headline font-black text-[11px] tracking-[0.2em] uppercase py-7 px-12 h-auto hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(255,255,255,0.05)]"
+            onClick={() =>navigate("/")} 
+            className="w-full sm:w-auto rounded-none bg-primary text-primary-foreground font-headline font-black text-[11px] tracking-[0.2em] uppercase py-7 px-12 h-auto hover:bg-primary/90 transition-all shadow-[0 0 20px_rgba(255,255,255,0.05)]"
           >
-            <Home className="h-4 w-4 me-3" /> INITIALIZE_RETURN_SEQ
+            <Home className="h-4 w-4 me-3" />INITIALIZE RETURN SEQ
           </Button>
           
           <Button 
@@ -67,15 +65,14 @@ export default function NotFound() {
             className="w-full sm:w-auto rounded-none border-zinc-800 bg-zinc-900/50 text-white font-headline font-black text-[11px] tracking-[0.2em] uppercase py-7 px-12 h-auto hover:bg-zinc-800 transition-all"
             onClick={() => window.location.reload()}
           >
-            <Terminal className="h-4 w-4 me-3 text-rose-500" /> RETRY_HANDSHAKE
+            <Terminal className="h-4 w-4 me-3 text-rose-500" />RETRY HANDSHAKE
           </Button>
         </div>
 
         <div className="pt-8 flex items-center justify-between font-mono text-[9px] text-zinc-700 uppercase tracking-widest">
-           <span>SECTOR_FAILURE_v4.1</span>
+           <span>SECTOR FAILURE_v4.1</span>
            <span className="flex items-center gap-2">
-             <AlertTriangle className="h-3 w-3" />
-             RETRYING_CONNECTION...
+             <AlertTriangle className="h-3 w-3" />RETRYING CONNECTION...
            </span>
         </div>
 
@@ -85,8 +82,7 @@ export default function NotFound() {
       <footer className="absolute bottom-10 z-10 flex flex-col items-center gap-4">
         <div className="flex items-center gap-4">
           <div className="h-px w-12 bg-white/10" />
-          <p className="text-[10px] font-mono font-black text-white/20 uppercase tracking-[0.4em]">
-            HRM_SYSTEM_AUTO_LOG
+          <p className="text-[10px] font-mono font-black text-white/20 uppercase tracking-[0.4em]">HRM SYSTEM AUTO LOG
           </p>
           <div className="h-px w-12 bg-white/10" />
         </div>

@@ -22,8 +22,7 @@ const CornerMarks = ({ color = "primary" }: { color?: string }) => (
     <div className={`absolute top-0 right-0 w-2 h-2 border-t border-r border-${color}/40`} />
     <div className={`absolute bottom-0 left-0 w-2 h-2 border-b border-l border-${color}/40`} />
     <div className={`absolute bottom-0 right-0 w-2 h-2 border-b border-r border-${color}/40`} />
-  </>
-);
+  </>);
 
 interface WorkflowSummary {
   id: string;
@@ -44,12 +43,12 @@ interface Department { id: string; name: string; }
 interface Campaign { id: string; title: string; }
 interface SystemUser { id: string; full_name: string | null; email: string; role: string; }
 
-const STATUS_CONFIG: Record<string, { bg: string; text: string; label: string }> = {
-  Draft: { bg: "bg-amber-500/10", text: "text-amber-500", label: "STATUS_DRAFT" },
-  "In Progress": { bg: "bg-sky-500/10", text: "text-sky-500", label: "STATUS_ACTIVE" },
-  "Awaiting Approval": { bg: "bg-violet-500/10", text: "text-violet-500", label: "STATUS_REVIEW" },
-  Finalized: { bg: "bg-emerald-500/10", text: "text-emerald-500", label: "STATUS_FINALIZED" },
-  Cancelled: { bg: "bg-zinc-700/10", text: "text-zinc-500", label: "STATUS_ABORTED" },
+const STATUS_CONFIG: Record<string, { bg: string; text: string; label: string }>= {
+  Draft: { bg: "bg-amber-500/10", text: "text-amber-500", label: "STATUS DRAFT" },
+  "In Progress": { bg: "bg-sky-500/10", text: "text-sky-500", label: "STATUS ACTIVE" },
+  "Awaiting Approval": { bg: "bg-violet-500/10", text: "text-violet-500", label: "STATUS REVIEW" },
+  Finalized: { bg: "bg-emerald-500/10", text: "text-emerald-500", label: "STATUS FINALIZED" },
+  Cancelled: { bg: "bg-zinc-700/10", text: "text-zinc-500", label: "STATUS ABORTED" },
 };
 
 function statusBadge(status: string) {
@@ -57,8 +56,7 @@ function statusBadge(status: string) {
   return (
     <Badge variant="outline" className={`rounded-none font-mono text-[9px] font-black border-current/20 px-2 py-0.5 uppercase tracking-widest ${config.bg} ${config.text}`}>
       {config.label}
-    </Badge>
-  );
+    </Badge>);
 }
 
 interface Employee { id: string; full_name: string; employee_code: string; }
@@ -315,14 +313,13 @@ export default function WorkflowsPage() {
             <div className="flex items-center justify-center md:justify-start gap-3">
               <GitBranch className="h-4 w-4 text-primary animate-pulse" />
               <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">{t("label_wf_protocol")}</span>
-            </div>
-              {t("label_strategic_workflows")}
+            </div>{t("label_strategic_workflows")}
             <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4">Hierarchical evaluation and approval chain management.</p>
           </div>
           
           {isManager && (
             <Button className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto hover:bg-primary/90" onClick={openCreate}>
-               <Plus className="h-4 w-4 me-2" /> {t("action_initialize_protocol")}
+               <Plus className="h-4 w-4 me-2" />{t("action_initialize_protocol")}
             </Button>
           )}
         </div>
@@ -330,8 +327,7 @@ export default function WorkflowsPage() {
       </div>
 
       {isLoading ? (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 6 }).map((_, i) => (
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{Array.from({ length: 6 }).map((_, i) => (
             <Skeleton key={i} className="h-56 w-full bg-white/5 rounded-none" />
           ))}
         </div>
@@ -339,15 +335,13 @@ export default function WorkflowsPage() {
         <Card className="bg-[#121212] border-white/10 rounded-none relative">
           <CardContent className="py-24 text-center space-y-4">
              <Terminal className="h-12 w-12 text-secondary/10 mx-auto" />
-             <p className="font-mono text-xs text-secondary/30 uppercase tracking-[0.3em]">
-                {t("label_no_streams")}
+             <p className="font-mono text-xs text-secondary/30 uppercase tracking-[0.3em]">{t("label_no_streams")}
              </p>
           </CardContent>
           <CornerMarks />
         </Card>
       ) : (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {workflows.map((wf) => {
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{workflows.map((wf) => {
             const progress = wf.total_steps > 0 ? Math.round((wf.completed_steps / wf.total_steps) * 100) : 0;
             return (
               <motion.div
@@ -397,8 +391,7 @@ export default function WorkflowsPage() {
                     </div>
 
                     <div className="pt-6 border-t border-white/5 flex items-center justify-between">
-                      <span className="font-mono text-[9px] text-secondary/20 uppercase">
-                        INIT_DATE::{new Date(wf.created_at).toLocaleDateString()}
+                      <span className="font-mono text-[9px] text-secondary/20 uppercase">INIT DATE::{new Date(wf.created_at).toLocaleDateString()}
                       </span>
                       <div className="flex items-center gap-2">
                         {isManager && wf.status !== "Finalized" && (
@@ -438,7 +431,7 @@ export default function WorkflowsPage() {
                 <div className="col-span-2 space-y-3">
                   <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("label_protocol_title")} *</Label>
                   <Input
-                    placeholder="e.g. Q2_PROD_EVALUATION"
+                    placeholder="e.g. Q2 PROD EVALUATION"
                     value={form.title}
                     onChange={(e) => setForm({ ...form, title: e.target.value })}
                     className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white focus-visible:ring-primary/50"
@@ -446,9 +439,9 @@ export default function WorkflowsPage() {
                 </div>
                 <div className="space-y-3">
                   <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("label_target_unit")} *</Label>
-                  <Select value={form.department_id} onValueChange={(v) => setForm({ ...form, department_id: v })}>
+                  <Select value={form.department_id} onValueChange={(v) =>setForm({ ...form, department_id: v })}>
                     <SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
-                      <SelectValue placeholder="SELECT_DEPLOYMENT_UNIT" />
+                      <SelectValue placeholder="SELECT DEPLOYMENT UNIT" />
                     </SelectTrigger>
                     <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">
                       {departments?.map((d) => (
@@ -458,10 +451,10 @@ export default function WorkflowsPage() {
                   </Select>
                 </div>
                 <div className="space-y-3">
-                  <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">ACTIVE_CAMPAIGN</Label>
+                  <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">ACTIVE CAMPAIGN</Label>
                   <Select
                     value={form.campaign_id || "_none"}
-                    onValueChange={(v) => setForm({ ...form, campaign_id: v === "_none" ? "" : v })}
+                    onValueChange={(v) =>setForm({ ...form, campaign_id: v === "_none" ? "" : v })}
                   >
                     <SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
                       <SelectValue placeholder="â€” NULL â€”" />
@@ -487,22 +480,20 @@ export default function WorkflowsPage() {
                 {/* Manager */}
                 <div className="space-y-3">
                   <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase flex items-center gap-2">
-                    <Shield className="h-3 w-3 text-amber-500" /> {t("label_production_manager")}
+                    <Shield className="h-3 w-3 text-amber-500" />{t("label_production_manager")}
                   </Label>
-                  <Select value={form.manager_id} onValueChange={(v) => setForm({ ...form, manager_id: v })}>
+                  <Select value={form.manager_id} onValueChange={(v) =>setForm({ ...form, manager_id: v })}>
                     <SelectTrigger className="h-12 bg-black/40 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
-                      <SelectValue placeholder="ASSIGN_TOP_LEVEL_ADMIN" />
+                      <SelectValue placeholder="ASSIGN TOP LEVEL ADMIN" />
                     </SelectTrigger>
                     <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">
                       {users.map((u) => (
                         <SelectItem key={u.id} value={u.id} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{u.full_name ?? u.email}</SelectItem>
                       ))}
                     </SelectContent>
-                  </Select>
-                  {form.manager_id && (
+                  </Select>{form.manager_id && (
                     <div className="flex items-center gap-2 text-[10px] font-mono font-black text-emerald-500 uppercase tracking-widest px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 w-fit">
-                      <CheckCircle2 className="h-3 w-3" />
-                      AUTHORIZED::{users.find((u) => u.id === form.manager_id)?.full_name ?? "OPERATIVE"}
+                      <CheckCircle2 className="h-3 w-3" />AUTHORIZED::{users.find((u) => u.id === form.manager_id)?.full_name ?? "OPERATIVE"}
                     </div>
                   )}
                 </div>
@@ -510,14 +501,13 @@ export default function WorkflowsPage() {
                 {/* Engineers */}
                 <div className="space-y-4">
                   <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase flex items-center gap-2">
-                     <Cpu className="h-3 w-3 text-sky-500" /> {t("label_system_engineers")}
+                     <Cpu className="h-3 w-3 text-sky-500" />{t("label_system_engineers")}
                   </Label>
                   <Select onValueChange={addEngineer} value="">
                     <SelectTrigger className="h-12 bg-black/40 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
-                      <SelectValue placeholder="ADD_ENGINEER_NODE..." />
+                      <SelectValue placeholder="ADD ENGINEER NODE..." />
                     </SelectTrigger>
-                    <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">
-                      {users
+                    <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">{users
                         .filter((u) => u.id !== form.manager_id && !engineers.find((e) => e.userId === u.id))
                         .map((u) => (
                           <SelectItem key={u.id} value={u.id} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{u.full_name ?? u.email}</SelectItem>
@@ -543,10 +533,9 @@ export default function WorkflowsPage() {
                           <Label className="font-headline font-black text-[9px] text-secondary/30 tracking-[0.2em] uppercase">{t("label_direct_supervisors")}</Label>
                           <Select onValueChange={(v) => addSupervisor(eng.userId, v)} value="">
                             <SelectTrigger className="h-10 bg-white/5 border-white/5 rounded-none font-headline font-black text-[9px] tracking-widest text-white uppercase">
-                              <SelectValue placeholder="ADD_SUPERVISOR..." />
+                              <SelectValue placeholder="ADD SUPERVISOR..." />
                             </SelectTrigger>
-                            <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">
-                              {users
+                            <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">{users
                                 .filter((u) => u.id !== form.manager_id && u.id !== eng.userId && !eng.supervisors.find((s) => s.userId === u.id))
                                 .map((u) => (
                                   <SelectItem key={u.id} value={u.id} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{u.full_name ?? u.email}</SelectItem>
@@ -585,16 +574,14 @@ export default function WorkflowsPage() {
                                         {(employees ?? [])
                                           .filter((e) => !sup.workers.find((w) => w.employeeId === e.id))
                                           .map((e) => (
-                                            <SelectItem key={`technician:${e.id}`} value={`technician:${e.id}`} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">
-                                              {e.full_name} ({e.employee_code})
+                                            <SelectItem key={`technician:${e.id}`} value={`technician:${e.id}`} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{e.full_name} ({e.employee_code})
                                             </SelectItem>
                                           ))}
                                         <SelectItem value="_help_hdr" disabled className="font-black text-amber-500 opacity-50 uppercase tracking-widest text-[9px]">--- HELPERS ---</SelectItem>
                                         {(employees ?? [])
                                           .filter((e) => !sup.workers.find((w) => w.employeeId === e.id))
                                           .map((e) => (
-                                            <SelectItem key={`helper:${e.id}`} value={`helper:${e.id}`} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">
-                                              {e.full_name} ({e.employee_code})
+                                            <SelectItem key={`helper:${e.id}`} value={`helper:${e.id}`} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{e.full_name} ({e.employee_code})
                                             </SelectItem>
                                           ))}
                                       </SelectContent>
@@ -638,13 +625,12 @@ export default function WorkflowsPage() {
             </div>
 
             <div className="p-8 border-t border-white/10 bg-white/5 flex justify-end gap-4 shrink-0">
-              <Button variant="ghost" className="rounded-none font-headline font-black text-[10px] tracking-widest uppercase text-white hover:bg-white/5" onClick={() => setShowCreate(false)}>{t("action_cancel_init")}</Button>
+              <Button variant="ghost" className="rounded-none font-headline font-black text-[10px] tracking-widest uppercase text-white hover:bg-white/5" onClick={() =>setShowCreate(false)}>{t("action_cancel_init")}</Button>
               <Button
                 onClick={handleCreate}
                 disabled={saving}
                 className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase px-10 py-6 h-auto"
-              >
-                {saving ? t("action_synchronizing") : t("action_execute_deployment")}
+              >{saving ? t("action_synchronizing") : t("action_execute_deployment")}
               </Button>
             </div>
           </div>
@@ -666,8 +652,7 @@ export default function WorkflowsPage() {
               onClick={handleDelete}
               disabled={deleting}
               className="rounded-none bg-rose-600 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-rose-700 px-8 h-auto py-4"
-            >
-              {deleting ? t("action_purging") : t("action_confirm_purge")}
+            >{deleting ? t("action_purging") : t("action_confirm_purge")}
             </AlertDialogAction>
           </AlertDialogFooter>
           <CornerMarks color="rose" />

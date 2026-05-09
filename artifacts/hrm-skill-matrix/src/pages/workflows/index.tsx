@@ -22,8 +22,7 @@ const CornerMarks = ({ color = "primary" }: { color?: string }) => (
     <div className={`absolute top-0 right-0 w-2 h-2 border-t border-r border-${color}/40`} />
     <div className={`absolute bottom-0 left-0 w-2 h-2 border-b border-l border-${color}/40`} />
     <div className={`absolute bottom-0 right-0 w-2 h-2 border-b border-r border-${color}/40`} />
-  </>
-);
+  </>);
 
 interface WorkflowSummary {
   id: string;
@@ -44,7 +43,7 @@ interface Department { id: string; name: string; }
 interface Campaign { id: string; title: string; }
 interface SystemUser { id: string; full_name: string | null; email: string; role: string; }
 
-const STATUS_CONFIG: Record<string, { bg: string; text: string; key: string }> = {
+const STATUS_CONFIG: Record<string, { bg: string; text: string; key: string }>= {
   Draft: { bg: "bg-amber-500/10", text: "text-amber-500", key: "status_draft" },
   "In Progress": { bg: "bg-sky-500/10", text: "text-sky-500", key: "status_active" },
   "Awaiting Approval": { bg: "bg-violet-500/10", text: "text-violet-500", key: "status_review" },
@@ -57,8 +56,7 @@ function statusBadge(status: string, t: (k: any) => string) {
   return (
     <Badge variant="outline" className={`rounded-none font-mono text-[9px] font-black border-current/20 px-2 py-0.5 uppercase tracking-widest ${config.bg} ${config.text}`}>
       {config.key ? t(config.key as any) : config.key}
-    </Badge>
-  );
+    </Badge>);
 }
 
 interface Employee { id: string; full_name: string; employee_code: string; }
@@ -316,15 +314,14 @@ export default function WorkflowsPage() {
               <GitBranch className="h-4 w-4 text-primary animate-pulse" />
               <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">{t("workflows_protocol_label")}</span>
             </div>
-            <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
-              {t("workflows_title")}
+            <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">{t("workflows_title")}
             </h2>
             <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4">{t("workflows_subtitle")}</p>
           </div>
           
           {isManager && (
             <Button className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto hover:bg-primary/90" onClick={openCreate}>
-              <Plus className="h-4 w-4 me-2" /> INITIALIZE_PROTOCOL
+              <Plus className="h-4 w-4 me-2" />INITIALIZE PROTOCOL
             </Button>
           )}
         </div>
@@ -332,8 +329,7 @@ export default function WorkflowsPage() {
       </div>
 
       {isLoading ? (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 6 }).map((_, i) => (
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{Array.from({ length: 6 }).map((_, i) => (
             <Skeleton key={i} className="h-56 w-full bg-white/5 rounded-none" />
           ))}
         </div>
@@ -341,15 +337,13 @@ export default function WorkflowsPage() {
         <Card className="bg-[#121212] border-white/10 rounded-none relative">
           <CardContent className="py-24 text-center space-y-4">
              <Terminal className="h-12 w-12 text-secondary/10 mx-auto" />
-             <p className="font-mono text-xs text-secondary/30 uppercase tracking-[0.3em]">
-                {t("label_no_records")}
+             <p className="font-mono text-xs text-secondary/30 uppercase tracking-[0.3em]">{t("label_no_records")}
              </p>
           </CardContent>
           <CornerMarks />
         </Card>
       ) : (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {workflows.map((wf) => {
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{workflows.map((wf) => {
             const progress = wf.total_steps > 0 ? Math.round((wf.completed_steps / wf.total_steps) * 100) : 0;
             return (
               <motion.div
@@ -368,8 +362,7 @@ export default function WorkflowsPage() {
                         <h3 className="font-headline font-black text-xl text-white uppercase tracking-tight group-hover:text-primary transition-colors truncate">
                           {wf.title}
                         </h3>
-                        <p className="text-[10px] font-mono text-secondary/40 uppercase tracking-widest">
-                           {t("workflows_unit")}::{wf.department?.name ?? t("workflows_general")}
+                        <p className="text-[10px] font-mono text-secondary/40 uppercase tracking-widest">{t("workflows_unit")}::{wf.department?.name ?? t("workflows_general")}
                         </p>
                       </div>
                       {statusBadge(wf.status, t)}
@@ -399,8 +392,7 @@ export default function WorkflowsPage() {
                     </div>
 
                     <div className="pt-6 border-t border-white/5 flex items-center justify-between">
-                      <span className="font-mono text-[9px] text-secondary/20 uppercase">
-                        {t("workflows_init_date")}::{new Date(wf.created_at).toLocaleDateString()}
+                      <span className="font-mono text-[9px] text-secondary/20 uppercase">{t("workflows_init_date")}::{new Date(wf.created_at).toLocaleDateString()}
                       </span>
                       <div className="flex items-center gap-2">
                         {isManager && wf.status !== "Finalized" && (
@@ -432,25 +424,25 @@ export default function WorkflowsPage() {
           <div className="relative z-10 flex flex-col h-full max-h-[90vh]">
             <div className="p-8 border-b border-white/10 bg-white/5 shrink-0">
               <h2 className="font-headline font-black text-2xl text-white uppercase tracking-tighter">{t("workflows_create_title")}</h2>
-              <p className="text-[10px] font-mono text-primary tracking-[0.3em] mt-2 uppercase">STRAT_INIT_v9.4</p>
+              <p className="text-[10px] font-mono text-primary tracking-[0.3em] mt-2 uppercase">STRAT INIT_v9.4</p>
             </div>
             
             <div className="p-10 space-y-10 overflow-y-auto">
               <div className="grid grid-cols-2 gap-8">
                 <div className="col-span-2 space-y-3">
-                  <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">PROTOCOL_TITLE *</Label>
+                  <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">PROTOCOL TITLE *</Label>
                   <Input
-                    placeholder="e.g. Q2_PROD_EVALUATION"
+                    placeholder="e.g. Q2 PROD EVALUATION"
                     value={form.title}
                     onChange={(e) => setForm({ ...form, title: e.target.value })}
                     className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white focus-visible:ring-primary/50"
                   />
                 </div>
                 <div className="space-y-3">
-                  <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">TARGET_UNIT *</Label>
-                  <Select value={form.department_id} onValueChange={(v) => setForm({ ...form, department_id: v })}>
+                  <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">TARGET UNIT *</Label>
+                  <Select value={form.department_id} onValueChange={(v) =>setForm({ ...form, department_id: v })}>
                     <SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
-                      <SelectValue placeholder="SELECT_DEPLOYMENT_UNIT" />
+                      <SelectValue placeholder="SELECT DEPLOYMENT UNIT" />
                     </SelectTrigger>
                     <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">
                       {departments?.map((d) => (
@@ -460,10 +452,10 @@ export default function WorkflowsPage() {
                   </Select>
                 </div>
                 <div className="space-y-3">
-                  <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">ACTIVE_CAMPAIGN</Label>
+                  <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">ACTIVE CAMPAIGN</Label>
                   <Select
                     value={form.campaign_id || "_none"}
-                    onValueChange={(v) => setForm({ ...form, campaign_id: v === "_none" ? "" : v })}
+                    onValueChange={(v) =>setForm({ ...form, campaign_id: v === "_none" ? "" : v })}
                   >
                     <SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
                       <SelectValue placeholder="â€” NULL â€”" />
@@ -482,29 +474,27 @@ export default function WorkflowsPage() {
               <div className="bg-white/5 border border-white/10 rounded-none p-8 space-y-8 relative">
                 <div className="flex items-center gap-3 mb-6">
                    <div className="h-px flex-1 bg-white/10" />
-                   <h4 className="font-headline font-black text-xs text-primary uppercase tracking-[0.4em]">HIERARCHY_ARCHITECTURE</h4>
+                   <h4 className="font-headline font-black text-xs text-primary uppercase tracking-[0.4em]">HIERARCHY ARCHITECTURE</h4>
                    <div className="h-px flex-1 bg-white/10" />
                 </div>
 
                 {/* Manager */}
                 <div className="space-y-3">
                   <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase flex items-center gap-2">
-                    <Shield className="h-3 w-3 text-amber-500" /> PRODUCTION_MANAGER
+                    <Shield className="h-3 w-3 text-amber-500" />PRODUCTION MANAGER
                   </Label>
-                  <Select value={form.manager_id} onValueChange={(v) => setForm({ ...form, manager_id: v })}>
+                  <Select value={form.manager_id} onValueChange={(v) =>setForm({ ...form, manager_id: v })}>
                     <SelectTrigger className="h-12 bg-black/40 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
-                      <SelectValue placeholder="ASSIGN_TOP_LEVEL_ADMIN" />
+                      <SelectValue placeholder="ASSIGN TOP LEVEL ADMIN" />
                     </SelectTrigger>
                     <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">
                       {users.map((u) => (
                         <SelectItem key={u.id} value={u.id} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{u.full_name ?? u.email}</SelectItem>
                       ))}
                     </SelectContent>
-                  </Select>
-                  {form.manager_id && (
+                  </Select>{form.manager_id && (
                     <div className="flex items-center gap-2 text-[10px] font-mono font-black text-emerald-500 uppercase tracking-widest px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 w-fit">
-                      <CheckCircle2 className="h-3 w-3" />
-                      {t("workflows_authorized")}::{users.find((u) => u.id === form.manager_id)?.full_name ?? "OPERATIVE"}
+                      <CheckCircle2 className="h-3 w-3" />{t("workflows_authorized")}::{users.find((u) => u.id === form.manager_id)?.full_name ?? "OPERATIVE"}
                     </div>
                   )}
                 </div>
@@ -512,14 +502,13 @@ export default function WorkflowsPage() {
                 {/* Engineers */}
                 <div className="space-y-4">
                   <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase flex items-center gap-2">
-                     <Cpu className="h-3 w-3 text-sky-500" /> SYSTEM_ENGINEERS
+                     <Cpu className="h-3 w-3 text-sky-500" />SYSTEM ENGINEERS
                   </Label>
                   <Select onValueChange={addEngineer} value="">
                     <SelectTrigger className="h-12 bg-black/40 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
-                      <SelectValue placeholder="ADD_ENGINEER_NODE..." />
+                      <SelectValue placeholder="ADD ENGINEER NODE..." />
                     </SelectTrigger>
-                    <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">
-                      {users
+                    <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">{users
                         .filter((u) => u.id !== form.manager_id && !engineers.find((e) => e.userId === u.id))
                         .map((u) => (
                           <SelectItem key={u.id} value={u.id} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{u.full_name ?? u.email}</SelectItem>
@@ -542,13 +531,12 @@ export default function WorkflowsPage() {
 
                         {/* Supervisors under engineer */}
                         <div className="ps-6 space-y-4 border-l border-sky-500/20">
-                          <Label className="font-headline font-black text-[9px] text-secondary/30 tracking-[0.2em] uppercase">DIRECT_SUPERVISORS</Label>
+                          <Label className="font-headline font-black text-[9px] text-secondary/30 tracking-[0.2em] uppercase">DIRECT SUPERVISORS</Label>
                           <Select onValueChange={(v) => addSupervisor(eng.userId, v)} value="">
                             <SelectTrigger className="h-10 bg-white/5 border-white/5 rounded-none font-headline font-black text-[9px] tracking-widest text-white uppercase">
-                              <SelectValue placeholder="ADD_SUPERVISOR..." />
+                              <SelectValue placeholder="ADD SUPERVISOR..." />
                             </SelectTrigger>
-                            <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">
-                              {users
+                            <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">{users
                                 .filter((u) => u.id !== form.manager_id && u.id !== eng.userId && !eng.supervisors.find((s) => s.userId === u.id))
                                 .map((u) => (
                                   <SelectItem key={u.id} value={u.id} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{u.full_name ?? u.email}</SelectItem>
@@ -558,7 +546,7 @@ export default function WorkflowsPage() {
 
                           <div className="space-y-4">
                             {eng.supervisors.map((sup) => (
-                              <div key={sup.userId} className="bg-white/[0.02] border border-white/5 p-4 space-y-4">
+                              <div key={sup.userId} className="bg-white/2 border border-white/5 p-4 space-y-4">
                                 <div className="flex items-center justify-between font-headline font-black text-[10px] uppercase tracking-widest text-amber-500">
                                   <span>
                                     <ChevronRight className="h-3 w-3 inline me-2" />
@@ -580,23 +568,21 @@ export default function WorkflowsPage() {
                                       value=""
                                     >
                                       <SelectTrigger className="h-9 bg-black/40 border-white/5 rounded-none font-headline font-black text-[9px] tracking-widest text-white uppercase flex-1">
-                                        <SelectValue placeholder="DEPLOY_OPERATIVE..." />
+                                        <SelectValue placeholder="DEPLOY OPERATIVE..." />
                                       </SelectTrigger>
                                       <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white max-h-[300px]">
                                         <SelectItem value="_tech_hdr" disabled className="font-black text-primary opacity-50 uppercase tracking-widest text-[9px]">--- TECHNICIANS ---</SelectItem>
                                         {(employees ?? [])
                                           .filter((e) => !sup.workers.find((w) => w.employeeId === e.id))
                                           .map((e) => (
-                                            <SelectItem key={`technician:${e.id}`} value={`technician:${e.id}`} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">
-                                              {e.full_name} ({e.employee_code})
+                                            <SelectItem key={`technician:${e.id}`} value={`technician:${e.id}`} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{e.full_name} ({e.employee_code})
                                             </SelectItem>
                                           ))}
                                         <SelectItem value="_help_hdr" disabled className="font-black text-amber-500 opacity-50 uppercase tracking-widest text-[9px]">--- HELPERS ---</SelectItem>
                                         {(employees ?? [])
                                           .filter((e) => !sup.workers.find((w) => w.employeeId === e.id))
                                           .map((e) => (
-                                            <SelectItem key={`helper:${e.id}`} value={`helper:${e.id}`} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">
-                                              {e.full_name} ({e.employee_code})
+                                            <SelectItem key={`helper:${e.id}`} value={`helper:${e.id}`} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{e.full_name} ({e.employee_code})
                                             </SelectItem>
                                           ))}
                                       </SelectContent>
@@ -629,9 +615,9 @@ export default function WorkflowsPage() {
               </div>
 
               <div className="space-y-3">
-                <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">SYSTEM_NOTES</Label>
+                <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">SYSTEM NOTES</Label>
                 <textarea
-                  placeholder="SPECIFY_OPERATIONAL_PARAMETERS..."
+                  placeholder="SPECIFY OPERATIONAL PARAMETERS..."
                   value={form.notes}
                   onChange={(e) => setForm({ ...form, notes: e.target.value })}
                   className="w-full min-h-[100px] p-4 bg-white/5 border border-white/10 rounded-none font-mono text-sm tracking-widest text-white focus:outline-none focus:border-primary/50"
@@ -640,13 +626,12 @@ export default function WorkflowsPage() {
             </div>
 
             <div className="p-8 border-t border-white/10 bg-white/5 flex justify-end gap-4 shrink-0">
-              <Button variant="ghost" className="rounded-none font-headline font-black text-[10px] tracking-widest uppercase text-white hover:bg-white/5" onClick={() => setShowCreate(false)}>CANCEL_INIT</Button>
+              <Button variant="ghost" className="rounded-none font-headline font-black text-[10px] tracking-widest uppercase text-white hover:bg-white/5" onClick={() =>setShowCreate(false)}>CANCEL INIT</Button>
               <Button
                 onClick={handleCreate}
                 disabled={saving}
                 className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase px-10 py-6 h-auto"
-              >
-                {saving ? t("action_synchronizing") : t("workflows_new")}
+              >{saving ? t("action_synchronizing") : t("workflows_new")}
               </Button>
             </div>
           </div>
@@ -658,8 +643,7 @@ export default function WorkflowsPage() {
         <AlertDialogContent className="bg-[#0A0A0A] border-2 border-rose-500/30 rounded-none text-white">
           <AlertDialogHeader>
             <AlertDialogTitle className="font-headline font-black text-2xl text-white uppercase tracking-tighter">{t("action_confirm_delete")}</AlertDialogTitle>
-            <AlertDialogDescription className="text-secondary/40 font-mono text-xs uppercase tracking-widest">
-               {t("workflows_delete_desc", { name: deleteTarget?.title || "" })}
+            <AlertDialogDescription className="text-secondary/40 font-mono text-xs uppercase tracking-widest">{t("workflows_delete_desc", { name: deleteTarget?.title || "" })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="mt-8">
@@ -668,8 +652,7 @@ export default function WorkflowsPage() {
               onClick={handleDelete}
               disabled={deleting}
               className="rounded-none bg-rose-600 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-rose-700 px-8 h-auto py-4"
-            >
-              {deleting ? t("action_purging") : t("action_confirm_delete")}
+            >{deleting ? t("action_purging") : t("action_confirm_delete")}
             </AlertDialogAction>
           </AlertDialogFooter>
           <CornerMarks color="rose" />

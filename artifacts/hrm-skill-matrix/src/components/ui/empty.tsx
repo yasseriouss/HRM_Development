@@ -24,8 +24,7 @@ function EmptyHeader({ className, ...props }: React.ComponentProps<"div">) {
         className
       )}
       {...props}
-    />
-  )
+    />)
 }
 
 const emptyMediaVariants = cva(

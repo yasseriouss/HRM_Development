@@ -37,7 +37,7 @@ const CornerMarks = ({ color = "primary" }: { color?: string }) => (
 );
 
 function critBadge(crit: string, t: (k: any) => string) {
-  const map: Record<string, { bg: string; text: string; key: string }> = {
+  const map: Record<string, { bg: string; text: string; key: string }>= {
     Critical: { bg: "bg-rose-500/10", text: "text-rose-500", key: "crit_critical" },
     High: { bg: "bg-amber-500/10", text: "text-amber-500", key: "crit_high" },
     Medium: { bg: "bg-sky-500/10", text: "text-sky-500", key: "crit_medium" },
@@ -47,8 +47,7 @@ function critBadge(crit: string, t: (k: any) => string) {
   return (
     <Badge variant="outline" className={`rounded-none font-mono text-[9px] font-black border-current/20 px-2 py-0.5 ${config.bg} ${config.text} tracking-widest`}>
       {t(config.key)}
-    </Badge>
-  );
+    </Badge>);
 }
 
 interface SkillForm {
@@ -192,14 +191,13 @@ export default function SkillsPage() {
               <Shield className="h-4 w-4 text-primary animate-pulse" />
               <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">{t("label_skill_repository")}</span>
             </div>
-            <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
-              {t("skills_title")}
+            <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">{t("skills_title")}
             </h2>
             <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4">{t("skills_subtitle")}</p>
           </div>
           
           <div className="flex flex-wrap items-center gap-3">
-            <Button variant="outline" className="rounded-none border-white/10 bg-white/5 hover:bg-white/10 text-white font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto" onClick={() => exportToPDF({
+            <Button variant="outline" className="rounded-none border-white/10 bg-white/5 hover:bg-white/10 text-white font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto" onClick={() =>exportToPDF({
               title: t("skills_title"),
               filename: "Skills_Library",
               headers: [t("field_name"), t("field_code"), t("skills_col_category"), t("field_department"), t("skills_col_weight"), t("skills_col_criticality")],
@@ -207,7 +205,7 @@ export default function SkillsPage() {
             })}>
               <Download className="h-4 w-4 me-2" /> PDF
             </Button>
-            <Button variant="outline" className="rounded-none border-white/10 bg-white/5 hover:bg-white/10 text-white font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto" onClick={() => exportToExcel({
+            <Button variant="outline" className="rounded-none border-white/10 bg-white/5 hover:bg-white/10 text-white font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto" onClick={() =>exportToExcel({
               title: t("skills_title"),
               filename: "Skills_Library",
               headers: [t("field_name"), t("field_code"), t("skills_col_category"), t("field_department"), t("skills_col_weight"), t("skills_col_criticality")],
@@ -218,10 +216,10 @@ export default function SkillsPage() {
             {isAdmin && (
               <>
                 <Button variant="outline" className="rounded-none border-white/10 bg-white/5 hover:bg-white/10 text-white font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto" onClick={() => setShowImport(true)}>
-                  <Upload className="h-4 w-4 me-2" /> {t("action_import_csv")}
+                  <Upload className="h-4 w-4 me-2" />{t("action_import_csv")}
                 </Button>
                 <Button className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto hover:bg-primary/90" onClick={openCreate}>
-                  <Plus className="h-4 w-4 me-2" /> {t("action_register_skill")}
+                  <Plus className="h-4 w-4 me-2" />{t("action_register_skill")}
                 </Button>
               </>
             )}
@@ -266,8 +264,7 @@ export default function SkillsPage() {
       {/* Data Table */}
       <div className="relative border border-white/10 bg-[#0A0A0A] overflow-hidden">
         {isLoading ? (
-          <div className="p-8 space-y-4">
-             {Array.from({ length: 6 }).map((_, i) => (
+          <div className="p-8 space-y-4">{Array.from({ length: 6 }).map((_, i) => (
                 <Skeleton key={i} className="h-16 w-full bg-white/5 rounded-none" />
              ))}
           </div>
@@ -343,24 +340,23 @@ export default function SkillsPage() {
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5" />
           <div className="relative z-10">
             <div className="p-8 border-b border-white/10 bg-white/5">
-              <h2 className="font-headline font-black text-2xl text-white uppercase tracking-tighter">
-                {editTarget ? t("action_reconfigure") : t("action_init_asset")}
+              <h2 className="font-headline font-black text-2xl text-white uppercase tracking-tighter">{editTarget ? t("action_reconfigure") : t("action_init_asset")}
               </h2>
-              <p className="text-[10px] font-mono text-primary tracking-[0.3em] mt-2 uppercase">NODE_REGISTRATION_v2.0</p>
+              <p className="text-[10px] font-mono text-primary tracking-[0.3em] mt-2 uppercase">NODE REGISTRATION_v2.0</p>
             </div>
             
             <div className="p-10 grid grid-cols-2 gap-8">
               <div className="col-span-2 space-y-3">
                 <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_name")} *</Label>
-                <Input placeholder="ASSET_IDENTIFIER" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white focus-visible:ring-primary/50" />
+                <Input placeholder="ASSET IDENTIFIER" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white focus-visible:ring-primary/50" />
               </div>
               <div className="space-y-3">
                 <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_code")}</Label>
-                <Input placeholder="HEX_UID" value={form.code} onChange={(e) => setForm({ ...form, code: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white" />
+                <Input placeholder="HEX UID" value={form.code} onChange={(e) => setForm({ ...form, code: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white" />
               </div>
               <div className="space-y-3">
                 <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_department")} *</Label>
-                <Select value={form.department_id || "none"} onValueChange={(v) => setForm({ ...form, department_id: v === "none" ? "" : v })}>
+                <Select value={form.department_id || "none"} onValueChange={(v) =>setForm({ ...form, department_id: v === "none" ? "" : v })}>
                   <SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
                     <SelectValue placeholder={t("select_none")} />
                   </SelectTrigger>
@@ -372,7 +368,7 @@ export default function SkillsPage() {
               </div>
               <div className="space-y-3">
                 <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("skills_col_category")}</Label>
-                <Input placeholder="SYSTEM_CLASS" value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white" />
+                <Input placeholder="SYSTEM CLASS" value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white" />
               </div>
               <div className="space-y-3">
                 <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("skills_col_weight")} *</Label>
@@ -391,14 +387,13 @@ export default function SkillsPage() {
               </div>
               <div className="col-span-2 space-y-3">
                 <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_description")}</Label>
-                <Input placeholder="TECHNICAL_SPECIFICATIONS..." value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white" />
+                <Input placeholder="TECHNICAL SPECIFICATIONS..." value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white" />
               </div>
             </div>
             
             <div className="p-8 border-t border-white/10 bg-white/5 flex justify-end gap-4">
-              <Button variant="ghost" className="rounded-none font-headline font-black text-[10px] tracking-widest uppercase text-white hover:bg-white/5" onClick={() => { setShowCreate(false); setEditTarget(null); }}>{t("common_cancel")}</Button>
-              <Button onClick={handleSave} disabled={saving} className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase px-10 py-6 h-auto">
-                {saving ? t("action_synchronizing") : editTarget ? t("action_apply_config") : t("action_init_asset")}
+              <Button variant="ghost" className="rounded-none font-headline font-black text-[10px] tracking-widest uppercase text-white hover:bg-white/5" onClick={() =>{ setShowCreate(false); setEditTarget(null); }}>{t("common_cancel")}</Button>
+              <Button onClick={handleSave} disabled={saving} className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase px-10 py-6 h-auto">{saving ? t("action_synchronizing") : editTarget ? t("action_apply_config") : t("action_init_asset")}
               </Button>
             </div>
           </div>
@@ -414,8 +409,7 @@ export default function SkillsPage() {
           </AlertDialogHeader>
           <AlertDialogFooter className="mt-8">
             <AlertDialogCancel className="rounded-none border-white/10 bg-white/5 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-white/10 h-auto py-4 px-8">{t("common_cancel")}</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete} disabled={deleting} className="rounded-none bg-rose-600 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-rose-700 px-8 h-auto py-4">
-              {deleting ? t("action_purging") : t("action_confirm_deactivate")}
+            <AlertDialogAction onClick={handleDelete} disabled={deleting} className="rounded-none bg-rose-600 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-rose-700 px-8 h-auto py-4">{deleting ? t("action_purging") : t("action_confirm_deactivate")}
             </AlertDialogAction>
           </AlertDialogFooter>
           <CornerMarks color="rose" />

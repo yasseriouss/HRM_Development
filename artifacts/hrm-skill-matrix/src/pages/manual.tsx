@@ -74,20 +74,17 @@ export default function ManualPage() {
           <div className="text-center md:text-start space-y-4">
             <div className="flex items-center justify-center md:justify-start gap-3">
               <div className="h-1 w-8 bg-primary" />
-              <span className="font-headline font-black tracking-[0.4em] uppercase text-[10px] text-primary">
-                {t("manual_protocol")}
+              <span className="font-headline font-black tracking-[0.4em] uppercase text-[10px] text-primary">{t("manual_protocol")}
               </span>
               <div className="h-1 w-8 bg-primary" />
             </div>
-            <h1 className="text-5xl md:text-7xl font-headline font-black tracking-tighter text-white uppercase leading-none">
-              {t("manual_title")}
+            <h1 className="text-5xl md:text-7xl font-headline font-black tracking-tighter text-white uppercase leading-none">{t("manual_title")}
             </h1>
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 pt-2">
               <Badge variant="outline" className="border-primary/50 text-primary bg-primary/5 rounded-none px-4 py-1 font-mono text-[10px]">
                 BUILD v2.4.8
               </Badge>
-              <Badge variant="outline" className="border-secondary/50 text-secondary bg-secondary/5 rounded-none px-4 py-1 font-mono text-[10px]">
-                AUTH_LEVEL: ADMIN
+              <Badge variant="outline" className="border-secondary/50 text-secondary bg-secondary/5 rounded-none px-4 py-1 font-mono text-[10px]">AUTH LEVEL: ADMIN
               </Badge>
               <Badge variant="outline" className="border-emerald-500/50 text-emerald-500 bg-emerald-500/5 rounded-none px-4 py-1 font-mono text-[10px]">
                 STATUS: ENCRYPTED
@@ -101,8 +98,7 @@ export default function ManualPage() {
       {/* Main Navigation Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-12">
         <div className="flex justify-center sticky top-4 z-50">
-          <TabsList className="bg-[#0A0A0A]/90 backdrop-blur-xl border border-primary/30 p-1 rounded-none shadow-2xl">
-            {[
+          <TabsList className="bg-[#0A0A0A]/90 backdrop-blur-xl border border-primary/30 p-1 rounded-none shadow-2xl">{[
               { id: "overview", icon: LayoutDashboard, label: t("manual_tab_overview") },
               { id: "skills", icon: BrainCircuit, label: t("manual_tab_skills") },
               { id: "evaluation", icon: Scaling, label: t("manual_tab_evaluation") },
@@ -128,16 +124,13 @@ export default function ManualPage() {
                   <div className="absolute top-0 left-0 w-1 h-full bg-primary opacity-30 group-hover:opacity-100 transition-opacity" />
                   <CardHeader className="pb-2">
                     <CardTitle className="font-headline text-2xl font-black uppercase flex items-center gap-3">
-                      <Target className="h-6 w-6 text-primary" />
-                      {t("manual_strategic_obj")}
+                      <Target className="h-6 w-6 text-primary" />{t("manual_strategic_obj")}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="text-secondary/70 leading-relaxed font-medium">
-                    <p className="border-s-2 border-primary/20 ps-4 py-2 italic bg-primary/5">
-                      {t("manual_strategic_vision")}
+                    <p className="border-s-2 border-primary/20 ps-4 py-2 italic bg-primary/5">{t("manual_strategic_vision")}
                     </p>
-                    <p className="mt-4">
-                      {t("manual_strategic_desc")}
+                    <p className="mt-4">{t("manual_strategic_desc")}
                     </p>
                   </CardContent>
                   <CornerMarks />
@@ -149,13 +142,11 @@ export default function ManualPage() {
                   <div className="absolute top-0 left-0 w-1 h-full bg-emerald-500 opacity-30 group-hover:opacity-100 transition-opacity" />
                   <CardHeader className="pb-2">
                     <CardTitle className="font-headline text-2xl font-black uppercase flex items-center gap-3">
-                      <ShieldCheck className="h-6 w-6 text-emerald-500" />
-                      {t("manual_security_protocol")}
+                      <ShieldCheck className="h-6 w-6 text-emerald-500" />{t("manual_security_protocol")}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="text-secondary/70 leading-relaxed font-medium">
-                    <div className="space-y-4">
-                      {[
+                    <div className="space-y-4">{[
                         { r: "ADMIN", d: t("manual_role_admin") },
                         { r: "MANAGER", d: t("manual_role_manager") },
                         { r: "COORDINATOR", d: t("manual_role_coordinator") }
@@ -175,8 +166,7 @@ export default function ManualPage() {
 
           <TabsContent value="skills" className="mt-0">
             <motion.div variants={container} initial="hidden" animate="show" className="space-y-12">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {[
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">{[
                   { class: "CLASS A", color: "border-emerald-500", text: "text-emerald-500", label: "EXPERT", desc: t("manual_class_a_desc") },
                   { class: "CLASS B", color: "border-primary", text: "text-primary", label: "ADVANCED", desc: t("manual_class_b_desc") },
                   { class: "CLASS C", color: "border-rose-500", text: "text-rose-500", label: "TRAINEE", desc: t("manual_class_c_desc") }
@@ -194,11 +184,9 @@ export default function ManualPage() {
 
               <motion.div variants={item} className="p-12 bg-[#0E0E0E] border border-primary/20 relative">
                 <h3 className="font-headline text-3xl font-black uppercase text-primary mb-12 flex items-center gap-4">
-                  <Zap className="h-8 w-8" />
-                  {t("manual_pipeline_title")}
+                  <Zap className="h-8 w-8" />{t("manual_pipeline_title")}
                 </h3>
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                  {[
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">{[
                     { s: "01", t: t("manual_step_define"), d: t("manual_step_define_desc") },
                     { s: "02", t: t("manual_step_deploy"), d: t("manual_step_deploy_desc") },
                     { s: "03", t: t("manual_step_execute"), d: t("manual_step_execute_desc") },
@@ -223,12 +211,10 @@ export default function ManualPage() {
                 <motion.div variants={item} className="space-y-8">
                   <div className="flex items-center gap-4">
                     <Scaling className="h-10 w-10 text-primary" />
-                    <h3 className="font-headline text-4xl font-black uppercase text-white leading-none">
-                      {t("manual_point_factor_title")}
+                    <h3 className="font-headline text-4xl font-black uppercase text-white leading-none">{t("manual_point_factor_title")}
                     </h3>
                   </div>
-                  <div className="space-y-4">
-                    {[
+                  <div className="space-y-4">{[
                       { l: t("manual_factor_skills"), w: "350", p: "35%", d: t("manual_factor_skills_desc") },
                       { l: t("manual_factor_responsibility"), w: "350", p: "35%", d: t("manual_factor_responsibility_desc") },
                       { l: t("manual_factor_effort"), w: "100", p: "10%", d: t("manual_factor_effort_desc") },
@@ -251,8 +237,7 @@ export default function ManualPage() {
                 <motion.div variants={item} className="space-y-8">
                   <div className="flex items-center gap-4">
                     <Layers className="h-10 w-10 text-primary" />
-                    <h3 className="font-headline text-4xl font-black uppercase text-white leading-none">
-                      {t("manual_grade_hierarchy")}
+                    <h3 className="font-headline text-4xl font-black uppercase text-white leading-none">{t("manual_grade_hierarchy")}
                     </h3>
                   </div>
                   <div className="bg-[#0A0A0A] border border-primary/30 p-1 relative overflow-hidden">
@@ -286,8 +271,7 @@ export default function ManualPage() {
                     <div className="h-10 w-10 rounded-full border border-primary flex items-center justify-center animate-pulse">
                       <Info className="h-5 w-5 text-primary" />
                     </div>
-                    <p className="text-xs text-secondary/60 leading-tight">
-                      {t("manual_grade_notice")}
+                    <p className="text-xs text-secondary/60 leading-tight">{t("manual_grade_notice")}
                     </p>
                   </div>
                 </motion.div>
@@ -302,22 +286,21 @@ export default function ManualPage() {
                   <div className="h-12 w-12 bg-white/5 border border-white/10 flex items-center justify-center">
                     <FileJson className="h-6 w-6 text-primary" />
                   </div>
-                  <h3 className="font-headline text-3xl font-black uppercase text-white">DATA_SCHEMA</h3>
+                  <h3 className="font-headline text-3xl font-black uppercase text-white">DATA SCHEMA</h3>
                 </div>
                 <div className="relative group">
                   <div className="absolute -inset-0.5 bg-linear-to-r from-primary/50 to-transparent opacity-30 group-hover:opacity-50 blur transition duration-1000"></div>
                   <div className="relative bg-[#050505] border border-white/10 p-8 font-mono text-[11px] text-emerald-500 overflow-x-auto">
                     <div className="flex justify-between items-center mb-4 border-b border-white/5 pb-2">
-                      <span className="text-white/30 text-[9px]">METHODOLOGY_STRUCT.JSON</span>
+                      <span className="text-white/30 text-[9px]">METHODOLOGY STRUCT.JSON</span>
                       <div className="flex gap-1">
                         <div className="h-2 w-2 rounded-full bg-rose-500" />
                         <div className="h-2 w-2 rounded-full bg-amber-500" />
                         <div className="h-2 w-2 rounded-full bg-emerald-500" />
                       </div>
                     </div>
-                    <pre className="leading-relaxed">
-{`{
-  "protocol": "POINT_FACTOR",
+                    <pre className="leading-relaxed">{`{
+  "protocol": "POINT FACTOR",
   "calibration": {
     "total_units": 1000,
     "granularity": 5,
@@ -342,13 +325,13 @@ export default function ManualPage() {
                   <div className="h-12 w-12 bg-white/5 border border-white/10 flex items-center justify-center">
                     <Download className="h-6 w-6 text-primary" />
                   </div>
-                  <h3 className="font-headline text-3xl font-black uppercase text-white">SYSTEM_EXPORTS</h3>
+                  <h3 className="font-headline text-3xl font-black uppercase text-white">SYSTEM EXPORTS</h3>
                 </div>
                 <div className="space-y-4">
                   {[
-                    { l: "PDF_EVALUATION_REPORT", v: "v2.1", s: "SECURE", c: "text-rose-500" },
-                    { l: "XLSX_DATA_MATRIX", v: "v3.0", s: "READY", c: "text-emerald-500" },
-                    { l: "JSON_SYSTEM_STATE", v: "v1.5", s: "PROTECTED", c: "text-primary" }
+                    { l: "PDF EVALUATION REPORT", v: "v2.1", s: "SECURE", c: "text-rose-500" },
+                    { l: "XLSX DATA MATRIX", v: "v3.0", s: "READY", c: "text-emerald-500" },
+                    { l: "JSON SYSTEM STATE", v: "v1.5", s: "PROTECTED", c: "text-primary" }
                   ].map((e, i) => (
                     <div key={i} className="flex items-center justify-between p-6 bg-[#121212] border border-white/5 group hover:border-primary/50 transition-all relative">
                       <div className="flex items-center gap-6">
@@ -382,15 +365,14 @@ export default function ManualPage() {
         <div className="flex items-center gap-4">
           <div className="h-px w-20 bg-primary/30" />
           <div className="flex items-center gap-3 px-8 py-3 bg-[#0A0A0A] border border-primary/40 text-[10px] text-primary/80 font-headline font-black tracking-[0.5em] uppercase">
-            <Info className="h-4 w-4" />
-            {t("manual_footer_suite")}
+            <Info className="h-4 w-4" />{t("manual_footer_suite")}
           </div>
           <div className="h-px w-20 bg-primary/30" />
         </div>
         <div className="flex gap-8 text-[9px] font-mono text-secondary/20 uppercase tracking-[0.2em]">
-          <span>Â© DEEPMIND_SYSTEMS</span>
+          <span>Â© DEEPMIND SYSTEMS</span>
           <span>LATENCY: 0.002MS</span>
-          <span>KERN_MOD: HR_EVAL_SCORER</span>
+          <span>KERN MOD: HR EVAL SCORER</span>
         </div>
       </motion.div>
     </div>

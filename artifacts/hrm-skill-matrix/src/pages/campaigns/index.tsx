@@ -35,7 +35,7 @@ const CornerMarks = ({ color = "primary" }: { color?: string }) => (
 );
 
 function statusBadge(status: string, t: (k: any) => string) {
-  const map: Record<string, { cls: string; key: string }> = {
+  const map: Record<string, { cls: string; key: string }>= {
     Active: { cls: "border-emerald-500/30 bg-emerald-500/10 text-emerald-500", key: "status_active" },
     Completed: { cls: "border-blue-500/30 bg-blue-500/10 text-blue-500", key: "status_completed" },
     Draft: { cls: "border-amber-500/30 bg-amber-500/10 text-amber-500", key: "status_draft" },
@@ -45,8 +45,7 @@ function statusBadge(status: string, t: (k: any) => string) {
   return (
     <Badge variant="outline" className={`rounded-none font-mono text-[9px] font-black tracking-widest px-2 py-0.5 uppercase ${cfg.cls}`}>
       {t(cfg.key as any)}
-    </Badge>
-  );
+    </Badge>);
 }
 
 interface CampaignForm {
@@ -178,15 +177,14 @@ export default function CampaignsPage() {
               <Activity className="h-4 w-4 text-primary animate-pulse" />
               <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">{t("label_mission_control")}</span>
             </div>
-            <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
-              {t("campaigns_title")}
+            <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">{t("campaigns_title")}
             </h2>
             <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4">{t("campaigns_subtitle")}</p>
           </div>
 
           {isAdmin && (
             <Button className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-10 h-auto hover:bg-primary/90 shadow-[0_0_20px_rgba(255,255,255,0.05)]" onClick={openCreate}>
-              <Plus className="h-4 w-4 me-2" /> {t("action_init_campaign")}
+              <Plus className="h-4 w-4 me-2" />{t("action_init_campaign")}
             </Button>
           )}
         </div>
@@ -213,10 +211,8 @@ export default function CampaignsPage() {
                   <SelectValue placeholder={t("filter_by_status_label")} />
                 </SelectTrigger>
                 <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">
-                  <SelectItem value="all" className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{t("all_statuses")}</SelectItem>
-                  {CAMPAIGN_STATUSES.map((s) => (
-                    <SelectItem key={s} value={s} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">
-                      {t(`status_${s.toLowerCase()}` as any)}
+                  <SelectItem value="all" className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{t("all_statuses")}</SelectItem>{CAMPAIGN_STATUSES.map((s) => (
+                    <SelectItem key={s} value={s} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{t(`status_${s.toLowerCase()}` as any)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -226,7 +222,7 @@ export default function CampaignsPage() {
               <Button
                 variant="ghost"
                 className="h-14 px-6 rounded-none border border-white/10 text-secondary/40 hover:text-white font-headline font-black text-[10px] tracking-widest uppercase"
-                onClick={() => { setSearchQuery(""); setStatusFilter("all"); }}
+                onClick={() =>{ setSearchQuery(""); setStatusFilter("all"); }}
               >
                 {t("filter_reset")}
               </Button>
@@ -236,8 +232,7 @@ export default function CampaignsPage() {
       </Card>
 
       {/* Campaign Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {isLoading ? (
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">{isLoading ? (
           Array.from({ length: 6 }).map((_, i) => (
             <Card key={i} className="bg-[#0D0D0D] border-zinc-800 rounded-none h-48">
               <CardContent className="p-6">
@@ -251,8 +246,7 @@ export default function CampaignsPage() {
           <div className="col-span-full p-20 text-center border border-zinc-800 bg-[#0D0D0D]">
             <Target className="h-12 w-12 text-zinc-900 mx-auto mb-4" />
             <p className="font-mono text-xs text-zinc-600 uppercase tracking-[0.3em]">{t("label_no_active_missions")}</p>
-          </div>
-        ) : (
+          </div>) : (
           filteredCampaigns.map((c) => {
             const evaluated = c.evaluated_count;
             const total = c.total_employees;
@@ -264,8 +258,7 @@ export default function CampaignsPage() {
                 </div>
                 <CardHeader className="border-b border-zinc-900 pb-4">
                   <div className="flex justify-between items-start mb-2">
-                    <span className="text-[9px] font-mono text-zinc-600 uppercase tracking-widest">
-                      {c.type} // {c.department_id ? t("status_dept_specific") : t("status_global")}
+                    <span className="text-[9px] font-mono text-zinc-600 uppercase tracking-widest">{c.type} // {c.department_id ? t("status_dept_specific") : t("status_global")}
                     </span>
                     {statusBadge(c.status, t)}
                   </div>
@@ -276,8 +269,7 @@ export default function CampaignsPage() {
                 <CardContent className="pt-6 space-y-6">
                   <div className="flex items-center justify-between text-xs font-mono text-zinc-500 uppercase">
                     <div className="flex items-center gap-2">
-                      <CalendarDays className="h-3.5 w-3.5 text-primary/60" />
-                      {new Date(c.start_date).toLocaleDateString()} — {new Date(c.end_date).toLocaleDateString()}
+                      <CalendarDays className="h-3.5 w-3.5 text-primary/60" />{new Date(c.start_date).toLocaleDateString()} — {new Date(c.end_date).toLocaleDateString()}
                     </div>
                   </div>
 
@@ -302,8 +294,7 @@ export default function CampaignsPage() {
 
                   <div className="pt-4 border-t border-zinc-900 flex justify-between gap-3">
                     <Link href={`/campaigns/${c.id}`} className="flex-1">
-                      <Button className="w-full rounded-none bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 text-white font-headline font-black text-[10px] tracking-widest uppercase h-10">
-                        {t("campaign_enter_scores")}
+                      <Button className="w-full rounded-none bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 text-white font-headline font-black text-[10px] tracking-widest uppercase h-10">{t("campaign_enter_scores")}
                       </Button>
                     </Link>
                     {isAdmin && (
@@ -330,16 +321,15 @@ export default function CampaignsPage() {
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5" />
           <div className="relative z-10">
             <div className="p-8 border-b border-white/10 bg-white/5">
-              <h2 className="font-headline font-black text-2xl text-white uppercase tracking-tighter">
-                {editTarget ? t("action_reconfigure") : t("action_init_campaign")}
+              <h2 className="font-headline font-black text-2xl text-white uppercase tracking-tighter">{editTarget ? t("action_reconfigure") : t("action_init_campaign")}
               </h2>
-              <p className="text-[10px] font-mono text-primary tracking-[0.3em] mt-2 uppercase">STRATEGIC_EVAL_v2.1</p>
+              <p className="text-[10px] font-mono text-primary tracking-[0.3em] mt-2 uppercase">STRATEGIC EVAL_v2.1</p>
             </div>
 
             <div className="p-10 grid grid-cols-2 gap-8">
               <div className="col-span-2 space-y-3">
                 <Label className="font-headline font-black text-[10px] text-zinc-500 tracking-[0.2em] uppercase">{t("campaigns_col_title")} *</Label>
-                <Input placeholder="Q2_2026_EVALUATION" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="h-14 bg-zinc-900 border-zinc-800 rounded-none font-mono text-sm tracking-widest text-white focus-visible:ring-primary/50" />
+                <Input placeholder="Q2 2026 EVALUATION" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="h-14 bg-zinc-900 border-zinc-800 rounded-none font-mono text-sm tracking-widest text-white focus-visible:ring-primary/50" />
               </div>
 
               <div className="space-y-3">
@@ -348,8 +338,7 @@ export default function CampaignsPage() {
                   <SelectTrigger className="h-14 bg-zinc-900 border-zinc-800 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#121212] border-zinc-800 rounded-none text-white">
-                    {CAMPAIGN_TYPES.map((tp) => <SelectItem key={tp} value={tp} className="font-headline font-black text-[9px] tracking-widest uppercase">{tp}</SelectItem>)}
+                  <SelectContent className="bg-[#121212] border-zinc-800 rounded-none text-white">{CAMPAIGN_TYPES.map((tp) => <SelectItem key={tp} value={tp} className="font-headline font-black text-[9px] tracking-widest uppercase">{tp}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>
@@ -361,12 +350,11 @@ export default function CampaignsPage() {
                     <SelectTrigger className="h-14 bg-zinc-900 border-zinc-800 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-[#121212] border-zinc-800 rounded-none text-white">
-                      {CAMPAIGN_STATUSES.map((s) => <SelectItem key={s} value={s} className="font-headline font-black text-[9px] tracking-widest uppercase">{t(`status_${s.toLowerCase()}` as any)}</SelectItem>)}
+                    <SelectContent className="bg-[#121212] border-zinc-800 rounded-none text-white">{CAMPAIGN_STATUSES.map((s) => <SelectItem key={s} value={s} className="font-headline font-black text-[9px] tracking-widest uppercase">{t(`status_${s.toLowerCase()}` as any)}</SelectItem>)}
                     </SelectContent>
                   </Select>
                 ) : (
-                  <Select value={form.department_id || "all"} onValueChange={(v) => setForm({ ...form, department_id: v === "all" ? "" : v })}>
+                  <Select value={form.department_id || "all"} onValueChange={(v) =>setForm({ ...form, department_id: v === "all" ? "" : v })}>
                     <SelectTrigger className="h-14 bg-zinc-900 border-zinc-800 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
                       <SelectValue placeholder={t("campaigns_all_departments")} />
                     </SelectTrigger>
@@ -380,23 +368,22 @@ export default function CampaignsPage() {
 
               <div className="space-y-3">
                 <Label className="font-headline font-black text-[10px] text-zinc-500 tracking-[0.2em] uppercase">{t("field_start_date")} *</Label>
-                <Input type="date" value={form.start_date} onChange={(e) => setForm({ ...form, start_date: e.target.value })} disabled={!!editTarget} className="h-14 bg-zinc-900 border-zinc-800 rounded-none font-mono text-sm tracking-widest text-white uppercase disabled:opacity-30" />
+                <Input type="date" value={form.start_date} onChange={(e) =>setForm({ ...form, start_date: e.target.value })} disabled={!!editTarget} className="h-14 bg-zinc-900 border-zinc-800 rounded-none font-mono text-sm tracking-widest text-white uppercase disabled:opacity-30" />
               </div>
               <div className="space-y-3">
                 <Label className="font-headline font-black text-[10px] text-zinc-500 tracking-[0.2em] uppercase">{t("field_end_date")} *</Label>
-                <Input type="date" value={form.end_date} onChange={(e) => setForm({ ...form, end_date: e.target.value })} className="h-14 bg-zinc-900 border-zinc-800 rounded-none font-mono text-sm tracking-widest text-white uppercase" />
+                <Input type="date" value={form.end_date} onChange={(e) =>setForm({ ...form, end_date: e.target.value })} className="h-14 bg-zinc-900 border-zinc-800 rounded-none font-mono text-sm tracking-widest text-white uppercase" />
               </div>
 
               <div className="col-span-2 space-y-3">
                 <Label className="font-headline font-black text-[10px] text-zinc-500 tracking-[0.2em] uppercase">{t("field_notes")}</Label>
-                <Input placeholder="MISSION_OBJECTIVES..." value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} className="h-14 bg-zinc-900 border-zinc-800 rounded-none font-mono text-sm tracking-widest text-white" />
+                <Input placeholder="MISSION OBJECTIVES..." value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} className="h-14 bg-zinc-900 border-zinc-800 rounded-none font-mono text-sm tracking-widest text-white" />
               </div>
             </div>
 
             <div className="p-8 border-t border-white/10 bg-white/5 flex justify-end gap-4">
-              <Button variant="ghost" className="rounded-none font-headline font-black text-[10px] tracking-widest uppercase text-white hover:bg-white/5" onClick={() => { setShowCreate(false); setEditTarget(null); }}>{t("common_cancel")}</Button>
-              <Button onClick={handleSave} disabled={saving} className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase px-10 py-6 h-auto">
-                {saving ? t("action_synchronizing") : editTarget ? t("action_apply_config") : t("action_init_campaign")}
+              <Button variant="ghost" className="rounded-none font-headline font-black text-[10px] tracking-widest uppercase text-white hover:bg-white/5" onClick={() =>{ setShowCreate(false); setEditTarget(null); }}>{t("common_cancel")}</Button>
+              <Button onClick={handleSave} disabled={saving} className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase px-10 py-6 h-auto">{saving ? t("action_synchronizing") : editTarget ? t("action_apply_config") : t("action_init_campaign")}
               </Button>
             </div>
           </div>
@@ -412,8 +399,7 @@ export default function CampaignsPage() {
           </AlertDialogHeader>
           <AlertDialogFooter className="mt-8">
             <AlertDialogCancel className="rounded-none border-zinc-800 bg-zinc-900 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-zinc-800 h-auto py-4 px-8">{t("common_cancel")}</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete} disabled={deleting} className="rounded-none bg-rose-600 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-rose-700 px-8 h-auto py-4">
-              {deleting ? t("action_aborting") : t("action_confirm_abort")}
+            <AlertDialogAction onClick={handleDelete} disabled={deleting} className="rounded-none bg-rose-600 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-rose-700 px-8 h-auto py-4">{deleting ? t("action_aborting") : t("action_confirm_abort")}
             </AlertDialogAction>
           </AlertDialogFooter>
           <CornerMarks color="rose" />

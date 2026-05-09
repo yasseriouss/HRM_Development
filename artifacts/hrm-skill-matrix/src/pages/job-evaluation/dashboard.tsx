@@ -96,23 +96,21 @@ export default function JobEvaluationDashboard() {
               <Activity className="h-4 w-4 text-primary animate-pulse" />
               <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">{t("label_mission_control")}</span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
-              {t("je_analytics_title")}
+            <h1 className="text-4xl md:text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">{t("je_analytics_title")}
             </h1>
-            <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4 text-sm">
-              {t("je_analytics_subtitle")}
+            <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4 text-sm">{t("je_analytics_subtitle")}
             </p>
           </div>
           
           <div className="flex flex-wrap items-center gap-3">
             <Button variant="outline" className="rounded-none border-white/10 bg-white/5 hover:bg-white/10 font-headline font-black text-[10px] tracking-widest uppercase py-6 px-6 h-auto">
-              <Upload className="h-4 w-4 me-2" /> {t("action_import_stream")}
+              <Upload className="h-4 w-4 me-2" />{t("action_import_stream")}
             </Button>
             <Button variant="outline" className="rounded-none border-white/10 bg-white/5 hover:bg-white/10 font-headline font-black text-[10px] tracking-widest uppercase py-6 px-6 h-auto">
-              <FileDown className="h-4 w-4 me-2" /> {t("action_export_data")}
+              <FileDown className="h-4 w-4 me-2" />{t("action_export_data")}
             </Button>
             <Button className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto shadow-[0_0_20px_rgba(212,175,55,0.2)]">
-              <Plus className="h-4 w-4 me-2" /> {t("action_new_protocol")}
+              <Plus className="h-4 w-4 me-2" />{t("action_new_protocol")}
             </Button>
           </div>
         </div>
@@ -120,8 +118,7 @@ export default function JobEvaluationDashboard() {
       </motion.div>
 
       {/* Metrics Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {[
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">{[
           { label: t("je_total_jobs"), value: "142", icon: Briefcase, trend: "+12%", up: true, color: "primary" },
           { label: t("je_col_points"), value: "342", icon: BarChart3, trend: "+5.4%", up: true, color: "emerald-400" },
           { label: t("je_equity_analysis"), value: "92%", icon: TrendingUp, trend: "-2.1%", up: false, color: "amber-400" },
@@ -159,11 +156,9 @@ export default function JobEvaluationDashboard() {
             <CardHeader className="p-8 border-b border-zinc-900 flex flex-row items-center justify-between">
               <div>
                 <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
-                  <Cpu className="h-5 w-5 text-primary" />
-                  {t("je_equity_analysis")}
+                  <Cpu className="h-5 w-5 text-primary" />{t("je_equity_analysis")}
                 </CardTitle>
-                <CardDescription className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest mt-1">
-                   {t("je_scatter_title")}
+                <CardDescription className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest mt-1">{t("je_scatter_title")}
                 </CardDescription>
               </div>
               <Button variant="ghost" size="icon" className="h-8 w-8 rounded-none border border-zinc-800 hover:bg-white/5"><Filter className="h-4 w-4" /></Button>
@@ -188,7 +183,7 @@ export default function JobEvaluationDashboard() {
               </ResponsiveContainer>
               <div className="mt-4 p-4 bg-white/2 border border-zinc-900 font-mono text-[9px] text-zinc-600 uppercase tracking-widest flex items-center justify-between">
                  <span>{t("log_analytics_active")}</span>
-                 <span className="flex items-center gap-2 text-primary"><Activity className="h-3 w-3" /> {t("log_live_sync")}</span>
+                 <span className="flex items-center gap-2 text-primary"><Activity className="h-3 w-3" />{t("log_live_sync")}</span>
               </div>
             </CardContent>
             <CornerMarks />
@@ -199,11 +194,9 @@ export default function JobEvaluationDashboard() {
         <motion.div variants={itemVariants}>
           <Card className="bg-[#0A0A0A] border border-zinc-800 rounded-none relative overflow-hidden h-full">
             <CardHeader className="p-8 border-b border-zinc-900">
-              <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter">
-                {t("je_grade_dist")}
+              <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter">{t("je_grade_dist")}
               </CardTitle>
-              <CardDescription className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest mt-1">
-                 {t("je_weight_title")}
+              <CardDescription className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest mt-1">{t("je_weight_title")}
               </CardDescription>
             </CardHeader>
             <CardContent className="p-8 flex flex-col items-center justify-center">
@@ -251,11 +244,9 @@ export default function JobEvaluationDashboard() {
           <CardHeader className="p-8 border-b border-zinc-900 flex flex-row items-center justify-between">
             <div>
               <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
-                <Shield className="h-5 w-5 text-primary" />
-                {t("je_recent_logs")}
+                <Shield className="h-5 w-5 text-primary" />{t("je_recent_logs")}
               </CardTitle>
-              <CardDescription className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest mt-1">
-                 {t("log_audit_trail")}
+              <CardDescription className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest mt-1">{t("log_audit_trail")}
               </CardDescription>
             </div>
             <div className="relative">
@@ -298,13 +289,11 @@ export default function JobEvaluationDashboard() {
                           job.status === "Approved" ? "bg-emerald-500/10 text-emerald-500" :
                           job.status === "Pending" ? "bg-amber-500/10 text-amber-500" :
                           "bg-zinc-800 text-zinc-500"
-                        }`}>
-                          {job.status === "Approved" ? t("status_active") : job.status === "Pending" ? t("status_draft") : t("status_draft")}
+                        }`}>{job.status === "Approved" ? t("status_active") : job.status === "Pending" ? t("status_draft") : t("status_draft")}
                         </Badge>
                       </td>
                       <td className="px-8 py-5 text-end">
-                        <Button variant="ghost" className="rounded-none border border-zinc-800 hover:border-primary/50 text-[9px] font-headline font-black tracking-widest uppercase h-auto py-2 px-4 group/btn">
-                           {t("action_access_details")} <ExternalLink className="ms-2 h-3 w-3" />
+                        <Button variant="ghost" className="rounded-none border border-zinc-800 hover:border-primary/50 text-[9px] font-headline font-black tracking-widest uppercase h-auto py-2 px-4 group/btn">{t("action_access_details")} <ExternalLink className="ms-2 h-3 w-3" />
                         </Button>
                       </td>
                     </tr>
@@ -323,8 +312,7 @@ export default function JobEvaluationDashboard() {
          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
             <div className="space-y-2">
                <p className="font-headline font-black text-sm text-primary uppercase tracking-[0.3em]">{t("log_system_core_ready")}</p>
-               <p className="text-[10px] font-mono text-zinc-600 leading-relaxed uppercase tracking-widest">
-                  {t("log_encrypted_stream")}
+               <p className="text-[10px] font-mono text-zinc-600 leading-relaxed uppercase tracking-widest">{t("log_encrypted_stream")}
                </p>
             </div>
             <div className="flex items-center gap-6 font-mono text-[9px] text-zinc-500 uppercase tracking-widest">

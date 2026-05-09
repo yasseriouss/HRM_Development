@@ -23,7 +23,7 @@ export default function Hub() {
   const user = getAuthUser();
   const t = useT();
 
-  useEffect(() => {
+  useEffect(() =>{
     // Show splash for 2.5 seconds
     const timer = setTimeout(() => {
       setShowSplash(false);
@@ -109,7 +109,7 @@ export default function Hub() {
               <img 
                 src={`${import.meta.env.BASE_URL}logo.png`}
                 alt="Grand Line ERP Logo" 
-                className="w-48 h-48 object-contain mb-8 filter drop-shadow-[0_0_15px_rgba(212,175,55,0.5)]" 
+                className="w-48 h-48 object-contain mb-8 filter drop-shadow-[0 0 15px_rgba(212,175,55,0.5)]" 
               />
               <h1 className="text-3xl tracking-[0.3em] font-headline text-primary uppercase">
                 GRAND LINE ERP
@@ -129,11 +129,9 @@ export default function Hub() {
           >
             <div className="max-w-7xl mx-auto">
               <header className="mb-12 text-center">
-                <h1 className="text-4xl font-headline tracking-widest uppercase mb-4 text-primary">
-                  {t("label_main_directory")}
+                <h1 className="text-4xl font-headline tracking-widest uppercase mb-4 text-primary">{t("label_main_directory")}
                 </h1>
-                <p className="text-muted-foreground uppercase tracking-widest font-mono">
-                  {t("label_select_destination")}
+                <p className="text-muted-foreground uppercase tracking-widest font-mono">{t("label_select_destination")}
                 </p>
               </header>
 
