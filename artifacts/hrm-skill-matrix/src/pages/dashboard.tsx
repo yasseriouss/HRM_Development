@@ -137,8 +137,8 @@ export default function Dashboard() {
       >
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
+          <div className="space-y-4 text-center md:text-start">
+            <div className="flex items-center justify-center md:justify-start gap-3">
               <div className="h-2 w-2 bg-primary animate-pulse" />
               <span className={`font-headline font-black tracking-[0.5em] text-[10px] text-primary uppercase ${isAr ? 'font-tajawal' : ''}`}>
                 {t("dash_command_center")}
@@ -147,7 +147,7 @@ export default function Dashboard() {
             <h2 className={`text-5xl md:text-7xl font-headline font-black tracking-tighter text-white uppercase leading-none ${isAr ? 'font-tajawal' : ''}`}>
               {t("dashboard_title")}
             </h2>
-            <p className={`text-secondary/50 font-medium border-s-2 border-primary/20 ps-4 ${isAr ? 'font-tajawal border-e-2 border-s-0 pe-4 ps-0' : ''}`}>{t("dashboard_subtitle")}</p>
+            <p className={`text-secondary/50 font-medium border-primary/20 ${isAr ? 'font-tajawal border-e-2 pe-4 ps-0' : 'border-s-2 ps-4'}`}>{t("dashboard_subtitle")}</p>
           </div>
           <div className="flex gap-4">
             <div className="p-6 bg-white/5 border border-white/10 text-center min-w-[120px]">
@@ -177,17 +177,17 @@ export default function Dashboard() {
             <motion.div variants={item}>
               <Card className="bg-[#121212] border border-white/10 rounded-none relative group hover:border-primary/50 transition-all">
                 <CardContent className="p-8">
-                  <div className="flex items-start justify-between">
+                  <div className="flex flex-col items-center justify-center text-center">
+                    <div className="p-4 bg-white/5 border border-white/5 group-hover:border-primary/30 transition-colors mb-6">
+                      <Users className="h-6 w-6 text-primary" />
+                    </div>
                     <div>
                       <p className={`text-[10px] font-headline font-black tracking-widest text-secondary/40 uppercase ${isAr ? 'font-tajawal' : ''}`}>{t("dashboard_total_employees")}</p>
-                      <h3 className="text-4xl font-mono font-black text-white mt-4 leading-none">{metrics.total_employees}</h3>
-                      <div className={`flex items-center gap-2 mt-4 text-[10px] font-bold text-emerald-500 ${isAr ? 'font-tajawal' : ''}`}>
+                      <h3 className="text-5xl font-mono font-black text-white mt-4 leading-none">{metrics.total_employees}</h3>
+                      <div className={`flex items-center justify-center gap-2 mt-6 text-[10px] font-bold text-emerald-500 ${isAr ? 'font-tajawal' : ''}`}>
                         <Activity className="h-3 w-3" />
                         {metrics.active_employees} {t("dashboard_active")}
                       </div>
-                    </div>
-                    <div className="p-4 bg-white/5 border border-white/5 group-hover:border-primary/30 transition-colors">
-                      <Users className="h-6 w-6 text-primary" />
                     </div>
                   </div>
                 </CardContent>
@@ -198,20 +198,20 @@ export default function Dashboard() {
             <motion.div variants={item}>
               <Card className="bg-[#121212] border border-white/10 rounded-none relative group hover:border-emerald-500/50 transition-all">
                 <CardContent className="p-8">
-                  <div className="flex items-start justify-between">
-                    <div>
+                  <div className="flex flex-col items-center justify-center text-center">
+                    <div className="p-4 bg-white/5 border border-white/5 group-hover:border-emerald-500/30 transition-colors mb-6">
+                      <Target className="h-6 w-6 text-emerald-500" />
+                    </div>
+                    <div className="w-full">
                       <p className={`text-[10px] font-headline font-black tracking-widest text-secondary/40 uppercase ${isAr ? 'font-tajawal' : ''}`}>{t("dashboard_avg_skill_match")}</p>
-                      <h3 className="text-4xl font-mono font-black text-white mt-4 leading-none">{metrics.average_skill_percentage}%</h3>
-                      <div className="mt-4 w-full h-1 bg-white/5 overflow-hidden">
+                      <h3 className="text-5xl font-mono font-black text-white mt-4 leading-none">{metrics.average_skill_percentage}%</h3>
+                      <div className="mt-6 w-full h-1 bg-white/5 overflow-hidden">
                         <motion.div 
                           initial={{ width: 0 }}
                           animate={{ width: `${metrics.average_skill_percentage}%` }}
                           className="h-full bg-emerald-500"
                         />
                       </div>
-                    </div>
-                    <div className="p-4 bg-white/5 border border-white/5 group-hover:border-emerald-500/30 transition-colors">
-                      <Target className="h-6 w-6 text-emerald-500" />
                     </div>
                   </div>
                 </CardContent>
@@ -222,14 +222,14 @@ export default function Dashboard() {
             <motion.div variants={item}>
               <Card className="bg-[#121212] border border-white/10 rounded-none relative group hover:border-amber-500/50 transition-all">
                 <CardContent className="p-8">
-                  <div className="flex items-start justify-between">
+                  <div className="flex flex-col items-center justify-center text-center">
+                    <div className="p-4 bg-white/5 border border-white/5 group-hover:border-amber-500/30 transition-colors mb-6">
+                      <Zap className="h-6 w-6 text-amber-500" />
+                    </div>
                     <div>
                       <p className={`text-[10px] font-headline font-black tracking-widest text-secondary/40 uppercase ${isAr ? 'font-tajawal' : ''}`}>{t("dashboard_active_campaigns")}</p>
-                      <h3 className="text-4xl font-mono font-black text-white mt-4 leading-none">{metrics.active_campaigns}</h3>
-                      <p className={`mt-4 text-[10px] font-bold text-amber-500 ${isAr ? 'font-tajawal' : ''}`}>{t("je_stat_sync")}</p>
-                    </div>
-                    <div className="p-4 bg-white/5 border border-white/5 group-hover:border-amber-500/30 transition-colors">
-                      <Zap className="h-6 w-6 text-amber-500" />
+                      <h3 className="text-5xl font-mono font-black text-white mt-4 leading-none">{metrics.active_campaigns}</h3>
+                      <p className={`mt-6 text-[10px] font-bold text-amber-500 ${isAr ? 'font-tajawal' : ''}`}>{t("je_stat_sync")}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -240,14 +240,14 @@ export default function Dashboard() {
             <motion.div variants={item}>
               <Card className="bg-[#121212] border border-white/10 rounded-none relative group hover:border-rose-500/50 transition-all">
                 <CardContent className="p-8">
-                  <div className="flex items-start justify-between">
+                  <div className="flex flex-col items-center justify-center text-center">
+                    <div className="p-4 bg-white/5 border border-white/5 group-hover:border-rose-500/30 transition-colors mb-6">
+                      <ShieldAlert className="h-6 w-6 text-rose-500" />
+                    </div>
                     <div>
                       <p className={`text-[10px] font-headline font-black tracking-widest text-secondary/40 uppercase ${isAr ? 'font-tajawal' : ''}`}>{t("je_stat_threat")}</p>
-                      <h3 className="text-4xl font-mono font-black text-white mt-4 leading-none">{t("je_level_low")}</h3>
-                      <p className={`mt-4 text-[10px] font-bold text-rose-500 uppercase ${isAr ? 'font-tajawal' : ''}`}>{t("je_stat_no_failures")}</p>
-                    </div>
-                    <div className="p-4 bg-white/5 border border-white/5 group-hover:border-rose-500/30 transition-colors">
-                      <ShieldAlert className="h-6 w-6 text-rose-500" />
+                      <h3 className="text-5xl font-mono font-black text-white mt-4 leading-none">{t("je_level_low")}</h3>
+                      <p className={`mt-6 text-[10px] font-bold text-rose-500 uppercase ${isAr ? 'font-tajawal' : ''}`}>{t("je_stat_no_failures")}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -272,17 +272,15 @@ export default function Dashboard() {
             transition={{ delay: 0.4 + (i * 0.1) }}
           >
             <Card className={`bg-[#0A0A0A] border border-white/5 border-t-4 border-t-${c.color}-500 rounded-none p-6 relative`}>
-              <div className="flex justify-between items-center mb-6">
-                <span className={`font-headline font-black text-lg text-${c.color}-400 ${isAr ? 'font-tajawal' : ''}`}>{c.tier}</span>
-                <span className={`text-[9px] font-mono font-black px-2 py-1 bg-${c.color}-500/10 text-${c.color}-500 border border-${c.color}-500/20`}>LEVEL_{3-i}</span>
-              </div>
-              <div className="flex items-end justify-between">
-                <div>
-                  <p className={`text-[10px] font-bold text-secondary/40 tracking-widest ${isAr ? 'font-tajawal' : ''}`}>{c.label}</p>
-                  <p className="text-3xl font-mono font-black text-white mt-1">{c.count}</p>
+              <div className="flex flex-col items-center justify-center text-center">
+                <div className="flex justify-between items-center w-full mb-6">
+                  <span className={`font-headline font-black text-lg text-${c.color}-400 ${isAr ? 'font-tajawal' : ''}`}>{c.tier}</span>
+                  <span className={`text-[9px] font-mono font-black px-2 py-1 bg-${c.color}-500/10 text-${c.color}-500 border border-${c.color}-500/20`}>LEVEL_{3-i}</span>
                 </div>
-                <div className="text-end">
-                  <p className="text-2xl font-mono font-black text-white/20">{c.pct}</p>
+                <div className="space-y-2">
+                  <p className={`text-[10px] font-bold text-secondary/40 tracking-widest ${isAr ? 'font-tajawal' : ''}`}>{c.label}</p>
+                  <p className="text-5xl font-mono font-black text-white">{c.count}</p>
+                  <p className="text-lg font-mono font-black text-white/20 mt-2">{c.pct}%</p>
                 </div>
               </div>
               <CornerMarks color={c.color} />
@@ -336,16 +334,16 @@ export default function Dashboard() {
                 transition={{ delay: i * 0.1 }}
               >
                 <Card className="bg-[#121212] border border-white/10 rounded-none relative h-full group hover:border-primary/50 transition-all">
-                  <CardContent className="p-8">
-                    <div className="flex justify-between items-start mb-6">
-                      <Badge className={`rounded-none font-mono text-[9px] font-black tracking-widest uppercase ${
+                  <CardContent className="p-8 flex flex-col items-center justify-center text-center">
+                    <div className="flex flex-col items-center mb-6">
+                      <Badge className={`rounded-none font-mono text-[9px] font-black tracking-widest uppercase mb-4 ${
                         insight.priority === 'High' ? 'bg-rose-500/10 text-rose-500 border-rose-500/20' :
                         insight.priority === 'Medium' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' :
                         'bg-blue-500/10 text-blue-500 border-blue-500/20'
                       }`}>
                         {t("dash_priority")}_{insight.priority.toUpperCase()}
                       </Badge>
-                      <div className="w-1 h-8 bg-primary/20 group-hover:bg-primary transition-colors" />
+                      <div className="w-12 h-1 bg-primary/20 group-hover:bg-primary transition-colors" />
                     </div>
                     <h4 className={`font-headline font-black text-white text-sm uppercase tracking-tighter mb-4 group-hover:text-primary transition-colors ${isAr ? 'font-tajawal' : ''}`}>
                       {insight.title}
@@ -365,7 +363,7 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-7 gap-6">
         {/* Performance Stream */}
         <Card className="lg:col-span-4 bg-[#0A0A0A] border border-white/10 rounded-none relative overflow-hidden">
-          <CardHeader className="border-b border-white/5 py-8">
+          <CardHeader className="border-b border-white/5 py-8 flex items-center justify-center text-center">
             <CardTitle className={`font-headline text-xl font-black uppercase flex items-center gap-3 ${isAr ? 'font-tajawal' : ''}`}>
               <Cpu className="h-5 w-5 text-primary" />
               {t("dashboard_dept_performance")}
@@ -404,7 +402,7 @@ export default function Dashboard() {
 
         {/* Activity Intelligence */}
         <Card className="lg:col-span-3 bg-[#0A0A0A] border border-white/10 rounded-none relative">
-          <CardHeader className="border-b border-white/5 py-8">
+          <CardHeader className="border-b border-white/5 py-8 flex items-center justify-center text-center">
             <CardTitle className={`font-headline text-xl font-black uppercase flex items-center gap-3 ${isAr ? 'font-tajawal' : ''}`}>
               <Activity className="h-5 w-5 text-blue-500" />
               {t("dashboard_recent_activity")}
@@ -455,9 +453,9 @@ export default function Dashboard() {
           {SUITE_APPS.map((app) => (
             <a key={app.id} href={app.href} className="block group">
               <Card className={`h-full border border-white/10 bg-[#121212] transition-all hover:border-primary/50 rounded-none relative`}>
-                <CardContent className="p-8 flex flex-col items-center text-center gap-6">
-                  <div className={`p-6 bg-white/5 border border-white/5 ${app.color} transition-all group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary`}>
-                    <app.icon className="h-10 w-10" />
+                <CardContent className="p-8 flex flex-col items-center justify-center text-center gap-6">
+                  <div className={`p-8 bg-white/5 border border-white/5 ${app.color} transition-all group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary`}>
+                    <app.icon className="h-12 w-12" />
                   </div>
                   <div>
                     <h4 className={`font-headline font-black text-sm text-white uppercase tracking-widest group-hover:text-primary transition-colors ${isAr ? 'font-tajawal' : ''}`}>
