@@ -320,7 +320,7 @@ export default function EvaluationsPage() {
               
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <p className="text-[9px] font-mono text-zinc-500 uppercase tracking-[0.3em]">t("evaluations_spreadsheet_tool")</p>
+                  <p className="text-[9px] font-mono text-zinc-500 uppercase tracking-[0.3em]">{t("evaluations_spreadsheet_tool")}</p>
                   <Button asChild variant="outline" className="w-full justify-between h-auto py-5 rounded-none border-zinc-800 bg-zinc-900 hover:bg-zinc-800 group border-s-4 border-s-emerald-500">
                     <a href="/hrm-spreadsheet" className="flex items-center gap-3 w-full">
                       <Table className="h-5 w-5 text-emerald-500 group-hover:scale-110 transition-transform" />
@@ -334,7 +334,7 @@ export default function EvaluationsPage() {
                 </div>
 
                 <div className="space-y-2 pt-6 border-t border-white/5">
-                  <p className="text-[9px] font-mono text-zinc-500 uppercase tracking-[0.3em]">t("evaluations_download_template")</p>
+                  <p className="text-[9px] font-mono text-zinc-500 uppercase tracking-[0.3em]">{t("evaluations_download_template")}</p>
                   <Button asChild variant="outline" className="w-full justify-between h-auto py-5 rounded-none border-zinc-800 bg-zinc-900 hover:bg-zinc-800 group border-s-4 border-s-blue-500">
                     <a href="/hrm-skill-matrix-template.xlsx" download className="flex items-center gap-3 w-full">
                       <FileText className="h-5 w-5 text-blue-500 group-hover:scale-110 transition-transform" />
@@ -350,12 +350,12 @@ export default function EvaluationsPage() {
 
           <div className="p-8 border-2 border-emerald-500/10 bg-emerald-500/[0.02] relative overflow-hidden group">
              <Activity className="absolute -right-4 -top-4 h-24 w-24 text-emerald-500 opacity-5 group-hover:opacity-10 transition-all duration-700 group-hover:rotate-12" />
-             <p className="font-headline font-black text-[11px] text-emerald-500 uppercase tracking-[0.3em] mb-4">SYSTEM_INTELLIGENCE</p>
+             <p className="font-headline font-black text-[11px] text-emerald-500 uppercase tracking-[0.3em] mb-4">{t("label_system_intelligence")}</p>
              <p className="text-xs text-zinc-500 leading-relaxed uppercase tracking-tight font-medium">
-               HRM Suite connects evaluation data directly to the analytics engine for real-time factory intelligence.
+               {t("evaluations_intelligence_desc")}
              </p>
              <div className="mt-8 flex items-center gap-3 group/link cursor-pointer">
-                <span className="font-headline font-black text-[10px] text-white tracking-widest uppercase border-b border-transparent group-hover/link:border-emerald-500 transition-all">t("suite_dashboard")</span>
+                <span className="font-headline font-black text-[10px] text-white tracking-widest uppercase border-b border-transparent group-hover/link:border-emerald-500 transition-all">{t("suite_dashboard")}</span>
                 <TrendingUp className="h-3 w-3 text-emerald-500 group-hover/link:translate-x-1 transition-transform" />
              </div>
           </div>

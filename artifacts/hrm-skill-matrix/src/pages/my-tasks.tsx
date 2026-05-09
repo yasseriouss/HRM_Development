@@ -100,17 +100,17 @@ export default function MyTasksPage() {
           <div className="space-y-3">
             <div className="flex items-center gap-3">
               <ClipboardCheck className="h-4 w-4 text-primary" />
-              <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">TASK_SYNCHRONIZATION_MODULE</span>
+              <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">{t("label_task_sync")}</span>
             </div>
             <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
-              My Tasks
+              {t("nav_tasks")}
             </h2>
-            <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4 uppercase tracking-widest text-xs">Awaiting operational execution.</p>
+            <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4 uppercase tracking-widest text-xs">{t("tasks_subtitle_desc")}</p>
           </div>
           
           <div className="flex gap-4">
             <div className="p-6 bg-white/5 border border-white/10 text-center min-w-[140px]">
-              <p className="text-[9px] font-headline font-black text-secondary/40 tracking-widest uppercase">PENDING_QUE</p>
+              <p className="text-[9px] font-headline font-black text-secondary/40 tracking-widest uppercase">{t("label_pending_que")}</p>
               <p className="text-3xl font-mono font-black text-primary mt-1">{pending.length}</p>
             </div>
           </div>
@@ -130,7 +130,7 @@ export default function MyTasksPage() {
             <div className="space-y-6">
                <div className="flex items-center gap-4">
                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-zinc-800 to-transparent" />
-                 <h3 className="font-headline font-black text-[10px] text-zinc-500 uppercase tracking-[0.4em]">ACTIVE_QUE_STREAM</h3>
+                 <h3 className="font-headline font-black text-[10px] text-zinc-500 uppercase tracking-[0.4em]">{t("label_active_que")}</h3>
                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-zinc-800 to-transparent" />
                </div>
                
@@ -179,7 +179,7 @@ export default function MyTasksPage() {
 
                           <Link href={`/workflows/${task.workflow.id}`}>
                             <Button className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto shadow-[0_0_20px_rgba(255,255,255,0.05)] group-hover:scale-105 transition-transform">
-                              EXECUTE_ACTION <ArrowRight className="h-4 w-4 ms-2" />
+                              {t("action_execute_action")} <ArrowRight className="h-4 w-4 ms-2" />
                             </Button>
                           </Link>
                         </div>
@@ -196,7 +196,7 @@ export default function MyTasksPage() {
             <div className="space-y-6 pt-10">
                <div className="flex items-center gap-4">
                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-zinc-800 to-transparent" />
-                 <h3 className="font-headline font-black text-[10px] text-zinc-700 uppercase tracking-[0.4em]">ARCHIVED_LOG_STREAM</h3>
+                 <h3 className="font-headline font-black text-[10px] text-zinc-700 uppercase tracking-[0.4em]">{t("label_archived_log")}</h3>
                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-zinc-800 to-transparent" />
                </div>
 
@@ -220,7 +220,7 @@ export default function MyTasksPage() {
                           )}
                         </div>
                         <Link href={`/workflows/${task.workflow.id}`}>
-                          <Button variant="ghost" className="rounded-none border border-zinc-900 text-zinc-500 font-headline font-black text-[9px] tracking-widest uppercase h-auto py-3 px-6">VIEW_LOG</Button>
+                          <Button variant="ghost" className="rounded-none border border-zinc-900 text-zinc-500 font-headline font-black text-[9px] tracking-widest uppercase h-auto py-3 px-6">{t("action_view_log")}</Button>
                         </Link>
                       </div>
                     </CardContent>
@@ -234,8 +234,8 @@ export default function MyTasksPage() {
             <div className="py-32 text-center border-2 border-dashed border-zinc-900 bg-[#0A0A0A] relative group overflow-hidden">
                <ShieldCheck className="absolute -right-4 -top-4 h-32 w-32 text-emerald-500 opacity-5" />
                <LayoutList className="h-12 w-12 text-zinc-800 mx-auto mb-6" />
-               <h4 className="font-headline font-black text-xl text-zinc-600 uppercase tracking-tighter">ALL_QUEUES_CLEAR</h4>
-               <p className="font-mono text-[10px] text-zinc-700 uppercase tracking-[0.3em] mt-2">NO_OPERATIONAL_ACTIONS_REQUIRED</p>
+               <h4 className="font-headline font-black text-xl text-zinc-600 uppercase tracking-tighter">{t("label_all_queues_clear")}</h4>
+               <p className="font-mono text-[10px] text-zinc-700 uppercase tracking-[0.3em] mt-2">{t("label_no_actions_required")}</p>
                <CornerMarks />
             </div>
           )}
@@ -244,3 +244,9 @@ export default function MyTasksPage() {
     </div>
   );
 }
+
+const ChevronRight = ({ className }: { className?: string }) => (
+  <svg className={className} width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M6.1584 3.13508C6.35985 2.94621 6.67627 2.95642 6.86514 3.15788L10.6151 7.15788C10.7954 7.3502 10.7954 7.64981 10.6151 7.84212L6.86514 11.8421C6.67627 12.0436 6.35985 12.0538 6.1584 11.8649C5.95694 11.676 5.94674 11.3596 6.13561 11.1582L9.4445 7.5L6.13561 3.84181C5.94674 3.64035 5.95694 3.32394 6.1584 3.13508Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path>
+  </svg>
+);

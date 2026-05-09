@@ -115,7 +115,7 @@ export default function Hub() {
                 GRAND LINE ERP
               </h1>
               <div className="mt-8">
-                <Loader text="INITIALIZING CORE SYSTEMS..." />
+                <Loader text={t("label_initializing_systems")} />
               </div>
             </motion.div>
           </motion.div>
@@ -130,10 +130,10 @@ export default function Hub() {
             <div className="max-w-7xl mx-auto">
               <header className="mb-12 text-center">
                 <h1 className="text-4xl font-headline tracking-widest uppercase mb-4 text-primary">
-                  MAIN SYSTEM DIRECTORY
+                  {t("label_main_directory")}
                 </h1>
                 <p className="text-muted-foreground uppercase tracking-widest font-mono">
-                  SELECT MODULE DESTINATION
+                  {t("label_select_destination")}
                 </p>
               </header>
 
@@ -153,7 +153,7 @@ export default function Hub() {
                     >
                       <IndustrialCard 
                         title={card.title}
-                        footerText="SYS_MODULE_READY"
+                        footerText={t("label_sys_module_ready")}
                         className="h-48 flex flex-col items-center justify-center border-border/50 hover:border-primary/50 transition-colors group cursor-pointer"
                       >
                         <div className="absolute inset-0 flex flex-col items-center justify-center">

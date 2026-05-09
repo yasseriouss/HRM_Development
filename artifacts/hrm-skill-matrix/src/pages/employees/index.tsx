@@ -36,9 +36,9 @@ const CornerMarks = ({ color = "primary" }: { color?: string }) => (
 
 function classBadge(cls: string | null | undefined, t: any) {
   if (cls === "A") return <Badge variant="outline" className="rounded-none border-emerald-500/30 bg-emerald-500/10 text-emerald-500 font-mono text-[9px] font-black tracking-widest px-2 py-0.5 uppercase">{t("dept_class_a")}</Badge>;
-  if (cls === "B") return <Badge variant="outline" className="rounded-none border-amber-500/30 bg-amber-500/10 text-amber-500 font-mono text-[9px] font-black tracking-widest px-2 py-0.5 uppercase">CLASS_B</Badge>;
-  if (cls === "C") return <Badge variant="outline" className="rounded-none border-rose-500/30 bg-rose-500/10 text-rose-500 font-mono text-[9px] font-black tracking-widest px-2 py-0.5 uppercase">CLASS_C</Badge>;
-  return <Badge variant="outline" className="rounded-none border-white/10 bg-white/5 text-secondary/30 font-mono text-[9px] font-black tracking-widest px-2 py-0.5 uppercase">UNCLASSIFIED</Badge>;
+  if (cls === "B") return <Badge variant="outline" className="rounded-none border-amber-500/30 bg-amber-500/10 text-amber-500 font-mono text-[9px] font-black tracking-widest px-2 py-0.5 uppercase">{t("employees_class_b")}</Badge>;
+  if (cls === "C") return <Badge variant="outline" className="rounded-none border-rose-500/30 bg-rose-500/10 text-rose-500 font-mono text-[9px] font-black tracking-widest px-2 py-0.5 uppercase">{t("employees_class_c")}</Badge>;
+  return <Badge variant="outline" className="rounded-none border-white/10 bg-white/5 text-secondary/30 font-mono text-[9px] font-black tracking-widest px-2 py-0.5 uppercase">{t("label_unclassified")}</Badge>;
 }
 
 interface EmpForm {
@@ -300,7 +300,7 @@ export default function EmployeesPage() {
                           </div>
                         </Link>
                       </td>
-                      <td className="px-8 py-6 font-mono text-[11px] text-primary/60 whitespace-nowrap">{emp.employee_code ?? "â€”"}</td>
+                      <td className="px-8 py-6 font-mono text-[11px] text-primary/60 whitespace-nowrap">{emp.employee_code ?? "—"}</td>
                       <td className="px-8 py-6 whitespace-nowrap">
                         <Badge variant="outline" className="rounded-none border-white/5 bg-white/5 text-[9px] font-mono text-secondary/60 py-1 uppercase px-2">
                           {emp.department?.name ?? "UNASSIGNED"}
@@ -354,13 +354,13 @@ export default function EmployeesPage() {
               <h2 className="font-headline font-black text-2xl text-white uppercase tracking-tighter">
                 {editTarget ? t("action_reconfigure") : t("action_init_operative")}
               </h2>
-              <p className="text-[10px] font-mono text-primary tracking-[0.3em] mt-2 uppercase">NODE_ASSIGNMENT_v3.4</p>
+              <p className="text-[10px] font-mono text-primary tracking-[0.3em] mt-2 uppercase">{t("label_node_assignment")}</p>
             </div>
             
             <div className="p-10 grid grid-cols-2 gap-8">
               <div className="col-span-2 space-y-3">
                 <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_name")} *</Label>
-                <Input placeholder="FULL_LEGAL_NAME" value={form.full_name} onChange={(e) => setForm({ ...form, full_name: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white focus-visible:ring-primary/50" />
+                <Input placeholder={t("field_name")} value={form.full_name} onChange={(e) => setForm({ ...form, full_name: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white focus-visible:ring-primary/50" />
               </div>
               <div className="space-y-3">
                 <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_department")} *</Label>
@@ -376,19 +376,19 @@ export default function EmployeesPage() {
               </div>
               <div className="space-y-3">
                 <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_employee_code")}</Label>
-                <Input placeholder="HEX_ID_CODE" value={form.employee_code} onChange={(e) => setForm({ ...form, employee_code: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white" />
+                <Input placeholder={t("field_employee_code")} value={form.employee_code} onChange={(e) => setForm({ ...form, employee_code: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white" />
               </div>
               <div className="space-y-3">
                 <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_job_title")}</Label>
-                <Input placeholder="UNIT_FUNCTION" value={form.job_title} onChange={(e) => setForm({ ...form, job_title: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white" />
+                <Input placeholder={t("field_job_title")} value={form.job_title} onChange={(e) => setForm({ ...form, job_title: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white" />
               </div>
               <div className="space-y-3">
                 <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_email")}</Label>
-                <Input type="email" placeholder="SECURE_COMMS@NODE" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white" />
+                <Input type="email" placeholder={t("field_email")} value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white" />
               </div>
               <div className="space-y-3">
                 <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_phone")}</Label>
-                <Input placeholder="DIRECT_LINK" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white" />
+                <Input placeholder={t("field_phone")} value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white" />
               </div>
               <div className="space-y-3">
                 <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_joined_date")}</Label>

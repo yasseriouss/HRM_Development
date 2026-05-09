@@ -156,7 +156,7 @@ export default function DepartmentsPage() {
             </Button>
             {isAdmin && (
               <Button className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto hover:bg-primary/90" onClick={openCreate}>
-                <Plus className="h-4 w-4 me-2" /> {t("action_create_unit")}
+                <Plus className="h-4 w-4 me-2" /> {t("action_init_unit")}
               </Button>
             )}
           </div>
@@ -222,7 +222,7 @@ export default function DepartmentsPage() {
                   <div className="flex justify-between items-start">
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="font-mono text-[10px] text-primary/60 tracking-widest uppercase">{dept.code ?? "UNIT_CODE"}</span>
+                        <span className="font-mono text-[10px] text-primary/60 tracking-widest uppercase">{dept.code ?? t("label_unit_code")}</span>
                         <div className="h-px w-8 bg-primary/20" />
                       </div>
                       <h3 className="font-headline font-black text-2xl text-white uppercase tracking-tight group-hover:text-primary transition-colors">
@@ -276,32 +276,32 @@ export default function DepartmentsPage() {
               <h2 className="font-headline font-black text-2xl text-white uppercase tracking-tighter">
                 {editTarget ? t("action_reconfigure") : t("action_init_unit")}
               </h2>
-              <p className="text-[10px] font-mono text-primary tracking-[0.3em] mt-2 uppercase">STRUCT_INIT_v4.1</p>
+              <p className="text-[10px] font-mono text-primary tracking-[0.3em] mt-2 uppercase">{t("label_struct_init")}</p>
             </div>
 
             <div className="p-8 space-y-6">
               <div className="space-y-2">
                 <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_name")} *</Label>
-                <Input placeholder="ASSEMBLY_DEPT" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white focus-visible:ring-primary/50" />
+                <Input placeholder={t("field_name")} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white focus-visible:ring-primary/50" />
               </div>
               <div className="space-y-2">
                 <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_code")}</Label>
-                <Input placeholder="UNIT_X01" value={form.code} onChange={(e) => setForm({ ...form, code: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white uppercase" />
+                <Input placeholder={t("field_code")} value={form.code} onChange={(e) => setForm({ ...form, code: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white uppercase" />
               </div>
               <div className="space-y-2">
                 <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_description")}</Label>
-                <Input placeholder="OPERATIONAL_PARAMETERS" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white uppercase" />
+                <Input placeholder={t("field_description")} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white uppercase" />
               </div>
               <div className="space-y-2">
                 <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("departments_col_manager_email")}</Label>
-                <Input type="email" placeholder="ADMIN@UNIT" value={form.manager_email} onChange={(e) => setForm({ ...form, manager_email: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white" />
+                <Input type="email" placeholder={t("field_manager_email")} value={form.manager_email} onChange={(e) => setForm({ ...form, manager_email: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white" />
               </div>
             </div>
 
             <div className="p-8 border-t border-white/10 bg-white/5 flex justify-end gap-4">
               <Button variant="ghost" className="rounded-none font-headline font-black text-[10px] tracking-widest uppercase text-white hover:bg-white/5" onClick={() => { setShowCreate(false); setEditTarget(null); }}>{t("common_cancel")}</Button>
               <Button onClick={handleSave} disabled={saving} className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase px-10 py-6 h-auto">
-                {saving ? t("action_saving") : editTarget ? t("action_apply_config") : t("action_init_unit")}
+                {saving ? t("action_synchronizing") : editTarget ? t("action_apply_config") : t("action_init_unit")}
               </Button>
             </div>
           </div>

@@ -103,7 +103,7 @@ export default function Login() {
             </h1>
             <div className="flex items-center justify-center gap-4">
                <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-primary/20" />
-               <span className="text-[10px] font-mono text-primary font-black tracking-[0.5em] uppercase">SYSTEM_ACCESS_PORTAL_v2.4</span>
+               <span className="text-[10px] font-mono text-primary font-black tracking-[0.5em] uppercase">{t("label_system_access_portal")}</span>
                <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent to-primary/20" />
             </div>
           </div>
@@ -130,7 +130,7 @@ export default function Login() {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="NODE_IDENTIFIER"
+                    placeholder={t("label_node_identifier")}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -148,7 +148,7 @@ export default function Login() {
                   <Input
                     id="password"
                     type="password"
-                    placeholder="SECURE_PHRASE"
+                    placeholder={t("label_secure_phrase")}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
@@ -168,11 +168,11 @@ export default function Login() {
               >
                 {loginMutation.isPending ? (
                   <span className="flex items-center gap-3 animate-pulse">
-                    <Zap className="h-4 w-4 animate-spin" /> AUTHORIZING_STREAM...
+                    <Zap className="h-4 w-4 animate-spin" /> {t("action_authorizing_stream")}
                   </span>
                 ) : (
                   <span className="flex items-center gap-3">
-                    EXECUTE_LOGIN_SEQUENCE <Zap className="h-4 w-4 group-hover:text-amber-300 transition-colors" />
+                    {t("action_execute_login")} <Zap className="h-4 w-4 group-hover:text-amber-300 transition-colors" />
                   </span>
                 )}
               </Button>
@@ -210,14 +210,14 @@ export default function Login() {
            <div className="flex items-center gap-6 opacity-30 group hover:opacity-100 transition-opacity">
               <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
               <div className="flex flex-col">
-                <span className="text-[9px] font-mono font-black text-white uppercase tracking-widest">SECURE_LINK_ESTABLISHED</span>
-                <span className="text-[8px] font-mono text-zinc-700 uppercase">AES-256-GCM_ENCRYPTION_ACTIVE</span>
+                <span className="text-[9px] font-mono font-black text-white uppercase tracking-widest">{t("label_secure_link")}</span>
+                <span className="text-[8px] font-mono text-zinc-700 uppercase">{t("label_encryption_active")}</span>
               </div>
            </div>
 
            <div className="flex items-center gap-10">
               <div className="flex flex-col items-end opacity-20 hover:opacity-50 transition-opacity">
-                 <span className="text-[8px] font-mono text-white uppercase tracking-tighter">NODE_TELEMETRY</span>
+                 <span className="text-[8px] font-mono text-white uppercase tracking-tighter">{t("label_node_telemetry")}</span>
                  <span className="text-[10px] font-mono font-black text-primary uppercase">LATENCY: 0.0004MS</span>
               </div>
               <a
@@ -229,7 +229,7 @@ export default function Login() {
                 <div className="h-10 w-[1px] bg-zinc-900" />
                 <div className="text-end">
                    <p className="text-[8px] font-mono text-zinc-700 uppercase tracking-widest leading-none">{t("created_by")}</p>
-                   <p className="text-[10px] font-headline font-black text-white uppercase tracking-widest group-hover:text-primary transition-colors">YASSERIOUS_ENGINEERING</p>
+                   <p className="text-[10px] font-headline font-black text-white uppercase tracking-widest group-hover:text-primary transition-colors">{t("label_yasserious_eng")}</p>
                 </div>
               </a>
            </div>

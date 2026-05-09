@@ -14,6 +14,7 @@ import { Plus, Trash2, ExternalLink, ChevronRight, CheckCircle2, Clock, Circle, 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
+import { useT } from "@/i18n";
 
 const CornerMarks = ({ color = "primary" }: { color?: string }) => (
   <>
@@ -80,6 +81,7 @@ export default function WorkflowsPage() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const isManager = user?.role === "super_admin" || user?.role === "dept_head" || user?.role === "hr_coordinator";
+  const t = useT();
 
   const [showCreate, setShowCreate] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null);
@@ -312,17 +314,15 @@ export default function WorkflowsPage() {
           <div className="space-y-3 text-center md:text-start">
             <div className="flex items-center justify-center md:justify-start gap-3">
               <GitBranch className="h-4 w-4 text-primary animate-pulse" />
-              <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">EVALUATION_WORKFLOW_PROTOCOL</span>
+              <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">{t("label_wf_protocol")}</span>
             </div>
-            <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">
-              STRATEGIC_WORKFLOWS
-            </h2>
+              {t("label_strategic_workflows")}
             <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4">Hierarchical evaluation and approval chain management.</p>
           </div>
           
           {isManager && (
             <Button className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto hover:bg-primary/90" onClick={openCreate}>
-              <Plus className="h-4 w-4 me-2" /> INITIALIZE_PROTOCOL
+               <Plus className="h-4 w-4 me-2" /> {t("action_initialize_protocol")}
             </Button>
           )}
         </div>
@@ -340,7 +340,7 @@ export default function WorkflowsPage() {
           <CardContent className="py-24 text-center space-y-4">
              <Terminal className="h-12 w-12 text-secondary/10 mx-auto" />
              <p className="font-mono text-xs text-secondary/30 uppercase tracking-[0.3em]">
-                NO_ACTIVE_DATA_STREAMS_DETECTED
+                {t("label_no_streams")}
              </p>
           </CardContent>
           <CornerMarks />
@@ -383,7 +383,7 @@ export default function WorkflowsPage() {
 
                     <div className="space-y-2">
                       <div className="flex items-center justify-between font-mono text-[9px] text-secondary/40 uppercase tracking-widest">
-                        <span>EXECUTION_PROGRESS</span>
+                        <span>{t("label_execution_progress")}</span>
                         <span className="text-white">{progress}%</span>
                       </div>
                       <div className="h-1 bg-white/5 rounded-none overflow-hidden relative">
@@ -429,14 +429,14 @@ export default function WorkflowsPage() {
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5" />
           <div className="relative z-10 flex flex-col h-full max-h-[90vh]">
             <div className="p-8 border-b border-white/10 bg-white/5 shrink-0">
-              <h2 className="font-headline font-black text-2xl text-white uppercase tracking-tighter">INITIALIZE_PROTOCOL_CHAIN</h2>
-              <p className="text-[10px] font-mono text-primary tracking-[0.3em] mt-2 uppercase">STRAT_INIT_v9.4</p>
+              <h2 className="font-headline font-black text-2xl text-white uppercase tracking-tighter">{t("label_init_protocol_chain")}</h2>
+              <p className="text-[10px] font-mono text-primary tracking-[0.3em] mt-2 uppercase">{t("label_strat_init")}</p>
             </div>
             
             <div className="p-10 space-y-10 overflow-y-auto">
               <div className="grid grid-cols-2 gap-8">
                 <div className="col-span-2 space-y-3">
-                  <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">PROTOCOL_TITLE *</Label>
+                  <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("label_protocol_title")} *</Label>
                   <Input
                     placeholder="e.g. Q2_PROD_EVALUATION"
                     value={form.title}
@@ -445,7 +445,7 @@ export default function WorkflowsPage() {
                   />
                 </div>
                 <div className="space-y-3">
-                  <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">TARGET_UNIT *</Label>
+                  <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("label_target_unit")} *</Label>
                   <Select value={form.department_id} onValueChange={(v) => setForm({ ...form, department_id: v })}>
                     <SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
                       <SelectValue placeholder="SELECT_DEPLOYMENT_UNIT" />
@@ -480,14 +480,14 @@ export default function WorkflowsPage() {
               <div className="bg-white/5 border border-white/10 rounded-none p-8 space-y-8 relative">
                 <div className="flex items-center gap-3 mb-6">
                    <div className="h-px flex-1 bg-white/10" />
-                   <h4 className="font-headline font-black text-xs text-primary uppercase tracking-[0.4em]">HIERARCHY_ARCHITECTURE</h4>
+                   <h4 className="font-headline font-black text-xs text-primary uppercase tracking-[0.4em]">{t("label_hierarchy_arch")}</h4>
                    <div className="h-px flex-1 bg-white/10" />
                 </div>
 
                 {/* Manager */}
                 <div className="space-y-3">
                   <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase flex items-center gap-2">
-                    <Shield className="h-3 w-3 text-amber-500" /> PRODUCTION_MANAGER
+                    <Shield className="h-3 w-3 text-amber-500" /> {t("label_production_manager")}
                   </Label>
                   <Select value={form.manager_id} onValueChange={(v) => setForm({ ...form, manager_id: v })}>
                     <SelectTrigger className="h-12 bg-black/40 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
@@ -510,7 +510,7 @@ export default function WorkflowsPage() {
                 {/* Engineers */}
                 <div className="space-y-4">
                   <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase flex items-center gap-2">
-                     <Cpu className="h-3 w-3 text-sky-500" /> SYSTEM_ENGINEERS
+                     <Cpu className="h-3 w-3 text-sky-500" /> {t("label_system_engineers")}
                   </Label>
                   <Select onValueChange={addEngineer} value="">
                     <SelectTrigger className="h-12 bg-black/40 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
@@ -540,7 +540,7 @@ export default function WorkflowsPage() {
 
                         {/* Supervisors under engineer */}
                         <div className="ps-6 space-y-4 border-l border-sky-500/20">
-                          <Label className="font-headline font-black text-[9px] text-secondary/30 tracking-[0.2em] uppercase">DIRECT_SUPERVISORS</Label>
+                          <Label className="font-headline font-black text-[9px] text-secondary/30 tracking-[0.2em] uppercase">{t("label_direct_supervisors")}</Label>
                           <Select onValueChange={(v) => addSupervisor(eng.userId, v)} value="">
                             <SelectTrigger className="h-10 bg-white/5 border-white/5 rounded-none font-headline font-black text-[9px] tracking-widest text-white uppercase">
                               <SelectValue placeholder="ADD_SUPERVISOR..." />
@@ -578,7 +578,7 @@ export default function WorkflowsPage() {
                                       value=""
                                     >
                                       <SelectTrigger className="h-9 bg-black/40 border-white/5 rounded-none font-headline font-black text-[9px] tracking-widest text-white uppercase flex-1">
-                                        <SelectValue placeholder="DEPLOY_OPERATIVE..." />
+                                        <SelectValue placeholder={t("label_deploy_operative")} />
                                       </SelectTrigger>
                                       <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white max-h-[300px]">
                                         <SelectItem value="_tech_hdr" disabled className="font-black text-primary opacity-50 uppercase tracking-widest text-[9px]">--- TECHNICIANS ---</SelectItem>
@@ -627,9 +627,9 @@ export default function WorkflowsPage() {
               </div>
 
               <div className="space-y-3">
-                <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">SYSTEM_NOTES</Label>
+                <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("label_system_notes")}</Label>
                 <textarea
-                  placeholder="SPECIFY_OPERATIONAL_PARAMETERS..."
+                  placeholder={t("label_specify_params")}
                   value={form.notes}
                   onChange={(e) => setForm({ ...form, notes: e.target.value })}
                   className="w-full min-h-[100px] p-4 bg-white/5 border border-white/10 rounded-none font-mono text-sm tracking-widest text-white focus:outline-none focus:border-primary/50"
@@ -638,13 +638,13 @@ export default function WorkflowsPage() {
             </div>
 
             <div className="p-8 border-t border-white/10 bg-white/5 flex justify-end gap-4 shrink-0">
-              <Button variant="ghost" className="rounded-none font-headline font-black text-[10px] tracking-widest uppercase text-white hover:bg-white/5" onClick={() => setShowCreate(false)}>CANCEL_INIT</Button>
+              <Button variant="ghost" className="rounded-none font-headline font-black text-[10px] tracking-widest uppercase text-white hover:bg-white/5" onClick={() => setShowCreate(false)}>{t("action_cancel_init")}</Button>
               <Button
                 onClick={handleCreate}
                 disabled={saving}
                 className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase px-10 py-6 h-auto"
               >
-                {saving ? "INITIALIZING..." : "EXECUTE_DEPLOYMENT"}
+                {saving ? t("action_synchronizing") : t("action_execute_deployment")}
               </Button>
             </div>
           </div>
@@ -655,19 +655,19 @@ export default function WorkflowsPage() {
       <AlertDialog open={!!deleteTarget} onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}>
         <AlertDialogContent className="bg-[#0A0A0A] border-2 border-rose-500/30 rounded-none text-white">
           <AlertDialogHeader>
-            <AlertDialogTitle className="font-headline font-black text-2xl text-white uppercase tracking-tighter">TERMINATE_PROTOCOL_STREAM?</AlertDialogTitle>
+            <AlertDialogTitle className="font-headline font-black text-2xl text-white uppercase tracking-tighter">{t("label_terminate_protocol")}</AlertDialogTitle>
             <AlertDialogDescription className="text-secondary/40 font-mono text-xs uppercase tracking-widest">
                This will permanently purge workflow "{deleteTarget?.title}" and all associated approval telemetry.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="mt-8">
-            <AlertDialogCancel className="rounded-none border-white/10 bg-white/5 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-white/10 h-auto py-4 px-8">ABORT_TERMINATION</AlertDialogCancel>
+            <AlertDialogCancel className="rounded-none border-white/10 bg-white/5 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-white/10 h-auto py-4 px-8">{t("action_abort_termination")}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               disabled={deleting}
               className="rounded-none bg-rose-600 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-rose-700 px-8 h-auto py-4"
             >
-              {deleting ? "PURGING..." : "CONFIRM_PURGE"}
+              {deleting ? t("action_purging") : t("action_confirm_purge")}
             </AlertDialogAction>
           </AlertDialogFooter>
           <CornerMarks color="rose" />

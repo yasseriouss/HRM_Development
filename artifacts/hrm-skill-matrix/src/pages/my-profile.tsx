@@ -151,7 +151,7 @@ export default function MyProfilePage() {
           <CardContent className="p-8 space-y-6">
             {skillScores.length === 0 ? (
               <div className="py-10 text-center font-mono text-[10px] text-zinc-600 uppercase tracking-widest italic">
-                NO_SKILL_DATA_SYNCHRONIZED
+                {t("label_no_skill_sync")}
               </div>
             ) : (
               <div className="grid gap-6">
@@ -190,7 +190,7 @@ export default function MyProfilePage() {
             <CardContent className="p-0 divide-y divide-zinc-900">
               {historicalSummaries.length === 0 ? (
                 <div className="p-12 text-center font-mono text-[10px] text-zinc-600 uppercase tracking-widest italic">
-                   EMPTY_LOG_STREAM
+                   {t("label_empty_log_stream")}
                 </div>
               ) : (
                 historicalSummaries.slice(0, 5).map((s) => (
@@ -252,13 +252,13 @@ export default function MyProfilePage() {
           
           <div className="p-8 border-2 border-primary/20 bg-primary/3 relative overflow-hidden group">
              <ShieldCheck className="absolute -right-4 -top-4 h-24 w-24 text-primary opacity-5 group-hover:opacity-10 transition-all duration-700" />
-             <p className="font-headline font-black text-[11px] text-primary uppercase tracking-[0.3em] mb-4">PERSONNEL_SECURITY_STATUS</p>
+             <p className="font-headline font-black text-[11px] text-primary uppercase tracking-[0.3em] mb-4">{t("label_security_status")}</p>
              <p className="text-[10px] font-mono text-zinc-500 leading-relaxed uppercase tracking-tighter">
-               PROFILE_IDENTITY_VERIFIED // SEC_LEVEL_B4 // ACCESS_GRANTED
+               {t("label_profile_verified")}
              </p>
              <div className="mt-8 flex items-center justify-between text-[9px] font-mono font-black text-zinc-600 uppercase tracking-widest">
-                <span>IDENTITY_SYNC_v3.2</span>
-                <span className="text-emerald-500">ENCRYPTED_STREAM_ACTIVE</span>
+                 <span>{t("label_identity_sync")}</span>
+                 <span className="text-emerald-500">{t("label_encrypted_stream_active")}</span>
              </div>
           </div>
         </div>

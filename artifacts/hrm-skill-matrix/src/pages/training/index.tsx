@@ -390,7 +390,7 @@ export default function TrainingPage() {
               <h2 className="font-headline font-black text-2xl text-white uppercase tracking-tighter">
                 {t("training_create_title")}
               </h2>
-              <p className="text-[10px] font-mono text-primary tracking-[0.3em] mt-2 uppercase">PROTOCOL_SEQUENCE_v1.2</p>
+              <p className="text-[10px] font-mono text-primary tracking-[0.3em] mt-2 uppercase">{t("label_protocol_sequence")}</p>
             </div>
             
             <div className="p-10 grid grid-cols-2 gap-8">
@@ -437,7 +437,7 @@ export default function TrainingPage() {
               </div>
               <div className="col-span-2 space-y-3">
                 <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_notes")}</Label>
-                <Input placeholder="REMARKS_AND_SPECIFICATIONS..." value={createForm.notes} onChange={(e) => setCreateForm({ ...createForm, notes: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white" />
+                <Input placeholder={t("label_remarks_spec")} value={createForm.notes} onChange={(e) => setCreateForm({ ...createForm, notes: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white" />
               </div>
             </div>
             
@@ -458,15 +458,15 @@ export default function TrainingPage() {
           <div className="relative z-10">
             <div className="p-8 border-b border-white/10 bg-white/5">
               <h2 className="font-headline font-black text-2xl text-white uppercase tracking-tighter">{t("action_reconfigure")}</h2>
-              <p className="text-[10px] font-mono text-primary tracking-[0.3em] mt-2 uppercase">UPDATE_SEQUENCE</p>
+              <p className="text-[10px] font-mono text-primary tracking-[0.3em] mt-2 uppercase">{t("label_update_sequence")}</p>
             </div>
             
             <div className="p-8 space-y-6">
               {editTarget && (
                 <div className="bg-white/5 p-4 border border-white/10">
-                  <p className="font-headline font-black text-[10px] text-primary tracking-widest uppercase mb-1">TARGET_NODE</p>
+                  <p className="font-headline font-black text-[10px] text-primary tracking-widest uppercase mb-1">{t("label_target_node")}</p>
                   <p className="text-sm font-black text-white uppercase">{editTarget.employee_name}</p>
-                  <p className="text-[9px] font-mono text-secondary/40 mt-1 uppercase">{editTarget.skill_name || "GENERAL_DEVELOPMENT"}</p>
+                  <p className="text-[9px] font-mono text-secondary/40 mt-1 uppercase">{editTarget.skill_name || t("label_general_development")}</p>
                 </div>
               )}
               <div className="space-y-3">

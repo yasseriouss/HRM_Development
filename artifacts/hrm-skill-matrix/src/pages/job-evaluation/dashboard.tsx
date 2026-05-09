@@ -106,13 +106,13 @@ export default function JobEvaluationDashboard() {
           
           <div className="flex flex-wrap items-center gap-3">
             <Button variant="outline" className="rounded-none border-white/10 bg-white/5 hover:bg-white/10 font-headline font-black text-[10px] tracking-widest uppercase py-6 px-6 h-auto">
-              <Upload className="h-4 w-4 me-2" /> IMPORT_STREAM
+              <Upload className="h-4 w-4 me-2" /> {t("action_import_stream")}
             </Button>
             <Button variant="outline" className="rounded-none border-white/10 bg-white/5 hover:bg-white/10 font-headline font-black text-[10px] tracking-widest uppercase py-6 px-6 h-auto">
-              <FileDown className="h-4 w-4 me-2" /> EXPORT_DATA
+              <FileDown className="h-4 w-4 me-2" /> {t("action_export_data")}
             </Button>
             <Button className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto shadow-[0_0_20px_rgba(212,175,55,0.2)]">
-              <Plus className="h-4 w-4 me-2" /> NEW_PROTOCOL
+              <Plus className="h-4 w-4 me-2" /> {t("action_new_protocol")}
             </Button>
           </div>
         </div>
@@ -186,9 +186,9 @@ export default function JobEvaluationDashboard() {
                   </Scatter>
                 </ScatterChart>
               </ResponsiveContainer>
-              <div className="mt-4 p-4 bg-white/[0.02] border border-zinc-900 font-mono text-[9px] text-zinc-600 uppercase tracking-widest flex items-center justify-between">
-                 <span>// ANALYTICS_ENGINE_ACTIVE</span>
-                 <span className="flex items-center gap-2 text-primary"><Activity className="h-3 w-3" /> LIVE_SYNC</span>
+              <div className="mt-4 p-4 bg-white/2 border border-zinc-900 font-mono text-[9px] text-zinc-600 uppercase tracking-widest flex items-center justify-between">
+                 <span>{t("log_analytics_active")}</span>
+                 <span className="flex items-center gap-2 text-primary"><Activity className="h-3 w-3" /> {t("log_live_sync")}</span>
               </div>
             </CardContent>
             <CornerMarks />
@@ -255,7 +255,7 @@ export default function JobEvaluationDashboard() {
                 {t("je_recent_logs")}
               </CardTitle>
               <CardDescription className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest mt-1">
-                 AUDIT_TRAIL_v9.4 // SECURITY_VERIFIED
+                 {t("log_audit_trail")}
               </CardDescription>
             </div>
             <div className="relative">
@@ -304,7 +304,7 @@ export default function JobEvaluationDashboard() {
                       </td>
                       <td className="px-8 py-5 text-end">
                         <Button variant="ghost" className="rounded-none border border-zinc-800 hover:border-primary/50 text-[9px] font-headline font-black tracking-widest uppercase h-auto py-2 px-4 group/btn">
-                           ACCESS <ExternalLink className="ms-2 h-3 w-3" />
+                           {t("action_access_details")} <ExternalLink className="ms-2 h-3 w-3" />
                         </Button>
                       </td>
                     </tr>
@@ -322,19 +322,19 @@ export default function JobEvaluationDashboard() {
          <Terminal className="absolute -right-6 -top-6 h-32 w-32 text-primary opacity-5 group-hover:opacity-10 transition-all duration-1000" />
          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
             <div className="space-y-2">
-               <p className="font-headline font-black text-sm text-primary uppercase tracking-[0.3em]">SYSTEM_CORE_READY</p>
+               <p className="font-headline font-black text-sm text-primary uppercase tracking-[0.3em]">{t("log_system_core_ready")}</p>
                <p className="text-[10px] font-mono text-zinc-600 leading-relaxed uppercase tracking-widest">
-                  ENCRYPTED_STREAM_v9.2 // ANALYTICS_ENGINE_OPTIMIZED // MULTI_CLUSTER_SYNC_OK
+                  {t("log_encrypted_stream")}
                </p>
             </div>
             <div className="flex items-center gap-6 font-mono text-[9px] text-zinc-500 uppercase tracking-widest">
                <div className="flex items-center gap-2">
                   <div className="h-1 w-1 bg-emerald-500 rounded-full animate-ping" />
-                  <span>CORE_UPTIME::99.9%</span>
+                  <span>{t("log_core_uptime")}</span>
                </div>
                <div className="flex items-center gap-2">
                   <div className="h-1 w-1 bg-primary rounded-full" />
-                  <span>LATENCY::12MS</span>
+                  <span>{t("log_latency")}</span>
                </div>
             </div>
          </div>

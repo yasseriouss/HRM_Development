@@ -74,7 +74,8 @@ describe("Branding Audit — No Legacy References", () => {
       console.log("Branding violations found:\n" + violations.join("\n"));
     }
     expect(violations).toEqual([]);
-  });
+    // Increase timeout for directory scan
+  }, 30000);
 });
 
 describe("Branding Audit — Config Files", () => {
