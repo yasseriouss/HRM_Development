@@ -196,6 +196,7 @@ const en = {
   campaigns_subtitle: "Manage skill evaluation campaigns across departments.",
   campaigns_new: "New Campaign",
   campaigns_col_title: "Title",
+  campaigns_col_type: "Type",
   campaigns_col_dates: "Dates",
   campaigns_col_progress: "Progress",
   campaigns_all_departments: "All departments",
@@ -477,8 +478,13 @@ const en = {
   je_stat_sync: "Data Sync",
   je_stat_threat: "Threat Level",
   je_stat_no_failures: "No Failures Detected",
+  je_points_value: "PTS",
   
   log_export_generated: "EXPORT_DATA_GENERATED",
+  log_skill_matrix_update: "SKILL_MATRIX_UPDATE",
+  log_campaign_launched: "CAMPAIGN_LAUNCHED",
+  log_security_verified: "SECURITY_VERIFIED",
+  label_system_intelligence: "SYSTEM_INTELLIGENCE",
 
   // Job Evaluation Technical
   action_import_stream: "IMPORT_STREAM",
@@ -792,6 +798,7 @@ const en = {
   search_departments: "Search departments...",
   search_campaigns: "Search campaigns...",
   search_by_name_or_code: "Search by name or code...",
+  search_placeholder: "Search...",
   filter_by_class: "Filter by class",
   filter_by_status_label: "Filter by status",
   all_statuses: "All Statuses",

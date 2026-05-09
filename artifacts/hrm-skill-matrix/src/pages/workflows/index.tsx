@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "wouter";
+import { useT } from "@/i18n";
 import { getAuthHeaders, getAuthUser } from "@/lib/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -658,7 +659,7 @@ export default function WorkflowsPage() {
           <AlertDialogHeader>
             <AlertDialogTitle className="font-headline font-black text-2xl text-white uppercase tracking-tighter">{t("action_confirm_delete")}</AlertDialogTitle>
             <AlertDialogDescription className="text-secondary/40 font-mono text-xs uppercase tracking-widest">
-               {t("workflows_delete_desc", { name: deleteTarget?.title })}
+               {t("workflows_delete_desc", { name: deleteTarget?.title || "" })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="mt-8">

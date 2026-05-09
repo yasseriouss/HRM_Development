@@ -197,6 +197,7 @@ const ar = {
   campaigns_subtitle: "إدارة حملات تقييم المهارات عبر الأقسام.",
   campaigns_new: "حملة جديدة",
   campaigns_col_title: "العنوان",
+  campaigns_col_type: "النوع",
   campaigns_col_dates: "التواريخ",
   campaigns_col_progress: "التقدم",
   campaigns_all_departments: "جميع الأقسام",
@@ -477,7 +478,12 @@ const ar = {
   je_stat_threat: "مستوى التهديد",
   je_level_low: "منخفض",
   je_stat_no_failures: "لم يتم رصد أعطال",
+  je_points_value: "نقطة",
   log_export_generated: "تم إنشاء ملف التصدير",
+  log_skill_matrix_update: "تحديث مصفوفة المهارات",
+  log_campaign_launched: "إطلاق الحملة",
+  log_security_verified: "تم التحقق من الأمان",
+  label_system_intelligence: "ذكاء النظام",
 
   // Job Evaluation Technical
   action_import_stream: "استيراد التدفق",
@@ -576,7 +582,6 @@ const ar = {
   nav_tasks: "مهامي",
 
   // Technical Labels & Telemetry (Cyberpunk Refactor)
-  label_system_intelligence: "ذكاء النظام",
   label_node_telemetry: "قياس العقدة",
   label_secure_link: "تم إنشاء رابط آمن",
   label_yasserious_eng: "Yasserious الهندسة",
@@ -789,6 +794,7 @@ const ar = {
   search_departments: "البحث في الأقسام...",
   search_campaigns: "البحث في الحملات...",
   search_by_name_or_code: "البحث بالاسم أو الكود...",
+  search_placeholder: "البحث...",
   filter_by_class: "تصفية حسب الفئة",
   filter_by_status_label: "تصفية حسب الحالة",
   all_statuses: "جميع الحالات",
