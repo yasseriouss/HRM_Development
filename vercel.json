@@ -2,8 +2,14 @@
   "version": 2,
   "functions": {
     "src/index.ts": {
-      "includeFiles": "artifacts/**"
+      "includeFiles": "artifacts/**",
+      "memory": 1024,
+      "maxDuration": 30
     }
+  },
+  "env": {
+    "DATABASE_URL": "@hrmdev_database_url",
+    "OPENROUTER_API_KEY": "@openrouter_api_key"
   },
   "rewrites": [
     {
