@@ -28,7 +28,7 @@ const BANNED_PATTERNS = [
 
 // Allowlist — demo credential strings in login page are OK
 const ALLOWLIST_FILES = [
-  "login.tsx", // demo credentials like "super_admin@ebdaa.com / admin123"
+  "login.tsx", // demo credentials like "super_admin@hrm.com / admin123"
 ];
 
 function scanDirectory(dir: string, extensions: string[]): string[] {

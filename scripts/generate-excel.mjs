@@ -4,7 +4,7 @@ import { fileURLToPath } from "url";
 import fs from "fs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const OUTPUT_PATH = path.resolve(__dirname, "../artifacts/ebdaa-docs/skill-matrix-template.xlsx");
+const OUTPUT_PATH = path.resolve(__dirname, "../artifacts/hrm-docs/skill-matrix-template.xlsx");
 
 // ── Color palette ─────────────────────────────────────────────────────────────
 const C = {
@@ -135,7 +135,7 @@ DEPARTMENTS.forEach((d) => {
       deptId:   d.id,
       role:     roleList[i % roleList.length],
       joinDate: `${2019 + (ec % 6)}-${String((ec % 12)+1).padStart(2,"0")}-${String((ec%28)+1).padStart(2,"0")}`,
-      email:    `${fn.toLowerCase()}.${ln.toLowerCase().replace(/-/g,"")}@ebdaa.sa`,
+      email:    `${fn.toLowerCase()}.${ln.toLowerCase().replace(/-/g,"")}@hrm.sa`,
     });
     ec++;
   }
@@ -149,18 +149,18 @@ async function build() {
   const wb = new ExcelJS.Workbook();
   wb.creator  = "yasserious.com";
   wb.created  = new Date();
-  wb.title    = "Ebdaa Skill Matrix System";
+  wb.title    = "HRM Skill Matrix System";
   wb.subject  = "Employee Competency Assessment";
 
   // ── 1. Overview ─────────────────────────────────────────────────────────────
   const ov = wb.addWorksheet("📋 Overview", { tabColor: { argb: "D4960A" } });
   colWidths(ov, [14,28,24,14,16,14,28]);
-  let r = titleBlock(ov, "EBDAA SKILL MATRIX SYSTEM", "Wood Manufacturing · 146 Employees · 9 Departments · Created by yasserious.com");
+  let r = titleBlock(ov, "HRM SKILL MATRIX SYSTEM", "Wood Manufacturing · 146 Employees · 9 Departments · Created by yasserious.com");
 
   r = sectionHdr(ov, "COMPANY SNAPSHOT", 5, r, C.gold);
-  [["Company","Ebdaa Wood Manufacturing Factory"],["Industry","Wood Manufacturing & Furniture"],
+  [["Company","HRM Wood Manufacturing Factory"],["Industry","Wood Manufacturing & Furniture"],
    ["Founded","2015 — Riyadh, Saudi Arabia"],["Employees","146 full-time"],
-   ["Departments","9 operational"],["System Version","Ebdaa Skill Matrix v1.0"],
+   ["Departments","9 operational"],["System Version","HRM Skill Matrix v1.0"],
    ["Created by","yasserious.com — May 2026"]].forEach(([k,v],i) => {
     const row = ov.addRow([k,v]);
     row.getCell(1).fill = fill(i%2?C.white:C.gray100); row.getCell(1).font = fnt(true,10,C.gray900);
@@ -235,7 +235,7 @@ async function build() {
   // ── 2. Employees ─────────────────────────────────────────────────────────────
   const ew = wb.addWorksheet("👥 Employees", { tabColor: { argb: "2563EB" } });
   colWidths(ew,[12,26,24,28,12,38,14,12]);
-  titleBlock(ew,"EMPLOYEE DIRECTORY","146 employees across 9 departments — Ebdaa Wood Manufacturing");
+  titleBlock(ew,"EMPLOYEE DIRECTORY","146 employees across 9 departments — HRM Wood Manufacturing");
   const ehdr = ew.addRow(["Emp ID","Full Name","Department","Role / Position","Dept ID","Email","Join Date","Status"]);
   styleRow(ehdr,C.darkBg,C.gold,true,11,true);
   ew.getRow(3).height=24;
@@ -464,7 +464,7 @@ async function build() {
     "IT & Systems":          ["Cybersecurity Fundamentals","ERP Administration","Cloud Computing AWS","IT Project Management"],
     "Health & Safety":       ["NEBOSH Certification","Fire Safety Officer","Risk Assessment Methods","Incident Investigation"],
   };
-  const PROVIDERS=["Ebdaa Internal Academy","Saudi Training Center","Online — Coursera","External Consultant","HRDF Program"];
+  const PROVIDERS=["HRM Internal Academy","Saudi Training Center","Online — Coursera","External Consultant","HRDF Program"];
   const STATUSES=["Scheduled","In Progress","Completed","Pending Approval"];
   const SCOLORS={Scheduled:C.blueLight,"In Progress":C.yellowLight,Completed:C.greenLight,"Pending Approval":C.gray200};
   let ti=0;
@@ -579,7 +579,7 @@ const LEVELS=[
   {l:5,n:"Expert",sc:"5",bg:C.purpleLight},
 ];
 
-console.log("🔨  Building Ebdaa Skill Matrix Excel workbook…");
+console.log("🔨  Building HRM Skill Matrix Excel workbook…");
 const wb = await build();
 
 const outDir=path.dirname(OUTPUT_PATH);

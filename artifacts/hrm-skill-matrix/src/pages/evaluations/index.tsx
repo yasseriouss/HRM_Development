@@ -119,7 +119,7 @@ function SummaryTable({ campaignId }: { campaignId: string }) {
               title: `${t("evaluations_title")} - ${campaignId}`,
               filename: `Evaluation_Report_${campaignId}`,
               headers: [t("field_employee"), t("field_code"), t("evaluations_col_score"), "%", t("field_class")],
-              rows: items.map(r => [r.employee_name ?? "â€”", r.employee_code ?? "â€”", `${Number(r.total_score).toFixed(0)}/${Number(r.max_possible_score).toFixed(0)}`, `${Number(r.percentage).toFixed(1)}%`, r.class ?? "â€”"])
+              rows: items.map(r => [r.employee_name ?? "—", r.employee_code ?? "—", `${Number(r.total_score).toFixed(0)}/${Number(r.max_possible_score).toFixed(0)}`, `${Number(r.percentage).toFixed(1)}%`, r.class ?? "—"])
             })}
           >
             <Download className="h-4 w-4 me-2 text-primary" /> PDF
@@ -130,8 +130,8 @@ function SummaryTable({ campaignId }: { campaignId: string }) {
             onClick={() => exportToExcel({
               title: `${t("evaluations_title")} - ${campaignId}`,
               filename: `Evaluation_Export_${campaignId}`,
-              headers: [t("field_employee"), t("field_code"), t("evaluations_col_score"), "Percentage", t("field_class")],
-              rows: items.map(r => [r.employee_name ?? "â€”", r.employee_code ?? "â€”", `${Number(r.total_score).toFixed(0)}/${Number(r.max_possible_score).toFixed(0)}`, Number(r.percentage), r.class ?? "â€”"])
+              headers: [t("field_employee"), t("field_code"), t("evaluations_col_score"), t("field_percentage"), t("field_class")],
+              rows: items.map(r => [r.employee_name ?? "—", r.employee_code ?? "—", `${Number(r.total_score).toFixed(0)}/${Number(r.max_possible_score).toFixed(0)}`, Number(r.percentage), r.class ?? "—"])
             })}
           >
             <Table className="h-4 w-4 me-2 text-emerald-500" /> EXCEL

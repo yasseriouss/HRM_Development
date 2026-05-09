@@ -1,4 +1,4 @@
-# Ebdaa Skill Matrix System
+# HRM Skill Matrix System
 
 ## Overview
 
@@ -10,13 +10,13 @@ All five deliverables are live, served statically from the API server (port 8080
 
 | Deliverable | URL | Description |
 |---|---|---|
-| Web App | `/ebdaa-skill-matrix/` | Full-stack skill matrix system |
-| Analytics Dashboard | `/ebdaa-dashboard/` | Dark-themed 6-section analytics dashboard (Recharts, static demo data, no login) |
-| Pitch Deck | `/ebdaa-pitch-deck/` | 8-slide presentation with factory hero image |
-| Technical Docs | `/ebdaa-docs/` | Complete API + schema documentation |
-| Excel Spreadsheet | `/ebdaa-skill-matrix-template.xlsx` | 146-employee skill matrix workbook (6 sheets) |
+| Web App | `/hrm-skill-matrix/` | Full-stack skill matrix system |
+| Analytics Dashboard | `/hrm-dashboard/` | Dark-themed 6-section analytics dashboard (Recharts, static demo data, no login) |
+| Pitch Deck | `/hrm-pitch-deck/` | 8-slide presentation with factory hero image |
+| Technical Docs | `/hrm-docs/` | Complete API + schema documentation |
+| Excel Spreadsheet | `/hrm-skill-matrix-template.xlsx` | 146-employee skill matrix workbook (6 sheets) |
 
-**Demo credentials:** super_admin@ebdaa.com / admin123 · hr@ebdaa.com / hr123
+**Demo credentials:** super_admin@hrm.com / admin123 · hr@hrm.com / hr123
 
 **Branding:** All deliverables include "Created by yasserious.com"
 
@@ -24,17 +24,17 @@ All five deliverables are live, served statically from the API server (port 8080
 
 All artifacts route through the API server (port 8080). Artifact `localPort` values set to 8080 so the Replit proxy routes correctly:
 - `/api/...` → API routes
-- `/ebdaa-skill-matrix/` → skill matrix static build
-- `/ebdaa-dashboard/` → dashboard static build
-- `/ebdaa-pitch-deck/` → pitch deck static build
-- `/ebdaa-docs/` → static HTML documentation
-- `/ebdaa-skill-matrix-template.xlsx` → Excel download
+- `/hrm-skill-matrix/` → skill matrix static build
+- `/hrm-dashboard/` → dashboard static build
+- `/hrm-pitch-deck/` → pitch deck static build
+- `/hrm-docs/` → static HTML documentation
+- `/hrm-skill-matrix-template.xlsx` → Excel download
 
 To rebuild any frontend after code changes:
 ```bash
-PORT=5000 BASE_PATH=/ebdaa-skill-matrix/  pnpm --filter @workspace/ebdaa-skill-matrix run build
-PORT=5001 BASE_PATH=/ebdaa-dashboard/     pnpm --filter @workspace/ebdaa-dashboard run build
-PORT=5002 BASE_PATH=/ebdaa-pitch-deck/    pnpm --filter @workspace/ebdaa-pitch-deck run build
+PORT=5000 BASE_PATH=/hrm-skill-matrix/  pnpm --filter @workspace/hrm-skill-matrix run build
+PORT=5001 BASE_PATH=/hrm-dashboard/     pnpm --filter @workspace/hrm-dashboard run build
+PORT=5002 BASE_PATH=/hrm-pitch-deck/    pnpm --filter @workspace/hrm-pitch-deck run build
 node scripts/generate-excel.mjs
 ```
 

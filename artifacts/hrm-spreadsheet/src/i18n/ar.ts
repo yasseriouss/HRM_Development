@@ -58,6 +58,17 @@ const ar = {
   import_success: "تمت استعادة الدرجات بنجاح",
   import_error_invalid: "ملف النسخ الاحتياطي غير صالح",
   import_error_version: "إصدار النسخ الاحتياطي غير مدعوم",
+
+  dept_upholstery: "التنجيد",
+  dept_painting: "الدهان",
+  dept_natural_wood: "الخشب الطبيعي",
+  dept_assembly: "التجميع",
+  dept_cutting: "القص",
+  dept_title: "وحدات الإنتاج الموحدة",
+  dept_subtitle: "نظام إدارة المهارات والكفاءة لخطوط الإنتاج الصناعية.",
+  dept_employees_count: "مشغل / فني",
+  dept_skills_count: "مهارة نشطة",
+  dept_access_unit: "الوصول للوحدة",
 } as const;
 
 export default ar;

@@ -141,7 +141,7 @@ export default function Dashboard() {
             <div className="flex items-center gap-3">
               <div className="h-2 w-2 bg-primary animate-pulse" />
               <span className={`font-headline font-black tracking-[0.5em] text-[10px] text-primary uppercase ${isAr ? 'font-tajawal' : ''}`}>
-                {isAr ? "Ù…Ø±ÙƒØ² Ø§Ù„Ù‚ÙŠØ§Ø¯Ø© Ø§Ù„Ù…ÙˆØ­Ø¯" : "COMMAND_CENTER_v2.4"}
+                {t("dash_command_center")}
               </span>
             </div>
             <h2 className={`text-5xl md:text-7xl font-headline font-black tracking-tighter text-white uppercase leading-none ${isAr ? 'font-tajawal' : ''}`}>
@@ -226,7 +226,7 @@ export default function Dashboard() {
                     <div>
                       <p className={`text-[10px] font-headline font-black tracking-widest text-secondary/40 uppercase ${isAr ? 'font-tajawal' : ''}`}>{t("dashboard_active_campaigns")}</p>
                       <h3 className="text-4xl font-mono font-black text-white mt-4 leading-none">{metrics.active_campaigns}</h3>
-                      <p className={`mt-4 text-[10px] font-bold text-amber-500 ${isAr ? 'font-tajawal' : ''}`}{t("je_stat_sync")}/p>
+                      <p className={`mt-4 text-[10px] font-bold text-amber-500 ${isAr ? 'font-tajawal' : ''}`}>{t("je_stat_sync")}</p>
                     </div>
                     <div className="p-4 bg-white/5 border border-white/5 group-hover:border-amber-500/30 transition-colors">
                       <Zap className="h-6 w-6 text-amber-500" />
@@ -243,8 +243,8 @@ export default function Dashboard() {
                   <div className="flex items-start justify-between">
                     <div>
                       <p className={`text-[10px] font-headline font-black tracking-widest text-secondary/40 uppercase ${isAr ? 'font-tajawal' : ''}`}>{t("je_stat_threat")}</p>
-                      <h3 className="text-4xl font-mono font-black text-white mt-4 leading-none"{t("je_level_low")}/h3>
-                      <p className={`mt-4 text-[10px] font-bold text-rose-500 uppercase ${isAr ? 'font-tajawal' : ''}`}{t("je_stat_no_failures")}/p>
+                      <h3 className="text-4xl font-mono font-black text-white mt-4 leading-none">{t("je_level_low")}</h3>
+                      <p className={`mt-4 text-[10px] font-bold text-rose-500 uppercase ${isAr ? 'font-tajawal' : ''}`}>{t("je_stat_no_failures")}</p>
                     </div>
                     <div className="p-4 bg-white/5 border border-white/5 group-hover:border-rose-500/30 transition-colors">
                       <ShieldAlert className="h-6 w-6 text-rose-500" />
@@ -261,9 +261,9 @@ export default function Dashboard() {
       {/* Class Distribution Breakdown */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {metrics && [
-          { label: t("dashboard_class_a"), count: metrics.class_a_count, pct: metrics.class_a_percentage, color: "emerald", tier: "EXPERT" },
-          { label: t("dashboard_class_b"), count: metrics.class_b_count, pct: metrics.class_b_percentage, color: "amber", tier: "DEVELOPING" },
-          { label: t("dashboard_class_c"), count: metrics.class_c_count, pct: metrics.class_c_percentage, color: "rose", tier: "TRAINEE" }
+          { label: t("dashboard_class_a"), count: metrics.class_a_count, pct: metrics.class_a_percentage, color: "emerald", tier: t("dash_expert") },
+          { label: t("dashboard_class_b"), count: metrics.class_b_count, pct: metrics.class_b_percentage, color: "amber", tier: t("dash_developing") },
+          { label: t("dashboard_class_c"), count: metrics.class_c_count, pct: metrics.class_c_percentage, color: "rose", tier: t("dash_trainee") }
         ].map((c, i) => (
           <motion.div
             key={i}
@@ -301,7 +301,7 @@ export default function Dashboard() {
         <div className="flex items-center justify-between">
           <h3 className={`font-headline text-2xl font-black text-white flex items-center gap-4 uppercase ${isAr ? 'font-tajawal' : ''}`}>
             <Brain className="h-6 w-6 text-primary animate-pulse" />
-            <span className="screen-flicker">AI_STRATEGIC_INTELLIGENCE</span>
+            <span className="screen-flicker">{t("dash_ai_intelligence")}</span>
           </h3>
           <Button 
             onClick={fetchAIInsights} 
@@ -309,12 +309,7 @@ export default function Dashboard() {
             variant="outline"
             className={`rounded-none border-primary/20 bg-primary/5 text-primary font-headline font-black text-[10px] tracking-widest uppercase hover:bg-primary/10 h-auto py-3 px-6 group btn-metallic ${isAr ? 'font-tajawal' : ''}`}
           >
-            {isAiLoading ? (
-              <Loader2 className="h-4 w-4 me-2 animate-spin" />
-            ) : (
-              <RefreshCcw className="h-4 w-4 me-2 group-hover:rotate-180 transition-transform duration-500" />
-            )}
-            {aiInsights ? "REGENERATE_ANALYSIS" : "INITIALIZE_INTELLIGENCE_STREAM"}
+            {aiInsights ? t("dash_regenerate") : t("dash_init_intelligence")}
           </Button>
         </div>
 
@@ -322,7 +317,7 @@ export default function Dashboard() {
           <Card className="bg-[#0A0A0A] border-2 border-dashed border-white/5 rounded-none p-12 text-center group hover:border-primary/20 transition-colors">
             <Sparkles className="h-12 w-12 text-secondary/10 mx-auto mb-6 group-hover:text-primary/20 transition-colors" />
             <p className={`text-secondary/40 font-mono text-xs uppercase tracking-widest max-w-md mx-auto leading-relaxed ${isAr ? 'font-tajawal' : ''}`}>
-              Tactical insights engine idle. Initialize the stream to analyze organizational performance vectors and critical skill-gap trajectories.
+              {t("dash_ai_idle")}
             </p>
           </Card>
         ) : isAiLoading ? (
@@ -348,7 +343,7 @@ export default function Dashboard() {
                         insight.priority === 'Medium' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' :
                         'bg-blue-500/10 text-blue-500 border-blue-500/20'
                       }`}>
-                        PRIORITY_{insight.priority.toUpperCase()}
+                        {t("dash_priority")}_{insight.priority.toUpperCase()}
                       </Badge>
                       <div className="w-1 h-8 bg-primary/20 group-hover:bg-primary transition-colors" />
                     </div>
@@ -386,7 +381,7 @@ export default function Dashboard() {
                     <div className="space-y-1">
                       <p className={`font-headline font-black text-lg text-white group-hover:text-primary transition-colors ${isAr ? 'font-tajawal' : ''}`}>{dept.department_name}</p>
                       <p className="text-[10px] font-mono text-secondary/30 uppercase tracking-widest">
-                        {dept.employee_count} OPERATORS // SEC_LEVEL_3
+                        {dept.employee_count} {t("dash_operators")} // {t("dash_sec_level")}_3
                       </p>
                     </div>
                     <div className="text-end">
@@ -400,7 +395,7 @@ export default function Dashboard() {
               </div>
             ) : (
               <div className="p-12 text-center text-secondary/30 font-mono text-xs italic">
-                NO_ANALYTICS_AVAILABLE_FOR_CURRENT_NODE
+                {t("dash_no_analytics")}
               </div>
             )}
           </CardContent>
@@ -418,10 +413,10 @@ export default function Dashboard() {
           <CardContent className="p-8 space-y-6">
              <div className="font-mono text-[11px] space-y-6">
                 {[
-                  { time: "09:42:11", msg: "SKILL_MATRIX_UPDATE: DEP_PRODUCTION", user: "SYS_ADMIN" },
-                  { time: "08:15:04", msg: "EVALUATION_CAMPAIGN_LAUNCHED: ALL_DEPT", user: "HR_COORD" },
-                  { time: "07:55:59", msg: "SECURITY_PROTOCOL_VERIFIED", user: "SYSTEM" },
-                  { time: "05:12:33", msg: "EXPORT_GENERATED: XLSX_MONTHLY_REPORT", user: "DEPT_HEAD" }
+                  { time: "09:42:11", msg: t("log_skill_matrix_update"), user: "SYS_ADMIN" },
+                  { time: "08:15:04", msg: t("log_campaign_launched"), user: "HR_COORD" },
+                  { time: "07:55:59", msg: t("log_security_verified"), user: "SYSTEM" },
+                  { time: "05:12:33", msg: t("log_export_generated"), user: "DEPT_HEAD" }
                 ].map((log, i) => (
                   <div key={i} className="flex gap-4 group">
                     <span className="text-secondary/20 font-black whitespace-nowrap">[{log.time}]</span>
@@ -434,7 +429,7 @@ export default function Dashboard() {
              </div>
              <div className="pt-8 border-t border-white/5">
                 <Button variant="ghost" className={`w-full rounded-none border border-white/10 text-[10px] font-headline font-black tracking-widest uppercase hover:bg-white/5 ${isAr ? 'font-tajawal' : ''}`}>
-                  VIEW_ALL_LOGS <ChevronRight className="h-4 w-4 ms-2" />
+                  {t("dash_view_all_logs")} <ChevronRight className="h-4 w-4 ms-2" />
                 </Button>
              </div>
           </CardContent>
@@ -450,10 +445,10 @@ export default function Dashboard() {
               <LayoutGrid className="h-8 w-8 text-primary" />
               {t("suite_title")}
             </h3>
-            <p className={`text-secondary/50 font-medium text-sm mt-1 ${isAr ? 'font-tajawal' : ''}`}>Cross-module operational synchronization layer.</p>
+            <p className={`text-secondary/50 font-medium text-sm mt-1 ${isAr ? 'font-tajawal' : ''}`}>{t("dash_suite_desc")}</p>
           </div>
           <Badge className="bg-primary/10 text-primary border-primary/20 rounded-none px-4 py-2 font-mono text-[10px] font-black uppercase">
-            CLUSTER_ACTIVE
+            {t("dash_cluster_active")}
           </Badge>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">

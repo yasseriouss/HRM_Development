@@ -1,11 +1,11 @@
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: ebdaa-postgres
+    container_name: hrm-postgres
     environment:
-      POSTGRES_USER: ebdaa
+      POSTGRES_USER: hrm
       POSTGRES_PASSWORD: password123
-      POSTGRES_DB: ebdaa_skill_matrix
+      POSTGRES_DB: hrm_skill_matrix
     ports:
       - "5432:5432"
     volumes:

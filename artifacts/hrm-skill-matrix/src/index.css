@@ -125,6 +125,12 @@
   color-scheme: dark;
 }
 
+/* ─── RTL (Arabic) Fonts ───────────────────────────────── */
+html[dir="rtl"], [dir="rtl"] {
+  --app-font-sans: 'Tajawal', sans-serif;
+  --app-font-mono: 'Tajawal', sans-serif;
+}
+
 /* ─── Light theme ───────────────────────────────────────── */
 .light {
   --background: 40 20% 96%;

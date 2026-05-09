@@ -108,10 +108,10 @@
 │   │       ├── routes/      # One file per resource
 │   │       └── lib/auth.ts  # Token store + RBAC middleware
 │   │
-│   ├── ebdaa-skill-matrix/  # Main React/Vite app  →  /ebdaa-skill-matrix/
-│   ├── ebdaa-dashboard/     # Analytics dashboard   →  /ebdaa-dashboard/
-│   ├── ebdaa-pitch-deck/    # Slides deck           →  /ebdaa-pitch-deck/
-│   └── ebdaa-docs/          # This docs site        →  /ebdaa-docs/
+│   ├── hrm-skill-matrix/    # Main React/Vite app  →  /hrm-skill-matrix/
+│   ├── hrm-dashboard/       # Analytics dashboard   →  /hrm-dashboard/
+│   ├── hrm-pitch-deck/      # Slides deck           →  /hrm-pitch-deck/
+│   └── hrm-docs/            # This docs site        →  /hrm-docs/
 │
 └── lib/
     ├── api-spec/            # OpenAPI 3.1 spec (source of truth)
@@ -885,7 +885,7 @@ x-user-token: 550e8400-e29b-41d4-a716-446655440000</code></pre>
 </div>
 
 <h3>Excel Export</h3>
-<p>A pre-built Excel template with 6 worksheets is available for download at <code>/ebdaa-skill-matrix-template.xlsx</code>. The template contains:</p>
+<p>A pre-built Excel template with 6 worksheets is available for download at <code>/hrm-skill-matrix-template.xlsx</code>. The template contains:</p>
 <ul>
   <li><strong>Overview</strong> — System summary and instructions</li>
   <li><strong>Departments</strong> — All 9 departments with employee counts</li>
@@ -907,7 +907,7 @@ x-user-token: 550e8400-e29b-41d4-a716-446655440000</code></pre>
 <span class="kw">const</span> ws = XLSX.<span class="fn">utils</span>.<span class="fn">json_to_sheet</span>(matrix.rows);
 <span class="kw">const</span> wb = XLSX.<span class="fn">utils</span>.<span class="fn">book_new</span>();
 XLSX.<span class="fn">utils</span>.<span class="fn">book_append_sheet</span>(wb, ws, <span class="str">'Evaluation Matrix'</span>);
-XLSX.<span class="fn">writeFile</span>(wb, <span class="str">'Ebdaa-Evaluation-Report.xlsx'</span>);</code></pre>
+XLSX.<span class="fn">writeFile</span>(wb, <span class="str">'hrm-Evaluation-Report.xlsx'</span>);</code></pre>
 
 <h3>PDF Report</h3>
 <p>Employee profile reports can be generated client-side from the <code>/api/employees/:id/profile</code> response. The profile includes:</p>
@@ -1065,7 +1065,7 @@ XLSX.<span class="fn">writeFile</span>(wb, <span class="str">'Ebdaa-Evaluation-R
 
 <!-- ════════════════════ SCORING ════════════════════ -->
 <h2 id="scoring">Scoring &amp; Calculations</h2>
-<p>The Ebdaa scoring system uses a weighted average of skill scores on a 0–4 scale, converting the result to a percentage for class assignment.</p>
+<p>The hrm scoring system uses a weighted average of skill scores on a 0–4 scale, converting the result to a percentage for class assignment.</p>
 
 <h3>Score Level Descriptors</h3>
 <div class="table-wrap">
@@ -1316,13 +1316,13 @@ Where:
 <pre><span class="pre-label">bash</span><code><span class="cmt"># From monorepo root</span>
 
 <span class="cmt"># 1. Build main app</span>
-PORT=<span class="num">5000</span> BASE_PATH=/ebdaa-skill-matrix/ pnpm --filter @workspace/ebdaa-skill-matrix run build
+PORT=<span class="num">5000</span> BASE_PATH=/hrm-skill-matrix/ pnpm --filter @workspace/hrm-skill-matrix run build
 
 <span class="cmt"># 2. Build analytics dashboard</span>
-PORT=<span class="num">20165</span> BASE_PATH=/ebdaa-dashboard/ pnpm --filter @workspace/ebdaa-dashboard run build
+PORT=<span class="num">20165</span> BASE_PATH=/hrm-dashboard/ pnpm --filter @workspace/hrm-dashboard run build
 
 <span class="cmt"># 3. Build pitch deck</span>
-PORT=<span class="num">3001</span> BASE_PATH=/ebdaa-pitch-deck/ pnpm --filter @workspace/ebdaa-pitch-deck run build
+PORT=<span class="num">3001</span> BASE_PATH=/hrm-pitch-deck/ pnpm --filter @workspace/hrm-pitch-deck run build
 
 <span class="cmt"># 4. Start the API server (serves all artifacts)</span>
 pnpm --filter @workspace/api-server run start</code></pre>
@@ -1350,7 +1350,7 @@ pnpm --filter @workspace/api-server run seed</code></pre>
 <div class="table-wrap">
   <table>
     <tr><th>Variable</th><th>Required</th><th>Default</th><th>Description</th></tr>
-    <tr><td><code>DATABASE_URL</code></td><td><span class="badge badge-red">Required</span></td><td>—</td><td>PostgreSQL connection string, e.g. <code>postgresql://user:pass@host:5432/ebdaa</code></td></tr>
+    <tr><td><code>DATABASE_URL</code></td><td><span class="badge badge-red">Required</span></td><td>—</td><td>PostgreSQL connection string, e.g. <code>postgresql://user:pass@host:5432/hrm</code></td></tr>
     <tr><td><code>PORT</code></td><td><span class="badge badge-red">Required</span></td><td>8080</td><td>API server listen port</td></tr>
     <tr><td><code>NODE_ENV</code></td><td><span class="badge badge-blue">Optional</span></td><td>development</td><td><code>production</code> disables verbose error output</td></tr>
     <tr><td><code>BASE_PATH</code></td><td><span class="badge badge-blue">Build only</span></td><td>/</td><td>Frontend base path baked into Vite build. Must match the express static mount path.</td></tr>
@@ -1363,28 +1363,28 @@ pnpm --filter @workspace/api-server run seed</code></pre>
   <div class="card">
     <div class="card-title">👑 Super Admin</div>
     <p style="font-size:13px;color:var(--muted);margin:4px 0 2px">Email</p>
-    <code>super_admin@ebdaa.com</code>
+    <code>super_admin@hrm.com</code>
     <p style="font-size:13px;color:var(--muted);margin:8px 0 2px">Password</p>
     <code>admin123</code>
   </div>
   <div class="card">
     <div class="card-title">📋 HR Coordinator</div>
     <p style="font-size:13px;color:var(--muted);margin:4px 0 2px">Email</p>
-    <code>hr@ebdaa.com</code>
+    <code>hr@hrm.com</code>
     <p style="font-size:13px;color:var(--muted);margin:8px 0 2px">Password</p>
     <code>hr123</code>
   </div>
   <div class="card">
     <div class="card-title">🏭 Dept Head (Upholstery)</div>
     <p style="font-size:13px;color:var(--muted);margin:4px 0 2px">Email</p>
-    <code>dept_head@ebdaa.com</code>
+    <code>dept_head@hrm.com</code>
     <p style="font-size:13px;color:var(--muted);margin:8px 0 2px">Password</p>
     <code>dept123</code>
   </div>
   <div class="card">
     <div class="card-title">👤 Employee</div>
     <p style="font-size:13px;color:var(--muted);margin:4px 0 2px">Email</p>
-    <code>employee@ebdaa.com</code>
+    <code>employee@hrm.com</code>
     <p style="font-size:13px;color:var(--muted);margin:8px 0 2px">Password</p>
     <code>emp123</code>
   </div>
@@ -1411,9 +1411,9 @@ pnpm --filter @workspace/api-server run seed</code></pre>
     <li>Weighted scoring formula with A/B/C classification</li>
     <li>Auto-generated training recommendations on score submission</li>
     <li>Bulk evaluation submission endpoint</li>
-    <li>Analytics dashboard (no-login required) at <code>/ebdaa-dashboard/</code></li>
-    <li>16-slide pitch deck at <code>/ebdaa-pitch-deck/</code></li>
-    <li>Technical documentation site at <code>/ebdaa-docs/</code></li>
+    <li>Analytics dashboard (no-login required) at <code>/hrm-dashboard/</code></li>
+    <li>16-slide pitch deck at <code>/hrm-pitch-deck/</code></li>
+    <li>Technical documentation site at <code>/hrm-docs/</code></li>
     <li>OpenAPI 3.1 spec with Orval codegen for type-safe client hooks</li>
     <li>Drizzle ORM with full PostgreSQL schema and migration support</li>
     <li>Pino structured request logging</li>
@@ -1451,9 +1451,9 @@ pnpm --filter @workspace/api-server run seed</code></pre>
 
 <footer>
   <p>
-    Ebdaa Skill Matrix System — Technical Documentation
+    hrm Skill Matrix System — Technical Documentation
     &nbsp;·&nbsp; v1.0.0
     &nbsp;·&nbsp; Created by <a href="https://yasserious.com" target="_blank">yasserious.com</a>
-    &nbsp;·&nbsp; Ebdaa Wood Manufacturing Factory, 2026
+    &nbsp;·&nbsp; hrm Wood Manufacturing Factory, 2026
   </p>
 </footer>

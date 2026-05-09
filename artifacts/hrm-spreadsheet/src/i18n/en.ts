@@ -58,6 +58,17 @@ const en = {
   import_success: "Scores restored successfully",
   import_error_invalid: "Invalid backup file",
   import_error_version: "Unsupported backup version",
+
+  dept_upholstery: "Upholstery",
+  dept_painting: "Painting",
+  dept_natural_wood: "Natural Wood",
+  dept_assembly: "Assembly",
+  dept_cutting: "Cutting",
+  dept_title: "Unified Production Units",
+  dept_subtitle: "Skill management and competency system for industrial production lines.",
+  dept_employees_count: "Ops / Techs",
+  dept_skills_count: "Active Skills",
+  dept_access_unit: "Access Unit",
 } as const;
 
 export default en;
