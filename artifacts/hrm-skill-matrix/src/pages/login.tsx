@@ -15,10 +15,10 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const CornerMarks = ({ color = "primary" }: { color?: string }) => (
   <>
-    <div className={`absolute top-0 left-0 w-3 h-3 border-t border-l border-${color}/40`} />
-    <div className={`absolute top-0 right-0 w-3 h-3 border-t border-r border-${color}/40`} />
-    <div className={`absolute bottom-0 left-0 w-3 h-3 border-b border-l border-${color}/40`} />
-    <div className={`absolute bottom-0 right-0 w-3 h-3 border-b border-r border-${color}/40`} />
+    <div className={`absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.3)]`} />
+    <div className={`absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.3)]`} />
+    <div className={`absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.3)]`} />
+    <div className={`absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.3)]`} />
   </>);
 
 export default function Login() {
@@ -56,8 +56,8 @@ export default function Login() {
       <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
       
       {/* Floating UI Elements / Grid */}
-      <div className="absolute inset-0 opacity-[0.05] pointer-events-none" 
-           style={{ backgroundImage: "linear-gradient(#primary 1px, transparent 1px), linear-gradient(90deg, #primary 1px, transparent 1px)", backgroundSize: "80px 80px" }} />
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
+           style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
 
       {/* Top Controls - Standardized */}
       <div className="absolute top-10 right-10 flex items-center gap-4 z-50">
@@ -100,16 +100,16 @@ export default function Login() {
             <h1 className="text-6xl font-headline font-black text-white tracking-tighter uppercase leading-none">{t("login_brand")}
             </h1>
             <div className="flex items-center justify-center gap-4">
-               <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-primary/20" />
+               <div className="h-px flex-1 bg-linear-to-r from-transparent to-primary/20" />
                <span className="text-[10px] font-mono text-primary font-black tracking-[0.5em] uppercase">{t("label_system_access_portal")}</span>
-               <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent to-primary/20" />
+               <div className="h-px flex-1 bg-linear-to-l from-transparent to-primary/20" />
             </div>
           </div>
         </div>
 
         {/* Login Form Container */}
         <Card className="border-2 border-zinc-900 bg-[#0A0A0A]/80 backdrop-blur-2xl rounded-none relative overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.5)]">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-50" />
+          <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-transparent to-transparent opacity-50" />
           
           <CardHeader className="relative p-12 pb-6 text-center">
             <CardTitle className="font-headline font-black text-3xl text-white uppercase tracking-tighter leading-none">{t("login_sign_in")}</CardTitle>
@@ -132,9 +132,9 @@ export default function Login() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="h-16 bg-white/5 border-zinc-800 rounded-none font-mono text-sm tracking-[0.1em] text-white placeholder:text-zinc-800 focus-visible:ring-primary/40 focus-visible:border-primary/50 transition-all px-6"
+                    className="h-16 bg-white/5 border-zinc-800 rounded-none font-mono text-sm tracking-widest text-white placeholder:text-zinc-800 focus-visible:ring-primary/40 focus-visible:border-primary/50 transition-all px-6"
                   />
-                  <div className="absolute bottom-0 left-0 h-[1px] w-0 bg-primary group-focus-within:w-full transition-all duration-500" />
+                  <div className="absolute bottom-0 left-0 h-px w-0 bg-primary group-focus-within:w-full transition-all duration-500" />
                 </div>
               </div>
               
@@ -150,9 +150,9 @@ export default function Login() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="h-16 bg-white/5 border-zinc-800 rounded-none font-mono text-sm tracking-[0.1em] text-white placeholder:text-zinc-800 focus-visible:ring-primary/40 focus-visible:border-primary/50 transition-all px-6"
+                    className="h-16 bg-white/5 border-zinc-800 rounded-none font-mono text-sm tracking-widest text-white placeholder:text-zinc-800 focus-visible:ring-primary/40 focus-visible:border-primary/50 transition-all px-6"
                   />
-                  <div className="absolute bottom-0 left-0 h-[1px] w-0 bg-primary group-focus-within:w-full transition-all duration-500" />
+                  <div className="absolute bottom-0 left-0 h-px w-0 bg-primary group-focus-within:w-full transition-all duration-500" />
                 </div>
               </div>
             </CardContent>
@@ -161,15 +161,16 @@ export default function Login() {
               <Button
                 type="submit"
                 variant="industrial-metallic"
-                className="w-full h-18 text-xs tracking-[0.3em] shadow-[0_10px_30px_rgba(0,0,0,0.3)] group"
+                className="w-full h-18 text-xs tracking-[0.4em] shadow-[0_20px_40px_rgba(0,0,0,0.4)] group relative overflow-hidden transition-all duration-500 hover:shadow-primary/20"
                 disabled={loginMutation.isPending}
               >
+                <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                 {loginMutation.isPending ? (
                   <span className="flex items-center gap-3 animate-pulse">
-                    <Zap className="h-4 w-4 animate-spin" />{t("action_authorizing_stream")}
+                    <Zap className="h-4 w-4 animate-spin text-primary" />{t("action_authorizing_stream")}
                   </span>
                 ) : (
-                  <span className="flex items-center gap-3">{t("action_execute_login")} <Zap className="h-4 w-4 group-hover:text-amber-300 transition-colors" />
+                  <span className="flex items-center gap-3">{t("action_execute_login")} <Zap className="h-4 w-4 group-hover:text-primary transition-colors duration-500" />
                   </span>
                 )}
               </Button>
@@ -223,7 +224,7 @@ export default function Login() {
                 rel="noopener noreferrer"
                 className="flex items-center gap-4 group"
               >
-                <div className="h-10 w-[1px] bg-zinc-900" />
+                <div className="h-10 w-px bg-zinc-900" />
                 <div className="text-end">
                    <p className="text-[8px] font-mono text-zinc-700 uppercase tracking-widest leading-none">{t("created_by")}</p>
                    <p className="text-[10px] font-headline font-black text-white uppercase tracking-widest group-hover:text-primary transition-colors">{t("label_yasserious_eng")}</p>

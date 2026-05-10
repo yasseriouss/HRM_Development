@@ -545,7 +545,7 @@ export default function WorkflowsPage() {
 
                           <div className="space-y-4">
                             {eng.supervisors.map((sup) => (
-                              <div key={sup.userId} className="bg-white/[0.02] border border-white/5 p-4 space-y-4">
+                              <div key={sup.userId} className="bg-white/2 border border-white/5 p-4 space-y-4">
                                 <div className="flex items-center justify-between font-headline font-black text-[10px] uppercase tracking-widest text-amber-500">
                                   <span>
                                     <ChevronRight className="h-3 w-3 inline me-2" />

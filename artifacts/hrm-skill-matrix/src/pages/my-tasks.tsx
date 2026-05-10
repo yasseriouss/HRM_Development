@@ -126,9 +126,9 @@ export default function MyTasksPage() {
           {pending.length > 0 && (
             <div className="space-y-6">
                <div className="flex items-center gap-4">
-                 <div className="h-px flex-1 bg-gradient-to-r from-transparent via-zinc-800 to-transparent" />
+                 <div className="h-px flex-1 bg-linear-to-r from-transparent via-zinc-800 to-transparent" />
                  <h3 className="font-headline font-black text-[10px] text-zinc-500 uppercase tracking-[0.4em]">{t("label_active_que")}</h3>
-                 <div className="h-px flex-1 bg-gradient-to-r from-transparent via-zinc-800 to-transparent" />
+                 <div className="h-px flex-1 bg-linear-to-r from-transparent via-zinc-800 to-transparent" />
                </div>
                
               <div className="grid gap-4">
@@ -146,7 +146,7 @@ export default function MyTasksPage() {
                       </div>
                       <CardContent className="p-8">
                         <div className="flex flex-col md:flex-row items-center gap-8">
-                          <div className="flex-shrink-0">
+                          <div className="shrink-0">
                             <div className="w-12 h-12 bg-zinc-900 border border-zinc-800 flex items-center justify-center relative">{STEP_ICONS[task.status]}
                                <CornerMarks color="primary" />
                             </div>
@@ -187,9 +187,9 @@ export default function MyTasksPage() {
           {completed.length > 0 && (
             <div className="space-y-6 pt-10">
                <div className="flex items-center gap-4">
-                 <div className="h-px flex-1 bg-gradient-to-r from-transparent via-zinc-800 to-transparent" />
+                 <div className="h-px flex-1 bg-linear-to-r from-transparent via-zinc-800 to-transparent" />
                  <h3 className="font-headline font-black text-[10px] text-zinc-700 uppercase tracking-[0.4em]">{t("label_archived_log")}</h3>
-                 <div className="h-px flex-1 bg-gradient-to-r from-transparent via-zinc-800 to-transparent" />
+                 <div className="h-px flex-1 bg-linear-to-r from-transparent via-zinc-800 to-transparent" />
                </div>
 
               <div className="grid gap-4 opacity-40">

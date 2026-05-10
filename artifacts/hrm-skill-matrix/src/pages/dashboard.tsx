@@ -34,10 +34,10 @@ interface AIInsight {
 
 const CornerMarks = ({ color = "primary" }: { color?: string }) => (
   <>
-    <div className={`absolute top-0 left-0 w-3 h-3 border-t border-l border-${color}/40`} />
-    <div className={`absolute top-0 right-0 w-3 h-3 border-t border-r border-${color}/40`} />
-    <div className={`absolute bottom-0 left-0 w-3 h-3 border-b border-l border-${color}/40`} />
-    <div className={`absolute bottom-0 right-0 w-3 h-3 border-b border-r border-${color}/40`} />
+    <div className={`absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.2)] transition-all duration-500 group-hover:scale-110`} />
+    <div className={`absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.2)] transition-all duration-500 group-hover:scale-110`} />
+    <div className={`absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.2)] transition-all duration-500 group-hover:scale-110`} />
+    <div className={`absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.2)] transition-all duration-500 group-hover:scale-110`} />
   </>);
 
 const SUITE_APPS = [
@@ -132,28 +132,28 @@ export default function Dashboard() {
       <motion.div 
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
-        className="relative p-12 bg-[#0A0A0A] border-2 border-primary/30 overflow-hidden"
+        className="relative p-12 bg-[#0A0A0A] border-2 border-primary/20 overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.5)]"
       >
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5" />
         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="space-y-4 text-center md:text-start">
-            <div className="flex items-center justify-center md:justify-start gap-3">
-              <div className="h-2 w-2 bg-primary animate-pulse" />
-              <span className={`font-headline font-black tracking-[0.5em] text-[10px] text-primary uppercase ${isAr ? 'font-tajawal' : ''}`}>{t("dash_command_center")}
+            <div className="flex items-center justify-center md:justify-start gap-4">
+              <div className="h-2 w-2 bg-primary animate-pulse shadow-[0_0_10px_rgba(var(--primary),0.5)]" />
+              <span className={`font-headline font-black tracking-[0.5em] text-[10px] text-primary/60 uppercase ${isAr ? 'font-tajawal' : ''}`}>{t("dash_command_center")}
               </span>
             </div>
-            <h2 className={`text-5xl md:text-7xl font-headline font-black tracking-tighter text-white uppercase leading-none ${isAr ? 'font-tajawal' : ''}`}>{t("dashboard_title")}
+            <h2 className={`text-6xl md:text-8xl font-headline font-black tracking-tighter text-white uppercase leading-none text-shimmer ${isAr ? 'font-tajawal' : ''}`}>{t("dashboard_title")}
             </h2>
-            <p className={`text-secondary/50 font-medium border-primary/20 ${isAr ? 'font-tajawal border-e-2 pe-4 ps-0' : 'border-s-2 ps-4'}`}>{t("dashboard_subtitle")}</p>
+            <p className={`text-zinc-500 font-medium border-primary/10 max-w-xl leading-relaxed uppercase tracking-widest text-[11px] ${isAr ? 'font-tajawal border-e-2 pe-6 ps-0' : 'border-s-2 ps-6'}`}>{t("dashboard_subtitle")}</p>
           </div>
-          <div className="flex gap-4">
-            <div className="p-6 bg-white/5 border border-white/10 text-center min-w-[120px]">
-              <p className="text-[9px] font-headline font-black text-secondary/40 tracking-widest">{t("je_stat_uptime")}</p>
-              <p className="text-2xl font-mono font-black text-white mt-1">99.9%</p>
+          <div className="flex gap-6">
+            <div className="p-8 bg-white/5 border border-zinc-900 text-center min-w-[140px] shadow-2xl">
+              <p className="text-[9px] font-headline font-black text-zinc-600 tracking-[0.3em] uppercase">{t("je_stat_uptime")}</p>
+              <p className="text-3xl font-mono font-black text-white mt-2">99.99%</p>
             </div>
-            <div className="p-6 bg-white/5 border border-white/10 text-center min-w-[120px]">
-              <p className="text-[9px] font-headline font-black text-secondary/40 tracking-widest">{t("je_stat_latency")}</p>
-              <p className="text-2xl font-mono font-black text-emerald-500 mt-1">12ms</p>
+            <div className="p-8 bg-white/5 border border-zinc-900 text-center min-w-[140px] shadow-2xl">
+              <p className="text-[9px] font-headline font-black text-zinc-600 tracking-[0.3em] uppercase">{t("je_stat_latency")}</p>
+              <p className="text-3xl font-mono font-black text-primary mt-2">0.02ms</p>
             </div>
           </div>
         </div>
@@ -171,17 +171,18 @@ export default function Dashboard() {
         ) : metrics ? (
           <>
             <motion.div variants={item}>
-              <Card className="bg-[#121212] border border-white/10 rounded-none relative group hover:border-primary/50 transition-all">
-                <CardContent className="p-8">
+              <Card className="bg-[#0D0D0D] border border-zinc-900 rounded-none relative group hover:border-primary/50 transition-all duration-500">
+                <CardContent className="p-10">
                   <div className="flex flex-col items-center justify-center text-center">
-                    <div className="p-4 bg-white/5 border border-white/5 group-hover:border-primary/30 transition-colors mb-6">
+                    <div className="p-5 bg-white/5 border border-zinc-900 group-hover:border-primary/30 transition-colors mb-8 relative">
                       <Users className="h-6 w-6 text-primary" />
+                      <div className="absolute -inset-1 border border-primary/10 animate-pulse" />
                     </div>
                     <div>
-                      <p className={`text-[10px] font-headline font-black tracking-widest text-secondary/40 uppercase ${isAr ? 'font-tajawal' : ''}`}>{t("dashboard_total_employees")}</p>
-                      <h3 className="text-5xl font-mono font-black text-white mt-4 leading-none">{metrics.total_employees}</h3>
-                      <div className={`flex items-center justify-center gap-2 mt-6 text-[10px] font-bold text-emerald-500 ${isAr ? 'font-tajawal' : ''}`}>
-                        <Activity className="h-3 w-3" />{metrics.active_employees} {t("dashboard_active")}
+                      <p className={`text-[10px] font-headline font-black tracking-[0.2em] text-zinc-600 uppercase ${isAr ? 'font-tajawal' : ''}`}>{t("dashboard_total_employees")}</p>
+                      <h3 className="text-6xl font-mono font-black text-white mt-4 tracking-tighter">{metrics.total_employees}</h3>
+                      <div className={`flex items-center justify-center gap-3 mt-8 text-[9px] font-black text-emerald-500 uppercase tracking-widest ${isAr ? 'font-tajawal' : ''}`}>
+                        <Activity className="h-3 w-3 animate-pulse" />{metrics.active_employees} {t("dashboard_active")}
                       </div>
                     </div>
                   </div>

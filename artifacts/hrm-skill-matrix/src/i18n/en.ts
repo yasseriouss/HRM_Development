@@ -76,7 +76,7 @@ const en = {
   login_brand: "HRM",
   login_title: "HRM Development System",
   login_sign_in: "Sign In",
-  login_sign_in_desc: "Enter your credentials to access the system.",
+  login_sign_in_desc: "Provide secure credentials to establish a session with the HRM core.",
   login_email: "Email",
   login_password: "Password",
   login_authenticating: "Authenticating...",
@@ -582,8 +582,8 @@ const en = {
   label_node_identifier: "NODE IDENTIFIER",
   label_secure_phrase: "SECURE PHRASE",
   
-  action_authorizing_stream: "AUTHORIZING STREAM...",
-  action_execute_login: "EXECUTE LOGIN SEQUENCE",
+  action_authorizing_stream: "AUTHENTICATING SESSION...",
+  action_execute_login: "AUTHORIZE SYSTEM ACCESS",
   action_execute_action: "EXECUTE ACTION",
   
   evaluations_intelligence_desc: "HRM Suite connects evaluation data directly to the analytics engine for real-time factory intelligence.",

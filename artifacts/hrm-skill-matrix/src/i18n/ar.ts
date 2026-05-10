@@ -76,7 +76,7 @@ const ar = {
   login_brand: "HRM",
   login_title: "نظام تطوير HRM",
   login_sign_in: "تسجيل الدخول",
-  login_sign_in_desc: "أدخل بياناتك للوصول إلى النظام.",
+  login_sign_in_desc: "يرجى تقديم بيانات اعتماد آمنة لإنشاء جلسة مع نواة النظام.",
   login_email: "البريد الإلكتروني",
   login_password: "كلمة المرور",
   login_authenticating: "جاري التحقق...",
@@ -520,8 +520,8 @@ const ar = {
   label_secure_phrase: "العبارة الآمنة",
   label_encryption_active: "تشفير AES-256-GCM نشط",
   
-  action_authorizing_stream: "تفويض التدفق...",
-  action_execute_login: "تنفيذ تسلسل الدخول",
+  action_authorizing_stream: "جاري التحقق من الجلسة...",
+  action_execute_login: "تخويل الوصول إلى النظام",
   action_execute_action: "تنفيذ الإجراء",
   
   evaluations_intelligence_desc: "يربط HRM Suite بيانات التقييم مباشرة بمحرك التحليلات للاستخبارات المصنعية في الوقت الفعلي.",

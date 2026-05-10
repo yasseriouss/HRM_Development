@@ -24,10 +24,10 @@ import { Badge } from "@/components/ui/badge";
 
 const CornerMarks = ({ color = "primary" }: { color?: string }) => (
   <>
-    <div className={`absolute top-0 left-0 w-2 h-2 border-t border-l border-${color}/40`} />
-    <div className={`absolute top-0 right-0 w-2 h-2 border-t border-r border-${color}/40`} />
-    <div className={`absolute bottom-0 left-0 w-2 h-2 border-b border-l border-${color}/40`} />
-    <div className={`absolute bottom-0 right-0 w-2 h-2 border-b border-r border-${color}/40`} />
+    <div className={`absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
+    <div className={`absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
+    <div className={`absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
+    <div className={`absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
   </>);
 
 interface DeptForm {
@@ -212,44 +212,44 @@ export default function DepartmentsPage() {
               whileHover={{ y: -5 }}
               transition={{ duration: 0.3 }}
             >
-              <Card className="bg-[#121212] border border-white/10 rounded-none relative group h-full overflow-hidden">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 -rotate-45 translate-x-12 -translate-y-12 transition-transform group-hover:scale-150" />
-                <CardContent className="p-8 space-y-6">
+              <Card className="bg-[#0D0D0D] border border-zinc-900 rounded-none relative group h-full overflow-hidden transition-all duration-500 hover:border-primary/30">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 -rotate-45 translate-x-12 -translate-y-12 transition-transform duration-700 group-hover:scale-150" />
+                <CardContent className="p-8 space-y-8">
                   <div className="flex justify-between items-start">
-                    <div className="space-y-1">
+                    <div className="space-y-2">
                       <div className="flex items-center gap-2">
-                        <span className="font-mono text-[10px] text-primary/60 tracking-widest uppercase">{dept.code ?? t("label_unit_code")}</span>
-                        <div className="h-px w-8 bg-primary/20" />
+                        <span className="font-mono text-[9px] text-zinc-600 tracking-[0.3em] uppercase">{dept.code ?? t("label_unit_code")}</span>
+                        <div className="h-px w-6 bg-primary/20" />
                       </div>
-                      <h3 className="font-headline font-black text-2xl text-white uppercase tracking-tight group-hover:text-primary transition-colors">
+                      <h3 className="font-headline font-black text-2xl text-white uppercase tracking-tighter group-hover:text-primary transition-colors duration-300">
                         {dept.name}
                       </h3>
                     </div>
                     {isAdmin && (
-                      <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Button size="icon" variant="ghost" className="h-8 w-8 rounded-none border border-white/10 hover:border-primary/30 hover:bg-primary/5 text-secondary/30 hover:text-primary" onClick={() => openEdit(dept)}>
-                          <Pencil className="h-3.5 w-3.5" />
+                      <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                        <Button size="icon" variant="ghost" className="h-10 w-10 rounded-none border border-zinc-800 hover:border-primary/30 hover:bg-primary/5 text-zinc-600 hover:text-primary" onClick={() => openEdit(dept)}>
+                          <Pencil className="h-4 w-4" />
                         </Button>
-                        <Button size="icon" variant="ghost" className="h-8 w-8 rounded-none border border-white/10 hover:border-rose-500/30 hover:bg-rose-500/5 text-secondary/30 hover:text-rose-500" onClick={() => setDeleteTarget({ id: dept.id, name: dept.name })}>
-                          <Trash2 className="h-3.5 w-3.5" />
+                        <Button size="icon" variant="ghost" className="h-10 w-10 rounded-none border border-zinc-800 hover:border-rose-500/30 hover:bg-rose-500/5 text-zinc-600 hover:text-rose-500" onClick={() => setDeleteTarget({ id: dept.id, name: dept.name })}>
+                          <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
                     )}
                   </div>
 
-                  <p className="text-secondary/30 font-medium text-xs line-clamp-2 uppercase tracking-wide leading-relaxed min-h-12">{dept.description ?? t("label_no_records")}
+                  <p className="text-zinc-500 font-medium text-[11px] line-clamp-2 uppercase tracking-widest leading-relaxed min-h-12 border-l border-zinc-800 ps-4">{dept.description ?? t("label_no_records")}
                   </p>
 
-                  <div className="pt-6 border-t border-white/5 flex items-center justify-between">
+                  <div className="pt-8 border-t border-zinc-900 flex items-center justify-between">
                     <div className="flex flex-col gap-1">
-                      <span className="font-mono text-[9px] text-secondary/20 uppercase tracking-widest">{t("label_personnel_count")}</span>
-                      <div className="flex items-center gap-2">
-                        <Users className="h-4 w-4 text-primary" />
-                        <span className="font-headline font-black text-xl text-white">{dept.employee_count}</span>
+                      <span className="font-mono text-[8px] text-zinc-700 uppercase tracking-[0.2em]">{t("label_personnel_count")}</span>
+                      <div className="flex items-center gap-3">
+                        <Users className="h-4 w-4 text-primary opacity-50" />
+                        <span className="font-headline font-black text-2xl text-white tracking-tighter">{dept.employee_count}</span>
                       </div>
                     </div>
                     <Link href={`/departments/${dept.id}`}>
-                      <Button variant="ghost" className="rounded-none border border-white/10 hover:border-primary/50 text-[10px] font-headline font-black tracking-widest uppercase h-auto py-3 px-5 group/btn">{t("action_access_details")} <ExternalLink className="ms-2 h-3 w-3 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+                      <Button variant="ghost" className="rounded-none border border-zinc-800 hover:border-primary/50 text-[10px] font-headline font-black tracking-[0.2em] uppercase h-auto py-4 px-6 group/btn transition-all duration-300">{t("action_access_details")} <ExternalLink className="ms-3 h-4 w-4 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform duration-300" />
                       </Button>
                     </Link>
                   </div>

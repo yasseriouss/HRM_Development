@@ -27,18 +27,18 @@ import { ImportDialog } from "@/components/import-dialog";
 
 const CornerMarks = ({ color = "primary" }: { color?: string }) => (
   <>
-    <div className={`absolute top-0 left-0 w-2 h-2 border-t border-l border-${color}/40`} />
-    <div className={`absolute top-0 right-0 w-2 h-2 border-t border-r border-${color}/40`} />
-    <div className={`absolute bottom-0 left-0 w-2 h-2 border-b border-l border-${color}/40`} />
-    <div className={`absolute bottom-0 right-0 w-2 h-2 border-b border-r border-${color}/40`} />
+    <div className={`absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
+    <div className={`absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
+    <div className={`absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
+    <div className={`absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
   </>
 );
 
 function classBadge(cls: string | null | undefined, t: any) {
-  if (cls === "A") return <Badge variant="outline" className="rounded-none border-emerald-500/30 bg-emerald-500/10 text-emerald-500 font-mono text-[9px] font-black tracking-widest px-2 py-0.5 uppercase">{t("dept_class_a")}</Badge>;
-  if (cls === "B") return <Badge variant="outline" className="rounded-none border-amber-500/30 bg-amber-500/10 text-amber-500 font-mono text-[9px] font-black tracking-widest px-2 py-0.5 uppercase">{t("employees_class_b")}</Badge>;
-  if (cls === "C") return <Badge variant="outline" className="rounded-none border-rose-500/30 bg-rose-500/10 text-rose-500 font-mono text-[9px] font-black tracking-widest px-2 py-0.5 uppercase">{t("employees_class_c")}</Badge>;
-  return <Badge variant="outline" className="rounded-none border-white/10 bg-white/5 text-secondary/30 font-mono text-[9px] font-black tracking-widest px-2 py-0.5 uppercase">{t("label_unclassified")}</Badge>;
+  if (cls === "A") return <Badge variant="outline" className="rounded-none border-emerald-500/40 bg-emerald-500/5 text-emerald-400 font-mono text-[8px] font-black tracking-[0.2em] px-2 py-1 uppercase shadow-[0_0_10px_rgba(16,185,129,0.1)]">{t("dept_class_a")}</Badge>;
+  if (cls === "B") return <Badge variant="outline" className="rounded-none border-amber-500/40 bg-amber-500/5 text-amber-400 font-mono text-[8px] font-black tracking-[0.2em] px-2 py-1 uppercase shadow-[0_0_10px_rgba(245,158,11,0.1)]">{t("employees_class_b")}</Badge>;
+  if (cls === "C") return <Badge variant="outline" className="rounded-none border-rose-500/40 bg-rose-500/5 text-rose-400 font-mono text-[8px] font-black tracking-[0.2em] px-2 py-1 uppercase shadow-[0_0_10px_rgba(244,63,94,0.1)]">{t("employees_class_c")}</Badge>;
+  return <Badge variant="outline" className="rounded-none border-white/5 bg-white/5 text-secondary/30 font-mono text-[8px] font-black tracking-[0.2em] px-2 py-1 uppercase">{t("label_unclassified")}</Badge>;
 }
 
 interface EmpForm {
@@ -287,23 +287,23 @@ export default function EmployeesPage() {
                 </thead>
                 <tbody className="divide-y divide-white/5">
                   {employees.map((emp) => (
-                    <tr key={emp.id} className="group hover:bg-white/2 transition-colors">
+                    <tr key={emp.id} className="group hover:bg-white/5 border-l-2 border-transparent hover:border-primary transition-all duration-300">
                       <td className="px-8 py-6 whitespace-nowrap">
                         <Link href={`/employees/${emp.id}`} className="group/link">
-                          <p className="font-headline font-black text-white text-base tracking-tight group-hover/link:text-primary transition-colors uppercase">{emp.full_name}
+                          <p className="font-headline font-black text-white text-sm tracking-widest group-hover/link:text-primary transition-colors uppercase">{emp.full_name}
                           </p>
-                          <div className="flex items-center gap-1 text-[9px] font-mono text-secondary/20 mt-1 uppercase">
+                          <div className="flex items-center gap-1 text-[8px] font-mono text-secondary/20 mt-1 uppercase tracking-widest">
                             <ExternalLink className="h-3 w-3" />{t("label_node_profile")}
                           </div>
                         </Link>
                       </td>
-                      <td className="px-8 py-6 font-mono text-[11px] text-primary/60 whitespace-nowrap">{emp.employee_code ?? "—"}</td>
+                      <td className="px-8 py-6 font-mono text-[10px] text-zinc-500 tracking-widest whitespace-nowrap">{emp.employee_code ?? "—"}</td>
                       <td className="px-8 py-6 whitespace-nowrap">
-                        <Badge variant="outline" className="rounded-none border-white/5 bg-white/5 text-[9px] font-mono text-secondary/60 py-1 uppercase px-2">
+                        <Badge variant="outline" className="rounded-none border-white/5 bg-white/5 text-[8px] font-mono text-zinc-400 py-1 uppercase px-2 tracking-widest">
                           {emp.department?.name ?? "UNASSIGNED"}
                         </Badge>
                       </td>
-                      <td className="px-8 py-6 font-headline font-black text-[10px] text-secondary/30 tracking-widest uppercase whitespace-nowrap">{emp.job_title ?? "OPERATIVE"}</td>
+                      <td className="px-8 py-6 font-headline font-black text-[9px] text-zinc-600 tracking-[0.3em] uppercase whitespace-nowrap">{emp.job_title ?? "OPERATIVE"}</td>
                       <td className="px-8 py-6 whitespace-nowrap">{classBadge(emp.current_class, t)}</td>
                       <td className="px-8 py-6 text-end whitespace-nowrap">
                         {isAdmin && (

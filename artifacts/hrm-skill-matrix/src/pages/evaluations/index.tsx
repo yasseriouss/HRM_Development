@@ -17,21 +17,21 @@ type EmployeeClass = "A" | "B" | "C" | null | undefined;
 
 const CornerMarks = ({ color = "primary" }: { color?: string }) => (
   <>
-    <div className={`absolute top-0 left-0 w-2 h-2 border-t border-l border-${color}/40`} />
-    <div className={`absolute top-0 right-0 w-2 h-2 border-t border-r border-${color}/40`} />
-    <div className={`absolute bottom-0 left-0 w-2 h-2 border-b border-l border-${color}/40`} />
-    <div className={`absolute bottom-0 right-0 w-2 h-2 border-b border-r border-${color}/40`} />
+    <div className={`absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
+    <div className={`absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
+    <div className={`absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
+    <div className={`absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
   </>
 );
 
 function classBadge(cls: EmployeeClass) {
   const map: Record<string, string> = {
-    A: "border-emerald-500/30 bg-emerald-500/10 text-emerald-500",
-    B: "border-amber-500/30 bg-amber-500/10 text-amber-500",
-    C: "border-rose-500/30 bg-rose-500/10 text-rose-500",
+    A: "border-emerald-500/40 bg-emerald-500/5 text-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.1)]",
+    B: "border-amber-500/40 bg-amber-500/5 text-amber-400 shadow-[0_0_10px_rgba(245,158,11,0.1)]",
+    C: "border-rose-500/40 bg-rose-500/5 text-rose-400 shadow-[0_0_10px_rgba(244,63,94,0.1)]",
   };
   return (
-    <Badge variant="outline" className={`rounded-none font-mono text-[10px] font-black px-2 py-0.5 ${map[cls ?? ""] ?? "border-zinc-800 text-zinc-500"}`}>
+    <Badge variant="outline" className={`rounded-none font-mono text-[8px] font-black tracking-[0.2em] px-2 py-1 uppercase ${map[cls ?? ""] ?? "border-zinc-800 text-zinc-600"}`}>
       {cls ?? "N/A"}
     </Badge>
   );
@@ -39,17 +39,17 @@ function classBadge(cls: EmployeeClass) {
 
 function statusBadge(status: string, t: (k: any) => string) {
   const map: Record<string, string> = {
-    Active: "border-emerald-500/30 bg-emerald-500/10 text-emerald-500",
-    Completed: "border-blue-500/30 bg-blue-500/10 text-blue-500",
-    Draft: "border-amber-500/30 bg-amber-500/10 text-amber-500",
-    Archived: "border-zinc-700 bg-zinc-900 text-zinc-500",
+    Active: "border-emerald-500/40 bg-emerald-500/5 text-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.1)]",
+    Completed: "border-blue-500/40 bg-blue-500/5 text-blue-400 shadow-[0_0_10px_rgba(59,130,246,0.1)]",
+    Draft: "border-amber-500/40 bg-amber-500/5 text-amber-400 shadow-[0_0_10px_rgba(245,158,11,0.1)]",
+    Archived: "border-zinc-800 bg-zinc-900/50 text-zinc-600",
   };
   const keyMap: Record<string, string>= {
     Active: "status_active", Completed: "status_completed",
     Draft: "status_draft", Archived: "status_archived",
   };
   return (
-    <Badge variant="outline" className={`rounded-none font-mono text-[9px] font-black tracking-widest px-2 py-0.5 uppercase whitespace-nowrap ${map[status] ?? ""}`}>{t((keyMap[status] ?? "status_draft") as any)}
+    <Badge variant="outline" className={`rounded-none font-mono text-[8px] font-black tracking-[0.2em] px-2 py-1 uppercase whitespace-nowrap ${map[status] ?? ""}`}>{t((keyMap[status] ?? "status_draft") as any)}
     </Badge>
   );
 }
@@ -136,10 +136,10 @@ function SummaryTable({ campaignId }: { campaignId: string }) {
         </div>
       </div>
 
-      <div className="border border-zinc-800 overflow-hidden">
+      <div className="border border-zinc-900 bg-[#0A0A0A] overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-zinc-800 bg-zinc-900/50 text-zinc-500">
+            <tr className="border-b border-zinc-900 bg-white/5 text-zinc-500">
               <th className="px-6 py-4 font-headline font-black text-[10px] uppercase tracking-widest text-start">{t("field_employee")}</th>
               <th className="px-6 py-4 font-headline font-black text-[10px] uppercase tracking-widest text-start">{t("field_code")}</th>
               <th className="px-6 py-4 font-headline font-black text-[10px] uppercase tracking-widest text-end">{t("evaluations_col_score")}</th>
@@ -149,13 +149,13 @@ function SummaryTable({ campaignId }: { campaignId: string }) {
           </thead>
           <tbody className="divide-y divide-zinc-900">
             {items.map((row) => (
-              <tr key={row.id} className="hover:bg-primary/5 transition-colors group">
-                <td className="px-6 py-4 font-headline font-black text-white uppercase group-hover:text-primary transition-colors whitespace-nowrap">
+              <tr key={row.id} className="hover:bg-white/5 border-l-2 border-transparent hover:border-primary transition-all duration-300 group">
+                <td className="px-6 py-4 font-headline font-black text-white text-xs tracking-widest uppercase group-hover:text-primary transition-colors whitespace-nowrap">
                   <Link href={`/employees/${row.employee_id}`}>{row.employee_name ?? "â€”"}
                   </Link>
                 </td>
-                <td className="px-6 py-4 font-mono text-xs text-zinc-500 whitespace-nowrap uppercase tracking-tighter">{row.employee_code ?? "â€”"}</td>
-                <td className="px-6 py-4 text-end font-mono text-sm text-zinc-400 whitespace-nowrap uppercase tracking-tighter">{Number(row.total_score).toFixed(0)} / {Number(row.max_possible_score).toFixed(0)}
+                <td className="px-6 py-4 font-mono text-[10px] text-zinc-600 whitespace-nowrap uppercase tracking-widest">{row.employee_code ?? "â€”"}</td>
+                <td className="px-6 py-4 text-end font-mono text-[11px] text-zinc-500 whitespace-nowrap uppercase tracking-tighter">{Number(row.total_score).toFixed(0)} / {Number(row.max_possible_score).toFixed(0)}
                 </td>
                 <td className="px-6 py-4 text-end font-mono font-black text-white whitespace-nowrap">{Number(row.percentage).toFixed(1)}%</td>
                 <td className="px-6 py-4 whitespace-nowrap">{classBadge(row.class as EmployeeClass)}</td>
@@ -338,7 +338,7 @@ export default function EvaluationsPage() {
             <CornerMarks />
           </Card>
 
-          <div className="p-8 border-2 border-emerald-500/10 bg-emerald-500/[0.02] relative overflow-hidden group">
+          <div className="p-8 border-2 border-emerald-500/10 bg-emerald-500/2 relative overflow-hidden group">
              <Activity className="absolute -right-4 -top-4 h-24 w-24 text-emerald-500 opacity-5 group-hover:opacity-10 transition-all duration-700 group-hover:rotate-12" />
              <p className="font-headline font-black text-[11px] text-emerald-500 uppercase tracking-[0.3em] mb-4">{t("label_system_intelligence")}</p>
              <p className="text-xs text-zinc-500 leading-relaxed uppercase tracking-tight font-medium">{t("evaluations_intelligence_desc")}
