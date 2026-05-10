@@ -26,10 +26,10 @@ interface TaskItem {
 
 const CornerMarks = ({ color = "primary" }: { color?: string }) => (
   <>
-    <div className={`absolute top-0 left-0 w-2 h-2 border-t border-l border-${color}/40`} />
-    <div className={`absolute top-0 right-0 w-2 h-2 border-t border-r border-${color}/40`} />
-    <div className={`absolute bottom-0 left-0 w-2 h-2 border-b border-l border-${color}/40`} />
-    <div className={`absolute bottom-0 right-0 w-2 h-2 border-b border-r border-${color}/40`} />
+    <div className={`absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
+    <div className={`absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
+    <div className={`absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
+    <div className={`absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
   </>);
 
 const STEP_ICONS: Record<string, React.ReactNode> = {
@@ -49,17 +49,17 @@ const LEVEL_DESC: Record<string, string>= {
 };
 
 const LEVEL_BADGE: Record<string, string>= {
-  manager: "border-purple-500/30 bg-purple-500/10 text-purple-500",
-  engineer: "border-blue-500/30 bg-blue-500/10 text-blue-500",
-  supervisor: "border-amber-500/30 bg-amber-500/10 text-amber-500",
-  peer_eval: "border-emerald-500/30 bg-emerald-500/10 text-emerald-500",
+  manager: "border-purple-500/40 bg-purple-500/5 text-purple-400 shadow-[0_0_10px_rgba(168,85,247,0.1)]",
+  engineer: "border-blue-500/40 bg-blue-500/5 text-blue-400 shadow-[0_0_10px_rgba(59,130,246,0.1)]",
+  supervisor: "border-amber-500/40 bg-amber-500/5 text-amber-400 shadow-[0_0_10px_rgba(245,158,11,0.1)]",
+  peer_eval: "border-emerald-500/40 bg-emerald-500/5 text-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.1)]",
 };
 
 const STATUS_BADGE: Record<string, string>= {
-  pending: "border-zinc-800 bg-zinc-900 text-zinc-500",
-  in_progress: "border-blue-500/30 bg-blue-500/10 text-blue-500",
-  submitted: "border-amber-500/30 bg-amber-500/10 text-amber-500",
-  approved: "border-emerald-500/30 bg-emerald-500/10 text-emerald-500",
+  pending: "border-zinc-800 bg-zinc-900/50 text-zinc-600",
+  in_progress: "border-blue-500/40 bg-blue-500/5 text-blue-400 shadow-[0_0_10px_rgba(59,130,246,0.1)]",
+  submitted: "border-amber-500/40 bg-amber-500/5 text-amber-400 shadow-[0_0_10px_rgba(245,158,11,0.1)]",
+  approved: "border-emerald-500/40 bg-emerald-500/5 text-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.1)]",
 };
 
 export default function MyTasksPage() {
@@ -137,41 +137,47 @@ export default function MyTasksPage() {
                     key={task.id}
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
-                    whileHover={{ scale: 1.005 }}
-                    transition={{ duration: 0.2 }}
+                    whileHover={{ scale: 1.002, x: 5 }}
+                    transition={{ duration: 0.3 }}
                   >
-                    <Card className="bg-[#0D0D0D] border border-zinc-800 rounded-none relative overflow-hidden group hover:border-primary/50 transition-all">
-                      <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                        <Zap className="h-12 w-12 text-white" />
+                    <Card className="bg-[#0D0D0D] border border-zinc-900 rounded-none relative overflow-hidden group hover:border-primary/40 transition-all duration-500 shadow-2xl">
+                      <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity duration-500">
+                        <Zap className="h-16 w-16 text-white" />
                       </div>
-                      <CardContent className="p-8">
-                        <div className="flex flex-col md:flex-row items-center gap-8">
+                      <CardContent className="p-10">
+                        <div className="flex flex-col md:flex-row items-center gap-10">
                           <div className="shrink-0">
-                            <div className="w-12 h-12 bg-zinc-900 border border-zinc-800 flex items-center justify-center relative">{STEP_ICONS[task.status]}
+                            <div className="w-14 h-14 bg-zinc-900 border border-zinc-800 flex items-center justify-center relative shadow-inner">
+                               {STEP_ICONS[task.status]}
                                <CornerMarks color="primary" />
                             </div>
                           </div>
                           
                           <div className="flex-1 space-y-4 text-center md:text-start">
-                            <div className="flex flex-wrap justify-center md:justify-start gap-3 items-center">
-                              <Badge variant="outline" className={`rounded-none font-mono text-[9px] font-black tracking-widest uppercase px-2 py-0.5 ${LEVEL_BADGE[task.level]}`}>{LEVEL_LABELS[task.level] || task.level}
+                            <div className="flex flex-wrap justify-center md:justify-start gap-4 items-center">
+                              <Badge variant="outline" className={`rounded-none font-mono text-[8px] font-black tracking-[0.2em] uppercase px-3 py-1 ${LEVEL_BADGE[task.level] || ''}`}>{LEVEL_LABELS[task.level] || task.level}
                               </Badge>
-                              <Badge variant="outline" className={`rounded-none font-mono text-[9px] font-black tracking-widest uppercase px-2 py-0.5 ${STATUS_BADGE[task.status]}`}>{task.status.replace("_", " ")}
+                              <Badge variant="outline" className={`rounded-none font-mono text-[8px] font-black tracking-[0.2em] uppercase px-3 py-1 ${STATUS_BADGE[task.status] || ''}`}>{task.status.replace("_", " ")}
                               </Badge>
                             </div>
                             
-                            <div className="space-y-1">
-                               <h4 className="text-xl font-headline font-black text-white uppercase group-hover:text-primary transition-colors tracking-tight leading-tight">
+                            <div className="space-y-2">
+                               <h4 className="text-2xl font-headline font-black text-white uppercase group-hover:text-primary transition-colors duration-300 tracking-tighter leading-none">
                                  {task.workflow.title}
                                </h4>
-                               <p className="font-mono text-[9px] text-zinc-600 uppercase tracking-widest flex items-center justify-center md:justify-start gap-2">
-                                 <Activity className="h-3 w-3" />{task.workflow.department?.name || "GLOBAL UNIT"} // {LEVEL_DESC_T[task.level]}
+                               <p className="font-mono text-[9px] text-zinc-600 uppercase tracking-[0.2em] flex items-center justify-center md:justify-start gap-3">
+                                 <Activity className="h-3 w-3 text-primary/40" />
+                                 <span>{task.workflow.department?.name || "GLOBAL UNIT"}</span>
+                                 <span className="text-zinc-800">//</span>
+                                 <span className="text-zinc-500 italic">{LEVEL_DESC_T[task.level]}</span>
                                </p>
                             </div>
                           </div>
 
                           <Link href={`/workflows/${task.workflow.id}`}>
-                            <Button className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto shadow-[0_0_20px_rgba(255,255,255,0.05)] group-hover:scale-105 transition-transform">{t("action_execute_action")} <ArrowRight className="h-4 w-4 ms-2" />
+                            <Button className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-10 h-auto shadow-[0_10px_30px_rgba(var(--primary),0.2)] group-hover:shadow-primary/30 transition-all duration-300 relative overflow-hidden">
+                              <div className="absolute inset-0 bg-white/10 -translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
+                              <span className="relative z-10 flex items-center gap-2">{t("action_execute_action")} <ArrowRight className="h-4 w-4" /></span>
                             </Button>
                           </Link>
                         </div>

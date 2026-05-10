@@ -13,10 +13,10 @@ type EmployeeClass = "A" | "B" | "C" | null | undefined;
 
 const CornerMarks = ({ color = "primary" }: { color?: string }) => (
   <>
-    <div className={`absolute top-0 left-0 w-2 h-2 border-t border-l border-${color}/40`} />
-    <div className={`absolute top-0 right-0 w-2 h-2 border-t border-r border-${color}/40`} />
-    <div className={`absolute bottom-0 left-0 w-2 h-2 border-b border-l border-${color}/40`} />
-    <div className={`absolute bottom-0 right-0 w-2 h-2 border-b border-r border-${color}/40`} />
+    <div className={`absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
+    <div className={`absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
+    <div className={`absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
+    <div className={`absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
   </>
 );
 
@@ -43,12 +43,12 @@ export default function MyProfilePage() {
 
   function classBadge(cls: EmployeeClass) {
     const map: Record<string, string> = {
-      A: "border-emerald-500/30 bg-emerald-500/10 text-emerald-500",
-      B: "border-amber-500/30 bg-amber-500/10 text-amber-500",
-      C: "border-rose-500/30 bg-rose-500/10 text-rose-500",
+      A: "border-emerald-500/40 bg-emerald-500/5 text-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.1)]",
+      B: "border-amber-500/40 bg-amber-500/5 text-amber-400 shadow-[0_0_10px_rgba(245,158,11,0.1)]",
+      C: "border-rose-500/40 bg-rose-500/5 text-rose-400 shadow-[0_0_10px_rgba(244,63,94,0.1)]",
     };
     return (
-      <Badge variant="outline" className={`rounded-none font-mono text-[10px] font-black px-2 py-0.5 uppercase ${map[cls ?? ""] ?? "border-zinc-800 text-zinc-500"}`}>
+      <Badge variant="outline" className={`rounded-none font-mono text-[8px] font-black tracking-[0.2em] px-3 py-1 uppercase ${map[cls ?? ""] ?? "border-zinc-800 text-zinc-600"}`}>
         {cls ?? "N/A"}
       </Badge>
     );
@@ -85,44 +85,50 @@ export default function MyProfilePage() {
   return (
     <div className="space-y-10 pb-24 font-sans text-white">
       {/* Header - Profile Dashboard */}
-      <div className="relative p-10 bg-[#0A0A0A] border-2 border-primary/20 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
-        <div className="relative z-10 flex flex-col md:flex-row items-center gap-10">
+      <div className="relative p-12 bg-[#0A0A0A] border-2 border-primary/20 overflow-hidden shadow-2xl">
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5" />
+        <div className="relative z-10 flex flex-col md:flex-row items-center gap-12">
           <div className="relative group">
-            <div className="w-24 h-24 rounded-none bg-zinc-900 border border-zinc-800 flex items-center justify-center text-4xl font-headline font-black text-primary transition-transform group-hover:scale-105">{emp.full_name?.charAt(0) ?? "?"}
+            <div className="w-28 h-28 rounded-none bg-zinc-900 border-2 border-zinc-800 flex items-center justify-center text-5xl font-headline font-black text-primary transition-all duration-500 group-hover:border-primary/50 group-hover:scale-105 shadow-2xl relative overflow-hidden">
+               <div className="absolute inset-0 bg-primary/5 animate-pulse" />
+               <span className="relative z-10">{emp.full_name?.charAt(0) ?? "?"}</span>
             </div>
             <CornerMarks />
           </div>
           
-          <div className="flex-1 space-y-4 text-center md:text-start">
-            <div className="flex flex-col md:flex-row items-center gap-4">
-              <h2 className="text-5xl font-headline font-black tracking-tighter uppercase leading-none">{emp.full_name}</h2>{classBadge(emp.current_class as EmployeeClass)}
+          <div className="flex-1 space-y-6 text-center md:text-start">
+            <div className="flex flex-col md:flex-row items-center gap-6">
+              <h2 className="text-6xl font-headline font-black tracking-tighter uppercase leading-none text-shimmer">{emp.full_name}</h2>
+              {classBadge(emp.current_class as EmployeeClass)}
             </div>
             
-            <div className="flex flex-wrap justify-center md:justify-start gap-6 text-[10px] font-mono font-black text-zinc-500 uppercase tracking-widest">{emp.job_title && (
-                <span className="flex items-center gap-2 border-r border-zinc-800 pe-6 last:border-0">
-                  <Briefcase className="h-3.5 w-3.5 text-primary" />{emp.job_title}
+            <div className="flex flex-wrap justify-center md:justify-start gap-8 text-[9px] font-mono font-black text-zinc-600 uppercase tracking-[0.3em]">{emp.job_title && (
+                <span className="flex items-center gap-3 border-r border-zinc-900 pe-8 last:border-0">
+                  <Briefcase className="h-4 w-4 text-primary opacity-50" />
+                  <span className="text-zinc-400">{emp.job_title}</span>
                 </span>
               )}
               {emp.department?.name && (
-                <span className="flex items-center gap-2 border-r border-zinc-800 pe-6 last:border-0">
-                  <Building2 className="h-3.5 w-3.5 text-primary" />
-                  {emp.department.name}
+                <span className="flex items-center gap-3 border-r border-zinc-900 pe-8 last:border-0">
+                  <Building2 className="h-4 w-4 text-primary opacity-50" />
+                  <span className="text-zinc-400">{emp.department.name}</span>
                 </span>)}
               {emp.joined_date && (
-                <span className="flex items-center gap-2 border-r border-zinc-800 pe-6 last:border-0">
-                  <CalendarDays className="h-3.5 w-3.5 text-primary" />{t("profile_joined")} {new Date(emp.joined_date).toLocaleDateString()}
+                <span className="flex items-center gap-3 border-r border-zinc-900 pe-8 last:border-0">
+                  <CalendarDays className="h-4 w-4 text-primary opacity-50" />
+                  <span className="text-zinc-400">{t("profile_joined")} {new Date(emp.joined_date).toLocaleDateString()}</span>
                 </span>
               )}
-              <span className="bg-primary/10 text-primary px-3 py-1 border border-primary/20">{t("label_node_id")}::{emp.employee_code || t("profile_unknown")}
+              <span className="bg-primary/5 text-primary px-4 py-1.5 border border-primary/20 shadow-[0_0_15px_rgba(var(--primary),0.1)]">
+                {t("label_node_id")}::{emp.employee_code || t("profile_unknown")}
               </span>
             </div>
           </div>
 
           {latestSummary && (
-            <div className="text-center md:text-end border-s-2 border-zinc-900 ps-10 hidden md:block">
-              <p className="text-5xl font-mono font-black text-primary leading-none shadow-[0_0_20px_rgba(255,255,255,0.05)]">{Number(latestSummary.percentage).toFixed(1)}%</p>
-              <p className="text-[9px] font-headline font-black text-zinc-500 mt-2 uppercase tracking-[0.3em]">{t("profile_latest_score")}</p>
+            <div className="text-center md:text-end border-s-2 border-zinc-900 ps-12 hidden md:block">
+              <p className="text-6xl font-mono font-black text-primary leading-none tracking-tighter shadow-[0_0_30px_rgba(var(--primary),0.2)]">{Number(latestSummary.percentage).toFixed(1)}%</p>
+              <p className="text-[10px] font-headline font-black text-zinc-600 mt-4 uppercase tracking-[0.4em]">{t("profile_latest_score")}</p>
             </div>
           )}
         </div>
