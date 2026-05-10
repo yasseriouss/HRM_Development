@@ -131,7 +131,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       {/* Global Scanline Effect */}
       <div className="scanline" />
       {/* Top Navigation Bar */}
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#0A0A0A]/80 backdrop-blur-md px-6 py-4 flex items-center justify-between gap-8">
+      <header className="sticky top-0 z-50 border-b border-zinc-900 bg-[#0A0A0A]/90 backdrop-blur-xl px-8 py-5 flex items-center justify-between gap-10 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
         <div className="flex items-center gap-8">
           <div className="flex items-center gap-4">
              {/* App Launcher */}
@@ -147,14 +147,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 align="start"
-                className="w-96 p-4 bg-[#0A0A0A] border-2 border-primary/30 rounded-none shadow-2xl animate-in fade-in slide-in-from-top-2 duration-300"
+                className="w-96 p-6 bg-[#0A0A0A] border-2 border-primary/30 rounded-none shadow-[0_0_50px_rgba(0,0,0,0.8)] animate-in fade-in slide-in-from-top-4 duration-500 overflow-hidden"
               >
-                <div className="px-3 py-4 border-b border-white/10 mb-4">
-                  <DropdownMenuLabel className="text-[10px] font-headline font-black uppercase tracking-[0.4em] text-primary flex items-center gap-3">
-                    <div className="h-2 w-2 bg-primary animate-pulse" />{t("suite_title")}
+                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5" />
+                <div className="relative z-10 px-4 py-5 border-b border-zinc-800 mb-6 flex items-center justify-between">
+                  <DropdownMenuLabel className="text-[10px] font-headline font-black uppercase tracking-[0.5em] text-primary flex items-center gap-4">
+                    <div className="h-2 w-2 bg-primary animate-pulse shadow-[0_0_8px_rgba(var(--primary),0.5)]" />
+                    <span className="text-shimmer">{t("suite_title")}</span>
                   </DropdownMenuLabel>
+                  <span className="text-[8px] font-mono text-zinc-700 uppercase tracking-widest">SYS::SECURE</span>
                 </div>
-                <div className="grid grid-cols-1 gap-2">{SUITE_APPS.map((app) => (
+                <div className="relative z-10 grid grid-cols-1 gap-3">{SUITE_APPS.map((app) => (
                     <DropdownMenuItem
                       key={app.id}
                       asChild
@@ -194,28 +197,29 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <div className="flex items-center gap-3">
-              <img src={`${import.meta.env.BASE_URL}logo.png`} alt="System Logo" className="h-8 w-auto object-contain" />
+            <div className="flex items-center gap-4">
+              <img src={`${import.meta.env.BASE_URL}logo.png`} alt="System Logo" className="h-8 w-auto object-contain grayscale brightness-200 contrast-200" />
               <div className="flex flex-col">
-                <h1 className={`text-xl font-headline font-black text-white tracking-tighter uppercase leading-none ${isAr ? 'font-tajawal' : ''}`}>HRM DEV</h1>
-                <span className="text-[8px] font-mono text-primary font-black tracking-[0.5em] mt-1 leading-none">WORKSTATION</span>
+                <h1 className={`text-2xl font-headline font-black text-white tracking-tighter uppercase leading-none text-shimmer ${isAr ? 'font-tajawal' : ''}`}>HRM DEV</h1>
+                <span className="text-[8px] font-mono text-primary/60 font-black tracking-[0.5em] mt-1.5 leading-none">COMMAND_CENTER</span>
               </div>
             </div>
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden xl:flex items-center gap-2 overflow-x-auto max-w-[50vw]">
+          <nav className="hidden xl:flex items-center gap-4 overflow-x-auto max-w-[50vw] px-4">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`px-4 py-2 font-headline font-black text-[10px] tracking-widest uppercase transition-all whitespace-nowrap border-b-2 ${
+                className={`px-5 py-3 font-headline font-black text-[10px] tracking-[0.2em] uppercase transition-all duration-300 whitespace-nowrap border-b-2 relative group/nav ${
                   isActive(item.href)
                     ? "text-primary border-primary bg-primary/5"
-                    : "text-secondary/40 border-transparent hover:text-white hover:bg-white/5"
+                    : "text-zinc-600 border-transparent hover:text-white hover:bg-white/5"
                 }`}
               >
                 {t(item.labelKey)}
+                <div className={`absolute bottom-0 left-0 w-full h-0.5 bg-primary transform origin-left transition-transform duration-500 ${isActive(item.href) ? 'scale-x-100' : 'scale-x-0 group-hover/nav:scale-x-50'}`} />
               </Link>
             ))}
           </nav>
@@ -231,7 +235,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </span>
           </div>
 
-          <div className="h-8 w-[1px] bg-white/10 mx-2 hidden md:block" />
+          <div className="h-8 w-px bg-zinc-800 mx-4 hidden md:block" />
 
           <div className="flex items-center gap-3">
             <NotificationBell />
@@ -321,30 +325,38 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </main>
 
       {/* Footer - Terminal Style */}
-      <footer className="border-t border-white/5 bg-[#050505] py-10 px-8">
-        <div className="max-w-[1600px] mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="flex items-center gap-6">
+      <footer className="border-t border-zinc-900 bg-[#080808] py-12 px-10 relative overflow-hidden">
+        <div className="absolute inset-0 bg-primary/1 pointer-events-none" />
+        <div className="max-w-[1600px] mx-auto flex flex-col md:flex-row items-center justify-between gap-10 relative z-10">
+          <div className="flex items-center gap-8">
+            <div className="h-14 w-14 border border-zinc-800 bg-black flex items-center justify-center relative group">
+               <Activity className="h-6 w-6 text-primary/40 group-hover:text-primary transition-colors animate-pulse" />
+               <div className="absolute inset-0 border border-primary/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+            </div>
             <div className="flex flex-col">
-              <p className="text-[10px] font-headline font-black text-white tracking-[0.3em] uppercase">HRM SYSTEM OPERATIONAL</p>
-              <p className="text-[8px] font-mono text-secondary/30 mt-1">NODE: CLUSTER 01 // STATUS: ONLINE // UPTIME: 99.98%</p>
+              <p className="text-[11px] font-headline font-black text-white tracking-[0.4em] uppercase text-shimmer">HRM SYSTEM OPERATIONAL</p>
+              <div className="flex items-center gap-4 mt-2">
+                 <span className="text-[8px] font-mono text-emerald-500/60 flex items-center gap-2 uppercase tracking-widest"><div className="h-1 w-1 bg-emerald-500 rounded-full animate-ping" /> STATUS: OPTIMAL</span>
+                 <span className="text-[8px] font-mono text-zinc-700 uppercase tracking-widest">NODE: CLUSTER_01 // UPTIME: 99.99%</span>
+              </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-12">
             <a
               href="https://yasserious.com"
               target="_blank"
               rel="noopener noreferrer"
               className="group flex flex-col items-end"
             >
-              <span className="text-[9px] font-headline font-black text-secondary/40 group-hover:text-primary transition-colors tracking-widest uppercase">{t("created_by")}
+              <span className="text-[9px] font-headline font-black text-zinc-600 group-hover:text-primary transition-colors tracking-[0.3em] uppercase">{t("created_by")}
               </span>
-              <span className="text-[11px] font-headline font-black text-white group-hover:text-primary transition-all mt-1">YASSERIOUS ENGINEERING
+              <span className="text-sm font-headline font-black text-white group-hover:text-primary transition-all mt-1 tracking-tighter uppercase">YASSERIOUS ENGINEERING
               </span>
             </a>
             
-            <div className="h-10 w-10 border border-white/10 bg-white/5 flex items-center justify-center">
-              <Cpu className="h-4 w-4 text-primary" />
+            <div className="h-12 w-12 border border-zinc-800 bg-zinc-900/50 flex items-center justify-center hover:border-primary/50 transition-colors duration-500">
+              <Cpu className="h-5 w-5 text-primary/40 hover:text-primary transition-colors" />
             </div>
           </div>
         </div>

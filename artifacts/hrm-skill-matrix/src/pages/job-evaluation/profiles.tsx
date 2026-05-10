@@ -61,10 +61,10 @@ import {
 
 const CornerMarks = ({ color = "primary" }: { color?: string }) => (
   <>
-    <div className={`absolute top-0 left-0 w-2 h-2 border-t border-l border-${color}/40`} />
-    <div className={`absolute top-0 right-0 w-2 h-2 border-t border-r border-${color}/40`} />
-    <div className={`absolute bottom-0 left-0 w-2 h-2 border-b border-l border-${color}/40`} />
-    <div className={`absolute bottom-0 right-0 w-2 h-2 border-b border-r border-${color}/40`} />
+    <div className={`absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.2)]`} />
+    <div className={`absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.2)]`} />
+    <div className={`absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.2)]`} />
+    <div className={`absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.2)]`} />
   </>);
 
 // Types
@@ -209,18 +209,18 @@ export default function JobProfilesPage() {
       <motion.div 
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="relative p-10 bg-[#0A0A0A] border-2 border-primary/30 animate-scan overflow-hidden shadow-2xl"
+        className="relative p-12 bg-[#0A0A0A] border-2 border-primary/20 overflow-hidden shadow-2xl"
       >
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
-        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <Activity className="h-4 w-4 text-primary animate-pulse" />
-              <span className="font-headline font-black tracking-[0.4em] uppercase text-[9px] text-primary">{t("je_profiles_protocol")}</span>
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5" />
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-10">
+          <div className="space-y-4">
+            <div className="flex items-center gap-4">
+              <Activity className="h-4 w-4 text-primary animate-pulse shadow-[0_0_10px_rgba(var(--primary),0.5)]" />
+              <span className="font-headline font-black tracking-[0.5em] uppercase text-[10px] text-primary/60">{t("je_profiles_protocol")}</span>
             </div>
-            <h1 className="text-4xl lg:text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">{t("je_profiles_registry")}
+            <h1 className="text-5xl lg:text-7xl font-headline font-black tracking-tighter text-white uppercase leading-none text-shimmer">{t("je_profiles_registry")}
             </h1>
-            <p className="text-secondary/40 font-medium text-sm border-s-2 border-primary/20 ps-4">{t("je_profiles_registry_desc")}
+            <p className="text-zinc-500 font-medium text-[11px] border-s-2 border-primary/20 ps-6 uppercase tracking-widest max-w-xl leading-relaxed">{t("je_profiles_registry_desc")}
             </p>
           </div>
           
@@ -252,15 +252,16 @@ export default function JobProfilesPage() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: i * 0.1 }}
           >
-            <Card className="bg-[#0D0D0D] border border-zinc-800 rounded-none relative group hover:border-primary/40 transition-all overflow-hidden">
-              <CardContent className="p-6">
+            <Card className="bg-[#0D0D0D] border border-zinc-900 rounded-none relative group hover:border-primary/30 transition-all duration-500 overflow-hidden shadow-xl">
+              <CardContent className="p-8">
                 <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-[9px] font-headline font-black tracking-[0.2em] text-zinc-500 uppercase">{stat.label}</p>
-                    <p className="text-3xl font-mono font-black mt-2 text-white">{stat.val}</p>
+                  <div className="space-y-2">
+                    <p className="text-[9px] font-headline font-black tracking-[0.3em] text-zinc-600 uppercase">{stat.label}</p>
+                    <p className="text-4xl font-mono font-black text-white tracking-tighter">{stat.val}</p>
                   </div>
-                  <div className={`p-3 bg-zinc-900 border border-zinc-800 group-hover:border-current transition-colors ${stat.color}`}>
-                    <stat.icon className="h-6 w-6" />
+                  <div className={`p-4 bg-zinc-900 border border-zinc-800 group-hover:border-current transition-all duration-500 relative overflow-hidden ${stat.color}`}>
+                    <stat.icon className="h-6 w-6 relative z-10" />
+                    <div className="absolute inset-0 bg-white/5 -translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
                   </div>
                 </div>
               </CardContent>
@@ -314,8 +315,9 @@ export default function JobProfilesPage() {
           </CardHeader>
           <CardContent className="p-0">
             <div className="overflow-x-auto">
+            <div className="overflow-x-auto border border-zinc-900 bg-[#0A0A0A]">
               <table className="w-full border-collapse">
-                <thead className="bg-zinc-900/50 text-zinc-500 font-headline font-black text-[10px] uppercase tracking-widest border-b border-zinc-800">
+                <thead className="bg-white/5 text-zinc-500 font-headline font-black text-[10px] uppercase tracking-[0.3em] border-b border-zinc-900">
                   <tr>
                     <th className="px-8 py-5 text-start">{t("je_col_profile_id")}</th>
                     <th className="px-8 py-5 text-start">{t("je_col_unit")}</th>
@@ -337,28 +339,31 @@ export default function JobProfilesPage() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0, x: -20 }}
-                        className="hover:bg-white/2 transition-colors group"
+                        className="hover:bg-white/2 border-l-2 border-transparent hover:border-primary transition-all duration-300 group"
                       >
                         <td className="px-8 py-5 whitespace-nowrap">
-                          <div className="font-headline font-black text-white text-sm uppercase tracking-tight group-hover:text-primary transition-colors">{isAr ? p.title_ar : p.title}</div>
-                          <div className="text-[9px] font-mono text-zinc-600 tracking-[0.2em] mt-1 uppercase">ARCH::{p.id.padStart(4, '0')}</div>
+                          <div className="font-headline font-black text-white text-sm uppercase tracking-tight group-hover:text-primary transition-colors duration-300">{isAr ? p.title_ar : p.title}</div>
+                          <div className="text-[9px] font-mono text-zinc-600 tracking-[0.3em] mt-2 uppercase flex items-center gap-2">
+                             <span className="text-primary/40 text-[7px]">ARCH::</span>
+                             <span>{p.id.padStart(4, '0')}</span>
+                          </div>
                         </td>
                         <td className="px-8 py-5 whitespace-nowrap">
-                          <span className="px-3 py-1 bg-zinc-900 border border-zinc-800 text-zinc-400 font-mono text-[9px] uppercase tracking-widest">{isAr ? p.department_ar : p.department}
+                          <span className="px-3 py-1 bg-zinc-900 border border-zinc-800 text-zinc-500 font-mono text-[9px] uppercase tracking-[0.2em]">{isAr ? p.department_ar : p.department}
                           </span>
                         </td>
                         <td className="px-8 py-5 text-center whitespace-nowrap">
-                          <span className="font-mono font-black text-primary text-lg">{p.points}</span>
+                          <span className="font-mono font-black text-primary text-xl tracking-tighter shadow-primary/20">{p.points}</span>
                         </td>
                         <td className="px-8 py-5 text-center whitespace-nowrap">
-                          <div className="h-10 w-12 mx-auto flex items-center justify-center bg-primary/10 border border-primary/20 text-primary font-mono font-black text-sm">
+                          <div className="h-10 w-14 mx-auto flex items-center justify-center bg-zinc-900 border border-zinc-800 text-primary font-mono font-black text-xs shadow-inner group-hover:border-primary/30 transition-all">
                             {p.grade}
                           </div>
                         </td>
                         <td className="px-8 py-5 text-end whitespace-nowrap">
-                          <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all">
-                            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-none border border-zinc-800 hover:bg-white/5 hover:text-primary transition-colors"><Pencil className="h-4 w-4" /></Button>
-                            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-none border border-zinc-800 hover:bg-rose-500/10 hover:text-rose-500 transition-colors"><Trash2 className="h-4 w-4" /></Button>
+                          <div className="flex justify-end gap-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
+                            <Button variant="ghost" size="icon" className="h-10 w-10 rounded-none border border-zinc-800 hover:bg-white/5 hover:text-primary transition-all duration-300"><Pencil className="h-4 w-4" /></Button>
+                            <Button variant="ghost" size="icon" className="h-10 w-10 rounded-none border border-zinc-800 hover:bg-rose-500/10 hover:text-rose-500 transition-all duration-300"><Trash2 className="h-4 w-4" /></Button>
                           </div>
                         </td>
                       </motion.tr>
@@ -366,6 +371,7 @@ export default function JobProfilesPage() {
                   </AnimatePresence>
                 </tbody>
               </table>
+            </div>
             </div>
           </CardContent>
           <CornerMarks />

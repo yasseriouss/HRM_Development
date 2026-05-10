@@ -38,10 +38,10 @@ import { Badge } from "@/components/ui/badge";
 
 const CornerMarks = ({ color = "primary" }: { color?: string }) => (
   <>
-    <div className={`absolute top-0 left-0 w-2 h-2 border-t border-l border-${color}/40`} />
-    <div className={`absolute top-0 right-0 w-2 h-2 border-t border-r border-${color}/40`} />
-    <div className={`absolute bottom-0 left-0 w-2 h-2 border-b border-l border-${color}/40`} />
-    <div className={`absolute bottom-0 right-0 w-2 h-2 border-b border-r border-${color}/40`} />
+    <div className={`absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.2)]`} />
+    <div className={`absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.2)]`} />
+    <div className={`absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.2)]`} />
+    <div className={`absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.2)]`} />
   </>
 );
 
@@ -88,17 +88,17 @@ export default function JobEvaluationDashboard() {
       animate="visible"
     >
       {/* Header - Tactical Style */}
-      <motion.div variants={itemVariants} className="relative p-10 bg-[#0A0A0A] border-2 border-primary/20 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
-        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="space-y-3 text-center md:text-start">
-            <div className="flex items-center justify-center md:justify-start gap-3">
-              <Activity className="h-4 w-4 text-primary animate-pulse" />
-              <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">{t("label_mission_control")}</span>
+      <motion.div variants={itemVariants} className="relative p-12 bg-[#0A0A0A] border-2 border-primary/20 overflow-hidden shadow-2xl">
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5" />
+        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10">
+          <div className="space-y-4 text-center md:text-start">
+            <div className="flex items-center justify-center md:justify-start gap-4">
+              <Activity className="h-4 w-4 text-primary animate-pulse shadow-[0_0_10px_rgba(var(--primary),0.5)]" />
+              <span className="font-headline font-black tracking-[0.5em] text-[10px] text-primary/60 uppercase">{t("label_mission_control")}</span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">{t("je_analytics_title")}
+            <h1 className="text-5xl md:text-7xl font-headline font-black tracking-tighter text-white uppercase leading-none text-shimmer">{t("je_analytics_title")}
             </h1>
-            <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4 text-sm">{t("je_analytics_subtitle")}
+            <p className="text-zinc-500 font-medium border-s-2 border-primary/20 ps-6 text-[11px] uppercase tracking-widest max-w-xl leading-relaxed">{t("je_analytics_subtitle")}
             </p>
           </div>
           
@@ -125,20 +125,21 @@ export default function JobEvaluationDashboard() {
           { label: t("nav_employees"), value: "1,284", icon: Users, trend: "+3%", up: true, color: "sky-400" },
         ].map((stat, i) => (
           <motion.div key={i} variants={itemVariants}>
-            <Card className="bg-[#0D0D0D] border-zinc-800 rounded-none relative group overflow-hidden hover:border-primary/40 transition-all">
-              <CardContent className="p-6">
+            <Card className="bg-[#0D0D0D] border border-zinc-900 rounded-none relative group overflow-hidden hover:border-primary/30 transition-all duration-500 shadow-xl">
+              <CardContent className="p-8">
                 <div className="flex items-center justify-between">
-                  <div className="p-3 bg-zinc-900 border border-zinc-800 group-hover:border-primary/30 transition-colors">
+                  <div className="p-4 bg-zinc-900 border border-zinc-800 group-hover:border-primary/20 transition-all duration-500 relative overflow-hidden">
                     <stat.icon className={`h-5 w-5 text-${stat.color}`} />
+                    <div className="absolute inset-0 bg-white/5 -translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
                   </div>
-                  <Badge className={`rounded-none font-mono text-[9px] font-black border-none ${stat.up ? "bg-emerald-500/10 text-emerald-500" : "bg-rose-500/10 text-rose-500"}`}>
+                  <Badge variant="outline" className={`rounded-none font-mono text-[8px] font-black tracking-widest border-zinc-800 px-2 py-1 ${stat.up ? "text-emerald-500 bg-emerald-500/5 shadow-[0_0_10px_rgba(16,185,129,0.1)]" : "text-rose-500 bg-rose-500/5 shadow-[0_0_10px_rgba(244,63,94,0.1)]"}`}>
                     {stat.trend}
                     {stat.up ? <ArrowUpRight className="h-3 w-3 ms-1" /> : <ArrowDownRight className="h-3 w-3 ms-1" />}
                   </Badge>
                 </div>
-                <div className="mt-6">
-                  <p className="text-3xl font-mono font-black text-white leading-none">{stat.value}</p>
-                  <p className="text-[9px] font-headline font-black text-zinc-500 uppercase tracking-widest mt-2">{stat.label}</p>
+                <div className="mt-8">
+                  <p className="text-4xl font-mono font-black text-white leading-none tracking-tighter">{stat.value}</p>
+                  <p className="text-[9px] font-headline font-black text-zinc-600 uppercase tracking-[0.3em] mt-4 border-l-2 border-primary/20 ps-3">{stat.label}</p>
                 </div>
               </CardContent>
               <CornerMarks />
@@ -255,15 +256,15 @@ export default function JobEvaluationDashboard() {
             </div>
           </CardHeader>
           <CardContent className="p-0">
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto border border-zinc-900 bg-[#0A0A0A]">
               <table className="w-full border-collapse">
                 <thead>
-                  <tr className="bg-zinc-900/50 border-b border-zinc-800 text-start">
-                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{t("je_col_job_title")}</th>
-                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{t("je_col_points")}</th>
-                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{t("je_col_grade")}</th>
-                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{t("field_status")}</th>
-                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase text-end">{t("je_col_actions")}</th>
+                  <tr className="bg-white/5 border-b border-zinc-900 text-start">
+                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-[0.3em] text-zinc-500 uppercase text-start">{t("je_col_job_title")}</th>
+                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-[0.3em] text-zinc-500 uppercase text-start">{t("je_col_points")}</th>
+                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-[0.3em] text-zinc-500 uppercase text-start">{t("je_col_grade")}</th>
+                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-[0.3em] text-zinc-500 uppercase text-start">{t("field_status")}</th>
+                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-[0.3em] text-zinc-500 uppercase text-end">{t("je_col_actions")}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-zinc-900">
@@ -273,27 +274,30 @@ export default function JobEvaluationDashboard() {
                     { title: "HR Business Partner", points: 420, grade: "G6", status: "Pending" },
                     { title: "Admin Assistant", points: 140, grade: "G1", status: "Draft" },
                   ].map((job, i) => (
-                    <tr key={i} className="group hover:bg-white/2 transition-colors">
+                    <tr key={i} className="group hover:bg-white/2 border-l-2 border-transparent hover:border-primary transition-all duration-300">
                       <td className="px-8 py-5">
-                         <div className="font-headline font-black text-sm text-white uppercase tracking-tight group-hover:text-primary transition-colors">{job.title}</div>
-                         <div className="font-mono text-[9px] text-zinc-600 uppercase tracking-widest mt-1">UUID::VAL-{Math.random().toString(36).substring(7).toUpperCase()}</div>
+                         <div className="font-headline font-black text-sm text-white uppercase tracking-tight group-hover:text-primary transition-colors duration-300">{job.title}</div>
+                         <div className="font-mono text-[9px] text-zinc-600 uppercase tracking-widest mt-2 flex items-center gap-2">
+                           <span className="text-primary/40 text-[7px]">UUID::</span>
+                           <span>VAL-{Math.random().toString(36).substring(7).toUpperCase()}</span>
+                         </div>
                       </td>
-                      <td className="px-8 py-5 font-mono text-sm font-black text-zinc-400">{job.points}</td>
+                      <td className="px-8 py-5 font-mono text-sm font-black text-zinc-500 group-hover:text-zinc-300 transition-colors">{job.points}</td>
                       <td className="px-8 py-5">
-                         <div className="h-8 w-12 flex items-center justify-center bg-primary/10 border border-primary/20 text-primary font-mono font-black text-xs">
+                         <div className="h-10 w-14 flex items-center justify-center bg-zinc-900 border border-zinc-800 text-primary font-mono font-black text-xs shadow-inner group-hover:border-primary/30 transition-all">
                            {job.grade}
                          </div>
                       </td>
                       <td className="px-8 py-5">
-                        <Badge variant="outline" className={`rounded-none font-mono text-[9px] font-black border-current/20 px-3 py-1 uppercase tracking-widest ${
-                          job.status === "Approved" ? "bg-emerald-500/10 text-emerald-500" :
-                          job.status === "Pending" ? "bg-amber-500/10 text-amber-500" :
-                          "bg-zinc-800 text-zinc-500"
+                        <Badge variant="outline" className={`rounded-none font-mono text-[8px] font-black tracking-[0.2em] px-3 py-1 uppercase whitespace-nowrap ${
+                          job.status === "Approved" ? "bg-emerald-500/5 text-emerald-400 border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.1)]" :
+                          job.status === "Pending" ? "bg-amber-500/5 text-amber-400 border-amber-500/20 shadow-[0_0_10px_rgba(245,158,11,0.1)]" :
+                          "bg-zinc-900/50 text-zinc-600 border-zinc-800"
                         }`}>{job.status === "Approved" ? t("status_active") : job.status === "Pending" ? t("status_draft") : t("status_draft")}
                         </Badge>
                       </td>
                       <td className="px-8 py-5 text-end">
-                        <Button variant="ghost" className="rounded-none border border-zinc-800 hover:border-primary/50 text-[9px] font-headline font-black tracking-widest uppercase h-auto py-2 px-4 group/btn">{t("action_access_details")} <ExternalLink className="ms-2 h-3 w-3" />
+                        <Button variant="ghost" className="rounded-none border border-zinc-800 hover:border-primary/50 text-[9px] font-headline font-black tracking-[0.3em] uppercase h-auto py-3 px-5 group/btn transition-all duration-300">{t("action_access_details")} <ExternalLink className="ms-3 h-4 w-4 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
                         </Button>
                       </td>
                     </tr>

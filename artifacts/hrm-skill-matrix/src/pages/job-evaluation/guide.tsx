@@ -33,10 +33,10 @@ import {
 
 const CornerMarks = ({ color = "primary" }: { color?: string }) => (
   <>
-    <div className={`absolute top-0 left-0 w-2 h-2 border-t border-l border-${color}/40`} />
-    <div className={`absolute top-0 right-0 w-2 h-2 border-t border-r border-${color}/40`} />
-    <div className={`absolute bottom-0 left-0 w-2 h-2 border-b border-l border-${color}/40`} />
-    <div className={`absolute bottom-0 right-0 w-2 h-2 border-b border-r border-${color}/40`} />
+    <div className={`absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.2)]`} />
+    <div className={`absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.2)]`} />
+    <div className={`absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.2)]`} />
+    <div className={`absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.2)]`} />
   </>);
 
 const containerVariants = {
@@ -89,20 +89,21 @@ export default function JobEvaluationGuide() {
       animate="visible"
     >
       {/* Header Section - Industrial Focus */}
-      <motion.div variants={itemVariants} className="relative p-10 bg-[#0A0A0A] border-2 border-primary/20 animate-scan overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
-        <div className="relative z-10 flex flex-col md:flex-row items-center gap-10">
-          <div className="p-4 bg-primary/10 border border-primary/20 shrink-0">
-            <Scaling className="h-12 w-12 text-primary" />
+      <motion.div variants={itemVariants} className="relative p-12 bg-[#0A0A0A] border-2 border-primary/20 overflow-hidden shadow-2xl">
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5" />
+        <div className="relative z-10 flex flex-col md:flex-row items-center gap-12">
+          <div className="p-6 bg-zinc-900 border-2 border-primary/20 shrink-0 shadow-[0_0_20px_rgba(var(--primary),0.1)] relative overflow-hidden">
+            <div className="absolute inset-0 bg-primary/5 animate-pulse" />
+            <Scaling className="h-12 w-12 text-primary relative z-10" />
           </div>
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-               <Activity className="h-4 w-4 text-primary animate-pulse" />
-               <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">{t("je_methodology_core")}</span>
+          <div className="space-y-4">
+            <div className="flex items-center gap-4">
+               <Activity className="h-4 w-4 text-primary animate-pulse shadow-[0_0_10px_rgba(var(--primary),0.5)]" />
+               <span className="font-headline font-black tracking-[0.5em] text-[10px] text-primary/60 uppercase">{t("je_methodology_core")}</span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">{t("je_guide_title")}
+            <h1 className="text-5xl md:text-7xl font-headline font-black tracking-tighter text-white uppercase leading-none text-shimmer">{t("je_guide_title")}
             </h1>
-            <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4 text-lg">{t("je_guide_subtitle")}
+            <p className="text-zinc-500 font-medium border-s-2 border-primary/20 ps-6 text-[11px] uppercase tracking-widest max-w-xl leading-relaxed">{t("je_guide_subtitle")}
             </p>
           </div>
         </div>
@@ -117,15 +118,16 @@ export default function JobEvaluationGuide() {
           { icon: BarChart3, title: t("je_cat_conditions"), value: "10%", color: "rose-400" }
         ].map((stat, i) => (
           <motion.div key={i} variants={itemVariants}>
-            <Card className={`bg-[#0D0D0D] border-zinc-800 rounded-none relative group hover:border-${stat.color}/40 transition-all`}>
-              <CardContent className="p-6">
+            <Card className={`bg-[#0D0D0D] border border-zinc-900 rounded-none relative group hover:border-primary/30 transition-all duration-500 shadow-xl overflow-hidden`}>
+              <CardContent className="p-8">
                 <div className="flex items-center justify-between">
-                  <div className="space-y-1">
-                    <p className="text-[9px] font-headline font-black tracking-[0.2em] text-zinc-500 uppercase">{stat.title}</p>
-                    <h3 className={`text-3xl font-mono font-black text-${stat.color}`}>{stat.value}</h3>
+                  <div className="space-y-2">
+                    <p className="text-[9px] font-headline font-black tracking-[0.3em] text-zinc-600 uppercase">{stat.title}</p>
+                    <h3 className={`text-4xl font-mono font-black text-white tracking-tighter`}>{stat.value}</h3>
                   </div>
-                  <div className="p-3 bg-zinc-900 border border-zinc-800 group-hover:border-current transition-colors">
-                     <stat.icon className={`h-6 w-6 text-${stat.color}`} />
+                  <div className={`p-4 bg-zinc-900 border border-zinc-800 group-hover:border-current transition-all duration-500 relative overflow-hidden text-${stat.color}`}>
+                     <stat.icon className={`h-6 w-6 relative z-10`} />
+                     <div className="absolute inset-0 bg-white/5 -translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
                   </div>
                 </div>
               </CardContent>
@@ -147,14 +149,14 @@ export default function JobEvaluationGuide() {
               </CardTitle>
             </CardHeader>
             <CardContent className="p-0">
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto border border-zinc-900 bg-[#0A0A0A]">
                 <table className="w-full border-collapse">
                   <thead>
-                    <tr className="bg-zinc-900/50 border-b border-zinc-800 text-start">
-                      <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{t("je_col_pillar")}</th>
-                      <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{t("je_col_vectors")}</th>
-                      <th className="px-8 py-5 text-center font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{t("je_col_weight")}</th>
-                      <th className="px-8 py-5 text-center font-headline font-black text-[10px] tracking-widest text-zinc-500 uppercase">{t("je_col_max_pts")}</th>
+                    <tr className="bg-white/5 border-b border-zinc-900 text-start">
+                      <th className="px-8 py-5 font-headline font-black text-[10px] tracking-[0.3em] text-zinc-500 uppercase text-start">{t("je_col_pillar")}</th>
+                      <th className="px-8 py-5 font-headline font-black text-[10px] tracking-[0.3em] text-zinc-500 uppercase text-start">{t("je_col_vectors")}</th>
+                      <th className="px-8 py-5 text-center font-headline font-black text-[10px] tracking-[0.3em] text-zinc-500 uppercase">{t("je_col_weight")}</th>
+                      <th className="px-8 py-5 text-center font-headline font-black text-[10px] tracking-[0.3em] text-zinc-500 uppercase">{t("je_col_max_pts")}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-zinc-900">{[
@@ -163,25 +165,25 @@ export default function JobEvaluationGuide() {
                       { cat: t("je_cat_effort"), factors: t("je_f_mental") + ", " + t("je_f_physical"), weight: "20%", points: 200 },
                       { cat: t("je_cat_conditions"), factors: t("je_f_hazards") + ", " + t("je_f_schedule") + ", " + t("je_f_environment") + ", " + t("je_f_travel"), weight: "10%", points: 100 }
                     ].map((row, i) => (
-                      <tr key={i} className="group hover:bg-white/2 transition-colors">
+                      <tr key={i} className="group hover:bg-white/2 border-l-2 border-transparent hover:border-primary transition-all duration-300">
                         <td className="px-8 py-6">
-                           <span className="font-headline font-black text-sm text-white uppercase tracking-tight group-hover:text-primary transition-colors">{row.cat}</span>
+                           <span className="font-headline font-black text-sm text-white uppercase tracking-tight group-hover:text-primary transition-colors duration-300">{row.cat}</span>
                         </td>
                         <td className="px-8 py-6">
-                           <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest leading-relaxed block max-w-[200px]">{row.factors}</span>
+                           <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-[0.2em] leading-relaxed block max-w-[200px] group-hover:text-zinc-400 transition-colors">{row.factors}</span>
                         </td>
                         <td className="px-8 py-6 text-center">
-                           <Badge variant="outline" className="rounded-none border-zinc-800 bg-zinc-900 font-mono text-[10px] font-black text-zinc-400 px-3 py-1">{row.weight}</Badge>
+                           <Badge variant="outline" className="rounded-none border-zinc-800 bg-zinc-900/50 font-mono text-[9px] font-black text-zinc-500 px-3 py-1 uppercase tracking-widest">{row.weight}</Badge>
                         </td>
                         <td className="px-8 py-6 text-center">
-                           <span className="font-mono font-black text-white text-lg">{row.points}</span>
+                           <span className="font-mono font-black text-white text-xl tracking-tighter">{row.points}</span>
                         </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-              <div className="p-6 bg-primary/[0.02] border-t border-zinc-900 flex items-center justify-between">
+              <div className="p-6 bg-primary/2 border-t border-zinc-900 flex items-center justify-between">
                 <span className="font-headline font-black text-[10px] text-zinc-600 uppercase tracking-[0.2em]">{t("je_total_pts")}</span>
                 <span className="text-primary font-mono font-black text-xl tracking-tighter">1000.00 {t("je_points_value")}</span>
               </div>

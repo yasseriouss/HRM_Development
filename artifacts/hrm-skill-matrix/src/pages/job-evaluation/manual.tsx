@@ -21,10 +21,10 @@ import {
 
 const CornerMarks = ({ color = "primary" }: { color?: string }) => (
   <>
-    <div className={`absolute top-0 left-0 w-2 h-2 border-t border-l border-${color}/40`} />
-    <div className={`absolute top-0 right-0 w-2 h-2 border-t border-r border-${color}/40`} />
-    <div className={`absolute bottom-0 left-0 w-2 h-2 border-b border-l border-${color}/40`} />
-    <div className={`absolute bottom-0 right-0 w-2 h-2 border-b border-r border-${color}/40`} />
+    <div className={`absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.2)]`} />
+    <div className={`absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.2)]`} />
+    <div className={`absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.2)]`} />
+    <div className={`absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.2)]`} />
   </>
 );
 
@@ -63,7 +63,7 @@ export default function JobEvaluationManualPage() {
                 <Activity className="h-4 w-4 text-primary animate-pulse" />
                 <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">OPERATIONAL MANUAL_v9.4</span>
              </div>
-             <h1 className="text-4xl md:text-6xl font-headline font-black tracking-tighter text-white uppercase leading-none">{t("je_manual_title")}
+             <h1 className="text-5xl md:text-7xl font-headline font-black tracking-tighter text-white uppercase leading-none text-shimmer">{t("je_manual_title")}
              </h1>
              <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4 text-lg max-w-2xl mx-auto md:mx-0">
                {isAr 
@@ -85,15 +85,16 @@ export default function JobEvaluationManualPage() {
           { icon: Scale, title: t("je_grading_arch_title"), val: t("je_val_scalable"), color: "amber-400", desc: t("je_grading_arch_desc") },
         ].map((stat, i) => (
           <motion.div key={i} variants={item}>
-            <Card className="bg-[#0D0D0D] border-zinc-800 rounded-none relative group hover:border-current transition-all overflow-hidden h-full" style={{ color: `var(--${stat.color})` } as any}>
-              <CardHeader className="p-8 border-b border-zinc-900">
-                <div className={`h-12 w-12 border flex items-center justify-center mb-6 transition-transform group-hover:scale-110`} style={{ borderColor: 'currentColor' }}>
-                  <stat.icon className="h-6 w-6" style={{ color: 'currentColor' }} />
+            <Card className="bg-[#0D0D0D] border border-zinc-900 rounded-none relative group hover:border-primary/30 transition-all duration-500 overflow-hidden h-full shadow-xl">
+              <CardHeader className="p-10 border-b border-zinc-900">
+                <div className={`h-14 w-14 border-2 flex items-center justify-center mb-8 transition-all duration-500 group-hover:bg-white/5 relative overflow-hidden`} style={{ borderColor: stat.color === "sky-400" ? "rgb(56,189,248,0.4)" : stat.color === "emerald-400" ? "rgb(52,211,153,0.4)" : "rgb(251,191,36,0.4)" }}>
+                  <stat.icon className="h-6 w-6 relative z-10" style={{ color: stat.color === "sky-400" ? "#38bdf8" : stat.color === "emerald-400" ? "#34d399" : "#fbbf24" }} />
+                  <div className="absolute inset-0 bg-white/5 -translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
                 </div>
                 <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter">{stat.title}</CardTitle>
-                <div className="font-mono text-[9px] uppercase tracking-widest mt-1 opacity-50">NODE STATUS::{stat.val}</div>
+                <div className="font-mono text-[8px] uppercase tracking-[0.2em] mt-3 text-zinc-600">NODE STATUS::<span className="text-primary/60">{stat.val}</span></div>
               </CardHeader>
-              <CardContent className="p-8 font-sans font-medium text-zinc-500 text-sm leading-relaxed">
+              <CardContent className="p-10 font-sans font-medium text-zinc-500 text-[11px] leading-relaxed uppercase tracking-widest opacity-80">
                 {stat.desc}
               </CardContent>
               <CornerMarks color="zinc" />
@@ -112,7 +113,7 @@ export default function JobEvaluationManualPage() {
             <div className="flex-1 h-px bg-zinc-900" />
           </div>
 
-          <div className="space-y-6">{[
+            <div className="space-y-6">{[
               { 
                 title: t("je_factor_skills_title"), 
                 desc: t("je_factor_skills_desc"),
@@ -134,13 +135,13 @@ export default function JobEvaluationManualPage() {
                 sub: [t("je_f_hazards"), t("je_f_environment"), t("je_f_schedule")]
               }
             ].map((f, i) => (
-              <div key={i} className="p-8 bg-[#0D0D0D] border border-zinc-900 group hover:border-primary/40 transition-all relative overflow-hidden">
-                <div className="absolute top-0 right-0 p-4 font-mono text-[9px] text-zinc-800 group-hover:text-primary transition-colors">0{i+1}_CORE</div>
-                <h3 className="font-headline font-black text-lg text-white uppercase tracking-widest mb-4 group-hover:text-primary transition-colors">{f.title}</h3>
-                <p className="text-[11px] font-sans font-medium text-zinc-500 mb-6 leading-relaxed">{f.desc}</p>
-                <div className="flex flex-wrap gap-2">
+              <div key={i} className="p-10 bg-[#0D0D0D] border border-zinc-900 group hover:border-primary/30 transition-all duration-500 relative overflow-hidden shadow-lg">
+                <div className="absolute top-0 right-0 p-6 font-mono text-[8px] text-zinc-800 tracking-[0.2em] group-hover:text-primary transition-colors duration-500">0{i+1}_VECTORS</div>
+                <h3 className="font-headline font-black text-xl text-white uppercase tracking-tighter mb-6 group-hover:text-primary transition-colors duration-300">{f.title}</h3>
+                <p className="text-[11px] font-sans font-medium text-zinc-500 mb-8 leading-relaxed uppercase tracking-widest opacity-80">{f.desc}</p>
+                <div className="flex flex-wrap gap-3">
                   {f.sub.map((s, si) => (
-                    <Badge key={si} variant="outline" className="rounded-none border-zinc-800 bg-black text-[8px] font-mono font-black tracking-tighter text-zinc-600 px-3 py-1 group-hover:border-primary/20 transition-colors uppercase">
+                    <Badge key={si} variant="outline" className="rounded-none border-zinc-900 bg-zinc-900/50 text-[8px] font-mono font-black tracking-[0.2em] text-zinc-500 px-4 py-1.5 group-hover:border-primary/20 transition-all duration-300 uppercase shadow-inner">
                       {s}
                     </Badge>
                   ))}
