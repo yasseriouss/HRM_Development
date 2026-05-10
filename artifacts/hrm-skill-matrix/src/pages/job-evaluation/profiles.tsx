@@ -81,50 +81,29 @@ interface JobProfile {
   salary_mid?: number;
 }
 
-const SUB_FACTORS = [
-  { id: "edu", name: "Education", name_ar: "Ø§Ù„ØªØ¹Ù„ÙŠÙ…", category: "Skills", weight: 35 },
-  { id: "exp", name: "Experience", name_ar: "Ø§Ù„Ø®Ø¨Ø±Ø©", category: "Skills", weight: 35 },
-  { id: "knw", name: "Knowledge", name_ar: "Ø§Ù„Ù…Ø¹Ø±ÙØ©", category: "Skills", weight: 30 },
-  { id: "cmp", name: "Compliance", name_ar: "Ø§Ù„Ø§Ù…ØªØ«Ø§Ù„", category: "Responsibility", weight: 35 },
-  { id: "sup", name: "Supervisory", name_ar: "Ø§Ù„Ø¥Ø´Ø±Ø§Ù", category: "Responsibility", weight: 35 },
-  { id: "dec", name: "Decision-Making", name_ar: "ØµÙ†Ø¹ Ø§Ù„Ù‚Ø±Ø§Ø±", category: "Responsibility", weight: 30 },
-  { id: "mnt", name: "Mental Effort", name_ar: "Ø§Ù„Ù…Ø¬Ù‡ÙˆØ¯ Ø§Ù„Ø°Ù‡Ù†ÙŠ", category: "Effort", weight: 50 },
-  { id: "phy", name: "Physical Effort", name_ar: "Ø§Ù„Ù…Ø¬Ù‡ÙˆØ¯ Ø§Ù„Ø¨Ø¯Ù†ÙŠ", category: "Effort", weight: 50 },
-  { id: "haz", name: "Hazards", name_ar: "Ø§Ù„Ù…Ø®Ø§Ø·Ø±", category: "Conditions", weight: 25 },
-  { id: "sch", name: "Schedule", name_ar: "Ø§Ù„Ø¬Ø¯ÙˆÙ„ Ø§Ù„Ø²Ù…Ù†ÙŠ", category: "Conditions", weight: 25 },
-  { id: "env", name: "Environment", name_ar: "Ø§Ù„Ø¨ÙŠØ¦Ø©", category: "Conditions", weight: 25 },
-  { id: "trv", name: "Travel", name_ar: "Ø§Ù„Ø³ÙØ±", category: "Conditions", weight: 25 },
-];
-
-const GRADES = [
-  { g: "G1", min: 100, max: 149, category_en: "Entry Level", category_ar: "Ù…Ø³ØªÙˆÙ‰ Ù…Ø¨ØªØ¯Ø¦" },
-  { g: "G2", min: 150, max: 199, category_en: "Junior", category_ar: "Ù…Ø³Ø§Ø¹Ø¯" },
-  { g: "G3", min: 200, max: 259, category_en: "Officer", category_ar: "Ù…ÙˆØ¸Ù" },
-  { g: "G4", min: 260, max: 329, category_en: "Senior Officer", category_ar: "Ù…ÙˆØ¸Ù Ø£ÙˆÙ„" },
-  { g: "G5", min: 330, max: 409, category_en: "Specialist", category_ar: "Ø£Ø®ØµØ§Ø¦ÙŠ" },
-  { g: "G6", min: 410, max: 509, category_en: "Senior Specialist", category_ar: "Ø£Ø®ØµØ§Ø¦ÙŠ Ø£ÙˆÙ„" },
-  { g: "G7", min: 510, max: 629, category_en: "Manager", category_ar: "Ù…Ø¯ÙŠØ±" },
-  { g: "G8", min: 630, max: 769, category_en: "Senior Manager", category_ar: "Ù…Ø¯ÙŠØ± Ø£ÙˆÙ„" },
-  { g: "G9", min: 770, max: 929, category_en: "Director", category_ar: "Ù…Ø¯ÙŠØ± Ø¹Ø§Ù…" },
-  { g: "G10", min: 930, max: 1000, category_en: "Executive", category_ar: "Ø±Ø¦ÙŠØ³ ØªÙ†ÙÙŠØ°ÙŠ" },
-];
-
 export default function JobProfilesPage() {
   const t = useT();
 
   const SUB_FACTORS = useMemo(() => [
-    { id: "edu", name: t("je_f_education"), category: "Skills", weight: 35 },
-    { id: "exp", name: t("je_f_experience"), category: "Skills", weight: 35 },
-    { id: "knw", name: t("je_f_knowledge"), category: "Skills", weight: 30 },
-    { id: "cmp", name: t("je_f_compliance"), category: "Responsibility", weight: 35 },
-    { id: "sup", name: t("je_f_supervisory"), category: "Responsibility", weight: 35 },
-    { id: "dec", name: t("je_f_decision"), category: "Responsibility", weight: 30 },
-    { id: "mnt", name: t("je_f_mental"), category: "Effort", weight: 50 },
-    { id: "phy", name: t("je_f_physical"), category: "Effort", weight: 50 },
-    { id: "haz", name: t("je_f_hazards"), category: "Conditions", weight: 25 },
-    { id: "sch", name: t("je_f_schedule"), category: "Conditions", weight: 25 },
-    { id: "env", name: t("je_f_environment"), category: "Conditions", weight: 25 },
-    { id: "trv", name: t("je_f_travel"), category: "Conditions", weight: 25 },
+    { id: "edu", name: t("je_f_education"), category: t("je_cat_skills"), weight: 35 },
+    { id: "exp", name: t("je_f_experience"), category: t("je_cat_skills"), weight: 35 },
+    { id: "knw", name: t("je_f_knowledge"), category: t("je_cat_skills"), weight: 30 },
+    { id: "cmp", name: t("je_f_compliance"), category: t("je_cat_responsibility"), weight: 35 },
+    { id: "sup", name: t("je_f_supervisory"), category: t("je_cat_responsibility"), weight: 35 },
+    { id: "dec", name: t("je_f_decision"), category: t("je_cat_responsibility"), weight: 30 },
+    { id: "mnt", name: t("je_f_mental"), category: t("je_cat_effort"), weight: 50 },
+    { id: "phy", name: t("je_f_physical"), category: t("je_cat_effort"), weight: 50 },
+    { id: "haz", name: t("je_f_hazards"), category: t("je_cat_conditions"), weight: 25 },
+    { id: "sch", name: t("je_f_schedule"), category: t("je_cat_conditions"), weight: 25 },
+    { id: "env", name: t("je_f_environment"), category: t("je_cat_conditions"), weight: 25 },
+    { id: "trv", name: t("je_f_travel"), category: t("je_cat_conditions"), weight: 25 },
+  ], [t]);
+
+  const CATEGORIES = useMemo(() => [
+    { id: "Skills", label: t("je_cat_skills"), domain: t("je_cat_skills_domain"), weight: 350 },
+    { id: "Responsibility", label: t("je_cat_responsibility"), domain: t("je_cat_resp_domain"), weight: 350 },
+    { id: "Effort", label: t("je_cat_effort"), domain: t("je_cat_effort_domain"), weight: 100 },
+    { id: "Conditions", label: t("je_cat_conditions"), domain: t("je_cat_cond_domain"), weight: 200 },
   ], [t]);
 
   const GRADES = useMemo(() => [
@@ -165,20 +144,18 @@ export default function JobProfilesPage() {
 
   const currentTotal = useMemo(() => {
     let total = 0;
-    const CAT_WEIGHTS = { Skills: 350, Responsibility: 350, Effort: 100, Conditions: 200 };
-    
-    ["Skills", "Responsibility", "Effort", "Conditions"].forEach(cat => {
-      const catSubFactors = SUB_FACTORS.filter(sf => sf.category === cat);
+    CATEGORIES.forEach(cat => {
+      const catSubFactors = SUB_FACTORS.filter(sf => sf.category === cat.label);
       catSubFactors.forEach(sf => {
         const level = newProfile.scores[sf.id] || 0;
         if (level > 0) {
-          const factorMax = (sf.weight / 100) * (CAT_WEIGHTS[cat as keyof typeof CAT_WEIGHTS]);
+          const factorMax = (sf.weight / 100) * cat.weight;
           total += (level / 5) * factorMax;
         }
       });
     });
     return Math.round(total);
-  }, [newProfile.scores]);
+  }, [newProfile.scores, CATEGORIES, SUB_FACTORS]);
 
   const currentGrade = useMemo(() => {
     const grade = GRADES.find(g => currentTotal >= g.min && currentTotal <= g.max);
@@ -476,10 +453,10 @@ export default function JobProfilesPage() {
                           <SelectValue placeholder={t("je_deployment_domain")} />
                         </SelectTrigger>
                         <SelectContent className="bg-[#0A0A0A] border-zinc-800 rounded-none text-white font-headline font-black text-[9px] uppercase tracking-widest">
-                          <SelectItem value="it" className="focus:bg-primary/20">CORE IT INFRA</SelectItem>
-                          <SelectItem value="hr" className="focus:bg-primary/20">HUMAN CAPITAL</SelectItem>
-                          <SelectItem value="fin" className="focus:bg-primary/20">FISCAL OPS</SelectItem>
-                          <SelectItem value="ops" className="focus:bg-primary/20">PRODUCTION LINE</SelectItem>
+                          <SelectItem value="it" className="focus:bg-primary/20">{t("je_dept_core_it")}</SelectItem>
+                          <SelectItem value="hr" className="focus:bg-primary/20">{t("je_dept_human_capital")}</SelectItem>
+                          <SelectItem value="fin" className="focus:bg-primary/20">{t("je_dept_fiscal_ops")}</SelectItem>
+                          <SelectItem value="ops" className="focus:bg-primary/20">{t("je_dept_production_line")}</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -507,17 +484,17 @@ export default function JobProfilesPage() {
                   exit={{ x: -20, opacity: 0 }}
                   className="space-y-12"
                 >
-                  {["Skills", "Responsibility", "Effort", "Conditions"].map((cat, catIdx) => (
-                    <div key={cat} className="space-y-8">
+                  {CATEGORIES.map((cat, catIdx) => (
+                    <div key={cat.id} className="space-y-8">
                       <div className="flex items-center gap-6">
                         <div className="h-2 w-2 bg-primary rotate-45" />
-                        <h3 className="font-headline text-2xl font-black uppercase tracking-[0.3em] text-primary whitespace-nowrap">{cat}_DOMAIN
+                        <h3 className="font-headline text-2xl font-black uppercase tracking-[0.3em] text-primary whitespace-nowrap">{cat.domain}
                         </h3>
                         <div className="flex-1 h-px bg-zinc-900" />
                         <span className="font-mono text-[9px] text-zinc-700 tracking-widest uppercase">{catIdx + 1}/4</span>
                       </div>
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">{SUB_FACTORS.filter(sf => sf.category === cat).map((sf, sfIdx) => (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">{SUB_FACTORS.filter(sf => sf.category === cat.label).map((sf, sfIdx) => (
                           <motion.div 
                             key={sf.id}
                             initial={{ opacity: 0, y: 10 }}
@@ -589,8 +566,8 @@ export default function JobProfilesPage() {
                         id: (profiles.length + 1).toString(),
                         title: newProfile.title_en,
                         title_ar: newProfile.title_ar,
-                        department: "DOMAIN DEPLOYED",
-                        department_ar: "Ù‚Ø³Ù… Ø¬Ø¯ÙŠØ¯",
+                        department: t("je_dept_deployed"),
+                        department_ar: t("je_dept_new"),
                         points: currentTotal,
                         grade: currentGrade,
                         status: "Approved",
@@ -599,7 +576,7 @@ export default function JobProfilesPage() {
                       };
                       setProfiles([newP, ...profiles]);
                       setIsNewOpen(false);
-                      toast({ title: "LOG COMMITTED", description: "Valuation protocol successfully written to registry." });
+                      toast({ title: t("je_log_committed"), description: t("je_log_committed_desc") });
                     }}
                   >
                     <CheckCircle2 className="h-4 w-4 me-2" />{t("je_commit_registry")}

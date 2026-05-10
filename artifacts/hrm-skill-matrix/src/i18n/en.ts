@@ -334,6 +334,10 @@ const en = {
   je_cat_responsibility: "Responsibility",
   je_cat_effort: "Effort",
   je_cat_conditions: "Conditions",
+  je_cat_skills_domain: "SKILLS_DOMAIN",
+  je_cat_resp_domain: "RESPONSIBILITY_DOMAIN",
+  je_cat_effort_domain: "EFFORT_DOMAIN",
+  je_cat_cond_domain: "CONDITIONS_DOMAIN",
   je_manual_title: "Valuation Protocol Manual",
   je_manual_subtitle: "Recursive structural guide for comprehensive job valuation and hierarchical grade calibration using scientific compensable vectors.",
   je_factor_skills_title: "Skills Matrix (35%)",
@@ -509,6 +513,12 @@ const en = {
   log_scatter_plot_active: "// SCATTER PLOT ACTIVE",
 
   dept_production: "PRODUCTION LINE",
+  je_dept_deployed: "DOMAIN DEPLOYED",
+  je_dept_new: "NEW DEPARTMENT",
+  je_dept_core_it: "CORE IT INFRA",
+  je_dept_human_capital: "HUMAN CAPITAL",
+  je_dept_fiscal_ops: "FISCAL OPS",
+  je_dept_production_line: "PRODUCTION LINE",
 
   // Technical Labels & Telemetry (Cyberpunk Refactor)
   label_secure_link: "SECURE LINK ESTABLISHED",
