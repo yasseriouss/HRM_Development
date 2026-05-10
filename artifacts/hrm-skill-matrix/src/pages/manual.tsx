@@ -84,10 +84,10 @@ export default function ManualPage() {
               <Badge variant="outline" className="border-primary/50 text-primary bg-primary/5 rounded-none px-4 py-1 font-mono text-[10px]">
                 BUILD v2.4.8
               </Badge>
-              <Badge variant="outline" className="border-secondary/50 text-secondary bg-secondary/5 rounded-none px-4 py-1 font-mono text-[10px]">AUTH LEVEL: ADMIN
+              <Badge variant="outline" className="border-secondary/50 text-secondary bg-secondary/5 rounded-none px-4 py-1 font-mono text-[10px]">{t("label_auth_admin")}
               </Badge>
               <Badge variant="outline" className="border-emerald-500/50 text-emerald-500 bg-emerald-500/5 rounded-none px-4 py-1 font-mono text-[10px]">
-                STATUS: ENCRYPTED
+                {t("label_status_encrypted_full")}
               </Badge>
             </div>
           </div>
@@ -244,18 +244,18 @@ export default function ManualPage() {
                     <table className="w-full text-[10px] font-mono border-collapse">
                       <thead className="bg-primary/10 text-primary font-black uppercase tracking-widest">
                         <tr>
-                          <th className="p-4 border border-primary/20 text-center">GRADE</th>
-                          <th className="p-4 border border-primary/20 text-center">POINTS</th>
-                          <th className="p-4 border border-primary/20 text-start">DESIGNATION</th>
+                          <th className="p-4 border border-primary/20 text-center">{t("label_grade")}</th>
+                          <th className="p-4 border border-primary/20 text-center">{t("label_points")}</th>
+                          <th className="p-4 border border-primary/20 text-start">{t("label_designation")}</th>
                         </tr>
                       </thead>
                       <tbody className="text-white">
                         {[
-                          { g: "G1-G2", p: "100 - 199", c: "SUPPORT / LABOR" },
-                          { g: "G3-G4", p: "200 - 329", c: "TECHNICAL / ADMIN" },
-                          { g: "G5-G6", p: "330 - 509", c: "PROFESSIONAL / SR." },
-                          { g: "G7-G8", p: "510 - 769", c: "MANAGEMENT / HEAD" },
-                          { g: "G9-G10", p: "770 - 1000", c: "EXECUTIVE / DIRECTOR" }
+                          { g: "G1-G2", p: "100 - 199", c: t("je_cat_labor_manual") },
+                          { g: "G3-G4", p: "200 - 329", c: t("je_cat_tech_manual") },
+                          { g: "G5-G6", p: "330 - 509", c: t("je_cat_spec_manual") },
+                          { g: "G7-G8", p: "510 - 769", c: t("je_cat_mgmt_manual") },
+                          { g: "G9-G10", p: "770 - 1000", c: t("je_cat_exec_manual") }
                         ].map((r, i) => (
                           <tr key={i} className="hover:bg-primary/5 transition-colors group">
                             <td className="p-4 border border-white/5 text-center font-black group-hover:text-primary">{r.g}</td>
@@ -286,7 +286,7 @@ export default function ManualPage() {
                   <div className="h-12 w-12 bg-white/5 border border-white/10 flex items-center justify-center">
                     <FileJson className="h-6 w-6 text-primary" />
                   </div>
-                  <h3 className="font-headline text-3xl font-black uppercase text-white">DATA SCHEMA</h3>
+                  <h3 className="font-headline text-3xl font-black uppercase text-white">{t("label_data_schema")}</h3>
                 </div>
                 <div className="relative group">
                   <div className="absolute -inset-0.5 bg-linear-to-r from-primary/50 to-transparent opacity-30 group-hover:opacity-50 blur transition duration-1000"></div>
@@ -325,7 +325,7 @@ export default function ManualPage() {
                   <div className="h-12 w-12 bg-white/5 border border-white/10 flex items-center justify-center">
                     <Download className="h-6 w-6 text-primary" />
                   </div>
-                  <h3 className="font-headline text-3xl font-black uppercase text-white">SYSTEM EXPORTS</h3>
+                  <h3 className="font-headline text-3xl font-black uppercase text-white">{t("label_system_exports")}</h3>
                 </div>
                 <div className="space-y-4">
                   {[
@@ -370,9 +370,9 @@ export default function ManualPage() {
           <div className="h-px w-20 bg-primary/30" />
         </div>
         <div className="flex gap-8 text-[9px] font-mono text-secondary/20 uppercase tracking-[0.2em]">
-          <span>Â© DEEPMIND SYSTEMS</span>
-          <span>LATENCY: 0.002MS</span>
-          <span>KERN MOD: HR EVAL SCORER</span>
+          <span>{t("label_copyright_footer")}</span>
+          <span>{t("label_latency_footer")}</span>
+          <span>{t("label_kern_mod")}</span>
         </div>
       </motion.div>
     </div>

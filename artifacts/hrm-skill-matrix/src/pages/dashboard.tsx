@@ -333,7 +333,7 @@ export default function Dashboard() {
                         insight.priority === 'High' ? 'bg-rose-500/10 text-rose-500 border-rose-500/20' :
                         insight.priority === 'Medium' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' :
                         'bg-blue-500/10 text-blue-500 border-blue-500/20'
-                      }`}>{t("dash_priority")} {insight.priority.toUpperCase()}
+                      }`}>{t("dash_priority")} {t(`crit_${insight.priority.toLowerCase()}` as any)}
                       </Badge>
                       <div className="w-12 h-1 bg-primary/20 group-hover:bg-primary transition-colors" />
                     </div>
@@ -397,12 +397,13 @@ export default function Dashboard() {
             </CardTitle>
           </CardHeader>
           <CardContent className="p-8 space-y-6">
-             <div className="font-mono text-[11px] space-y-6">{[
-                  { time: "09:42:11", msg: t("log_skill_matrix_update"), user: "SYS ADMIN" },
-                  { time: "08:15:04", msg: t("log_campaign_launched"), user: "HR COORD" },
-                  { time: "07:55:59", msg: t("log_security_verified"), user: "SYSTEM" },
-                  { time: "05:12:33", msg: t("log_export_generated"), user: "DEPT HEAD" }
-                ].map((log, i) => (
+             <div className="font-mono text-[11px] space-y-6">
+                {([
+                  { time: "09:42:11", msg: t("log_skill_matrix_update"), user: t("role_super_admin") },
+                  { time: "08:15:04", msg: t("log_campaign_launched"), user: t("role_hr_coordinator") },
+                  { time: "07:55:59", msg: t("log_security_verified"), user: t("label_system_intelligence") },
+                  { time: "05:12:33", msg: t("log_export_generated"), user: t("role_dept_head") }
+                ]).map((log, i) => (
                   <div key={i} className="flex gap-4 group">
                     <span className="text-secondary/20 font-black whitespace-nowrap">[{log.time}]</span>
                     <div className="flex-1">

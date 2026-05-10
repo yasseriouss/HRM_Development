@@ -405,12 +405,12 @@ export default function JobProfilesPage() {
               
               <div className="flex items-center gap-8 p-6 bg-black border border-zinc-800 min-w-[320px]">
                 <div className="flex-1">
-                  <p className="text-[9px] font-headline font-black text-primary tracking-[0.2em] uppercase">{isAr ? 'Ù†Ù‚Ø§Ø· Ø§Ù„ØªÙ‚ÙŠÙŠÙ…' : 'PTS ACCUMULATED'}</p>
+                  <p className="text-[9px] font-headline font-black text-primary tracking-[0.2em] uppercase">{t("je_pts_accumulated")}</p>
                   <p className="text-4xl font-mono font-black text-white leading-none mt-2">{currentTotal}</p>
                 </div>
                 <div className="h-12 w-px bg-zinc-800" />
                 <div className="flex-1">
-                  <p className="text-[9px] font-headline font-black text-zinc-500 tracking-[0.2em] uppercase">{isAr ? 'Ø§Ù„Ø¯Ø±Ø¬Ø© Ø§Ù„Ù…Ø³ØªØ­Ù‚Ø©' : 'TIER GRADE'}</p>
+                  <p className="text-[9px] font-headline font-black text-zinc-500 tracking-[0.2em] uppercase">{t("label_grade")}</p>
                   <p className="text-4xl font-mono font-black text-primary leading-none mt-2">{currentGrade}</p>
                 </div>
               </div>
@@ -468,7 +468,7 @@ export default function JobProfilesPage() {
                         <Info className="h-6 w-6 text-primary" />
                       </div>
                       <div>
-                        <h4 className="font-headline font-black text-sm uppercase tracking-[0.2em] text-white">EVALUATION PROTOCOL NOTICE</h4>
+                        <h4 className="font-headline font-black text-sm uppercase tracking-[0.2em] text-white">{t("je_eval_notice_title")}</h4>
                         <p className="text-[11px] text-zinc-500 mt-2 leading-relaxed font-sans font-medium">{t("je_eval_notice_desc")}
                         </p>
                       </div>

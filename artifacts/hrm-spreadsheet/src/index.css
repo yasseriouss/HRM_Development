@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Comfortaa:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;800;900&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
@@ -40,6 +40,12 @@
   --color-destructive-foreground: hsl(var(--destructive-foreground));
   --color-destructive-border: var(--destructive-border);
 
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+
   --color-sidebar: hsl(var(--sidebar));
   --color-sidebar-foreground: hsl(var(--sidebar-foreground));
   --color-sidebar-border: hsl(var(--sidebar-border));
@@ -52,117 +58,149 @@
   --color-sidebar-ring: hsl(var(--sidebar-ring));
 
   --font-sans: var(--app-font-sans);
-  --font-headline: var(--app-font-headline);
+  --font-serif: var(--app-font-serif);
   --font-mono: var(--app-font-mono);
+  --font-headline: 'Comfortaa', sans-serif;
+  --font-tajawal: 'Tajawal', sans-serif;
 
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
 }
 
-/* ─── Dark Industrial-Luxury theme ─────────────────────── */
+/* ─── Dark theme (default) ──────────────────────────────── */
 :root, .dark {
   --background: 0 0% 4%;
-  --foreground: 0 0% 95%;
-  --border: 0 0% 12%;
-  --input: 0 0% 15%;
-  --ring: 38 95% 55%;
+  --foreground: 45 10% 90%;
+  --border: 0 0% 15%;
 
   --card: 0 0% 6%;
-  --card-foreground: 0 0% 95%;
-  --card-border: 0 0% 12%;
+  --card-foreground: 45 10% 90%;
+  --card-border: 0 0% 18%;
 
   --popover: 0 0% 6%;
-  --popover-foreground: 0 0% 95%;
-  --popover-border: 0 0% 12%;
+  --popover-foreground: 45 10% 90%;
+  --popover-border: 0 0% 18%;
 
-  --primary: 38 95% 55%;
+  --primary: 43 74% 53%; /* Gold #D4AF37ish */
   --primary-foreground: 0 0% 4%;
-  --primary-border: hsl(38 95% 45%);
 
-  --secondary: 0 0% 10%;
-  --secondary-foreground: 0 0% 85%;
-  --secondary-border: hsl(0 0% 15%);
+  --secondary: 0 0% 75%; /* Silver #C0C0C0ish */
+  --secondary-foreground: 0 0% 4%;
 
-  --muted: 0 0% 8%;
-  --muted-foreground: 0 0% 55%;
-  --muted-border: hsl(0 0% 12%);
+  --muted: 0 0% 10%;
+  --muted-foreground: 0 0% 60%;
 
-  --accent: 38 95% 55%;
+  --accent: 43 74% 53%;
   --accent-foreground: 0 0% 4%;
-  --accent-border: hsl(38 95% 45%);
 
-  --destructive: 0 85% 50%;
+  --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
-  --destructive-border: hsl(0 85% 40%);
+
+  --input: 0 0% 15%;
+  --ring: 43 74% 53%;
+
+  --chart-1: 43 74% 53%;
+  --chart-2: 0 0% 75%;
+  --chart-3: 0 0% 40%;
+  --chart-4: 0 0% 25%;
+  --chart-5: 0 0% 15%;
 
   --sidebar: 0 0% 5%;
-  --sidebar-foreground: 0 0% 90%;
-  --sidebar-border: 0 0% 10%;
-  --sidebar-primary: 38 95% 55%;
+  --sidebar-foreground: 45 10% 90%;
+  --sidebar-border: 0 0% 15%;
+  --sidebar-primary: 43 74% 53%;
   --sidebar-primary-foreground: 0 0% 4%;
-  --sidebar-accent: 0 0% 8%;
-  --sidebar-accent-foreground: 0 0% 95%;
-  --sidebar-ring: 38 95% 55%;
+  --sidebar-accent: 0 0% 10%;
+  --sidebar-accent-foreground: 45 10% 90%;
+  --sidebar-ring: 43 74% 53%;
 
-  --app-font-sans: 'Comfortaa', cursive;
-  --app-font-headline: 'Comfortaa', cursive;
-  --app-font-mono: 'JetBrains Mono', monospace;
-  --radius: 0px; /* Sharp Industrial Edges */
+  --app-font-sans: 'Comfortaa', sans-serif;
+  --app-font-serif: Georgia, serif;
+  --app-font-mono: 'Comfortaa', sans-serif;
+  --radius: 0px;
+  --shadow: 0 10px 30px -10px rgba(0,0,0,0.8);
 
-  --button-outline: rgba(255,255,255,.1);
-  --badge-outline: rgba(255,255,255,.05);
-  --elevate-1: rgba(255,255,255,.02);
-  --elevate-2: rgba(255,255,255,.05);
+  color-scheme: dark;
 }
 
-/* ─── Light Industrial theme ───────────────────────────── */
-.light {
-  --background: 0 0% 98%;
-  --foreground: 0 0% 10%;
-  --border: 0 0% 88%;
-  --input: 0 0% 92%;
-  --ring: 38 95% 45%;
+/* ─── RTL (Arabic) Fonts ───────────────────────────────── */
+html[dir="rtl"], [dir="rtl"], [lang="ar"] {
+  --app-font-sans: 'Tajawal', sans-serif !important;
+  --app-font-mono: 'Tajawal', sans-serif !important;
+}
 
-  --card: 0 0% 100%;
+/* ─── Light theme ───────────────────────────────────────── */
+.light {
+  --background: 40 20% 96%;
+  --foreground: 0 0% 8%;
+  --border: 36 20% 88%;
+  --input: 36 20% 90%;
+  --ring: 43 80% 38%;
+
+  --card: 36 25% 99%;
   --card-foreground: 0 0% 10%;
-  --card-border: 0 0% 88%;
+  --card-border: 36 20% 91%;
 
   --popover: 0 0% 100%;
   --popover-foreground: 0 0% 10%;
-  --popover-border: 0 0% 88%;
+  --popover-border: 36 20% 92%;
 
-  --primary: 38 95% 45%;
+  --primary: 43 80% 38%;
   --primary-foreground: 0 0% 100%;
-  --primary-border: hsl(38 95% 35%);
 
-  --secondary: 0 0% 94%;
-  --secondary-foreground: 0 0% 15%;
-  --secondary-border: hsl(0 0% 88%);
+  --secondary: 40 10% 90%;
+  --secondary-foreground: 0 0% 20%;
 
-  --muted: 0 0% 96%;
-  --muted-foreground: 0 0% 45%;
-  --muted-border: hsl(0 0% 90%);
+  --muted: 40 10% 94%;
+  --muted-foreground: 0 0% 38%;
 
-  --accent: 38 95% 45%;
+  --accent: 43 80% 38%;
   --accent-foreground: 0 0% 100%;
-  --accent-border: hsl(38 95% 35%);
 
-  --destructive: 0 85% 50%;
+  --destructive: 0 84% 52%;
   --destructive-foreground: 0 0% 100%;
-  --destructive-border: hsl(0 85% 40%);
 
-  --app-font-sans: 'Comfortaa', cursive;
-  --app-font-headline: 'Comfortaa', cursive;
+  --chart-1: 43 80% 38%;
+  --chart-2: 0 0% 40%;
+  --chart-3: 200 80% 42%;
+  --chart-4: 140 70% 38%;
+  --chart-5: 280 60% 42%;
+
+  --sidebar: 36 30% 95%;
+  --sidebar-foreground: 0 0% 12%;
+  --sidebar-border: 36 20% 90%;
+  --sidebar-primary: 43 80% 38%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 40 10% 92%;
+  --sidebar-accent-foreground: 0 0% 15%;
+  --sidebar-ring: 43 80% 38%;
+
+  --app-font-sans: 'Comfortaa', sans-serif;
+  --app-font-serif: Georgia, serif;
+  --app-font-mono: 'Comfortaa', monospace;
+  --radius: 0px;
+  --shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
 
   color-scheme: light;
 }
 
 /* ─── Arabic font override ──────────────────────────────── */
-[lang="ar"], [dir="rtl"], .rtl {
-  --app-font-sans: 'Tajawal', sans-serif;
-  --app-font-headline: 'Tajawal', sans-serif;
+html[dir="rtl"], [dir="rtl"], [lang="ar"] {
+  --app-font-sans: 'Tajawal', sans-serif !important;
+  --font-sans: 'Tajawal', sans-serif !important;
+  --font-headline: 'Tajawal', sans-serif !important;
+  --font-mono: 'Tajawal', sans-serif !important;
+}
+
+html[dir="rtl"] *, [dir="rtl"] *, [lang="ar"] * {
+  font-family: 'Tajawal', sans-serif !important;
+}
+
+/* ─── English font override (LTR) ───────────────────────── */
+html:not([dir="rtl"]):not([lang="ar"]) body {
+  font-family: 'Comfortaa', sans-serif;
 }
 
 @layer base {
@@ -173,19 +211,130 @@
     @apply font-sans antialiased bg-background text-foreground;
     transition: background-color 0.2s ease, color 0.2s ease;
   }
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+
+  /* ─── Industrial Scanline Effect ─── */
+  .scanline {
+    width: 100%;
+    height: 100px;
+    z-index: 9999;
+    background: linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(212, 175, 55, 0.02) 50%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    opacity: 0.1;
+    position: absolute;
+    bottom: 100%;
+    animation: scanline 10s linear infinite;
+    pointer-events: none;
   }
-  ::-webkit-scrollbar-track {
-    background: hsl(var(--background));
+
+  @keyframes scanline {
+    0% {
+      bottom: 100%;
+    }
+    100% {
+      bottom: 0%;
+    }
   }
-  ::-webkit-scrollbar-thumb {
-    background: hsl(var(--border));
-    border-radius: 3px;
+
+  @keyframes pulse-soft {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
   }
-  ::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--primary));
+
+  .animate-pulse-soft {
+    animation: pulse-soft 3s ease-in-out infinite;
+  }
+
+  .light .industrial-card {
+    box-shadow: 0 4px 20px -4px rgba(180, 140, 60, 0.1);
+  }
+
+  .light .industrial-card:hover {
+    box-shadow: 0 12px 40px -12px rgba(180, 140, 60, 0.2);
+    transform: translateY(-2px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* ─── Metallic Button Gradient ─── */
+  .btn-metallic {
+    background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%);
+    box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.05);
+  }
+
+  /* ─── Industrial Button (Galaxy UI) ─── */
+  .btn-industrial {
+    --border-color: linear-gradient(-45deg, hsl(var(--primary)), hsl(var(--secondary)), hsl(var(--primary)));
+    --border-width: 0.125em;
+    --curve-size: 0.5em;
+    --bg: hsl(var(--background));
+    --color: hsl(var(--primary));
+    color: var(--color);
+    position: relative;
+    isolation: isolate;
+    display: inline-grid;
+    place-content: center;
+    clip-path: polygon(
+      0% var(--curve-size),
+      var(--curve-size) 0,
+      100% 0,
+      100% calc(100% - var(--curve-size)),
+      calc(100% - var(--curve-size)) 100%,
+      0 100%
+    );
+    transition: color 250ms;
+  }
+
+  .btn-industrial::after,
+  .btn-industrial::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .btn-industrial::before {
+    background: var(--border-color);
+    background-size: 300% 300%;
+    animation: move-bg7234 5s ease infinite;
+    z-index: -2;
+  }
+
+  @keyframes move-bg7234 {
+    0% { background-position: 31% 0%; }
+    50% { background-position: 70% 100%; }
+    100% { background-position: 31% 0%; }
+  }
+
+  .btn-industrial::after {
+    background: var(--bg);
+    z-index: -1;
+    clip-path: polygon(
+      var(--border-width) calc(var(--curve-size) + var(--border-width) * 0.5),
+      calc(var(--curve-size) + var(--border-width) * 0.5) var(--border-width),
+      calc(100% - var(--border-width)) var(--border-width),
+      calc(100% - var(--border-width)) calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5)),
+      calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5)) calc(100% - var(--border-width)),
+      var(--border-width) calc(100% - var(--border-width))
+    );
+    transition: clip-path 500ms;
+  }
+
+  .btn-industrial:where(:hover, :focus)::after {
+    clip-path: polygon(
+      calc(100% - var(--border-width)) calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5)),
+      calc(100% - var(--border-width)) var(--border-width),
+      calc(100% - var(--border-width)) var(--border-width),
+      calc(100% - var(--border-width)) calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5)),
+      calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5)) calc(100% - var(--border-width)),
+      calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5)) calc(100% - var(--border-width))
+    );
+    transition: 200ms;
+  }
+
+  .btn-industrial:where(:hover, :focus) {
+    color: hsl(var(--primary-foreground));
   }
 }
 
@@ -200,58 +349,11 @@
 .class-c { background-color: #DC2626; color: white; }
 
 @media print {
-  header,
-  footer,
-  .no-print {
-    display: none !important;
-  }
-  body, html {
-    background: #fff !important;
-    color: #111 !important;
-    font-size: 11pt;
-  }
-  main {
-    overflow: visible !important;
-  }
-  .print-area {
-    background: #fff !important;
-    border: none !important;
-    border-radius: 0 !important;
-    color: #111 !important;
-  }
-  .print-area .report-header {
-    background: #f8f8f8 !important;
-    border-bottom: 1pt solid #ddd !important;
-  }
-  .print-area .dept-heading {
-    background: #f0f0f0 !important;
-    border-bottom: 1pt solid #ccc !important;
-  }
-  .print-area table {
-    border-collapse: collapse;
-    width: 100%;
-  }
-  .print-area th,
-  .print-area td {
-    border: 0.5pt solid #ddd !important;
-    padding: 4pt 6pt !important;
-    color: #111 !important;
-  }
-  .print-area th {
-    background: #f4f4f4 !important;
-    font-weight: 600;
-  }
-  .print-area tr:nth-child(even) td {
-    background: #fafafa !important;
-  }
-  .print-area tbody tr {
-    page-break-inside: avoid;
-  }
-  .print-area .dept-section {
-    page-break-inside: avoid;
-  }
-  * {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
+  header, footer, .no-print { display: none !important; }
+  body, html { background: #fff !important; color: #111 !important; font-size: 11pt; }
+  main { overflow: visible !important; }
+  .print-area { background: #fff !important; border: none !important; color: #111 !important; }
+  .print-area table { border-collapse: collapse; width: 100%; }
+  .print-area th, .print-area td { border: 0.5pt solid #ddd !important; padding: 4pt 6pt !important; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
 }

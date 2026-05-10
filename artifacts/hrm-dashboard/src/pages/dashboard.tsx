@@ -1,8 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
   PieChart, Pie, Cell, LineChart, Line, ResponsiveContainer
 } from "recharts";
+import { motion } from "framer-motion";
+import { 
+  Users, Target, Zap, ShieldAlert, Activity, Cpu, 
+  LayoutGrid, ExternalLink, ChevronRight, BarChart3, 
+  Brain, Sparkles, Loader2, RefreshCcw 
+} from "lucide-react";
 import type {
   DashboardMetrics, DepartmentPerf, ClassTrend, ActivityItem
 } from "@/lib/api";
@@ -11,21 +17,48 @@ import {
   clearToken
 } from "@/lib/api";
 import { useT } from "@/i18n";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
-const COLORS = { A: "#10B981", B: "#EAB308", C: "#EF4444" };
+const COLORS = { A: "#D4AF37", B: "#C0C0C0", C: "#EF4444" };
 
-function StatCard({ label, value, sub, accent }: { label: string; value: string | number; sub?: string; accent?: boolean }) {
+const CornerMarks = ({ color = "primary" }: { color?: string }) => (
+  <>
+    <div className={`absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.2)] transition-all duration-500 group-hover:scale-110`} />
+    <div className={`absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.2)] transition-all duration-500 group-hover:scale-110`} />
+    <div className={`absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.2)] transition-all duration-500 group-hover:scale-110`} />
+    <div className={`absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.2)] transition-all duration-500 group-hover:scale-110`} />
+  </>);
+
+function StatCard({ label, value, sub, icon: Icon, colorClass = "primary" }: { label: string; value: string | number; sub?: string; icon: any; colorClass?: string }) {
   return (
-    <div className="bg-card border border-border rounded-xl p-5">
-      <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">{label}</p>
-      <p className={`text-3xl font-bold ${accent ? "text-primary" : "text-foreground"}`}>{value}</p>
-      {sub && <p className="text-xs text-muted-foreground mt-1">{sub}</p>}
-    </div>
+    <Card className="bg-[#0D0D0D] border border-zinc-900 rounded-none relative group hover:border-primary/50 transition-all duration-500">
+      <CardContent className="p-8">
+        <div className="flex flex-col items-center justify-center text-center">
+          <div className="p-4 bg-white/5 border border-zinc-900 group-hover:border-primary/30 transition-colors mb-6 relative">
+            <Icon className={`h-6 w-6 text-${colorClass}`} />
+            <div className="absolute -inset-1 border border-primary/10 animate-pulse" />
+          </div>
+          <div>
+            <p className="text-[10px] font-headline font-black tracking-[0.2em] text-zinc-600 uppercase">{label}</p>
+            <h3 className="text-5xl font-mono font-black text-white mt-4 tracking-tighter">{value}</h3>
+            {sub && (
+              <div className="flex items-center justify-center gap-2 mt-6 text-[9px] font-black text-zinc-500 uppercase tracking-widest">
+                <Activity className="h-3 w-3 animate-pulse" />{sub}
+              </div>
+            )}
+          </div>
+        </div>
+      </CardContent>
+      <CornerMarks />
+    </Card>
   );
 }
 
 export default function Dashboard({ onLogout }: { onLogout: () => void }) {
   const t = useT();
+  const isAr = document.documentElement.dir === "rtl";
   const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
   const [deptPerf, setDeptPerf] = useState<DepartmentPerf[]>([]);
   const [trends, setTrends] = useState<ClassTrend[]>([]);
@@ -52,19 +85,41 @@ export default function Dashboard({ onLogout }: { onLogout: () => void }) {
         setLoading(false);
       }
     })();
-  }, []);
+  }, [t]);
 
   function handleLogout() {
     clearToken();
     onLogout();
   }
 
+  const classDistData = useMemo(() => metrics ? [
+    { name: "Class A", value: metrics.class_a_count, pct: metrics.class_a_percentage },
+    { name: "Class B", value: metrics.class_b_count, pct: metrics.class_b_percentage },
+    { name: "Class C", value: metrics.class_c_count, pct: metrics.class_c_percentage },
+  ].filter(d => d.value > 0) : [], [metrics]);
+
+  const trendData = useMemo(() => trends.map(tr => ({
+    name: tr.campaign_title,
+    A: tr.class_a_count,
+    B: tr.class_b_count,
+    C: tr.class_c_count,
+  })), [trends]);
+
+  const deptChartData = useMemo(() => deptPerf.map(d => ({
+    name: d.department_name.length > 10 ? d.department_name.substring(0, 10) + "…" : d.department_name,
+    fullName: d.department_name,
+    classA: d.class_a_count,
+    classB: d.class_b_count,
+    classC: d.class_c_count,
+    avg: d.average_percentage,
+  })), [deptPerf]);
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-muted-foreground text-sm">{t("loading")}</p>
+      <div className="min-h-screen bg-[#040404] flex items-center justify-center p-6 industrial-grid">
+        <div className="hacker-loader">
+          <div className="loader-text"><span className="text-glitch" data-text={t("loading")}>{t("loading")}</span></div>
+          <div className="loader-bar"><div className="bar-fill"></div><div className="bar-glitch"></div></div>
         </div>
       </div>
     );
@@ -72,221 +127,235 @@ export default function Dashboard({ onLogout }: { onLogout: () => void }) {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="bg-card border border-destructive/30 rounded-xl p-8 text-center max-w-sm">
-          <p className="text-destructive font-medium mb-2">{t("error_loading")}</p>
-          <p className="text-sm text-muted-foreground mb-4">{error}</p>
-          <button onClick={handleLogout} className="text-sm text-primary hover:underline">{t("error_sign_out")}</button>
-        </div>
+      <div className="min-h-screen bg-[#040404] flex items-center justify-center p-6 industrial-grid">
+        <Card className="bg-[#0A0A0A] border-2 border-destructive/20 rounded-none p-12 text-center max-w-md relative">
+          <ShieldAlert className="h-12 w-12 text-destructive mx-auto mb-6 animate-pulse" />
+          <p className="text-destructive font-headline font-black uppercase tracking-widest mb-2">{t("error_loading")}</p>
+          <p className="text-xs text-zinc-500 font-mono mb-8 uppercase leading-relaxed">{error}</p>
+          <Button onClick={handleLogout} variant="outline" className="rounded-none border-destructive/30 text-destructive hover:bg-destructive/10 uppercase font-black text-[10px] tracking-widest">{t("error_sign_out")}</Button>
+          <CornerMarks color="destructive" />
+        </Card>
       </div>
     );
   }
 
-  const classDistData = metrics ? [
-    { name: "Class A", value: metrics.class_a_count, pct: metrics.class_a_percentage },
-    { name: "Class B", value: metrics.class_b_count, pct: metrics.class_b_percentage },
-    { name: "Class C", value: metrics.class_c_count, pct: metrics.class_c_percentage },
-  ].filter(d => d.value > 0) : [];
-
-  const trendData = trends.map(tr => ({
-    name: tr.campaign_title,
-    A: tr.class_a_count,
-    B: tr.class_b_count,
-    C: tr.class_c_count,
-  }));
-
-  const deptChartData = deptPerf.map(d => ({
-    name: d.department_name.length > 10 ? d.department_name.substring(0, 10) + "…" : d.department_name,
-    fullName: d.department_name,
-    classA: d.class_a_count,
-    classB: d.class_b_count,
-    classC: d.class_c_count,
-    avg: d.average_percentage,
-  }));
-
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b border-border bg-card/50 sticky top-0 z-10 backdrop-blur">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-1 h-6 bg-primary rounded-full" />
+    <div className="min-h-screen bg-[#040404] text-foreground selection:bg-primary selection:text-primary-foreground industrial-grid">
+      <header className="border-b border-zinc-900 bg-[#0A0A0A]/80 sticky top-0 z-50 backdrop-blur-xl">
+        <div className="max-w-7xl mx-auto px-8 py-6 flex items-center justify-between">
+          <div className="flex items-center gap-6">
+            <div className="h-8 w-1 bg-primary shadow-[0_0_15px_rgba(var(--primary),0.5)]" />
             <div>
-              <h1 className="font-bold text-foreground leading-none">HRM</h1>
-              <p className="text-xs text-muted-foreground">{t("workforce_subtitle")}</p>
+              <h1 className="font-headline font-black text-2xl tracking-tighter text-white uppercase">HRM <span className="text-primary font-mono ml-2 text-sm tracking-widest">OS_ANALYTICS</span></h1>
+              <p className="text-[9px] font-black text-zinc-600 uppercase tracking-[0.3em] mt-1">{t("workforce_subtitle")}</p>
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <a href="/" className="text-xs font-bold text-primary hover:text-primary/80 transition-colors uppercase tracking-widest border border-primary/20 px-3 py-1.5 rounded-lg bg-primary/5 flex items-center gap-2">
-              <span>←</span>
+          <div className="flex items-center gap-6">
+            <a href="/" className="btn-industrial px-6 py-2 text-[10px] font-black uppercase tracking-widest">
               {t("open_app")}
             </a>
-            <button onClick={handleLogout} className="text-xs text-muted-foreground hover:text-foreground transition-colors">{t("sign_out")}</button>
+            <Button onClick={handleLogout} variant="ghost" className="text-[10px] font-black uppercase tracking-widest text-zinc-500 hover:text-white hover:bg-white/5 transition-all">
+              {t("sign_out")}
+            </Button>
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 py-8 space-y-8">
-        <div>
-          <h2 className="text-xl font-semibold text-foreground mb-1">{t("workforce_overview")}</h2>
-          <p className="text-sm text-muted-foreground">{t("workforce_subtitle")}</p>
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <StatCard label={t("kpi_total_employees")} value={metrics?.total_employees ?? 0} sub={`${metrics?.active_employees ?? 0} ${t("employees")}`} accent />
-          <StatCard label="Active Campaigns" value={metrics?.active_campaigns ?? 0} sub={`${metrics?.completed_campaigns ?? 0} ${t("completed")}`} />
-          <StatCard label={t("kpi_skills_tracked")} value={metrics?.total_skills ?? 0} sub="tracked competencies" />
-          <StatCard label={t("kpi_avg_score")} value={metrics?.average_skill_percentage != null ? `${metrics.average_skill_percentage}%` : "—"} sub="across all evaluations" accent />
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="bg-card border border-border rounded-xl p-6">
-            <h3 className="font-semibold text-foreground mb-1">{t("perf_dist")}</h3>
-            <p className="text-xs text-muted-foreground mb-4">{t("perf_dist_desc")}</p>
-            {classDistData.length > 0 ? (
-              <ResponsiveContainer width="100%" height={220}>
-                <PieChart>
-                  <Pie data={classDistData} cx="50%" cy="50%" innerRadius={55} outerRadius={90} paddingAngle={3} dataKey="value">
-                    {classDistData.map((entry, i) => (
-                      <Cell key={i} fill={entry.name === "Class A" ? COLORS.A : entry.name === "Class B" ? COLORS.B : COLORS.C} />
-                    ))}
-                  </Pie>
-                  <Tooltip
-                    formatter={(v: number, n: string) => [`${v} ${t("employees")}`, n]}
-                    contentStyle={{ background: "#242830", border: "1px solid #2E3340", borderRadius: "8px", color: "#F5F0E8", fontSize: "12px" }}
-                  />
-                  <Legend formatter={(v) => <span style={{ color: "#9AA0AE", fontSize: "12px" }}>{v}</span>} />
-                </PieChart>
-              </ResponsiveContainer>
-            ) : (
-              <div className="h-[220px] flex items-center justify-center">
-                <div className="text-center">
-                  <p className="text-muted-foreground text-sm">{t("no_eval_data")}</p>
-                  <p className="text-xs text-muted-foreground mt-1">{t("no_eval_data_sub")}</p>
-                </div>
-              </div>
-            )}
+      <main className="max-w-7xl mx-auto px-8 py-12 space-y-12 pb-32">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="space-y-2"
+        >
+          <div className="flex items-center gap-3">
+             <div className="h-1.5 w-1.5 bg-primary animate-pulse" />
+             <h2 className="text-4xl font-headline font-black text-white uppercase tracking-tighter">{t("workforce_overview")}</h2>
           </div>
+          <p className="text-xs text-zinc-500 font-mono uppercase tracking-[0.2em]">{t("workforce_subtitle")}</p>
+        </motion.div>
 
-          <div className="bg-card border border-border rounded-xl p-6">
-            <h3 className="font-semibold text-foreground mb-1">{t("class_summary")}</h3>
-            <p className="text-xs text-muted-foreground mb-4">{t("class_summary_desc")}</p>
-            <div className="space-y-4 pt-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <StatCard label={t("kpi_total_employees")} value={metrics?.total_employees ?? 0} sub={`${metrics?.active_employees ?? 0} ${t("dashboard_active")}`} icon={Users} />
+          <StatCard label="Active Campaigns" value={metrics?.active_campaigns ?? 0} sub={`${metrics?.completed_campaigns ?? 0} ${t("completed")}`} icon={Zap} colorClass="amber-500" />
+          <StatCard label={t("kpi_skills_tracked")} value={metrics?.total_skills ?? 0} sub="competency nodes" icon={Target} colorClass="emerald-500" />
+          <StatCard label={t("kpi_avg_score")} value={metrics?.average_skill_percentage != null ? `${metrics.average_skill_percentage}%` : "—"} sub="global baseline" icon={Activity} colorClass="blue-500" />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <Card className="bg-[#0A0A0A] border border-zinc-900 rounded-none relative overflow-hidden group">
+            <CardHeader className="p-8 border-b border-zinc-900/50">
+              <CardTitle className="font-headline font-black text-sm uppercase tracking-widest text-zinc-400 flex items-center gap-3">
+                <BarChart3 className="h-4 w-4 text-primary" /> {t("perf_dist")}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-8">
+              {classDistData.length > 0 ? (
+                <ResponsiveContainer width="100%" height={260}>
+                  <PieChart>
+                    <Pie data={classDistData} cx="50%" cy="50%" innerRadius={70} outerRadius={100} paddingAngle={8} dataKey="value" stroke="none">
+                      {classDistData.map((entry, i) => (
+                        <Cell key={i} fill={entry.name === "Class A" ? COLORS.A : entry.name === "Class B" ? COLORS.B : COLORS.C} />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      contentStyle={{ background: "#0D0D0D", border: "1px solid #1A1A1A", borderRadius: "0", color: "#FFF", fontSize: "10px", textTransform: "uppercase", fontWeight: "900" }}
+                    />
+                    <Legend iconType="rect" formatter={(v) => <span className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-2">{v}</span>} />
+                  </PieChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="h-[260px] flex flex-col items-center justify-center text-center p-12 border border-dashed border-zinc-900">
+                  <Sparkles className="h-10 w-10 text-zinc-800 mb-4" />
+                  <p className="text-zinc-600 font-mono text-[10px] uppercase tracking-widest">{t("no_eval_data")}</p>
+                </div>
+              )}
+            </CardContent>
+            <CornerMarks />
+          </Card>
+
+          <Card className="bg-[#0A0A0A] border border-zinc-900 rounded-none relative overflow-hidden group">
+            <CardHeader className="p-8 border-b border-zinc-900/50">
+              <CardTitle className="font-headline font-black text-sm uppercase tracking-widest text-zinc-400 flex items-center gap-3">
+                <Brain className="h-4 w-4 text-primary" /> {t("class_summary")}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-8 space-y-8">
               {[
-                { label: "Class A — High Performers", count: metrics?.class_a_count ?? 0, pct: metrics?.class_a_percentage ?? 0, color: "#10B981" },
-                { label: "Class B — Developing", count: metrics?.class_b_count ?? 0, pct: metrics?.class_b_percentage ?? 0, color: "#EAB308" },
-                { label: "Class C — Needs Improvement", count: metrics?.class_c_count ?? 0, pct: metrics?.class_c_percentage ?? 0, color: "#EF4444" },
+                { label: "Class A — High Performers", count: metrics?.class_a_count ?? 0, pct: metrics?.class_a_percentage ?? 0, color: COLORS.A },
+                { label: "Class B — Developing", count: metrics?.class_b_count ?? 0, pct: metrics?.class_b_percentage ?? 0, color: COLORS.B },
+                { label: "Class C — Needs Improvement", count: metrics?.class_c_count ?? 0, pct: metrics?.class_c_percentage ?? 0, color: COLORS.C },
               ].map((item) => (
-                <div key={item.label}>
-                  <div className="flex justify-between items-center mb-1">
-                    <span className="text-sm text-foreground">{item.label}</span>
-                    <span className="text-sm font-semibold" style={{ color: item.color }}>{item.count} ({item.pct}%)</span>
+                <div key={item.label} className="group/item">
+                  <div className="flex justify-between items-end mb-3">
+                    <span className="text-[10px] font-black text-zinc-500 uppercase tracking-widest group-hover/item:text-white transition-colors">{item.label}</span>
+                    <span className="text-2xl font-mono font-black text-white">{item.pct}%</span>
                   </div>
-                  <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
-                    <div className="h-full rounded-full" style={{ width: `${item.pct}%`, background: item.color }} />
+                  <div className="w-full h-1 bg-zinc-900 overflow-hidden">
+                    <motion.div 
+                      initial={{ width: 0 }}
+                      animate={{ width: `${item.pct}%` }}
+                      className="h-full" 
+                      style={{ background: item.color }} 
+                    />
                   </div>
                 </div>
               ))}
-              <div className="pt-2 border-t border-border">
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">{t("pending_training")}</span>
-                  <span className="text-foreground font-medium">{metrics?.pending_training ?? 0} {t("employees")}</span>
-                </div>
+              <div className="pt-6 border-t border-zinc-900 flex justify-between items-center">
+                  <span className="text-[9px] font-black text-zinc-600 uppercase tracking-widest">{t("pending_training")}</span>
+                  <Badge className="bg-zinc-900 text-zinc-400 border-zinc-800 rounded-none px-3 font-mono text-[10px] font-black">{metrics?.pending_training ?? 0} NODES</Badge>
               </div>
-            </div>
-          </div>
+            </CardContent>
+            <CornerMarks />
+          </Card>
         </div>
 
-        <div className="bg-card border border-border rounded-xl p-6">
-          <h3 className="font-semibold text-foreground mb-1">{t("dept_perf")}</h3>
-          <p className="text-xs text-muted-foreground mb-4">{t("dept_perf_desc")}</p>
-          {deptChartData.length > 0 ? (
-            <ResponsiveContainer width="100%" height={260}>
-              <BarChart data={deptChartData} margin={{ top: 0, right: 0, bottom: 24, left: -20 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#2E3340" />
-                <XAxis dataKey="name" tick={{ fill: "#9AA0AE", fontSize: 10 }} axisLine={false} tickLine={false} angle={-20} textAnchor="end" interval={0} />
-                <YAxis tick={{ fill: "#9AA0AE", fontSize: 11 }} axisLine={false} tickLine={false} />
-                <Tooltip
-                  labelFormatter={(label, payload) => payload?.[0]?.payload?.fullName ?? label}
-                  contentStyle={{ background: "#242830", border: "1px solid #2E3340", borderRadius: "8px", color: "#F5F0E8", fontSize: "12px" }}
-                />
-                <Legend formatter={(v) => <span style={{ color: "#9AA0AE", fontSize: "12px" }}>{v}</span>} />
-                <Bar dataKey="classA" name="Class A" fill={COLORS.A} stackId="a" />
-                <Bar dataKey="classB" name="Class B" fill={COLORS.B} stackId="a" />
-                <Bar dataKey="classC" name="Class C" fill={COLORS.C} radius={[2, 2, 0, 0]} stackId="a" />
-              </BarChart>
-            </ResponsiveContainer>
-          ) : (
-            <div className="h-[260px] flex items-center justify-center text-muted-foreground text-sm">{t("no_dept_data")}</div>
-          )}
-        </div>
+        <Card className="bg-[#0A0A0A] border border-zinc-900 rounded-none relative overflow-hidden group">
+          <CardHeader className="p-8 border-b border-zinc-900/50">
+            <CardTitle className="font-headline font-black text-sm uppercase tracking-widest text-zinc-400 flex items-center gap-3">
+              <Cpu className="h-4 w-4 text-primary" /> {t("dept_perf")}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-8">
+            {deptChartData.length > 0 ? (
+              <ResponsiveContainer width="100%" height={320}>
+                <BarChart data={deptChartData} margin={{ top: 20, right: 30, bottom: 40, left: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#1A1A1A" vertical={false} />
+                  <XAxis dataKey="name" tick={{ fill: "#444", fontSize: 9, fontWeight: 900 }} axisLine={{ stroke: "#1A1A1A" }} tickLine={false} interval={0} angle={-15} textAnchor="end" />
+                  <YAxis tick={{ fill: "#444", fontSize: 9, fontWeight: 900 }} axisLine={false} tickLine={false} />
+                  <Tooltip
+                    labelFormatter={(label, payload) => payload?.[0]?.payload?.fullName ?? label}
+                    contentStyle={{ background: "#0D0D0D", border: "1px solid #1A1A1A", borderRadius: "0", color: "#FFF", fontSize: "10px", textTransform: "uppercase", fontWeight: "900" }}
+                  />
+                  <Legend iconType="rect" formatter={(v) => <span className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-2">{v}</span>} />
+                  <Bar dataKey="classA" name="Class A" fill={COLORS.A} stackId="a" />
+                  <Bar dataKey="classB" name="Class B" fill={COLORS.B} stackId="a" />
+                  <Bar dataKey="classC" name="Class C" fill={COLORS.C} stackId="a" />
+                </BarChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="h-[320px] flex items-center justify-center text-zinc-700 font-mono text-[10px] uppercase tracking-widest">{t("no_dept_data")}</div>
+            )}
+          </CardContent>
+          <CornerMarks />
+        </Card>
 
         {trendData.length > 0 && (
-          <div className="bg-card border border-border rounded-xl p-6">
-            <h3 className="font-semibold text-foreground mb-1">{t("class_trends")}</h3>
-            <p className="text-xs text-muted-foreground mb-4">{t("class_trends_desc")}</p>
-            <ResponsiveContainer width="100%" height={240}>
-              <LineChart data={trendData} margin={{ top: 0, right: 0, bottom: 0, left: -20 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#2E3340" />
-                <XAxis dataKey="name" tick={{ fill: "#9AA0AE", fontSize: 11 }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fill: "#9AA0AE", fontSize: 11 }} axisLine={false} tickLine={false} />
-                <Tooltip contentStyle={{ background: "#242830", border: "1px solid #2E3340", borderRadius: "8px", color: "#F5F0E8", fontSize: "12px" }} />
-                <Legend formatter={(v) => <span style={{ color: "#9AA0AE", fontSize: "12px" }}>{v}</span>} />
-                <Line type="monotone" dataKey="A" name="Class A" stroke={COLORS.A} strokeWidth={2} dot={{ r: 4 }} />
-                <Line type="monotone" dataKey="B" name="Class B" stroke={COLORS.B} strokeWidth={2} dot={{ r: 4 }} />
-                <Line type="monotone" dataKey="C" name="Class C" stroke={COLORS.C} strokeWidth={2} dot={{ r: 4 }} />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
+          <Card className="bg-[#0A0A0A] border border-zinc-900 rounded-none relative overflow-hidden group">
+            <CardHeader className="p-8 border-b border-zinc-900/50">
+              <CardTitle className="font-headline font-black text-sm uppercase tracking-widest text-zinc-400 flex items-center gap-3">
+                <Activity className="h-4 w-4 text-primary" /> {t("class_trends")}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-8">
+              <ResponsiveContainer width="100%" height={260}>
+                <LineChart data={trendData} margin={{ top: 20, right: 30, bottom: 20, left: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#1A1A1A" vertical={false} />
+                  <XAxis dataKey="name" tick={{ fill: "#444", fontSize: 9, fontWeight: 900 }} axisLine={{ stroke: "#1A1A1A" }} tickLine={false} />
+                  <YAxis tick={{ fill: "#444", fontSize: 9, fontWeight: 900 }} axisLine={false} tickLine={false} />
+                  <Tooltip contentStyle={{ background: "#0D0D0D", border: "1px solid #1A1A1A", borderRadius: "0", color: "#FFF", fontSize: "10px", textTransform: "uppercase", fontWeight: "900" }} />
+                  <Legend iconType="rect" formatter={(v) => <span className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-2">{v}</span>} />
+                  <Line type="monotone" dataKey="A" name="Class A" stroke={COLORS.A} strokeWidth={3} dot={{ r: 4, fill: COLORS.A, strokeWidth: 0 }} activeDot={{ r: 6, stroke: "#FFF", strokeWidth: 2 }} />
+                  <Line type="monotone" dataKey="B" name="Class B" stroke={COLORS.B} strokeWidth={3} dot={{ r: 4, fill: COLORS.B, strokeWidth: 0 }} activeDot={{ r: 6, stroke: "#FFF", strokeWidth: 2 }} />
+                  <Line type="monotone" dataKey="C" name="Class C" stroke={COLORS.C} strokeWidth={3} dot={{ r: 4, fill: COLORS.C, strokeWidth: 0 }} activeDot={{ r: 6, stroke: "#FFF", strokeWidth: 2 }} />
+                </LineChart>
+              </ResponsiveContainer>
+            </CardContent>
+            <CornerMarks />
+          </Card>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-card border border-border rounded-xl p-6">
-            <h3 className="font-semibold text-foreground mb-4">{t("recent_activity")}</h3>
-            <div className="space-y-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <Card className="bg-[#0A0A0A] border border-zinc-900 rounded-none relative overflow-hidden group">
+            <CardHeader className="p-8 border-b border-zinc-900/50">
+              <CardTitle className="font-headline font-black text-sm uppercase tracking-widest text-zinc-400">{t("recent_activity")}</CardTitle>
+            </CardHeader>
+            <CardContent className="p-8 space-y-6">
               {activity.length > 0 ? activity.map((item) => (
-                <div key={item.id} className="flex items-start gap-3">
-                  <div className="w-2 h-2 rounded-full bg-primary mt-1.5 shrink-0" />
-                  <div className="min-w-0">
-                    <p className="text-sm text-foreground">{item.description}</p>
-                    <p className="text-xs text-muted-foreground">{item.department_name} · {new Date(item.timestamp).toLocaleDateString()}</p>
+                <div key={item.id} className="flex items-start gap-4 group/log">
+                  <div className="w-1.5 h-1.5 rounded-none bg-primary mt-1.5 shrink-0 group-hover/log:scale-125 transition-transform" />
+                  <div className="space-y-1">
+                    <p className="text-[11px] text-white font-medium group-hover/log:text-primary transition-colors">{item.description}</p>
+                    <p className="text-[9px] font-black text-zinc-600 uppercase tracking-widest">{item.department_name} · {new Date(item.timestamp).toLocaleTimeString()}</p>
                   </div>
                 </div>
               )) : (
-                <p className="text-sm text-muted-foreground">{t("no_recent_activity")}</p>
+                <p className="text-[10px] font-mono text-zinc-700 uppercase tracking-widest">{t("no_recent_activity")}</p>
               )}
-            </div>
-          </div>
+            </CardContent>
+            <CornerMarks color="zinc-800" />
+          </Card>
 
-          <div className="bg-card border border-border rounded-xl p-6">
-            <h3 className="font-semibold text-foreground mb-4">{t("avg_score_by_dept")}</h3>
-            <div className="space-y-3">
+          <Card className="bg-[#0A0A0A] border border-zinc-900 rounded-none relative overflow-hidden group">
+            <CardHeader className="p-8 border-b border-zinc-900/50">
+              <CardTitle className="font-headline font-black text-sm uppercase tracking-widest text-zinc-400">{t("avg_score_by_dept")}</CardTitle>
+            </CardHeader>
+            <CardContent className="p-8 space-y-6">
               {deptPerf.length > 0 ? [...deptPerf].sort((a, b) => b.average_percentage - a.average_percentage).map((dept) => (
-                <div key={dept.department_id}>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm text-foreground truncate pr-2">{dept.department_name}</span>
-                    <span className="text-sm font-semibold shrink-0" style={{
-                      color: dept.average_percentage >= 85 ? "#10B981" : dept.average_percentage >= 60 ? "#EAB308" : "#EF4444"
-                    }}>
+                <div key={dept.department_id} className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-black text-zinc-500 uppercase tracking-widest truncate pr-4">{dept.department_name}</span>
+                    <span className="font-mono font-black text-white text-sm">
                       {dept.average_percentage > 0 ? `${Math.round(dept.average_percentage)}%` : "—"}
                     </span>
                   </div>
-                  <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
-                    <div className="h-full rounded-full transition-all" style={{
+                  <div className="w-full h-1 bg-zinc-900 overflow-hidden">
+                    <div className="h-full transition-all duration-1000" style={{
                       width: `${dept.average_percentage}%`,
-                      background: dept.average_percentage >= 85 ? "#10B981" : dept.average_percentage >= 60 ? "#EAB308" : "#EF4444"
+                      background: dept.average_percentage >= 85 ? COLORS.A : dept.average_percentage >= 60 ? COLORS.B : COLORS.C
                     }} />
                   </div>
                 </div>
               )) : (
-                <p className="text-sm text-muted-foreground">{t("no_data")}</p>
+                <p className="text-[10px] font-mono text-zinc-700 uppercase tracking-widest">{t("no_data")}</p>
               )}
-            </div>
-          </div>
+            </CardContent>
+            <CornerMarks color="zinc-800" />
+          </Card>
         </div>
 
-        <footer className="text-center pb-4">
-          <p className="text-xs text-muted-foreground">
-            {t("app_footer")} · {t("app_created_by")} <span className="text-primary">yasserious.com</span>
+        <footer className="text-center pt-12 border-t border-zinc-900/50">
+          <p className="text-[9px] font-black text-zinc-600 uppercase tracking-[0.4em]">
+            {t("app_footer")} · {t("app_created_by")} <span className="text-primary hover:text-white transition-colors cursor-pointer">yasserious.com</span>
           </p>
         </footer>
       </main>

@@ -818,6 +818,26 @@ const en = {
   label_evaluated: "Evaluated",
   label_total_nodes: "Total Nodes",
   label_node_profile: "View Profile",
+
+  // ── Manual & Footer ────────────────────────────────────────────────────────
+  label_auth_admin: "AUTH LEVEL: ADMIN",
+  label_status_encrypted_full: "STATUS: ENCRYPTED",
+  je_cat_labor_manual: "SUPPORT / LABOR",
+  je_cat_tech_manual: "TECHNICAL / ADMIN",
+  je_cat_spec_manual: "PROFESSIONAL / SR.",
+  je_cat_mgmt_manual: "MANAGEMENT / HEAD",
+  je_cat_exec_manual: "EXECUTIVE / DIRECTOR",
+  label_copyright_footer: "© DEEPMIND SYSTEMS",
+  label_latency_footer: "LATENCY: 0.002MS",
+  label_kern_mod: "KERN MOD: HR EVAL SCORER",
+  label_doc_ref: "DOC REF_v4.2",
+  label_security_active: "SECURITY LAYER ACTIVE",
+  label_auth_only: "AUTHORIZED ACCESS ONLY",
+  label_revision: "REVISION",
+  label_status_optimal: "STATUS: OPTIMAL",
+  label_node_uptime: "NODE: CLUSTER_01 // UPTIME: 99.99%",
+  label_industrial_node_secured: "HRM INDUSTRIAL NODE_v2.0.4 // SECURED",
+  label_command_center: "COMMAND CENTER",
 } as const;
 
 export default en;

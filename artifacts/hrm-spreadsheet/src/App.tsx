@@ -313,7 +313,7 @@ function AppInner() {
         return (
           <EvalSheet
             key={`qc-${resetKey}`}
-            title="Quality Control"
+            title={t('dept_qc')}
             icon="🔍"
             employees={QC_EMPLOYEES}
             skills={QC_SKILLS}
@@ -326,7 +326,7 @@ function AppInner() {
         return (
           <EvalSheet
             key={`logistics-${resetKey}`}
-            title="Logistics"
+            title={t('dept_logistics')}
             icon="🚚"
             employees={LOGISTICS_EMPLOYEES}
             skills={LOGISTICS_SKILLS}
@@ -339,7 +339,7 @@ function AppInner() {
         return (
           <EvalSheet
             key={`maintenance-${resetKey}`}
-            title="Maintenance"
+            title={t('dept_maintenance')}
             icon="🛠️"
             employees={MAINTENANCE_EMPLOYEES}
             skills={MAINTENANCE_SKILLS}
@@ -352,7 +352,7 @@ function AppInner() {
         return (
           <EvalSheet
             key={`admin-${resetKey}`}
-            title="Administration"
+            title={t('dept_admin')}
             icon="🗂️"
             employees={ADMIN_EMPLOYEES}
             skills={ADMIN_SKILLS}
@@ -365,15 +365,15 @@ function AppInner() {
         return (
           <CalculationsSheet
             departments={[
-              { title: 'Upholstery',       icon: '✨', employees: UPHOLSTERY_EMPLOYEES,    skills: UPHOLSTERY_SKILLS,    scores: uphScores },
-              { title: 'Painting',          icon: '🎨', employees: PAINTING_EMPLOYEES,      skills: PAINTING_SKILLS,      scores: pntScores },
-              { title: 'Natural Wood',      icon: '🪵', employees: NATURAL_WOOD_EMPLOYEES,  skills: NATURAL_WOOD_SKILLS,  scores: nwdScores },
-              { title: 'Assembly',          icon: '🔧', employees: ASSEMBLY_EMPLOYEES,      skills: ASSEMBLY_SKILLS,      scores: asmScores },
-              { title: 'Cutting',           icon: '⚙️', employees: CUTTING_EMPLOYEES,      skills: CUTTING_SKILLS,       scores: cutScores },
-              { title: 'Quality Control',   icon: '🔍', employees: QC_EMPLOYEES,            skills: QC_SKILLS,            scores: qcScores  },
-              { title: 'Logistics',         icon: '🚚', employees: LOGISTICS_EMPLOYEES,     skills: LOGISTICS_SKILLS,     scores: logScores },
-              { title: 'Maintenance',       icon: '🛠️', employees: MAINTENANCE_EMPLOYEES,  skills: MAINTENANCE_SKILLS,   scores: mntScores },
-              { title: 'Administration',    icon: '🗂️', employees: ADMIN_EMPLOYEES,        skills: ADMIN_SKILLS,         scores: admScores },
+              { title: t('dept_upholstery'),       icon: '✨', employees: UPHOLSTERY_EMPLOYEES,    skills: UPHOLSTERY_SKILLS,    scores: uphScores },
+              { title: t('dept_painting'),          icon: '🎨', employees: PAINTING_EMPLOYEES,      skills: PAINTING_SKILLS,      scores: pntScores },
+              { title: t('dept_natural_wood'),      icon: '🪵', employees: NATURAL_WOOD_EMPLOYEES,  skills: NATURAL_WOOD_SKILLS,  scores: nwdScores },
+              { title: t('dept_assembly'),          icon: '🔧', employees: ASSEMBLY_EMPLOYEES,      skills: ASSEMBLY_SKILLS,      scores: asmScores },
+              { title: t('dept_cutting'),           icon: '⚙️', employees: CUTTING_EMPLOYEES,      skills: CUTTING_SKILLS,       scores: cutScores },
+              { title: t('dept_qc'),                icon: '🔍', employees: QC_EMPLOYEES,            skills: QC_SKILLS,            scores: qcScores  },
+              { title: t('dept_logistics'),         icon: '🚚', employees: LOGISTICS_EMPLOYEES,     skills: LOGISTICS_SKILLS,     scores: logScores },
+              { title: t('dept_maintenance'),       icon: '🛠️', employees: MAINTENANCE_EMPLOYEES,  skills: MAINTENANCE_SKILLS,   scores: mntScores },
+              { title: t('dept_admin'),             icon: '🗂️', employees: ADMIN_EMPLOYEES,        skills: ADMIN_SKILLS,         scores: admScores },
             ]}
           />
         );
@@ -382,15 +382,15 @@ function AppInner() {
         return (
           <PrintReportSheet
             departments={[
-              { title: 'Upholstery', icon: '✨', employees: UPHOLSTERY_EMPLOYEES, skills: UPHOLSTERY_SKILLS, scores: uphScores },
-              { title: 'Painting', icon: '🎨', employees: PAINTING_EMPLOYEES, skills: PAINTING_SKILLS, scores: pntScores },
-              { title: 'Natural Wood', icon: '🪵', employees: NATURAL_WOOD_EMPLOYEES, skills: NATURAL_WOOD_SKILLS, scores: nwdScores },
-              { title: 'Assembly', icon: '🔧', employees: ASSEMBLY_EMPLOYEES, skills: ASSEMBLY_SKILLS, scores: asmScores },
-              { title: 'Cutting', icon: '⚙️', employees: CUTTING_EMPLOYEES, skills: CUTTING_SKILLS, scores: cutScores },
-              { title: 'Quality Control', icon: '🔍', employees: QC_EMPLOYEES, skills: QC_SKILLS, scores: qcScores },
-              { title: 'Logistics', icon: '🚚', employees: LOGISTICS_EMPLOYEES, skills: LOGISTICS_SKILLS, scores: logScores },
-              { title: 'Maintenance', icon: '🛠️', employees: MAINTENANCE_EMPLOYEES, skills: MAINTENANCE_SKILLS, scores: mntScores },
-              { title: 'Administration', icon: '🗂️', employees: ADMIN_EMPLOYEES, skills: ADMIN_SKILLS, scores: admScores },
+              { title: t('dept_upholstery'), icon: '✨', employees: UPHOLSTERY_EMPLOYEES, skills: UPHOLSTERY_SKILLS, scores: uphScores },
+              { title: t('dept_painting'), icon: '🎨', employees: PAINTING_EMPLOYEES, skills: PAINTING_SKILLS, scores: pntScores },
+              { title: t('dept_natural_wood'), icon: '🪵', employees: NATURAL_WOOD_EMPLOYEES, skills: NATURAL_WOOD_SKILLS, scores: nwdScores },
+              { title: t('dept_assembly'), icon: '🔧', employees: ASSEMBLY_EMPLOYEES, skills: ASSEMBLY_SKILLS, scores: asmScores },
+              { title: t('dept_cutting'), icon: '⚙️', employees: CUTTING_EMPLOYEES, skills: CUTTING_SKILLS, scores: cutScores },
+              { title: t('dept_qc'), icon: '🔍', employees: QC_EMPLOYEES, skills: QC_SKILLS, scores: qcScores },
+              { title: t('dept_logistics'), icon: '🚚', employees: LOGISTICS_EMPLOYEES, skills: LOGISTICS_SKILLS, scores: logScores },
+              { title: t('dept_maintenance'), icon: '🛠️', employees: MAINTENANCE_EMPLOYEES, skills: MAINTENANCE_SKILLS, scores: mntScores },
+              { title: t('dept_admin'), icon: '🗂️', employees: ADMIN_EMPLOYEES, skills: ADMIN_SKILLS, scores: admScores },
             ]}
           />
         );
@@ -424,7 +424,7 @@ function AppInner() {
               href="https://yasserious.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden md:flex items-center gap-1 text-amber-400/70 hover:text-amber-400 transition-colors text-xs"
+              className="hidden md:flex items-center gap-1 text-primary/70 hover:text-primary transition-colors text-[10px] font-black uppercase tracking-widest"
             >
               ✨ {t('created_by')}
             </a>
@@ -432,7 +432,7 @@ function AppInner() {
             <button
               onClick={() => setTheme(isDark ? 'light' : 'dark')}
               title={t('toggle_theme')}
-              className="w-8 h-8 flex items-center justify-center rounded-md border border-border text-muted-foreground hover:text-foreground hover:bg-muted transition-colors text-sm"
+              className="w-8 h-8 flex items-center justify-center border border-border text-muted-foreground hover:text-white hover:bg-white/5 transition-colors text-sm"
             >
               {isDark ? '☀️' : '🌙'}
             </button>
@@ -440,7 +440,7 @@ function AppInner() {
             <button
               onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
               title={t('toggle_language')}
-              className="h-8 px-2.5 flex items-center justify-center rounded-md border border-border text-muted-foreground hover:text-foreground hover:bg-muted transition-colors text-xs font-bold"
+              className="h-8 px-2.5 flex items-center justify-center border border-border text-muted-foreground hover:text-white hover:bg-white/5 transition-colors text-xs font-black"
             >
               {lang === 'en' ? t('lang_ar') : t('lang_en')}
             </button>
@@ -458,7 +458,7 @@ function AppInner() {
             <button
               onClick={handleBackupExport}
               title={t('backup_export')}
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-muted/60 hover:bg-muted text-muted-foreground hover:text-foreground text-xs font-medium transition-colors border border-border"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 text-muted-foreground hover:text-white text-[10px] font-black uppercase tracking-widest transition-colors border border-border"
             >
               <span>📤</span>
               <span>{t('backup_export')}</span>
@@ -468,7 +468,7 @@ function AppInner() {
             <button
               onClick={() => importFileRef.current?.click()}
               title={t('backup_import')}
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-muted/60 hover:bg-muted text-muted-foreground hover:text-foreground text-xs font-medium transition-colors border border-border"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 text-muted-foreground hover:text-white text-[10px] font-black uppercase tracking-widest transition-colors border border-border"
             >
               <span>📥</span>
               <span>{t('backup_import')}</span>
@@ -476,17 +476,17 @@ function AppInner() {
 
             {/* Reset Scores button */}
             {showResetConfirm ? (
-              <div className="flex items-center gap-1.5 bg-red-900/60 border border-red-500/40 rounded-lg px-3 py-1">
-                <span className="text-red-300 text-xs">{t('reset_confirm')}</span>
+              <div className="flex items-center gap-1.5 bg-destructive/10 border border-destructive/40 px-3 py-1">
+                <span className="text-destructive text-[10px] font-black uppercase tracking-widest">{t('reset_confirm')}</span>
                 <button
                   onClick={handleReset}
-                  className="px-2 py-0.5 rounded bg-red-600 hover:bg-red-500 text-white text-xs font-semibold transition-colors"
+                  className="px-2 py-0.5 bg-destructive hover:bg-destructive/80 text-white text-[10px] font-black uppercase tracking-widest transition-colors"
                 >
                   {t('reset_yes')}
                 </button>
                 <button
                   onClick={() => setShowResetConfirm(false)}
-                  className="px-2 py-0.5 rounded bg-muted hover:bg-muted/80 text-foreground text-xs font-semibold transition-colors"
+                  className="px-2 py-0.5 bg-white/10 hover:bg-white/20 text-white text-[10px] font-black uppercase tracking-widest transition-colors"
                 >
                   {t('reset_no')}
                 </button>
@@ -494,7 +494,7 @@ function AppInner() {
             ) : (
               <button
                 onClick={() => setShowResetConfirm(true)}
-                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-muted/60 hover:bg-muted text-muted-foreground hover:text-foreground text-xs font-medium transition-colors border border-border"
+                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 text-muted-foreground hover:text-white text-[10px] font-black uppercase tracking-widest transition-colors border border-border"
                 title={t('reset_scores')}
               >
                 <span>↺</span>
@@ -505,7 +505,7 @@ function AppInner() {
             <button
               onClick={handleExport}
               disabled={exporting}
-              className="flex items-center gap-2 px-4 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold text-sm transition-colors disabled:opacity-60 shrink-0"
+              className="btn-industrial px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] transition-all disabled:opacity-60 shrink-0"
             >
               {exporting ? (
                 <>
@@ -521,6 +521,7 @@ function AppInner() {
               )}
             </button>
           </div>
+
         </div>
 
         <div className="overflow-x-auto border-t border-border/50">

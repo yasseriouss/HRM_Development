@@ -191,7 +191,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   ))}
                 </div>
                 <div className="mt-4 pt-4 border-t border-white/10 flex justify-center">
-                  <p className="text-[9px] text-secondary/20 font-mono tracking-[0.2em] uppercase">HRM INDUSTRIAL NODE_v2.0.4 // SECURED
+                  <p className="text-[9px] text-secondary/20 font-mono tracking-[0.2em] uppercase">{t("label_industrial_node_secured")}
                   </p>
                 </div>
               </DropdownMenuContent>
@@ -201,7 +201,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <img src={`${import.meta.env.BASE_URL}logo.png`} alt="System Logo" className="h-8 w-auto object-contain grayscale brightness-200 contrast-200" />
               <div className="flex flex-col">
                 <h1 className={`text-2xl font-headline font-black text-white tracking-tighter uppercase leading-none text-shimmer ${isAr ? 'font-tajawal' : ''}`}>HRM DEV</h1>
-                <span className="text-[8px] font-mono text-primary/60 font-black tracking-[0.5em] mt-1.5 leading-none">COMMAND_CENTER</span>
+                <span className="text-[8px] font-mono text-primary/60 font-black tracking-[0.5em] mt-1.5 leading-none">{t("label_command_center")}</span>
               </div>
             </div>
           </div>
@@ -334,10 +334,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
                <div className="absolute inset-0 border border-primary/20 opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
             <div className="flex flex-col">
-              <p className="text-[11px] font-headline font-black text-white tracking-[0.4em] uppercase text-shimmer">HRM SYSTEM OPERATIONAL</p>
+              <p className="text-[11px] font-headline font-black text-white tracking-[0.4em] uppercase text-shimmer">{t("label_system_operational")}</p>
               <div className="flex items-center gap-4 mt-2">
-                 <span className="text-[8px] font-mono text-emerald-500/60 flex items-center gap-2 uppercase tracking-widest"><div className="h-1 w-1 bg-emerald-500 rounded-full animate-ping" /> STATUS: OPTIMAL</span>
-                 <span className="text-[8px] font-mono text-zinc-700 uppercase tracking-widest">NODE: CLUSTER_01 // UPTIME: 99.99%</span>
+                 <span className="text-[8px] font-mono text-emerald-500/60 flex items-center gap-2 uppercase tracking-widest"><div className="h-1 w-1 bg-emerald-500 rounded-full animate-ping" /> {t("label_status_optimal")}</span>
+                 <span className="text-[8px] font-mono text-zinc-700 uppercase tracking-widest">{t("label_node_uptime")}</span>
               </div>
             </div>
           </div>
@@ -351,7 +351,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             >
               <span className="text-[9px] font-headline font-black text-zinc-600 group-hover:text-primary transition-colors tracking-[0.3em] uppercase">{t("created_by")}
               </span>
-              <span className="text-sm font-headline font-black text-white group-hover:text-primary transition-all mt-1 tracking-tighter uppercase">YASSERIOUS ENGINEERING
+              <span className="text-sm font-headline font-black text-white group-hover:text-primary transition-all mt-1 tracking-tighter uppercase">{t("label_yasserious_eng")}
               </span>
             </a>
             

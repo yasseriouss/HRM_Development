@@ -330,11 +330,11 @@ export default function JobEvaluationGuide() {
                 </CardHeader>
                 <CardContent className="p-8 space-y-4">
                   {[
-                    { l: 1, e: "CRITICAL MINIMUM REQS", a: "Ù…ØªØ·Ù„Ø¨Ø§Øª Ø¨Ø³ÙŠØ·Ø© Ø¬Ø¯Ø§Ù‹" },
-                    { l: 2, e: "BASIC OPERATIONAL THRESHOLD", a: "Ù…ØªØ·Ù„Ø¨Ø§Øª Ù…Ø­Ø¯ÙˆØ¯Ø©" },
-                    { l: 3, e: "STANDARD PROFICIENCY NODE", a: "Ù…ØªØ·Ù„Ø¨Ø§Øª Ù…ØªÙˆØ³Ø·Ø©" },
-                    { l: 4, e: "ADVANCED SYSTEM COMMAND", a: "Ù…ØªØ·Ù„Ø¨Ø§Øª Ø¹Ø§Ù„ÙŠØ©" },
-                    { l: 5, e: "STRATEGIC LEAD EXCELLENCE", a: "Ù…ØªØ·Ù„Ø¨Ø§Øª Ù‚ÙŠØ§Ø¯ÙŠØ©" }
+                    { l: 1 },
+                    { l: 2 },
+                    { l: 3 },
+                    { l: 4 },
+                    { l: 5 }
                   ].map((level) => (
                     <div key={level.l} className="flex items-center justify-between p-4 bg-zinc-900/50 border border-zinc-800 group hover:border-primary/30 transition-all">
                       <div className="h-10 w-10 flex items-center justify-center bg-black border border-zinc-800 font-mono font-black text-xs text-primary group-hover:border-primary transition-colors">
@@ -359,12 +359,12 @@ export default function JobEvaluationGuide() {
          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
             <div className="space-y-2">
                <p className="font-headline font-black text-sm text-primary uppercase tracking-[0.3em]">{t("je_guide_sync")}</p>
-               <p className="text-[10px] font-mono text-zinc-600 leading-relaxed uppercase tracking-widest">DOC REF_v4.2 // SECURITY LAYER ACTIVE // AUTHORIZED ACCESS ONLY
+               <p className="text-[10px] font-mono text-zinc-600 leading-relaxed uppercase tracking-widest">{t("label_doc_ref")} // {t("label_security_active")} // {t("label_auth_only")}
                </p>
             </div>
             <div className="flex items-center gap-6 font-mono text-[9px] text-zinc-500 uppercase tracking-widest">
-               <span>LATENCY::5MS</span>
-               <span>REVISION::94.2.0</span>
+               <span>{t("je_stat_latency")}::5MS</span>
+               <span>{t("label_revision")}::94.2.0</span>
             </div>
          </div>
       </div>

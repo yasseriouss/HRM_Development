@@ -814,6 +814,26 @@ const ar = {
   label_evaluated: "مقيَّم",
   label_total_nodes: "إجمالي الموظفين",
   label_node_profile: "عرض الملف",
+
+  // ── Manual & Footer ────────────────────────────────────────────────────────
+  label_auth_admin: "مستوى التفويض: مدير",
+  label_status_encrypted_full: "الحالة: مشفر",
+  je_cat_labor_manual: "دعم / عمالة",
+  je_cat_tech_manual: "تقني / إداري",
+  je_cat_spec_manual: "أخصائي / مهني",
+  je_cat_mgmt_manual: "إدارة / رئيس",
+  je_cat_exec_manual: "تنفيذي / مدير",
+  label_copyright_footer: "© أنظمة ديب مايند",
+  label_latency_footer: "الاستجابة: 0.002 مللي ثانية",
+  label_kern_mod: "نمط النواة: مقيم الموارد البشرية",
+  label_doc_ref: "مرجع الوثيقة_v4.2",
+  label_security_active: "طبقة الحماية نشطة",
+  label_auth_only: "للمصرح لهم فقط",
+  label_revision: "المراجعة",
+  label_status_optimal: "الحالة: مثالي",
+  label_node_uptime: "العقدة: CLUSTER_01 // العمل: 99.99%",
+  label_industrial_node_secured: "عقدة HRM الصناعية_v2.0.4 // مؤمنة",
+  label_command_center: "مركز القيادة",
 };
 
 export default ar;
