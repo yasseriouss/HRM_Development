@@ -1,4 +1,4 @@
-import { pgTable, uuid, varchar, integer, boolean, timestamp, text, pgEnum } from "drizzle-orm/pg-core";
+import { pgTable, uuid, varchar, integer, boolean, timestamp, text, pgEnum, uniqueIndex } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 
@@ -16,7 +16,9 @@ export const skillsTable = pgTable("skills", {
   is_active: boolean("is_active").notNull().default(true),
   created_at: timestamp("created_at").notNull().defaultNow(),
   updated_at: timestamp("updated_at").notNull().defaultNow(),
-});
+}, (table) => ({
+  codeDeptIdx: uniqueIndex("code_dept_idx").on(table.code, table.department_id),
+}));
 
 export const insertSkillSchema = createInsertSchema(skillsTable).omit({ id: true, created_at: true, updated_at: true });
 export type InsertSkill = z.infer<typeof insertSkillSchema>;

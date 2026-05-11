@@ -34,10 +34,10 @@ export const DEPARTMENTS = [
   { id: "cc858321-464e-4f70-98a0-f6460759ddab", factory_id: "f0a1b2c3-d4e5-4f6a-8b9c-0d1e2f3a4b5c", name: "Upholstery",             code: "UPH", description: "Fabric cutting, sewing and foam work" },
 
   // METAL FACTORY
-  { id: "m1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", factory_id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d", name: "Metal Fabrication",      code: "MFB", description: "Cutting, bending, and welding operations" },
-  { id: "m2a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", factory_id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d", name: "CNC Machining",          code: "CNC", description: "High-precision computer numerical control machining" },
-  { id: "m3a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", factory_id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d", name: "Surface Treatment",       code: "MSF", description: "Powder coating and metal finishing" },
-  { id: "m4a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", factory_id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d", name: "Metal Quality Assurance", code: "MQA", description: "Stress testing and tolerance verification" },
+  { id: "b1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", factory_id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d", name: "Metal Fabrication",      code: "MFB", description: "Cutting, bending, and welding operations" },
+  { id: "b2a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", factory_id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d", name: "CNC Machining",          code: "CNC", description: "High-precision computer numerical control machining" },
+  { id: "b3a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", factory_id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d", name: "Surface Treatment",       code: "MSF", description: "Powder coating and metal finishing" },
+  { id: "b4a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", factory_id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d", name: "Metal Quality Assurance", code: "MQA", description: "Stress testing and tolerance verification" },
 ];
 
 // ── DEMO USERS ───────────────────────────────────────────────────────────────
@@ -51,8 +51,8 @@ export const USERS_DEF = [
   { id: "bc467dbf-6e48-4ff3-9761-f2dbf34b99cb", email: "dept_head@hrm-dev.com",   role: "dept_head",      password: "head123",  factory_id: "f0a1b2c3-d4e5-4f6a-8b9c-0d1e2f3a4b5c", department_id: "dec521d4-19b7-41b3-b9d1-9f40ef3567f8", production_role: "supervisor" },
   
   // METAL FACTORY STAFF
-  { id: "m-hr-1234-5678-90ab-cdef12345678",    email: "hr_metal@hrm-dev.com",    role: "hr_coordinator", password: "hr123",    factory_id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d", department_id: null,                                    production_role: null         },
-  { id: "m-head-1234-5678-90ab-cdef12345678",  email: "head_metal@hrm-dev.com",  role: "dept_head",      password: "head123",  factory_id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d", department_id: "m1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", production_role: "supervisor" },
+  { id: "e1a2b3c4-5678-40ab-bdef-1234567890ab",    email: "hr_metal@hrm-dev.com",    role: "hr_coordinator", password: "hr123",    factory_id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d", department_id: null,                                    production_role: null         },
+  { id: "e2a2b3c4-5678-40ab-bdef-1234567890ab",  email: "head_metal@hrm-dev.com",  role: "dept_head",      password: "head123",  factory_id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d", department_id: "b1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", production_role: "supervisor" },
 ] as const;
 
 // ── SKILLS ───────────────────────────────────────────────────────────────────
@@ -144,19 +144,19 @@ export const SKILLS: Array<{ code: string; name: string; department_id: string; 
   { code: "UPH-010", name: "Cushion Density Assessment", department_id: "cc858321-464e-4f70-98a0-f6460759ddab", category: "Material Quality", weight: 3, criticality: "Medium" },
 
   // METAL FABRICATION (MFB)
-  { code: "MFB-S01", name: "TIG Welding",             department_id: "m1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", category: "Technical", weight: 4, criticality: "Critical" },
-  { code: "MFB-S02", name: "Plasma Cutting",          department_id: "m1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", category: "Technical", weight: 4, criticality: "High" },
-  { code: "MFB-S03", name: "Hydraulic Bending",       department_id: "m1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", category: "Technical", weight: 3, criticality: "High" },
-  { code: "MFB-S04", name: "Structural Integrity",    department_id: "m1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", category: "Quality",   weight: 3, criticality: "Critical" },
+  { code: "MFB-S01", name: "TIG Welding",             department_id: "b1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", category: "Technical", weight: 4, criticality: "Critical" },
+  { code: "MFB-S02", name: "Plasma Cutting",          department_id: "b1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", category: "Technical", weight: 4, criticality: "High" },
+  { code: "MFB-S03", name: "Hydraulic Bending",       department_id: "b1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", category: "Technical", weight: 3, criticality: "High" },
+  { code: "MFB-S04", name: "Structural Integrity",    department_id: "b1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", category: "Quality",   weight: 3, criticality: "Critical" },
 
   // CNC MACHINING (CNC)
-  { code: "CNC-S01", name: "G-Code Programming",      department_id: "m2a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", category: "Technical", weight: 4, criticality: "Critical" },
-  { code: "CNC-S02", name: "Precision Measurement",   department_id: "m2a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", category: "Technical", weight: 4, criticality: "High" },
-  { code: "CNC-S03", name: "Tooling Selection",       department_id: "m2a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", category: "Knowledge", weight: 3, criticality: "High" },
+  { code: "CNC-S01", name: "G-Code Programming",      department_id: "b2a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", category: "Technical", weight: 4, criticality: "Critical" },
+  { code: "CNC-S02", name: "Precision Measurement",   department_id: "b2a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", category: "Technical", weight: 4, criticality: "High" },
+  { code: "CNC-S03", name: "Tooling Selection",       department_id: "b2a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", category: "Knowledge", weight: 3, criticality: "High" },
 
   // SURFACE TREATMENT (MSF)
-  { code: "MSF-S01", name: "Powder Coating",          department_id: "m3a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", category: "Technical", weight: 4, criticality: "Critical" },
-  { code: "MSF-S02", name: "Chemical Pre-treatment",  department_id: "m3a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", category: "Technical", weight: 3, criticality: "High" },
+  { code: "MSF-S01", name: "Powder Coating",          department_id: "b3a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", category: "Technical", weight: 4, criticality: "Critical" },
+  { code: "MSF-S02", name: "Chemical Pre-treatment",  department_id: "b3a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", category: "Technical", weight: 3, criticality: "High" },
 ];
 
 // ── EMPLOYEES ────────────────────────────────────────────────────────────────
@@ -182,9 +182,9 @@ export const EMPLOYEES: EmpDef[] = [
   { employee_code: "PNT001", full_name: "Rami Al-Balawi",      factory_id: "f0a1b2c3-d4e5-4f6a-8b9c-0d1e2f3a4b5c", department_id: "32f9075f-6555-416c-9ed2-96cfb9f0134e", job_title: "Spray Painter",       grade_level: "G4", joined_date: "2020-04-20", current_class: "B" },
 
   // METAL FACTORY (New)
-  { employee_code: "MET001", full_name: "Ahmed Al-Metal",      factory_id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d", department_id: "m1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", job_title: "Lead Welder",        grade_level: "G5", joined_date: "2021-01-10", current_class: "A" },
-  { employee_code: "MET002", full_name: "Sami Al-Iron",       factory_id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d", department_id: "m1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", job_title: "Plasma Operator",    grade_level: "G4", joined_date: "2022-05-15", current_class: "B" },
-  { employee_code: "CNC-M01", full_name: "Hassan Al-Steel",    factory_id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d", department_id: "m2a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", job_title: "CNC Specialist",     grade_level: "G6", joined_date: "2020-11-20", current_class: "A" },
+  { employee_code: "MET001", full_name: "Ahmed Al-Metal",      factory_id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d", department_id: "b1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", job_title: "Lead Welder",        grade_level: "G5", joined_date: "2021-01-10", current_class: "A" },
+  { employee_code: "MET002", full_name: "Sami Al-Iron",       factory_id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d", department_id: "b1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", job_title: "Plasma Operator",    grade_level: "G4", joined_date: "2022-05-15", current_class: "B" },
+  { employee_code: "CNC-M01", full_name: "Hassan Al-Steel",    factory_id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d", department_id: "b2a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", job_title: "CNC Specialist",     grade_level: "G6", joined_date: "2020-11-20", current_class: "A" },
 ];
 
 // ── MAIN ─────────────────────────────────────────────────────────────────────
@@ -194,11 +194,7 @@ export async function seed() {
 
   // 1. Factories
   console.log("  🏭 Factories...");
-  for (const f of FACTORIES) {
-    await db.insert(factoriesTable).values({
-      id: f.id, name: f.name, code: f.code, description: f.description,
-    }).onConflictDoNothing();
-  }
+  await db.insert(factoriesTable).values(FACTORIES).onConflictDoNothing();
 
   // 2. Departments
   console.log("  📁 Departments...");
@@ -217,7 +213,7 @@ export async function seed() {
       .where(eq(departmentsTable.id, dept.id));
   }
 
-  // 3. Users (password_hash stores plaintext for this demo system)
+  // 3. Users
   console.log("  👤 Demo users...");
   for (const u of USERS_DEF) {
     await db.insert(usersTable).values({
@@ -230,7 +226,6 @@ export async function seed() {
       production_role: (u.production_role ?? null) as "manager" | "engineer" | "supervisor" | "technician" | "helper" | null,
     }).onConflictDoNothing();
     
-    // Update fields for existing rows
     await db.update(usersTable)
       .set({ 
         factory_id: u.factory_id,
@@ -240,44 +235,50 @@ export async function seed() {
       .where(eq(usersTable.id, u.id));
   }
 
-  // 3. Skills
+  // 4. Skills
   console.log("  🔧 Skills...");
-  for (const s of SKILLS) {
-    await db.insert(skillsTable).values({
-      code: s.code, name: s.name, department_id: s.department_id,
-      category: s.category, weight: s.weight, criticality: s.criticality,
-      description: s.description, is_active: true,
-    }).onConflictDoNothing();
-  }
+  const skillValues = SKILLS.map(s => ({
+    code: s.code, 
+    name: s.name, 
+    department_id: s.department_id,
+    category: s.category, 
+    weight: s.weight, 
+    criticality: s.criticality,
+    description: s.description, 
+    is_active: true,
+  }));
+  await db.insert(skillsTable).values(skillValues).onConflictDoNothing();
 
-  // 4. Employees (skip if already enough)
-  const [existingEmpCount] = await db.select({ total: count() }).from(employeesTable);
-  if (Number(existingEmpCount.total) < 50) {
-    console.log("  👷 Employees...");
-    for (const e of EMPLOYEES) {
-      const [existing] = await db.select({ id: employeesTable.id })
-        .from(employeesTable).where(eq(employeesTable.employee_code, e.employee_code)).limit(1);
-      if (!existing) {
-        await db.insert(employeesTable).values({
-          employee_code: e.employee_code, full_name: e.full_name,
-          department_id: e.department_id, job_title: e.job_title,
-          joined_date: e.joined_date,
-          current_class: e.current_class, is_active: true,
-        });
-      }
+  // 5. Employees
+  console.log("  👷 Employees...");
+  for (const e of EMPLOYEES) {
+    const [existing] = await db.select({ id: employeesTable.id })
+      .from(employeesTable).where(eq(employeesTable.employee_code, e.employee_code)).limit(1);
+    
+    if (!existing) {
+      await db.insert(employeesTable).values({
+        employee_code: e.employee_code, 
+        full_name: e.full_name,
+        factory_id: e.factory_id,
+        department_id: e.department_id, 
+        job_title: e.job_title,
+        joined_date: e.joined_date,
+        current_class: e.current_class, 
+        is_active: true,
+      });
+    } else {
+      await db.update(employeesTable)
+        .set({ 
+          factory_id: e.factory_id,
+          current_class: e.current_class 
+        })
+        .where(eq(employeesTable.id, existing.id));
     }
-  } else {
-    console.log(`  👷 Employees: ${Number(existingEmpCount.total)} already present, skipping.`);
   }
 
-  // 5. Campaigns + Evaluations + Summaries + Training
-  const [existingCampaignCount] = await db.select({ total: count() }).from(campaignsTable);
-  if (Number(existingCampaignCount.total) < 3) {
-    console.log("  📋 Campaigns, evaluations, summaries, training...");
-    await seedCampaignsAndEvaluations();
-  } else {
-    console.log(`  📋 Campaigns: ${Number(existingCampaignCount.total)} already present, skipping.`);
-  }
+  // 6. Campaigns + Evaluations + Summaries + Training
+  console.log("  📋 Campaigns, evaluations, summaries, training...");
+  await seedCampaignsAndEvaluations();
 
   // Summary
   const [empCount] = await db.select({ total: count() }).from(employeesTable);
@@ -306,7 +307,6 @@ export async function seed() {
 // ── CAMPAIGNS / EVALUATIONS / SUMMARIES / TRAINING ───────────────────────────
 
 async function seedCampaignsAndEvaluations() {
-  // Fetch all active employees and their department skills
   const employees = await db.select().from(employeesTable).where(eq(employeesTable.is_active, true));
   const skills = await db.select().from(skillsTable).where(eq(skillsTable.is_active, true));
 
@@ -316,78 +316,51 @@ async function seedCampaignsAndEvaluations() {
     deptSkills.get(s.department_id)!.push(s);
   }
 
-  // Define 3 campaigns: one completed quarterly, one completed monthly, one active
-  // Insert only if a campaign with that title does not already exist (idempotent by title)
   const campaignDefs = [
-    { title: "Q4 2024 Quarterly Assessment",  type: "Quarterly" as const, status: "Completed" as const, start_date: "2024-10-01", end_date: "2024-12-31" },
-    { title: "January 2025 Monthly Review",   type: "Monthly"   as const, status: "Completed" as const, start_date: "2025-01-01", end_date: "2025-01-31" },
-    { title: "Q1 2025 Quarterly Assessment",  type: "Quarterly" as const, status: "Active"    as const, start_date: "2025-01-01", end_date: "2025-03-31" },
+    { title: "Q4 2024 Quarterly Assessment", type: "Quarterly" as const, status: "Completed" as const, start_date: "2024-10-01", end_date: "2024-12-31" },
+    { title: "January 2025 Monthly Review", type: "Monthly" as const, status: "Completed" as const, start_date: "2025-01-01", end_date: "2025-01-31" },
+    { title: "Q1 2025 Quarterly Assessment", type: "Quarterly" as const, status: "Active" as const, start_date: "2025-01-01", end_date: "2025-03-31" },
   ];
 
   for (const c of campaignDefs) {
-    const [existing] = await db.select({ id: campaignsTable.id }).from(campaignsTable)
-      .where(eq(campaignsTable.title, c.title)).limit(1);
-    if (!existing) {
-      await db.insert(campaignsTable).values({
-        title: c.title,
-        type: c.type,
-        status: c.status,
-        start_date: c.start_date,
-        end_date: c.end_date,
-      });
-    }
+    await db.insert(campaignsTable).values(c).onConflictDoNothing();
   }
 
-  // Resolve actual DB IDs (needed after insert since we use DB-generated UUIDs)
-  // Order by start_date ascending so completedCampaigns[0] is Q4-2024, [1] is Jan-2025 (latest)
   const completedCampaigns = await db.select({ id: campaignsTable.id, title: campaignsTable.title, start_date: campaignsTable.start_date })
     .from(campaignsTable)
     .where(eq(campaignsTable.status, "Completed"));
+  
   completedCampaigns.sort((a: any, b: any) => (a.start_date ?? "").localeCompare(b.start_date ?? ""));
-  const completedCampaignIds = completedCampaigns.map((c: any) => c.id);
-  // Latest completed campaign ID is used to update employee current_class
-  const latestCompletedId = completedCampaignIds[completedCampaignIds.length - 1];
-  // Map campaign ID -> evaluation date string
-  const campaignEvalDates: Record<string, string> = {};
-  completedCampaigns.forEach((c: any, i: number) => {
-    campaignEvalDates[c.id] = i === 0 ? "2024-12-15" : "2025-01-28";
-  });
+  const latestCompletedId = completedCampaigns[completedCampaigns.length - 1]?.id;
 
-  for (const campaignId of completedCampaignIds) {
-    const evalDateStr = campaignEvalDates[campaignId] ?? "2025-01-28";
+  const allEvaluations: any[] = [];
+  const allSummaries: any[] = [];
+  const allTraining: any[] = [];
+
+  for (const campaign of completedCampaigns) {
+    const evalDate = new Date(campaign.title.includes("2024") ? "2024-12-15" : "2025-01-28");
+    
     for (const emp of employees) {
       const empSkills = deptSkills.get(emp.department_id) ?? [];
       if (empSkills.length === 0) continue;
 
-      // Check if evaluations already exist for this campaign+employee
-      const [existingEval] = await db.select({ total: count() })
-        .from(evaluationsTable)
-        .where(and(
-          eq(evaluationsTable.campaign_id, campaignId),
-          eq(evaluationsTable.employee_id, emp.id),
-        ));
-      if (Number(existingEval.total) > 0) continue;
-
-      // Generate realistic scores based on employee class
       const baseScore = emp.current_class === "A" ? 3 : emp.current_class === "B" ? 2 : 1;
       let totalWeightedScore = 0;
       let maxPossibleScore = 0;
-      const evalDate = new Date(evalDateStr);
 
       for (const skill of empSkills) {
-        // Vary score ±1 around base, clamped 0-4
         const variance = Math.floor(Math.random() * 3) - 1;
         const score = Math.max(0, Math.min(4, baseScore + variance));
         const maxScore = 4;
 
-        await db.insert(evaluationsTable).values({
-          campaign_id: campaignId,
+        allEvaluations.push({
+          campaign_id: campaign.id,
           employee_id: emp.id,
           skill_id: skill.id,
           score,
           evaluation_date: evalDate,
           notes: score >= 3 ? "Performing well" : score === 2 ? "Meets expectations" : "Needs improvement",
-        }).onConflictDoNothing();
+        });
 
         totalWeightedScore += score * skill.weight;
         maxPossibleScore += maxScore * skill.weight;
@@ -398,52 +371,57 @@ async function seedCampaignsAndEvaluations() {
       const percentage = (totalWeightedScore / maxPossibleScore) * 100;
       const empClass: "A" | "B" | "C" = percentage >= 85 ? "A" : percentage >= 60 ? "B" : "C";
 
-      // Insert/update evaluation summary
-      await db.insert(evaluationSummariesTable).values({
-        campaign_id: campaignId,
+      allSummaries.push({
+        campaign_id: campaign.id,
         employee_id: emp.id,
         total_score: String(totalWeightedScore),
         max_possible_score: String(maxPossibleScore),
         percentage: String(Math.round(percentage * 10) / 10),
         class: empClass,
         evaluated_skills_count: empSkills.length,
-      }).onConflictDoNothing();
+      });
 
-      // Update employee's current class from latest completed campaign
-      if (campaignId === latestCompletedId) {
+      if (campaign.id === latestCompletedId) {
         await db.update(employeesTable)
           .set({ current_class: empClass })
           .where(eq(employeesTable.id, emp.id));
       }
 
-      // Create training recommendations for class B and C employees
       if (empClass !== "A") {
-        const weakSkills = empSkills.filter((_: any, i: number) => {
-          // We already inserted evaluations, but for simplicity pick the first 2 skills
-          return i < 2;
-        });
+        const weakSkills = empSkills.slice(0, 2);
         for (const wskill of weakSkills) {
-          const [existingTraining] = await db.select({ total: count() })
-            .from(trainingRecommendationsTable)
-            .where(and(
-              eq(trainingRecommendationsTable.employee_id, emp.id),
-              eq(trainingRecommendationsTable.skill_id, wskill.id),
-            ));
-          if (Number(existingTraining.total) > 0) continue;
-
-          await db.insert(trainingRecommendationsTable).values({
+          allTraining.push({
             employee_id: emp.id,
             skill_id: wskill.id,
-            campaign_id: campaignId,
+            campaign_id: campaign.id,
             recommendation_type: empClass === "C" ? "Immediate" : "Short-term",
             status: "Pending",
             notes: empClass === "C"
               ? `Critical skill gap identified. Immediate training required for ${wskill.name}.`
               : `Skill improvement recommended for ${wskill.name}.`,
-          }).onConflictDoNothing();
+          });
         }
       }
     }
+  }
+
+  // Batch insert all records
+  console.log(`    Inserting ${allEvaluations.length} evaluations...`);
+  if (allEvaluations.length > 0) {
+    // Chunk evaluations to avoid hitting payload limits (Neon might have limits)
+    for (let i = 0; i < allEvaluations.length; i += 100) {
+      await db.insert(evaluationsTable).values(allEvaluations.slice(i, i + 100)).onConflictDoNothing();
+    }
+  }
+
+  console.log(`    Inserting ${allSummaries.length} summaries...`);
+  if (allSummaries.length > 0) {
+    await db.insert(evaluationSummariesTable).values(allSummaries).onConflictDoNothing();
+  }
+
+  console.log(`    Inserting ${allTraining.length} training recommendations...`);
+  if (allTraining.length > 0) {
+    await db.insert(trainingRecommendationsTable).values(allTraining).onConflictDoNothing();
   }
 }
 
