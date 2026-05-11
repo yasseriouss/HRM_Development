@@ -1,6 +1,7 @@
 const en = {
   "action_abort_term": "ABORT TERMINATION",
   "action_abort_termination": "ABORT TERMINATION",
+  "action_factory_switch": "SWITCH FACTORY NODE",
   "action_aborting": "Aborting...",
   "action_access_details": "ACCESS DETAILS",
   "action_apply_config": "Apply Config",
@@ -620,6 +621,7 @@ const en = {
   "je_val_scalable": "Scalable",
   "je_weight_title": "Structural Weight Distribution",
   "label_active_campaign": "ACTIVE CAMPAIGN",
+  "label_active_factory": "ACTIVE FACTORY NODE",
   "label_active_que": "ACTIVE QUE STREAM",
   "label_all_queues_clear": "ALL QUEUES CLEAR",
   "label_archived_log": "ARCHIVED LOG STREAM",

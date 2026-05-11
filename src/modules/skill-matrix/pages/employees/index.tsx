@@ -24,6 +24,7 @@ import { useToast } from "@shared/hooks/use-toast";
 import { useT } from "@modules/skill-matrix/i18n";
 import { exportToPDF, exportToExcel } from "@modules/skill-matrix/lib/export-utils";
 import { ImportDialog } from "@modules/skill-matrix/components/import-dialog";
+import { useFactory } from "@shared/contexts/FactoryContext";
 
 const CornerMarks = ({ color = "primary" }: { color?: string }) => (
   <>
@@ -63,6 +64,7 @@ export default function EmployeesPage() {
   const queryClient = useQueryClient();
   const isAdmin = user?.role === "super_admin";
   const t = useT();
+  const { activeFactoryId } = useFactory();
 
   const [search, setSearch] = useState("");
   const [classFilter, setClassFilter] = useState("all");
@@ -78,15 +80,22 @@ export default function EmployeesPage() {
   const [deleting, setDeleting] = useState(false);
   const [showImport, setShowImport] = useState(false);
 
-  const { data: departments } = useListDepartments({ request: { headers } });
+  const { data: departments } = useListDepartments(
+    { factory_id: activeFactoryId ?? undefined },
+    { request: { headers } },
+  );
 
   const { data, isLoading, queryKey } = useListEmployees(
     {
       search: search || undefined,
-      current_class: classFilter !== "all" ? (classFilter as ListEmployeesCurrentClass) : undefined,
+      current_class:
+        classFilter !== "all"
+          ? (classFilter as ListEmployeesCurrentClass)
+          : undefined,
       department_id: deptFilter !== "all" ? deptFilter : undefined,
       page,
       page_size: pageSize,
+      factory_id: activeFactoryId ?? undefined,
     },
     { request: { headers } },
   );

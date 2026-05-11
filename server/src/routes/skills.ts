@@ -19,7 +19,7 @@ router.get("/", requireAuth, requireRole("super_admin", "hr_coordinator", "dept_
   try {
     const role: string = res.locals.userRole ?? "";
     const userDeptId: string | null = res.locals.userDepartmentId ?? null;
-    const { department_id, criticality, is_active } = req.query as Record<string, string>;
+    const { department_id, factory_id, criticality, is_active } = req.query as Record<string, string>;
 
     const conditions = [];
 
@@ -43,7 +43,17 @@ router.get("/", requireAuth, requireRole("super_admin", "hr_coordinator", "dept_
       conditions.push(eq(skillsTable.is_active, true));
     }
 
-    const skills = await db.select().from(skillsTable)
+    const query = db.select().from(skillsTable);
+    
+    if (factory_id) {
+      const { inArray } = await import("drizzle-orm");
+      const deptSubquery = db.select({ id: departmentsTable.id })
+        .from(departmentsTable)
+        .where(eq(departmentsTable.factory_id, factory_id));
+      conditions.push(inArray(skillsTable.department_id, deptSubquery));
+    }
+
+    const skills = await query
       .where(conditions.length > 0 ? and(...conditions) : undefined)
       .orderBy(skillsTable.name);
 

@@ -1,6 +1,7 @@
 const ar = {
   "action_abort_term": "إجهاض الإنهاء",
   "action_abort_termination": "إلغاء الإنهاء",
+  "action_factory_switch": "تبديل عقدة المصنع",
   "action_aborting": "جاري الإلغاء...",
   "action_access_details": "عرض التفاصيل",
   "action_apply_config": "تطبيق الإعدادات",
@@ -620,6 +621,7 @@ const ar = {
   "je_val_scalable": "القابلية للتوسع",
   "je_weight_title": "توزيع أوزان العوامل",
   "label_active_campaign": "الحملة النشطة",
+  "label_active_factory": "عقدة المصنع النشطة",
   "label_active_que": "تدفق قائمة الانتظار النشطة",
   "label_all_queues_clear": "جميع قوائم الانتظار فارغة",
   "label_archived_log": "تدفق سجل الأرشيف",

@@ -57,7 +57,7 @@ router.get("/", requireAuth, requireRole("super_admin", "hr_coordinator", "dept_
   try {
     const role: string = res.locals.userRole ?? "";
     const userDeptId: string | null = res.locals.userDepartmentId ?? null;
-    const { department_id, current_class, is_active, search, page = "1", page_size = "20" } = req.query as Record<string, string>;
+    const { department_id, factory_id, current_class, is_active, search, page = "1", page_size = "20" } = req.query as Record<string, string>;
     const effectiveDeptId = role === "dept_head" ? (userDeptId ?? department_id) : department_id;
     const pageNum = Math.max(1, parseInt(page, 10) || 1);
     const pageSize = Math.min(100, parseInt(page_size, 10) || 20);
@@ -76,6 +76,7 @@ router.get("/", requireAuth, requireRole("super_admin", "hr_coordinator", "dept_
       conditions.push(eq(employeesTable.is_active, true));
     }
     if (search) conditions.push(ilike(employeesTable.full_name, `%${search}%`));
+    if (factory_id) conditions.push(eq(employeesTable.factory_id, factory_id));
 
     if (conditions.length > 0) query = query.where(and(...conditions));
 

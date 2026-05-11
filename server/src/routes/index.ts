@@ -13,6 +13,7 @@ import notificationsRouter from "./notifications";
 import jobEvaluationRouter from "./job-evaluation";
 import aiRouter from "./ai";
 import demoRouter from "./demo";
+import factoriesRouter from "./factories";
 
 const router: IRouter = Router();
 
@@ -30,5 +31,6 @@ router.use("/notifications", notificationsRouter);
 router.use("/job-evaluation", jobEvaluationRouter);
 router.use("/ai", aiRouter);
 router.use("/demo", demoRouter);
+router.use("/factories", factoriesRouter);
 
 export default router;

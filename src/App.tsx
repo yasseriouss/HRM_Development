@@ -5,6 +5,7 @@ import { ThemeProvider } from "next-themes";
 import { Toaster } from "@shared/components/ui/toaster";
 import { TooltipProvider } from "@shared/components/ui/tooltip";
 import { LangProvider } from "@shared/contexts/LangContext";
+import { FactoryProvider } from "@shared/contexts/FactoryContext";
 import { getAuthToken, getAuthUser } from "@shared/lib/auth";
 import { Layout } from "@shared/components/Layout";
 import { ErrorBoundary } from "@modules/skill-matrix/components/error-boundary";
@@ -146,12 +147,14 @@ export default function App() {
     <ThemeProvider attribute="class" defaultTheme="dark" themes={["dark", "light"]} disableTransitionOnChange>
       <LangProvider>
         <QueryClientProvider client={queryClient}>
-          <TooltipProvider>
-            <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-              <AppRoutes />
-            </WouterRouter>
-            <Toaster />
-          </TooltipProvider>
+          <FactoryProvider>
+            <TooltipProvider>
+              <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+                <AppRoutes />
+              </WouterRouter>
+              <Toaster />
+            </TooltipProvider>
+          </FactoryProvider>
         </QueryClientProvider>
       </LangProvider>
     </ThemeProvider>

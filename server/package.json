@@ -9,7 +9,7 @@
     "start": "node --enable-source-maps ./dist/index.mjs",
     "typecheck": "tsc -p tsconfig.check.json",
     "seed:build": "node ./seed-build.mjs",
-    "seed": "pnpm run seed:build && node ./dist/seed.mjs"
+    "seed": "pnpm run seed:build && node --env-file=.env ./dist/seed.mjs"
   },
   "dependencies": {
     "@hrm-development/api-zod": "workspace:*",

@@ -503,8 +503,25 @@ export interface ClassTrendPoint {
   total: number;
 }
 
+export type GetDashboardMetricsParams = {
+  factory_id?: string;
+};
+
+export type GetDepartmentPerformanceParams = {
+  factory_id?: string;
+};
+
+export type GetClassTrendsParams = {
+  factory_id?: string;
+};
+
+export type ListDepartmentsParams = {
+  factory_id?: string;
+};
+
 export type GetRecentActivityParams = {
   limit?: number;
+  factory_id?: string;
 };
 
 export type ListEmployeesParams = {
@@ -514,6 +531,7 @@ export type ListEmployeesParams = {
   search?: string;
   page?: number;
   page_size?: number;
+  factory_id?: string;
 };
 
 export type ListEmployeesCurrentClass =
@@ -529,6 +547,7 @@ export type ListSkillsParams = {
   department_id?: string;
   criticality?: ListSkillsCriticality;
   is_active?: boolean;
+  factory_id?: string;
 };
 
 export type ListSkillsCriticality =
@@ -544,6 +563,7 @@ export const ListSkillsCriticality = {
 export type ListCampaignsParams = {
   status?: ListCampaignsStatus;
   department_id?: string;
+  factory_id?: string;
 };
 
 export type ListCampaignsStatus =
@@ -558,18 +578,21 @@ export const ListCampaignsStatus = {
 
 export type GetCampaignMatrixParams = {
   department_id?: string;
+  factory_id?: string;
 };
 
 export type ListEvaluationsParams = {
   campaign_id?: string;
   employee_id?: string;
   skill_id?: string;
+  factory_id?: string;
 };
 
 export type ListTrainingRecommendationsParams = {
   employee_id?: string;
   status?: ListTrainingRecommendationsStatus;
   recommendation_type?: ListTrainingRecommendationsRecommendationType;
+  factory_id?: string;
 };
 
 export type ListTrainingRecommendationsStatus =

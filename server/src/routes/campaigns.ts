@@ -54,14 +54,27 @@ router.get("/", requireAuth, requireRole("super_admin", "hr_coordinator", "dept_
   try {
     const role: string = res.locals.userRole ?? "";
     const userDeptId: string | null = res.locals.userDepartmentId ?? null;
-    const { status, department_id } = req.query as Record<string, string>;
+    const { status, department_id, factory_id } = req.query as Record<string, string>;
 
     // dept_head can only see their own department's campaigns
     const effectiveDeptId = role === "dept_head" ? (userDeptId ?? department_id) : department_id;
     const conditions = [];
     const validStatus = VALID_CAMPAIGN_STATUSES.includes(status as CampaignStatus) ? (status as CampaignStatus) : null;
     if (validStatus) conditions.push(eq(campaignsTable.status, validStatus));
-    if (effectiveDeptId) conditions.push(eq(campaignsTable.department_id, effectiveDeptId));
+    if (effectiveDeptId) {
+      conditions.push(eq(campaignsTable.department_id, effectiveDeptId));
+    } else if (factory_id) {
+      // If no specific dept, but factory_id is provided, filter by departments in that factory
+      const { inArray, isNull, or } = await import("drizzle-orm");
+      const deptSubquery = db.select({ id: departmentsTable.id })
+        .from(departmentsTable)
+        .where(eq(departmentsTable.factory_id, factory_id));
+      
+      // Also include company-wide campaigns (department_id is null) 
+      // but maybe only if they are relevant to this factory? 
+      // For now, let's assume campaigns without a department are company-wide.
+      conditions.push(or(inArray(campaignsTable.department_id, deptSubquery), isNull(campaignsTable.department_id)));
+    }
 
     const campaigns = await db.select().from(campaignsTable)
       .where(conditions.length > 0 ? and(...conditions) : undefined)

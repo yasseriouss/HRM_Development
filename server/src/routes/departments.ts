@@ -29,12 +29,18 @@ router.get("/", requireAuth, requireRole("super_admin", "hr_coordinator", "dept_
     const role: string = res.locals.userRole ?? "";
     const userDeptId: string | null = res.locals.userDepartmentId ?? null;
 
+    const { factory_id } = req.query as Record<string, string>;
+    
     let departments: (typeof departmentsTable.$inferSelect)[];
     if (role === "dept_head" && userDeptId) {
       departments = await db.select().from(departmentsTable)
         .where(eq(departmentsTable.id, userDeptId));
     } else {
-      departments = await db.select().from(departmentsTable).orderBy(departmentsTable.name);
+      let query = db.select().from(departmentsTable).$dynamic();
+      if (factory_id) {
+        query = query.where(eq(departmentsTable.factory_id, factory_id));
+      }
+      departments = await query.orderBy(departmentsTable.name);
     }
 
     const result = await Promise.all(departments.map((d) => formatDepartment(d)));

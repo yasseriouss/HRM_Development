@@ -39,9 +39,13 @@ import type {
   Evaluation,
   EvaluationSummary,
   GetCampaignMatrixParams,
+  GetClassTrendsParams,
+  GetDashboardMetricsParams,
+  GetDepartmentPerformanceParams,
   GetRecentActivityParams,
   HealthStatus,
   ListCampaignsParams,
+  ListDepartmentsParams,
   ListEmployeesParams,
   ListEvaluationsParams,
   ListSkillsParams,
@@ -294,41 +298,60 @@ export function useGetMe<
 /**
  * @summary Get global dashboard KPIs
  */
-export const getGetDashboardMetricsUrl = () => {
-  return `/api/dashboard/metrics`;
+export const getGetDashboardMetricsUrl = (params?: GetDashboardMetricsParams) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `/api/dashboard/metrics?${stringifiedParams}`
+    : `/api/dashboard/metrics`;
 };
 
 export const getDashboardMetrics = async (
+  params?: GetDashboardMetricsParams,
   options?: RequestInit,
 ): Promise<DashboardMetrics> => {
-  return customFetch<DashboardMetrics>(getGetDashboardMetricsUrl(), {
+  return customFetch<DashboardMetrics>(getGetDashboardMetricsUrl(params), {
     ...options,
     method: "GET",
   });
 };
 
-export const getGetDashboardMetricsQueryKey = () => {
-  return [`/api/dashboard/metrics`] as const;
+export const getGetDashboardMetricsQueryKey = (
+  params?: GetDashboardMetricsParams,
+) => {
+  return [`/api/dashboard/metrics`, ...(params ? [params] : [])] as const;
 };
 
 export const getGetDashboardMetricsQueryOptions = <
   TData = Awaited<ReturnType<typeof getDashboardMetrics>>,
   TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getDashboardMetrics>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}) => {
+>(
+  params?: GetDashboardMetricsParams,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getDashboardMetrics>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetDashboardMetricsQueryKey();
+  const queryKey =
+    queryOptions?.queryKey ?? getGetDashboardMetricsQueryKey(params);
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof getDashboardMetrics>>
-  > = ({ signal }) => getDashboardMetrics({ signal, ...requestOptions });
+  > = ({ signal }) => getDashboardMetrics(params, { signal, ...requestOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof getDashboardMetrics>>,
@@ -349,15 +372,18 @@ export type GetDashboardMetricsQueryError = ErrorType<unknown>;
 export function useGetDashboardMetrics<
   TData = Awaited<ReturnType<typeof getDashboardMetrics>>,
   TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getDashboardMetrics>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetDashboardMetricsQueryOptions(options);
+>(
+  params?: GetDashboardMetricsParams,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getDashboardMetrics>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetDashboardMetricsQueryOptions(params, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -369,15 +395,28 @@ export function useGetDashboardMetrics<
 /**
  * @summary Class distribution per department
  */
-export const getGetDepartmentPerformanceUrl = () => {
-  return `/api/dashboard/department-performance`;
+export const getGetDepartmentPerformanceUrl = (params?: GetDepartmentPerformanceParams) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `/api/dashboard/department-performance?${stringifiedParams}`
+    : `/api/dashboard/department-performance`;
 };
 
 export const getDepartmentPerformance = async (
+  params?: GetDepartmentPerformanceParams,
   options?: RequestInit,
 ): Promise<DepartmentPerformance[]> => {
   return customFetch<DepartmentPerformance[]>(
-    getGetDepartmentPerformanceUrl(),
+    getGetDepartmentPerformanceUrl(params),
     {
       ...options,
       method: "GET",
@@ -385,29 +424,38 @@ export const getDepartmentPerformance = async (
   );
 };
 
-export const getGetDepartmentPerformanceQueryKey = () => {
-  return [`/api/dashboard/department-performance`] as const;
+export const getGetDepartmentPerformanceQueryKey = (
+  params?: GetDepartmentPerformanceParams,
+) => {
+  return [
+    `/api/dashboard/department-performance`,
+    ...(params ? [params] : []),
+  ] as const;
 };
 
 export const getGetDepartmentPerformanceQueryOptions = <
   TData = Awaited<ReturnType<typeof getDepartmentPerformance>>,
   TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getDepartmentPerformance>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}) => {
+>(
+  params?: GetDepartmentPerformanceParams,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getDepartmentPerformance>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
   const queryKey =
-    queryOptions?.queryKey ?? getGetDepartmentPerformanceQueryKey();
+    queryOptions?.queryKey ?? getGetDepartmentPerformanceQueryKey(params);
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof getDepartmentPerformance>>
-  > = ({ signal }) => getDepartmentPerformance({ signal, ...requestOptions });
+  > = ({ signal }) =>
+    getDepartmentPerformance(params, { signal, ...requestOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof getDepartmentPerformance>>,
@@ -428,15 +476,18 @@ export type GetDepartmentPerformanceQueryError = ErrorType<unknown>;
 export function useGetDepartmentPerformance<
   TData = Awaited<ReturnType<typeof getDepartmentPerformance>>,
   TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getDepartmentPerformance>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetDepartmentPerformanceQueryOptions(options);
+>(
+  params?: GetDepartmentPerformanceParams,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getDepartmentPerformance>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetDepartmentPerformanceQueryOptions(params, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -548,41 +599,57 @@ export function useGetRecentActivity<
 /**
  * @summary A/B/C class trends over campaigns
  */
-export const getGetClassTrendsUrl = () => {
-  return `/api/dashboard/class-trends`;
+export const getGetClassTrendsUrl = (params?: GetClassTrendsParams) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `/api/dashboard/class-trends?${stringifiedParams}`
+    : `/api/dashboard/class-trends`;
 };
 
 export const getClassTrends = async (
+  params?: GetClassTrendsParams,
   options?: RequestInit,
 ): Promise<ClassTrendPoint[]> => {
-  return customFetch<ClassTrendPoint[]>(getGetClassTrendsUrl(), {
+  return customFetch<ClassTrendPoint[]>(getGetClassTrendsUrl(params), {
     ...options,
     method: "GET",
   });
 };
 
-export const getGetClassTrendsQueryKey = () => {
-  return [`/api/dashboard/class-trends`] as const;
+export const getGetClassTrendsQueryKey = (params?: GetClassTrendsParams) => {
+  return [`/api/dashboard/class-trends`, ...(params ? [params] : [])] as const;
 };
 
 export const getGetClassTrendsQueryOptions = <
   TData = Awaited<ReturnType<typeof getClassTrends>>,
   TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getClassTrends>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}) => {
+>(
+  params?: GetClassTrendsParams,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getClassTrends>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetClassTrendsQueryKey();
+  const queryKey = queryOptions?.queryKey ?? getGetClassTrendsQueryKey(params);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getClassTrends>>> = ({
-    signal,
-  }) => getClassTrends({ signal, ...requestOptions });
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getClassTrends>>
+  > = ({ signal }) => getClassTrends(params, { signal, ...requestOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof getClassTrends>>,
@@ -603,15 +670,18 @@ export type GetClassTrendsQueryError = ErrorType<unknown>;
 export function useGetClassTrends<
   TData = Awaited<ReturnType<typeof getClassTrends>>,
   TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getClassTrends>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetClassTrendsQueryOptions(options);
+>(
+  params?: GetClassTrendsParams,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getClassTrends>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetClassTrendsQueryOptions(params, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -623,41 +693,58 @@ export function useGetClassTrends<
 /**
  * @summary List all departments
  */
-export const getListDepartmentsUrl = () => {
-  return `/api/departments`;
+export const getListDepartmentsUrl = (params?: ListDepartmentsParams) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `/api/departments?${stringifiedParams}`
+    : `/api/departments`;
 };
 
 export const listDepartments = async (
+  params?: ListDepartmentsParams,
   options?: RequestInit,
 ): Promise<Department[]> => {
-  return customFetch<Department[]>(getListDepartmentsUrl(), {
+  return customFetch<Department[]>(getListDepartmentsUrl(params), {
     ...options,
     method: "GET",
   });
 };
 
-export const getListDepartmentsQueryKey = () => {
-  return [`/api/departments`] as const;
+export const getListDepartmentsQueryKey = (params?: ListDepartmentsParams) => {
+  return [`/api/departments`, ...(params ? [params] : [])] as const;
 };
 
 export const getListDepartmentsQueryOptions = <
   TData = Awaited<ReturnType<typeof listDepartments>>,
   TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof listDepartments>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}) => {
+>(
+  params?: ListDepartmentsParams,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof listDepartments>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getListDepartmentsQueryKey();
+  const queryKey =
+    queryOptions?.queryKey ?? getListDepartmentsQueryKey(params);
 
   const queryFn: QueryFunction<Awaited<ReturnType<typeof listDepartments>>> = ({
     signal,
-  }) => listDepartments({ signal, ...requestOptions });
+  }) => listDepartments(params, { signal, ...requestOptions });
 
   return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
     Awaited<ReturnType<typeof listDepartments>>,
@@ -678,15 +765,18 @@ export type ListDepartmentsQueryError = ErrorType<unknown>;
 export function useListDepartments<
   TData = Awaited<ReturnType<typeof listDepartments>>,
   TError = ErrorType<unknown>,
->(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof listDepartments>>,
-    TError,
-    TData
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getListDepartmentsQueryOptions(options);
+>(
+  params?: ListDepartmentsParams,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof listDepartments>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getListDepartmentsQueryOptions(params, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;

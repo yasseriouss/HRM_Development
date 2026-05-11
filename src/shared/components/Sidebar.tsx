@@ -25,6 +25,7 @@ import {
 import { useLang } from "@shared/contexts/LangContext";
 import { getAuthUser, clearAuthToken, clearAuthUser } from "@shared/lib/auth";
 import { Button } from "./ui/button";
+import { FactorySwitcher } from "./FactorySwitcher";
 
 interface SidebarProps {
   collapsed: boolean;
@@ -84,6 +85,11 @@ export function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
             </div>
           )}
         </div>
+      </div>
+      
+      {/* Factory Switcher */}
+      <div className="mt-4">
+        <FactorySwitcher collapsed={collapsed} />
       </div>
 
       {/* Nav Content */}
