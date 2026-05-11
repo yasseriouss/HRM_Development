@@ -166,6 +166,7 @@ type EmployeeClass = "A" | "B" | "C";
 interface EmpDef {
   employee_code: string;
   full_name: string;
+  factory_id: string;
   department_id: string;
   job_title: string;
   grade_level: string;
@@ -174,69 +175,16 @@ interface EmpDef {
 }
 
 export const EMPLOYEES: EmpDef[] = [
-  // Solid Wood Factory (10)
-  { employee_code: "SWF001", full_name: "Khalid Al-Mansouri",  department_id: "dfd7d1fb-4f89-4c49-9a45-f874de588d8d", job_title: "Senior Craftsman",  grade_level: "G5", joined_date: "2019-03-10", current_class: "A" },
-  { employee_code: "SWF002", full_name: "Youssef Al-Hamdan",   department_id: "dfd7d1fb-4f89-4c49-9a45-f874de588d8d", job_title: "CNC Operator",       grade_level: "G4", joined_date: "2020-07-15", current_class: "B" },
-  { employee_code: "SWF003", full_name: "Ibrahim Al-Qurashi",  department_id: "dfd7d1fb-4f89-4c49-9a45-f874de588d8d", job_title: "Wood Joiner",        grade_level: "G3", joined_date: "2021-01-20", current_class: "B" },
-  { employee_code: "SWF004", full_name: "Samir Al-Amin",       department_id: "dfd7d1fb-4f89-4c49-9a45-f874de588d8d", job_title: "Lathe Operator",     grade_level: "G3", joined_date: "2021-06-05", current_class: "C" },
-  { employee_code: "SWF005", full_name: "Tariq Al-Zahrani",    department_id: "dfd7d1fb-4f89-4c49-9a45-f874de588d8d", job_title: "Wood Craftsman",     grade_level: "G4", joined_date: "2020-11-12", current_class: "B" },
-  { employee_code: "SWF006", full_name: "Hassan Al-Ghamdi",    department_id: "dfd7d1fb-4f89-4c49-9a45-f874de588d8d", job_title: "Junior Craftsman",   grade_level: "G2", joined_date: "2022-04-18", current_class: "C" },
-  { employee_code: "SWF007", full_name: "Faisal Al-Otaibi",    department_id: "dfd7d1fb-4f89-4c49-9a45-f874de588d8d", job_title: "CNC Programmer",     grade_level: "G5", joined_date: "2018-09-01", current_class: "A" },
-  { employee_code: "SWF008", full_name: "Ali Al-Shahrani",     department_id: "dfd7d1fb-4f89-4c49-9a45-f874de588d8d", job_title: "Machine Operator",   grade_level: "G3", joined_date: "2021-08-23", current_class: "B" },
-  { employee_code: "SWF009", full_name: "Mohammed Al-Harbi",   department_id: "dfd7d1fb-4f89-4c49-9a45-f874de588d8d", job_title: "Wood Finisher",      grade_level: "G3", joined_date: "2022-01-15", current_class: "C" },
-  { employee_code: "SWF010", full_name: "Abdullah Al-Qahtani", department_id: "dfd7d1fb-4f89-4c49-9a45-f874de588d8d", job_title: "Senior Operator",    grade_level: "G4", joined_date: "2019-12-05", current_class: "A" },
-  // Assembly (7)
-  { employee_code: "ASM001", full_name: "Omar Al-Rashidi",     department_id: "dec521d4-19b7-41b3-b9d1-9f40ef3567f8", job_title: "Assembly Supervisor", grade_level: "G6", joined_date: "2017-05-20", current_class: "A" },
-  { employee_code: "ASM002", full_name: "Nasser Al-Dossari",   department_id: "dec521d4-19b7-41b3-b9d1-9f40ef3567f8", job_title: "Assembly Technician", grade_level: "G4", joined_date: "2020-03-11", current_class: "B" },
-  { employee_code: "ASM003", full_name: "Saleh Al-Mutairi",    department_id: "dec521d4-19b7-41b3-b9d1-9f40ef3567f8", job_title: "Junior Assembler",    grade_level: "G2", joined_date: "2022-09-01", current_class: "C" },
-  { employee_code: "ASM004", full_name: "Badr Al-Anzi",        department_id: "dec521d4-19b7-41b3-b9d1-9f40ef3567f8", job_title: "Assembly Technician", grade_level: "G3", joined_date: "2021-02-14", current_class: "B" },
-  { employee_code: "ASM005", full_name: "Waleed Al-Subaie",    department_id: "dec521d4-19b7-41b3-b9d1-9f40ef3567f8", job_title: "QC Inspector",        grade_level: "G4", joined_date: "2020-06-30", current_class: "B" },
-  { employee_code: "ASM006", full_name: "Yousef Al-Harbi",     department_id: "dec521d4-19b7-41b3-b9d1-9f40ef3567f8", job_title: "Senior Assembler",    grade_level: "G5", joined_date: "2018-12-10", current_class: "A" },
-  { employee_code: "ASM007", full_name: "Majed Al-Shehri",     department_id: "dec521d4-19b7-41b3-b9d1-9f40ef3567f8", job_title: "Junior Assembler",    grade_level: "G2", joined_date: "2023-01-15", current_class: "C" },
-  // Painting (7)
-  { employee_code: "PNT001", full_name: "Rami Al-Balawi",      department_id: "32f9075f-6555-416c-9ed2-96cfb9f0134e", job_title: "Spray Painter",       grade_level: "G4", joined_date: "2020-04-20", current_class: "B" },
-  { employee_code: "PNT002", full_name: "Khaled Al-Bogami",    department_id: "32f9075f-6555-416c-9ed2-96cfb9f0134e", job_title: "Senior Painter",      grade_level: "G5", joined_date: "2018-07-08", current_class: "A" },
-  { employee_code: "PNT003", full_name: "Ahmad Al-Solami",     department_id: "32f9075f-6555-416c-9ed2-96cfb9f0134e", job_title: "UV Coating Operator", grade_level: "G3", joined_date: "2021-10-05", current_class: "B" },
-  { employee_code: "PNT004", full_name: "Sultan Al-Zahrani",   department_id: "32f9075f-6555-416c-9ed2-96cfb9f0134e", job_title: "Paint Mixer",         grade_level: "G2", joined_date: "2022-06-14", current_class: "C" },
-  { employee_code: "PNT005", full_name: "Mansour Al-Yami",     department_id: "32f9075f-6555-416c-9ed2-96cfb9f0134e", job_title: "Spray Painter",       grade_level: "G3", joined_date: "2021-03-22", current_class: "B" },
-  { employee_code: "PNT006", full_name: "Turki Al-Saidi",      department_id: "32f9075f-6555-416c-9ed2-96cfb9f0134e", job_title: "Finishing Specialist", grade_level: "G4", joined_date: "2019-08-17", current_class: "A" },
-  { employee_code: "PNT007", full_name: "Ziad Al-Barqi",       department_id: "32f9075f-6555-416c-9ed2-96cfb9f0134e", job_title: "Paint Technician",    grade_level: "G3", joined_date: "2021-11-30", current_class: "C" },
-  // Sanding (6)
-  { employee_code: "SND001", full_name: "Fahad Al-Marri",      department_id: "5cdb45fd-eb49-4de4-92cd-c1f54881e56d", job_title: "Sanding Specialist",  grade_level: "G4", joined_date: "2020-02-28", current_class: "B" },
-  { employee_code: "SND002", full_name: "Hamad Al-Kuwari",     department_id: "5cdb45fd-eb49-4de4-92cd-c1f54881e56d", job_title: "Senior Sander",       grade_level: "G5", joined_date: "2017-11-15", current_class: "A" },
-  { employee_code: "SND003", full_name: "Salem Al-Mahri",      department_id: "5cdb45fd-eb49-4de4-92cd-c1f54881e56d", job_title: "Machine Sander",      grade_level: "G3", joined_date: "2021-07-01", current_class: "B" },
-  { employee_code: "SND004", full_name: "Khalifa Al-Naimi",    department_id: "5cdb45fd-eb49-4de4-92cd-c1f54881e56d", job_title: "Junior Sander",       grade_level: "G2", joined_date: "2022-10-10", current_class: "C" },
-  { employee_code: "SND005", full_name: "Essa Al-Hajri",       department_id: "5cdb45fd-eb49-4de4-92cd-c1f54881e56d", job_title: "Sanding Technician",  grade_level: "G3", joined_date: "2021-04-25", current_class: "B" },
-  { employee_code: "SND006", full_name: "Jassim Al-Suwaidi",   department_id: "5cdb45fd-eb49-4de4-92cd-c1f54881e56d", job_title: "QC Sanding Inspector",grade_level: "G4", joined_date: "2019-06-18", current_class: "A" },
-  // Upholstery (6)
-  { employee_code: "UPH001", full_name: "Rashid Al-Kalbani",   department_id: "cc858321-464e-4f70-98a0-f6460759ddab", job_title: "Upholstery Craftsman", grade_level: "G4", joined_date: "2020-01-13", current_class: "B" },
-  { employee_code: "UPH002", full_name: "Saeed Al-Amri",       department_id: "cc858321-464e-4f70-98a0-f6460759ddab", job_title: "Senior Upholsterer",   grade_level: "G5", joined_date: "2018-04-02", current_class: "A" },
-  { employee_code: "UPH003", full_name: "Mubarak Al-Wahaibi",  department_id: "cc858321-464e-4f70-98a0-f6460759ddab", job_title: "Fabric Cutter",        grade_level: "G3", joined_date: "2021-09-14", current_class: "B" },
-  { employee_code: "UPH004", full_name: "Hilal Al-Farsi",      department_id: "cc858321-464e-4f70-98a0-f6460759ddab", job_title: "Foam Specialist",      grade_level: "G3", joined_date: "2022-03-07", current_class: "C" },
-  { employee_code: "UPH005", full_name: "Yaqoob Al-Hosni",     department_id: "cc858321-464e-4f70-98a0-f6460759ddab", job_title: "Upholstery Technician",grade_level: "G3", joined_date: "2021-06-22", current_class: "B" },
-  { employee_code: "UPH006", full_name: "Sultan Al-Badi",      department_id: "cc858321-464e-4f70-98a0-f6460759ddab", job_title: "Junior Upholsterer",   grade_level: "G2", joined_date: "2023-02-01", current_class: "C" },
-  // Engineering (4)
-  { employee_code: "ENG001", full_name: "Dr. Nabil Al-Fayez",  department_id: "777ad386-faf1-4cbc-83bc-9a83a4b2bb03", job_title: "Chief Engineer",      grade_level: "G8", joined_date: "2015-06-01", current_class: "A" },
-  { employee_code: "ENG002", full_name: "Hani Al-Joubouri",    department_id: "777ad386-faf1-4cbc-83bc-9a83a4b2bb03", job_title: "CAD Designer",        grade_level: "G5", joined_date: "2019-09-10", current_class: "A" },
-  { employee_code: "ENG003", full_name: "Riyad Al-Dakhil",     department_id: "777ad386-faf1-4cbc-83bc-9a83a4b2bb03", job_title: "Process Engineer",    grade_level: "G6", joined_date: "2018-03-14", current_class: "B" },
-  { employee_code: "ENG004", full_name: "Saud Al-Osaimi",      department_id: "777ad386-faf1-4cbc-83bc-9a83a4b2bb03", job_title: "Junior Designer",     grade_level: "G3", joined_date: "2022-07-20", current_class: "C" },
-  // Flat Surfaces (5)
-  { employee_code: "FLS001", full_name: "Mazen Al-Bishi",      department_id: "b14b9381-8372-4a8a-b603-605f57b4d0a2", job_title: "Lamination Specialist", grade_level: "G4", joined_date: "2020-05-05", current_class: "B" },
-  { employee_code: "FLS002", full_name: "Adel Al-Shamrani",    department_id: "b14b9381-8372-4a8a-b603-605f57b4d0a2", job_title: "Senior Laminator",      grade_level: "G5", joined_date: "2018-10-22", current_class: "A" },
-  { employee_code: "FLS003", full_name: "Bassam Al-Qasim",     department_id: "b14b9381-8372-4a8a-b603-605f57b4d0a2", job_title: "Press Operator",        grade_level: "G3", joined_date: "2021-12-08", current_class: "B" },
-  { employee_code: "FLS004", full_name: "Nawaf Al-Enezi",      department_id: "b14b9381-8372-4a8a-b603-605f57b4d0a2", job_title: "Junior Operator",       grade_level: "G2", joined_date: "2023-03-01", current_class: "C" },
-  { employee_code: "FLS005", full_name: "Fawaz Al-Rasheed",    department_id: "b14b9381-8372-4a8a-b603-605f57b4d0a2", job_title: "QC Inspector",          grade_level: "G4", joined_date: "2019-11-19", current_class: "A" },
-  // Industrial Wood Factory (5)
-  { employee_code: "IWF001", full_name: "Mousa Al-Ajlan",      department_id: "f6e27cd9-beff-4fad-aa09-7416ad7ab20c", job_title: "Industrial Operator",  grade_level: "G4", joined_date: "2020-08-25", current_class: "B" },
-  { employee_code: "IWF002", full_name: "Raed Al-Shammari",    department_id: "f6e27cd9-beff-4fad-aa09-7416ad7ab20c", job_title: "Senior Operator",      grade_level: "G5", joined_date: "2018-01-30", current_class: "A" },
-  { employee_code: "IWF003", full_name: "Dakheel Al-Rashidi",  department_id: "f6e27cd9-beff-4fad-aa09-7416ad7ab20c", job_title: "Machine Technician",   grade_level: "G3", joined_date: "2021-05-17", current_class: "B" },
-  { employee_code: "IWF004", full_name: "Ghazi Al-Mutairi",    department_id: "f6e27cd9-beff-4fad-aa09-7416ad7ab20c", job_title: "Junior Operator",      grade_level: "G2", joined_date: "2022-11-03", current_class: "C" },
-  { employee_code: "IWF005", full_name: "Nawwaf Al-Anzi",      department_id: "f6e27cd9-beff-4fad-aa09-7416ad7ab20c", job_title: "Edge Banding Tech",    grade_level: "G3", joined_date: "2021-09-28", current_class: "B" },
-  // Production Management (4)
-  { employee_code: "PMG001", full_name: "Wail Al-Asiri",       department_id: "5e6cb91f-4eb8-4d68-af29-bc667bb33cd6", job_title: "Production Manager",  grade_level: "G8", joined_date: "2016-02-15", current_class: "A" },
-  { employee_code: "PMG002", full_name: "Shaker Al-Qahtani",   department_id: "5e6cb91f-4eb8-4d68-af29-bc667bb33cd6", job_title: "Shift Supervisor",    grade_level: "G6", joined_date: "2018-06-20", current_class: "A" },
-  { employee_code: "PMG003", full_name: "Meshal Al-Fuhaidi",   department_id: "5e6cb91f-4eb8-4d68-af29-bc667bb33cd6", job_title: "Planning Coordinator",grade_level: "G5", joined_date: "2019-04-10", current_class: "B" },
-  { employee_code: "PMG004", full_name: "Bander Al-Khaldi",    department_id: "5e6cb91f-4eb8-4d68-af29-bc667bb33cd6", job_title: "KPI Analyst",         grade_level: "G4", joined_date: "2020-10-05", current_class: "B" },
+  // WOODWORKING FACTORY (Existing)
+  { employee_code: "SWF001", full_name: "Khalid Al-Mansouri",  factory_id: "f0a1b2c3-d4e5-4f6a-8b9c-0d1e2f3a4b5c", department_id: "dfd7d1fb-4f89-4c49-9a45-f874de588d8d", job_title: "Senior Craftsman",  grade_level: "G5", joined_date: "2019-03-10", current_class: "A" },
+  { employee_code: "SWF002", full_name: "Youssef Al-Hamdan",   factory_id: "f0a1b2c3-d4e5-4f6a-8b9c-0d1e2f3a4b5c", department_id: "dfd7d1fb-4f89-4c49-9a45-f874de588d8d", job_title: "CNC Operator",       grade_level: "G4", joined_date: "2020-07-15", current_class: "B" },
+  { employee_code: "ASM001", full_name: "Omar Al-Rashidi",     factory_id: "f0a1b2c3-d4e5-4f6a-8b9c-0d1e2f3a4b5c", department_id: "dec521d4-19b7-41b3-b9d1-9f40ef3567f8", job_title: "Assembly Supervisor", grade_level: "G6", joined_date: "2017-05-20", current_class: "A" },
+  { employee_code: "PNT001", full_name: "Rami Al-Balawi",      factory_id: "f0a1b2c3-d4e5-4f6a-8b9c-0d1e2f3a4b5c", department_id: "32f9075f-6555-416c-9ed2-96cfb9f0134e", job_title: "Spray Painter",       grade_level: "G4", joined_date: "2020-04-20", current_class: "B" },
+
+  // METAL FACTORY (New)
+  { employee_code: "MET001", full_name: "Ahmed Al-Metal",      factory_id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d", department_id: "m1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", job_title: "Lead Welder",        grade_level: "G5", joined_date: "2021-01-10", current_class: "A" },
+  { employee_code: "MET002", full_name: "Sami Al-Iron",       factory_id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d", department_id: "m1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", job_title: "Plasma Operator",    grade_level: "G4", joined_date: "2022-05-15", current_class: "B" },
+  { employee_code: "CNC-M01", full_name: "Hassan Al-Steel",    factory_id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d", department_id: "m2a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", job_title: "CNC Specialist",     grade_level: "G6", joined_date: "2020-11-20", current_class: "A" },
 ];
 
 // ── MAIN ─────────────────────────────────────────────────────────────────────
@@ -244,36 +192,52 @@ export const EMPLOYEES: EmpDef[] = [
 export async function seed() {
   console.log("🌱 Starting seed...");
 
-  // 1. Departments
-  console.log("  📁 Departments...");
-  for (const dept of DEPARTMENTS) {
-    await db.insert(departmentsTable).values({
-      id: dept.id, name: dept.name, code: dept.code, description: dept.description,
+  // 1. Factories
+  console.log("  🏭 Factories...");
+  for (const f of FACTORIES) {
+    await db.insert(factoriesTable).values({
+      id: f.id, name: f.name, code: f.code, description: f.description,
     }).onConflictDoNothing();
   }
 
-  // 2. Users (password_hash stores plaintext for this demo system)
+  // 2. Departments
+  console.log("  📁 Departments...");
+  for (const dept of DEPARTMENTS) {
+    await db.insert(departmentsTable).values({
+      id: dept.id, 
+      factory_id: dept.factory_id,
+      name: dept.name, 
+      code: dept.code, 
+      description: dept.description,
+    }).onConflictDoNothing();
+
+    // Update factory_id if record already exists
+    await db.update(departmentsTable)
+      .set({ factory_id: dept.factory_id })
+      .where(eq(departmentsTable.id, dept.id));
+  }
+
+  // 3. Users (password_hash stores plaintext for this demo system)
   console.log("  👤 Demo users...");
   for (const u of USERS_DEF) {
     await db.insert(usersTable).values({
-      id: u.id, email: u.email, password_hash: u.password,
+      id: u.id, 
+      email: u.email, 
+      password_hash: u.password,
+      factory_id: u.factory_id,
       role: u.role as "super_admin" | "hr_coordinator" | "dept_head" | "employee",
       department_id: u.department_id ?? undefined,
       production_role: (u.production_role ?? null) as "manager" | "engineer" | "supervisor" | "technician" | "helper" | null,
     }).onConflictDoNothing();
-    // Update production_role for existing rows (onConflictDoNothing skips inserts)
-    if (u.production_role) {
-      await db.update(usersTable)
-        .set({ 
-          production_role: u.production_role as "manager" | "engineer" | "supervisor" | "technician" | "helper",
-          password_hash: u.password 
-        })
-        .where(eq(usersTable.id, u.id));
-    } else {
-      await db.update(usersTable)
-        .set({ password_hash: u.password })
-        .where(eq(usersTable.id, u.id));
-    }
+    
+    // Update fields for existing rows
+    await db.update(usersTable)
+      .set({ 
+        factory_id: u.factory_id,
+        password_hash: u.password,
+        production_role: u.production_role as "manager" | "engineer" | "supervisor" | "technician" | "helper" | null
+      })
+      .where(eq(usersTable.id, u.id));
   }
 
   // 3. Skills

@@ -327,7 +327,6 @@ const ar = {
   "docs_nav_env_vars": "متغيرات البيئة",
   "docs_nav_introduction": "مقدمة",
   "docs_nav_migration": "هجرة البيانات",
-  "docs_nav_data_flow": "تدفق البيانات",
   "docs_nav_operational_flow": "التدفق التشغيلي",
   "docs_nav_roadmap": "خارطة الطريق",
   "docs_nav_quick_start": "البدء السريع",

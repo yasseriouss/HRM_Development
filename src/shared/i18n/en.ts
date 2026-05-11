@@ -327,7 +327,6 @@ const en = {
   "docs_nav_env_vars": "Environment Variables",
   "docs_nav_introduction": "Introduction",
   "docs_nav_migration": "Data Migration",
-  "docs_nav_data_flow": "Data Flow",
   "docs_nav_operational_flow": "Operational Flow",
   "docs_nav_roadmap": "Roadmap",
   "docs_nav_quick_start": "Quick Start",
