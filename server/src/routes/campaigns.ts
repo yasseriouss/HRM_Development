@@ -37,7 +37,11 @@ async function formatCampaign(c: typeof campaignsTable.$inferSelect) {
       .where(and(eq(employeesTable.department_id, c.department_id), eq(employeesTable.is_active, true)));
     totalEmployees = Number(cnt.total) || 0;
   } else {
-    const [cnt] = await db.select({ total: count() }).from(employeesTable).where(eq(employeesTable.is_active, true));
+    const conditions = [eq(employeesTable.is_active, true)];
+    if (c.factory_id) {
+      conditions.push(eq(employeesTable.factory_id, c.factory_id));
+    }
+    const [cnt] = await db.select({ total: count() }).from(employeesTable).where(and(...conditions));
     totalEmployees = Number(cnt.total) || 0;
   }
 
@@ -64,16 +68,7 @@ router.get("/", requireAuth, requireRole("super_admin", "hr_coordinator", "dept_
     if (effectiveDeptId) {
       conditions.push(eq(campaignsTable.department_id, effectiveDeptId));
     } else if (factory_id) {
-      // If no specific dept, but factory_id is provided, filter by departments in that factory
-      const { inArray, isNull, or } = await import("drizzle-orm");
-      const deptSubquery = db.select({ id: departmentsTable.id })
-        .from(departmentsTable)
-        .where(eq(departmentsTable.factory_id, factory_id));
-      
-      // Also include company-wide campaigns (department_id is null) 
-      // but maybe only if they are relevant to this factory? 
-      // For now, let's assume campaigns without a department are company-wide.
-      conditions.push(or(inArray(campaignsTable.department_id, deptSubquery), isNull(campaignsTable.department_id)));
+      conditions.push(eq(campaignsTable.factory_id, factory_id));
     }
 
     const campaigns = await db.select().from(campaignsTable)
@@ -91,13 +86,13 @@ router.get("/", requireAuth, requireRole("super_admin", "hr_coordinator", "dept_
 // POST /campaigns — only super_admin
 router.post("/", requireAuth, requireRole("super_admin"), async (req, res) => {
   try {
-    const { title, type, department_id, start_date, end_date, notes } = req.body;
+    const { title, type, department_id, factory_id, start_date, end_date, notes } = req.body;
     if (!title || !type || !start_date || !end_date) {
       res.status(400).json({ error: "Bad Request", message: "title, type, start_date, end_date are required" });
       return;
     }
     const [c] = await db.insert(campaignsTable).values({
-      title, type, department_id: department_id || null, start_date, end_date, notes,
+      title, type, department_id: department_id || null, factory_id, start_date, end_date, notes,
     }).returning();
     res.status(201).json(await formatCampaign(c));
   } catch (err) {

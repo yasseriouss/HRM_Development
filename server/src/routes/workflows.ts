@@ -130,12 +130,16 @@ router.get("/", requireAuth, async (req, res) => {
   try {
     const userId: string = res.locals.userId;
     const role: string = res.locals.userRole;
+    const { factory_id } = req.query as Record<string, string>;
 
     let workflows;
     if (role === "super_admin" || role === "hr_coordinator") {
+      const conditions = [];
+      if (factory_id) conditions.push(eq(workflowInstancesTable.factory_id, factory_id));
       workflows = await db
         .select()
         .from(workflowInstancesTable)
+        .where(conditions.length > 0 ? and(...conditions) : undefined)
         .orderBy(workflowInstancesTable.created_at);
     } else if (role === "dept_head") {
       // dept_head sees workflows they created OR are assigned to (as manager/participant)
@@ -153,17 +157,20 @@ router.get("/", requireAuth, async (req, res) => {
         ...deptHeadSteps.map((s) => s.workflow_id),
       ]);
 
+      const conditions = [
+        or(
+          eq(workflowInstancesTable.created_by, userId),
+          assignedWfIds.size > 0
+            ? inArray(workflowInstancesTable.id, [...assignedWfIds])
+            : undefined!,
+        ),
+      ];
+      if (factory_id) conditions.push(eq(workflowInstancesTable.factory_id, factory_id));
+
       workflows = await db
         .select()
         .from(workflowInstancesTable)
-        .where(
-          or(
-            eq(workflowInstancesTable.created_by, userId),
-            assignedWfIds.size > 0
-              ? inArray(workflowInstancesTable.id, [...assignedWfIds])
-              : undefined!,
-          ),
-        )
+        .where(and(...conditions))
         .orderBy(workflowInstancesTable.created_at);
     } else {
       // For employees — find workflows where they have an assignment or step
@@ -213,7 +220,7 @@ router.post("/", requireAuth, async (req, res) => {
       return;
     }
 
-    const { title, department_id, campaign_id, notes, assignments } = req.body;
+    const { title, department_id, factory_id, campaign_id, notes, assignments } = req.body;
     if (!title || !department_id) {
       res.status(400).json({
         error: "Bad Request",
@@ -227,6 +234,7 @@ router.post("/", requireAuth, async (req, res) => {
       .values({
         title,
         department_id,
+        factory_id: factory_id || null,
         campaign_id: campaign_id || null,
         notes: notes || null,
         created_by: userId,

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useGetDashboardMetrics, useGetDepartmentPerformance } from "@hrm-development/api-client-react";
+import { useFactory } from "@shared/contexts/FactoryContext";
 import { getAuthHeaders } from "@modules/skill-matrix/lib/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@shared/components/ui/card";
 import { Skeleton } from "@shared/components/ui/skeleton";
@@ -92,8 +93,16 @@ export default function Dashboard() {
   const headers = getAuthHeaders();
   const t = useT();
   const isAr = document.documentElement.dir === "rtl";
-  const { data: metrics, isLoading: isMetricsLoading } = useGetDashboardMetrics({ request: { headers } });
-  const { data: deptPerformance, isLoading: isDeptLoading } = useGetDepartmentPerformance({ request: { headers } });
+  const { activeFactoryId } = useFactory();
+  const { data: metrics, isLoading: isMetricsLoading } = useGetDashboardMetrics(
+    { factory_id: activeFactoryId ?? undefined },
+    { request: { headers } },
+  );
+  const { data: deptPerformance, isLoading: isDeptLoading } =
+    useGetDepartmentPerformance(
+      { factory_id: activeFactoryId ?? undefined },
+      { request: { headers } },
+    );
 
   const [aiInsights, setAiInsights] = useState<AIInsight[] | null>(null);
   const [isAiLoading, setIsAiLoading] = useState(false);

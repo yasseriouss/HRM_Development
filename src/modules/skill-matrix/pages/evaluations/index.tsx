@@ -12,6 +12,7 @@ import { ClipboardList, Users, TrendingUp, FileText, ExternalLink, Table, Downlo
 import { useT } from "@modules/skill-matrix/i18n";
 import { exportToPDF, exportToExcel } from "@modules/skill-matrix/lib/export-utils";
 import { motion } from "framer-motion";
+import { useFactory } from "@shared/contexts/FactoryContext";
 
 type EmployeeClass = "A" | "B" | "C" | null | undefined;
 
@@ -171,9 +172,13 @@ function SummaryTable({ campaignId }: { campaignId: string }) {
 export default function EvaluationsPage() {
   const headers = getAuthHeaders();
   const t = useT();
+  const { activeFactoryId } = useFactory();
   const [selectedCampaignId, setSelectedCampaignId] = useState<string>("all");
 
-  const { data: campaigns, isLoading: campaignsLoading } = useListCampaigns(undefined, { request: { headers } });
+  const { data: campaigns, isLoading: campaignsLoading } = useListCampaigns(
+    { factory_id: activeFactoryId ?? undefined },
+    { request: { headers } },
+  );
 
   const allCampaigns: Campaign[] = campaigns ?? [];
   const activeCampaigns = allCampaigns.filter((c) => c.status === "Active");

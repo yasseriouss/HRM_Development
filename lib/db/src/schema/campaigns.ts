@@ -10,6 +10,7 @@ export const campaignsTable = pgTable("evaluation_campaigns", {
   title: varchar("title", { length: 255 }).notNull(),
   type: campaignTypeEnum("type").notNull().default("Monthly"),
   department_id: uuid("department_id"),
+  factory_id: uuid("factory_id"),
   status: campaignStatusEnum("status").notNull().default("Draft"),
   start_date: date("start_date").notNull(),
   end_date: date("end_date").notNull(),

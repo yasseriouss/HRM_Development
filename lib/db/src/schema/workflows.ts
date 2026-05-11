@@ -9,6 +9,7 @@ export const workflowInstancesTable = pgTable("workflow_instances", {
   id: uuid("id").primaryKey().defaultRandom(),
   title: varchar("title", { length: 255 }).notNull(),
   department_id: uuid("department_id").notNull(),
+  factory_id: uuid("factory_id"),
   campaign_id: uuid("campaign_id"),
   status: workflowStatusEnum("status").notNull().default("Draft"),
   created_by: uuid("created_by").notNull(),

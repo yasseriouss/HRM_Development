@@ -23,6 +23,7 @@ import { useT } from "@modules/skill-matrix/i18n";
 import { exportToPDF, exportToExcel } from "@modules/skill-matrix/lib/export-utils";
 import { ImportDialog } from "@modules/skill-matrix/components/import-dialog";
 import { Upload } from "lucide-react";
+import { useFactory } from "@shared/contexts/FactoryContext";
 
 const CRITICALITIES = ["Low", "Medium", "High", "Critical"] as const;
 type Criticality = (typeof CRITICALITIES)[number];
@@ -84,6 +85,7 @@ export default function SkillsPage() {
   const queryClient = useQueryClient();
   const isAdmin = user?.role === "super_admin";
   const t = useT();
+  const { activeFactoryId } = useFactory();
 
   const [deptFilter, setDeptFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -95,9 +97,15 @@ export default function SkillsPage() {
   const [deleting, setDeleting] = useState(false);
   const [showImport, setShowImport] = useState(false);
 
-  const { data: departments } = useListDepartments({ request: { headers } });
+  const { data: departments } = useListDepartments(
+    { factory_id: activeFactoryId ?? undefined },
+    { request: { headers } },
+  );
   const { data: skills, isLoading, queryKey } = useListSkills(
-    { department_id: deptFilter !== "all" ? deptFilter : undefined },
+    {
+      department_id: deptFilter !== "all" ? deptFilter : undefined,
+      factory_id: activeFactoryId ?? undefined,
+    },
     { request: { headers } },
   );
 

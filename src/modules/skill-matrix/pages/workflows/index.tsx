@@ -15,6 +15,7 @@ import { Plus, Trash2, ExternalLink, ChevronRight, CheckCircle2, Clock, Circle, 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@shared/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
+import { useFactory } from "@shared/contexts/FactoryContext";
 
 const CornerMarks = ({ color = "primary" }: { color?: string }) => (
   <>
@@ -79,6 +80,7 @@ export default function WorkflowsPage() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const t = useT();
+  const { activeFactoryId } = useFactory();
   const isManager = user?.role === "super_admin" || user?.role === "dept_head" || user?.role === "hr_coordinator";
 
   const [showCreate, setShowCreate] = useState(false);
@@ -97,36 +99,40 @@ export default function WorkflowsPage() {
   const [engineers, setEngineers] = useState<EngEntry[]>([]);
 
   const { data: workflows, isLoading } = useQuery<WorkflowSummary[]>({
-    queryKey: ["workflows"],
+    queryKey: ["workflows", activeFactoryId],
     queryFn: async () => {
-      const res = await fetch("/api/workflows", { headers });
+      const url = activeFactoryId ? `/api/workflows?factory_id=${activeFactoryId}` : "/api/workflows";
+      const res = await fetch(url, { headers });
       if (!res.ok) throw new Error("Failed to load workflows");
       return res.json() as Promise<WorkflowSummary[]>;
     },
   });
 
   const { data: departments } = useQuery<Department[]>({
-    queryKey: ["departments-list"],
+    queryKey: ["departments-list", activeFactoryId],
     queryFn: async () => {
-      const res = await fetch("/api/departments", { headers });
+      const url = activeFactoryId ? `/api/departments?factory_id=${activeFactoryId}` : "/api/departments";
+      const res = await fetch(url, { headers });
       if (!res.ok) return [];
       return res.json() as Promise<Department[]>;
     },
   });
 
   const { data: campaigns } = useQuery<Campaign[]>({
-    queryKey: ["campaigns-list"],
+    queryKey: ["campaigns-list", activeFactoryId],
     queryFn: async () => {
-      const res = await fetch("/api/campaigns", { headers });
+      const url = activeFactoryId ? `/api/campaigns?factory_id=${activeFactoryId}` : "/api/campaigns";
+      const res = await fetch(url, { headers });
       if (!res.ok) return [];
       return res.json() as Promise<Campaign[]>;
     },
   });
 
   const { data: employees } = useQuery<Employee[]>({
-    queryKey: ["employees-list-wf"],
+    queryKey: ["employees-list-wf", activeFactoryId],
     queryFn: async () => {
-      const res = await fetch("/api/employees?limit=500", { headers });
+      const url = activeFactoryId ? `/api/employees?limit=500&factory_id=${activeFactoryId}` : "/api/employees?limit=500";
+      const res = await fetch(url, { headers });
       if (!res.ok) return [];
       const data = await res.json() as Employee[] | { data: Employee[] };
       return Array.isArray(data) ? data : (data.data ?? []);
@@ -193,6 +199,7 @@ export default function WorkflowsPage() {
         body: JSON.stringify({
           title: form.title,
           department_id: form.department_id,
+          factory_id: activeFactoryId ?? undefined,
           campaign_id: form.campaign_id || null,
           notes: form.notes || null,
           assignments: tree,
@@ -458,10 +465,10 @@ export default function WorkflowsPage() {
                     onValueChange={(v) =>setForm({ ...form, campaign_id: v === "_none" ? "" : v })}
                   >
                     <SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
-                      <SelectValue placeholder="â€” NULL â€”" />
+                      <SelectValue placeholder="— NULL —" />
                     </SelectTrigger>
                     <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">
-                      <SelectItem value="_none" className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">â€” NULL â€”</SelectItem>
+                      <SelectItem value="_none" className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">— NULL —</SelectItem>
                       {campaigns?.map((c) => (
                         <SelectItem key={c.id} value={c.id} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{c.title}</SelectItem>
                       ))}

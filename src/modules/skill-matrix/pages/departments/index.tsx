@@ -21,6 +21,7 @@ import { useToast } from "@shared/hooks/use-toast";
 import { useT } from "@modules/skill-matrix/i18n";
 import { exportToPDF, exportToExcel } from "@modules/skill-matrix/lib/export-utils";
 import { Badge } from "@shared/components/ui/badge";
+import { useFactory } from "@shared/contexts/FactoryContext";
 
 const CornerMarks = ({ color = "primary" }: { color?: string }) => (
   <>
@@ -46,8 +47,12 @@ export default function DepartmentsPage() {
   const queryClient = useQueryClient();
   const isAdmin = user?.role === "super_admin";
   const t = useT();
+  const { activeFactoryId } = useFactory();
 
-  const { data: departments, isLoading, queryKey } = useListDepartments({ request: { headers } });
+  const { data: departments, isLoading, queryKey } = useListDepartments(
+    { factory_id: activeFactoryId ?? undefined },
+    { request: { headers } },
+  );
 
   const [showCreate, setShowCreate] = useState(false);
   const [editTarget, setEditTarget] = useState<(typeof departments extends (infer T)[] | undefined ? T : never) | null>(null);
@@ -88,7 +93,13 @@ export default function DepartmentsPage() {
       const res = await fetch(url, {
         method: isEdit ? "PUT" : "POST",
         headers: { "Content-Type": "application/json", ...headers },
-        body: JSON.stringify({ name: form.name, code: form.code || undefined, description: form.description || undefined, manager_email: form.manager_email || undefined }),
+        body: JSON.stringify({
+          name: form.name,
+          code: form.code || undefined,
+          description: form.description || undefined,
+          manager_email: form.manager_email || undefined,
+          factory_id: activeFactoryId ?? undefined,
+        }),
       });
       if (res.ok) {
         toast({ title: isEdit ? t("departments_updated") : t("departments_created") });

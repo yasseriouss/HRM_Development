@@ -21,6 +21,7 @@ import { CalendarDays, Plus, Pencil, Trash2, Activity, Target, Search, Filter } 
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@shared/hooks/use-toast";
 import { useT } from "@modules/skill-matrix/i18n";
+import { useFactory } from "@shared/contexts/FactoryContext";
 
 const CAMPAIGN_TYPES = ["Monthly", "Quarterly", "Bi-Annually", "Custom"];
 const CAMPAIGN_STATUSES = ["Draft", "Active", "Completed", "Archived"];
@@ -75,6 +76,7 @@ export default function CampaignsPage() {
   const queryClient = useQueryClient();
   const isAdmin = user?.role === "super_admin";
   const t = useT();
+  const { activeFactoryId } = useFactory();
 
   const [showCreate, setShowCreate] = useState(false);
   const [editTarget, setEditTarget] = useState<Campaign | null>(null);
@@ -85,8 +87,14 @@ export default function CampaignsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
 
-  const { data: campaigns, isLoading, queryKey } = useListCampaigns(undefined, { request: { headers } });
-  const { data: departments } = useListDepartments({ request: { headers } });
+  const { data: campaigns, isLoading, queryKey } = useListCampaigns(
+    { factory_id: activeFactoryId ?? undefined },
+    { request: { headers } },
+  );
+  const { data: departments } = useListDepartments(
+    { factory_id: activeFactoryId ?? undefined },
+    { request: { headers } },
+  );
 
   // Client-side search + status filter
   const filteredCampaigns = useMemo(() => {
@@ -123,7 +131,15 @@ export default function CampaignsPage() {
       const url = isEdit ? `/api/campaigns/${editTarget!.id}` : `/api/campaigns`;
       const body = isEdit
         ? { title: form.title, status: form.status, end_date: form.end_date, notes: form.notes || null }
-        : { title: form.title, type: form.type, department_id: form.department_id || undefined, start_date: form.start_date, end_date: form.end_date, notes: form.notes || undefined };
+        : {
+          title: form.title,
+          type: form.type,
+          department_id: form.department_id || undefined,
+          factory_id: activeFactoryId ?? undefined,
+          start_date: form.start_date,
+          end_date: form.end_date,
+          notes: form.notes || undefined,
+        };
       const res = await fetch(url, {
         method: isEdit ? "PUT" : "POST",
         headers: { "Content-Type": "application/json", ...headers },

@@ -138,6 +138,7 @@ export default function EmployeesPage() {
           email: form.email || undefined,
           phone: form.phone || undefined,
           joined_date: form.joined_date || undefined,
+          factory_id: activeFactoryId ?? undefined,
         }),
       });
       if (res.ok) {

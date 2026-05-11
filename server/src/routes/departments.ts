@@ -54,12 +54,12 @@ router.get("/", requireAuth, requireRole("super_admin", "hr_coordinator", "dept_
 // POST /departments — super_admin only
 router.post("/", requireAuth, requireRole("super_admin"), async (req, res) => {
   try {
-    const { name, code, description, manager_email } = req.body;
+    const { name, code, description, manager_email, factory_id } = req.body;
     if (!name) {
       res.status(400).json({ error: "Bad Request", message: "name is required" });
       return;
     }
-    const [dept] = await db.insert(departmentsTable).values({ name, code, description, manager_email }).returning();
+    const [dept] = await db.insert(departmentsTable).values({ name, code, description, manager_email, factory_id }).returning();
     res.status(201).json(await formatDepartment(dept));
   } catch (err) {
     console.error("Create department error:", err);
@@ -91,9 +91,9 @@ router.get("/:id", requireAuth, requireRole("super_admin", "hr_coordinator", "de
 // PUT /departments/:id — super_admin only
 router.put("/:id", requireAuth, requireRole("super_admin"), async (req, res) => {
   try {
-    const { name, code, description, manager_email } = req.body;
+    const { name, code, description, manager_email, factory_id } = req.body;
     const [dept] = await db.update(departmentsTable)
-      .set({ name, code, description, manager_email, updated_at: new Date() })
+      .set({ name, code, description, manager_email, factory_id, updated_at: new Date() })
       .where(eq(departmentsTable.id, String(req.params.id)))
       .returning();
     if (!dept) {

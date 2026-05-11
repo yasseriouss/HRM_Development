@@ -101,13 +101,13 @@ router.get("/", requireAuth, requireRole("super_admin", "hr_coordinator", "dept_
 // POST /employees — only super_admin
 router.post("/", requireAuth, requireRole("super_admin"), async (req, res) => {
   try {
-    const { full_name, department_id, employee_code, job_title, joined_date, birth_date, email, phone, notes } = req.body;
+    const { full_name, department_id, employee_code, job_title, joined_date, birth_date, email, phone, notes, factory_id } = req.body;
     if (!full_name || !department_id) {
       res.status(400).json({ error: "Bad Request", message: "full_name and department_id are required" });
       return;
     }
     const [emp] = await db.insert(employeesTable).values({
-      full_name, department_id, employee_code, job_title, joined_date, birth_date, email, phone, notes,
+      full_name, department_id, employee_code, job_title, joined_date, birth_date, email, phone, notes, factory_id,
     }).returning();
     res.status(201).json(await withDepartment(emp));
   } catch (err) {
@@ -150,9 +150,9 @@ router.get("/:id", requireAuth, async (req, res) => {
 // PUT /employees/:id — only super_admin
 router.put("/:id", requireAuth, requireRole("super_admin"), async (req, res) => {
   try {
-    const { full_name, department_id, employee_code, job_title, joined_date, birth_date, email, phone, notes } = req.body;
+    const { full_name, department_id, employee_code, job_title, joined_date, birth_date, email, phone, notes, factory_id } = req.body;
     const [emp] = await db.update(employeesTable).set({
-      full_name, department_id, employee_code, job_title, joined_date, birth_date, email, phone, notes,
+      full_name, department_id, employee_code, job_title, joined_date, birth_date, email, phone, notes, factory_id,
       updated_at: new Date(),
     }).where(eq(employeesTable.id, String(req.params.id))).returning();
     if (!emp) {
