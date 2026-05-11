@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #0A0A0A;
+    --foreground: #efe7d2;
+    --primary: #ed6f5c; /* Atelier Coral */
+    --primary-foreground: #0A0A0A;
+    --secondary: #e9b94a; /* Atelier Mustard */
+    --secondary-foreground: #0A0A0A;
+    --muted: #2a2620; /* Atelier Ink Soft */
+    --muted-foreground: #a09e9a;
+    --accent: #efe7d2;
+    --accent-foreground: #0A0A0A;
+    --destructive: #7F1D1D;
+    --destructive-foreground: #F5F5F5;
+    --border: #5a5448; /* Atelier Ink Mute */
+    --input: #2a2620;
+    --ring: #ed6f5c;
+    
+    /* Atelier Zero Palette Extensions */
+    --az-paper: #efe7d2;
+    --az-coral: #ed6f5c;
+    --az-mustard: #e9b94a;
+    --az-ink: #0A0A0A;
+    --az-slate: #1C1C1C;
+  }
+
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased selection:bg-primary/30;
+    font-family: 'Comfortaa', cursive;
+    overflow-x: hidden;
+  }
+
+  [dir="rtl"] body {
+    font-family: 'Tajawal', sans-serif !important;
+  }
+}
+
+@layer components {
+  /* Industrial Grid Background */
+  .industrial-grid {
+    background-image: 
+      linear-gradient(rgba(239, 231, 210, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(239, 231, 210, 0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+    position: relative;
+  }
+
+  /* Hardware-accelerated Scanlines */
+  .scanline {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      rgba(18, 16, 16, 0) 50%,
+      rgba(0, 0, 0, 0.1) 50%
+    );
+    background-size: 100% 4px;
+    z-index: 100;
+    pointer-events: none;
+    opacity: 0.15;
+  }
+
+  /* Metallic/Shimmering Text Effect */
+  .text-luxury {
+    background: linear-gradient(
+      135deg,
+      var(--az-paper) 0%,
+      var(--az-coral) 45%,
+      var(--az-mustard) 50%,
+      var(--az-coral) 55%,
+      var(--az-paper) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 200%;
+    animation: shine 5s linear infinite;
+  }
+
+  /* Industrial Luxury Button */
+  .btn-industrial {
+    @apply relative overflow-hidden bg-zinc-900 border border-white/10 text-white font-black uppercase tracking-widest transition-all duration-300 px-6 py-2 text-[10px];
+    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  }
+
+  .btn-industrial::after {
+    content: "";
+    @apply absolute inset-0 bg-primary/20 opacity-0 transition-opacity duration-300;
+  }
+
+  .btn-industrial:hover {
+    @apply border-primary/50 shadow-[0_0_15px_rgba(237,111,92,0.2)];
+  }
+
+  .btn-industrial:hover::after {
+    @apply opacity-100;
+  }
+
+  /* Luxury Card */
+  .card-luxury {
+    @apply bg-zinc-900/50 border border-white/5 relative overflow-hidden backdrop-blur-md;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  }
+
+  .card-luxury::before {
+    content: "";
+    @apply absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent;
+  }
+}
+
+@keyframes shine {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-background;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-zinc-800 hover:bg-primary transition-colors;
+}
+
+/* Paper Texture overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 99;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.1  0 0 0 0 0.1  0 0 0 0 0.1  0 0 0 0.05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  mix-blend-mode: overlay;
+  opacity: 0.1;
+}

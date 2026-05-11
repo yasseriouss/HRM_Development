@@ -1,0 +1,186 @@
+<!-- ════════════════════ المقدمة ════════════════════ -->
+<section id="introduction">
+  <h1>نظام مصفوفة المهارات (HRM)</h1>
+  <p class="lead">منصة متكاملة لإدارة كفاءات القوى العاملة مصممة خصيصاً لعمليات تصنيع الأخشاب في HRM. يتتبع مهارات الموظفين، ويوجه حملات التقييم المنظمة، وينشئ توصيات التدريب تلقائياً لـ 146 موظفاً في 9 أقسام إنتاجية.</p>
+
+  <div class="grid-4">
+    <div class="card" style="text-align:center">
+      <div style="font-size:1.8rem;font-weight:800;color:var(--primary)">146</div>
+      <div style="font-size:12px;color:var(--muted)">موظف</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div style="font-size:1.8rem;font-weight:800;color:var(--blue)">9</div>
+      <div style="font-size:12px;color:var(--muted)">أقسام</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div style="font-size:1.8rem;font-weight:800;color:var(--green)">9</div>
+      <div style="font-size:12px;color:var(--muted)">جداول قاعدة بيانات</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div style="font-size:1.8rem;font-weight:800;color:var(--purple)">4</div>
+      <div style="font-size:12px;color:var(--muted)">أدوار مستخدمين</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <p><strong>تم التطوير بواسطة yasserious.com</strong> — مصنع HRM لتصنيع الأخشاب، مايو 2026. تغطي هذه الوثائق المواصفات الفنية الكاملة لمنصة مصفوفة المهارات بما في ذلك واجهة برمجة التطبيقات الخلفية، ومخطط قاعدة البيانات، ومعادلة التقييم، ودليل النشر.</p>
+  </div>
+</section>
+
+<!-- ════════════════════ البدء السريع ════════════════════ -->
+<h2 id="quick-start">البدء السريع</h2>
+<p>أسرع طريقة لاستكشاف النظام المباشر. لا يلزم التثبيت.</p>
+
+<div class="steps">
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <div class="step-title">افتح التطبيق الرئيسي</div>
+      <div class="step-desc">انتقل إلى <code>/skill-matrix/</code> في متصفحك. ستظهر شاشة تسجيل الدخول على الفور.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <div class="step-title">تسجيل الدخول</div>
+      <div class="step-desc">استخدم <code>super_admin@hrm.com</code> / <code>admin123</code> للوصول الكامل. راجع <a href="#demo-credentials">بيانات الاعتماد التجريبية</a> لجميع الحسابات.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body">
+      <div class="step-title">استكشاف لوحة القيادة</div>
+      <div class="step-desc">يتم تحميل بطاقات مؤشرات الأداء الرئيسية وأداء الأقسام والنشاط الأخير مسبقاً ببيانات تجريبية من جميع الأقسام التسعة.</div>
+    </div>
+  </div>
+</div>
+
+<h3>الواجهات المتاحة</h3>
+<div class="table-wrap">
+  <table>
+    <tr><th>المسار</th><th>الوصف</th><th>المصادقة</th></tr>
+    <tr><td><code>/skill-matrix/</code></td><td>التطبيق الرئيسي - إدارة الموظفين والتقييمات</td><td>مطلوب</td></tr>
+    <tr><td><code>/job-evaluation/dashboard</code></td><td>لوحة تحليلات تقييم الوظائف</td><td>مطلوب</td></tr>
+    <tr><td><code>/pitch-deck/</code></td><td>عرض تقديمي تنفيذي مكون من 16 شريحة</td><td>لا يوجد</td></tr>
+    <tr><td><code>/docs/</code></td><td>موقع التوثيق هذا</td><td>لا يوجد</td></tr>
+  </table>
+</div>
+
+<!-- ════════════════════ متطلبات النظام ════════════════════ -->
+<h2 id="system-requirements">متطلبات النظام</h2>
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">بيئة التشغيل</div>
+    <ul style="margin:8px 0 0 18px">
+      <li>Node.js 20+</li>
+      <li>pnpm 9+</li>
+      <li>PostgreSQL 14+</li>
+    </ul>
+  </div>
+  <div class="card">
+    <div class="card-title">دعم المتصفح</div>
+    <ul style="margin:8px 0 0 18px">
+      <li>Chrome / Edge 100+</li>
+      <li>Firefox 100+</li>
+      <li>Safari 16+</li>
+      <li>أي متصفح هاتف محمول حديث</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ════════════════════ هندسة النظام ════════════════════ -->
+<h2 id="architecture">هندسة النظام</h2>
+<p>النظام مبني كـ pnpm monorepo. جميع واجهات المستخدم مبنية كأصول ثابتة ويتم تقديمها بواسطة خادم Express مركزي على المنفذ 8080.</p>
+
+<pre dir="ltr"><span class="pre-label">monorepo</span><code>workspace/
+├── src/
+│   ├── modules/
+│   │   ├── dashboard/       # لوحة القيادة المركزية
+│   │   ├── skill-matrix/    # تطبيق مصفوفة المهارات
+│   │   ├── job-evaluation/  # تقييم الوظائف
+│   │   ├── pitch-deck/      # العرض التقديمي
+│   │   └── docs/            # هذا التوثيق
+│   │
+│   └── shared/              # المكونات والخدمات المشتركة
+│       ├── components/      # UI Library
+│       ├── contexts/        # Lang, Auth contexts
+│       └── i18n/            # ملفات الترجمة (EN/AR)</code></pre>
+
+<!-- ════════════════════ التقنيات المستخدمة ════════════════════ -->
+<h2 id="tech-stack">التقنيات المستخدمة</h2>
+<div class="table-wrap">
+  <table>
+    <tr><th>الطبقة</th><th>التقنية</th><th>الغرض</th></tr>
+    <tr><td>إطار العمل الأمامي</td><td>React 18 + TypeScript</td><td>بناء الواجهات والمنطق البرمجي</td></tr>
+    <tr><td>أداة البناء</td><td>Vite 5</td><td>بناء سريع وتحسين الأداء</td></tr>
+    <tr><td>التوجيه (Routing)</td><td>Wouter</td><td>توجيه خفيف الوزن في المتصفح</td></tr>
+    <tr><td>التنسيق (Styling)</td><td>Vanilla CSS + CSS Variables</td><td>ثيم صناعي فاخر (Atelier Zero)</td></tr>
+    <tr><td>جلب البيانات</td><td>TanStack Query v5</td><td>إدارة حالة الخادم والتخزين المؤقت</td></tr>
+    <tr><td>الرسوم البيانية</td><td>Recharts v2</td><td>مخططات بيانية تفاعلية</td></tr>
+    <tr><td>قاعدة البيانات</td><td>PostgreSQL</td><td>مخزن البيانات الرئيسي</td></tr>
+  </table>
+</div>
+
+<!-- ════════════════════ مخطط قاعدة البيانات ════════════════════ -->
+<h2 id="schema-users">قاعدة البيانات — المستخدمين (users)</h2>
+<p>المصادقة والتفويض. كل مستخدم لديه دور واحد بالضبط يتحكم في نطاق وصوله.</p>
+<div class="table-wrap">
+  <table>
+    <tr><th>العمود</th><th>النوع</th><th>الوصف</th></tr>
+    <tr><td><code>id</code></td><td>uuid PK</td><td>معرف فريد للمستخدم</td></tr>
+    <tr><td><code>email</code></td><td>varchar UNIQUE</td><td>معرف تسجيل الدخول</td></tr>
+    <tr><td><code>role</code></td><td>enum</td><td>super_admin · dept_head · hr · employee</td></tr>
+    <tr><td><code>is_active</code></td><td>boolean</td><td>المستخدمون غير النشطين لا يمكنهم الدخول</td></tr>
+  </table>
+</div>
+
+<h2 id="schema-employees">قاعدة البيانات — الموظفين (employees)</h2>
+<p>سجلات الموظفين الرئيسية. ينتمي كل موظف إلى قسم واحد وله فئة أداء (Class) يتم تحديثها بعد كل حملة تقييم.</p>
+<div class="table-wrap">
+  <table>
+    <tr><th>العمود</th><th>النوع</th><th>الوصف</th></tr>
+    <tr><td><code>id</code></td><td>uuid PK</td><td>معرف فريد للموظف</td></tr>
+    <tr><td><code>employee_code</code></td><td>varchar UNIQUE</td><td>كود الموارد البشرية (مثال: EMP-001)</td></tr>
+    <tr><td><code>full_name</code></td><td>varchar</td><td>الاسم الكامل</td></tr>
+    <tr><td><code>current_class</code></td><td>enum</td><td>A / B / C من أحدث حملة تقييم</td></tr>
+  </table>
+</div>
+
+<!-- ════════════════════ منطق التقييم ════════════════════ -->
+<h2 id="scoring">منطق تسجيل الدرجات</h2>
+<p>يتم حساب النتيجة النهائية للموظف بناءً على الدرجات الممنوحة لكل مهارة مضروبة في وزن تلك المهارة.</p>
+
+<div class="callout callout-info">
+  <p><strong>المعادلة:</strong> <code>(مجموع (الدرجة × الوزن)) / (مجموع (4 × الوزن)) × 100</code></p>
+</div>
+
+<h3>مستويات الدرجات</h3>
+<ul>
+  <li><strong>0:</strong> لا يمكنه أداء المهمة</li>
+  <li><strong>1:</strong> يتطلب إشرافاً مستمراً</li>
+  <li><strong>2:</strong> يتطلب إشرافاً أحياناً</li>
+  <li><strong>3:</strong> يعمل بشكل مستقل</li>
+  <li><strong>4:</strong> خبير / يمكنه تدريب الآخرين</li>
+</ul>
+
+<h3>تصنيف الفئات (Classes)</h3>
+<ul>
+  <li><strong>Class A:</strong> النتيجة ≥ 85%</li>
+  <li><strong>Class B:</strong> النتيجة بين 60% و 84%</li>
+  <li><strong>Class C:</strong> النتيجة أقل من 60%</li>
+</ul>
+
+<!-- ════════════════════ دليل النشر ════════════════════ -->
+<h2 id="deployment">دليل النشر</h2>
+<p>لنشير النظام في بيئة الإنتاج، اتبع الخطوات التالية:</p>
+
+<pre dir="ltr"><code># تثبيت التبعيات
+pnpm install
+
+# بناء المشروع
+pnpm run build
+
+# تشغيل خادم الإنتاج
+pnpm run start</code></pre>
+
+<p class="footer">حقوق الطبع والنشر © 2026 yasserious.com. جميع الحقوق محفوظة.</p>
