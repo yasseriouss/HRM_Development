@@ -41,8 +41,8 @@ import SpreadsheetPage from "@modules/spreadsheet/pages/spreadsheet";
 // Docs Module
 import DocsApp from "@modules/docs/App"; // Docs uses App as main entry
 
-// Pitch Deck Module
-import PitchDeckApp from "@modules/pitch-deck/App"; // Pitch deck uses App as main entry
+// Interactive Presentation Module
+import InteractivePresentationApp from "@modules/interactive-presentation/App"; // Interactive Presentation uses App as main entry
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -127,8 +127,8 @@ function AppRoutes() {
               {/* Docs */}
               <Route path="/docs/:rest*" component={() => <ProtectedRoute component={DocsApp} roles={ALL_ROLES} />} />
 
-              {/* Pitch Deck */}
-              <Route path="/pitch-deck/:rest*" component={() => <ProtectedRoute component={PitchDeckApp} roles={ALL_ROLES} />} />
+              {/* Interactive Presentation */}
+              <Route path="/interactive-presentation/:rest*" component={() => <ProtectedRoute component={InteractivePresentationApp} roles={ALL_ROLES} />} />
 
               <Route path="/my-profile" component={() => <ProtectedRoute component={MyProfilePage} roles={ALL_ROLES} />} />
 

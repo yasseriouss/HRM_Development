@@ -47,3 +47,7 @@ export function useLang() {
   if (!context) throw new Error("useLang must be used within LangProvider");
   return context;
 }
+
+export function useT() {
+  return useLang().t;
+}

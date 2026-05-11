@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useT } from "@shared/i18n";
+import { useT } from "@shared/contexts/LangContext";
 import { HrmSystemSheet } from "./HrmSystemSheet";
 import { InstructionsSheet } from "./InstructionsSheet";
 import { DepartmentsSheet } from "./DepartmentsSheet";
@@ -54,6 +54,7 @@ export default function SpreadsheetPage() {
       case 'production_management':
         return (
           <ProductionManagementSheet
+            resetKey={0}
             scores={{
               upholstery: UPHOLSTERY_SAMPLE_SCORES,
               painting: PAINTING_SAMPLE_SCORES,

@@ -6,15 +6,15 @@ import path from "path";
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
-    alias: {
-      "@/lib": path.resolve(__dirname, "./src/shared/lib"),
-      "@/components": path.resolve(__dirname, "./src/shared/components"),
-      "@/hooks": path.resolve(__dirname, "./src/shared/hooks"),
-      "@": path.resolve(__dirname, "./src"),
-      "@shared": path.resolve(__dirname, "./src/shared"),
-      "@modules": path.resolve(__dirname, "./src/modules"),
-      "@hrm-development/api-client-react": path.resolve(__dirname, "./lib/api-client-react/src/index.ts"),
-    },
+    alias: [
+      { find: "@/lib", replacement: path.resolve(__dirname, "./src/shared/lib") },
+      { find: "@/components", replacement: path.resolve(__dirname, "./src/shared/components") },
+      { find: "@/hooks", replacement: path.resolve(__dirname, "./src/shared/hooks") },
+      { find: "@hrm-development/api-client-react", replacement: path.resolve(__dirname, "./lib/api-client-react/src/index.ts") },
+      { find: "@shared", replacement: path.resolve(__dirname, "./src/shared") },
+      { find: "@modules", replacement: path.resolve(__dirname, "./src/modules") },
+      { find: "@", replacement: path.resolve(__dirname, "./src") },
+    ],
   },
   root: ".",
   server: {

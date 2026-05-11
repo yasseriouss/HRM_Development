@@ -8,7 +8,7 @@ import {
   CUTTING_EMPLOYEES, CUTTING_SKILLS,
   ScoreMap
 } from '../data/masterData';
-import { useT } from '../i18n';
+import { useT } from '@shared/contexts/LangContext';
 
 interface ProductionManagementSheetProps {
   resetKey: number;
