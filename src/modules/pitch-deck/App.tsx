@@ -17,7 +17,7 @@ import { useLocation } from "wouter";
 import { useTheme } from "next-themes";
 import { useLang } from "@shared/contexts/LangContext";
 
-import { slides } from "@/slideLoader";
+import { slides } from "./slideLoader";
 
 
 function getSlideIndex(pathname: string): number {

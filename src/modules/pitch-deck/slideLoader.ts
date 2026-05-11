@@ -1,7 +1,7 @@
 import type { ComponentType } from "react";
 
-import manifestJson from "@/data/slides-manifest.json";
-import { parseSlidesManifest, type SlideEntry } from "@/data/slidesManifestSchema";
+import manifestJson from "./data/slides-manifest.json";
+import { parseSlidesManifest, type SlideEntry } from "./data/slidesManifestSchema";
 
 export interface LoadedSlide extends SlideEntry {
   Component: ComponentType;

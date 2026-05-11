@@ -47,9 +47,12 @@
     "date-fns": "^3.6.0",
     "drizzle-orm": "catalog:",
     "embla-carousel-react": "^8.6.0",
+    "exceljs": "^4.4.0",
     "express": "^5.0.0",
     "framer-motion": "catalog:",
     "input-otp": "^1.4.2",
+    "jspdf": "^4.2.1",
+    "jspdf-autotable": "^5.0.7",
     "lucide-react": "catalog:",
     "next-themes": "^0.4.6",
     "pg": "^8.20.0",
@@ -82,4 +85,3 @@
     "vite": "catalog:"
   }
 }
-
