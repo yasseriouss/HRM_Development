@@ -1,5 +1,6 @@
 import { db } from "@hrm-development/db";
 import {
+  factoriesTable,
   departmentsTable,
   usersTable,
   employeesTable,
@@ -11,28 +12,47 @@ import {
 } from "@hrm-development/db/schema";
 import { eq, count, and } from "drizzle-orm";
 
+// ── FACTORIES ────────────────────────────────────────────────────────────────
+
+export const FACTORIES = [
+  { id: "f0a1b2c3-d4e5-4f6a-8b9c-0d1e2f3a4b5c", name: "Woodworking Factory", code: "WOOD", description: "Primary furniture manufacturing facility" },
+  { id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d", name: "Metal Factory",       code: "METL", description: "Metal fabrication and CNC machining facility" },
+];
+
 // ── DEPARTMENTS ──────────────────────────────────────────────────────────────
 
 export const DEPARTMENTS = [
-  { id: "dec521d4-19b7-41b3-b9d1-9f40ef3567f8", name: "Assembly",              code: "ASM", description: "Furniture assembly and finishing" },
-  { id: "777ad386-faf1-4cbc-83bc-9a83a4b2bb03", name: "Engineering",            code: "ENG", description: "Design, CAD and process engineering" },
-  { id: "b14b9381-8372-4a8a-b603-605f57b4d0a2", name: "Flat Surfaces",          code: "FLS", description: "Flat panel lamination and cutting" },
-  { id: "f6e27cd9-beff-4fad-aa09-7416ad7ab20c", name: "Industrial Wood Factory",code: "IWF", description: "Industrial wood processing" },
-  { id: "5cdb45fd-eb49-4de4-92cd-c1f54881e56d", name: "Natural Wood Sanding",   code: "NWS", description: "Sanding and surface preparation" },
-  { id: "32f9075f-6555-416c-9ed2-96cfb9f0134e", name: "Painting",               code: "PNT", description: "Painting, lacquering and UV coating" },
-  { id: "5e6cb91f-4eb8-4d68-af29-bc667bb33cd6", name: "Production Management",  code: "PMG", description: "Planning, scheduling and KPIs" },
-  { id: "dfd7d1fb-4f89-4c49-9a45-f874de588d8d", name: "Solid Wood Factory",     code: "SWF", description: "Solid wood machining" },
-  { id: "cc858321-464e-4f70-98a0-f6460759ddab", name: "Upholstery",             code: "UPH", description: "Fabric cutting, sewing and foam work" },
+  // WOODWORKING FACTORY
+  { id: "dec521d4-19b7-41b3-b9d1-9f40ef3567f8", factory_id: "f0a1b2c3-d4e5-4f6a-8b9c-0d1e2f3a4b5c", name: "Assembly",              code: "ASM", description: "Furniture assembly and finishing" },
+  { id: "777ad386-faf1-4cbc-83bc-9a83a4b2bb03", factory_id: "f0a1b2c3-d4e5-4f6a-8b9c-0d1e2f3a4b5c", name: "Engineering",            code: "ENG", description: "Design, CAD and process engineering" },
+  { id: "b14b9381-8372-4a8a-b603-605f57b4d0a2", factory_id: "f0a1b2c3-d4e5-4f6a-8b9c-0d1e2f3a4b5c", name: "Flat Surfaces",          code: "FLS", description: "Flat panel lamination and cutting" },
+  { id: "f6e27cd9-beff-4fad-aa09-7416ad7ab20c", factory_id: "f0a1b2c3-d4e5-4f6a-8b9c-0d1e2f3a4b5c", name: "Industrial Wood Factory",code: "IWF", description: "Industrial wood processing" },
+  { id: "5cdb45fd-eb49-4de4-92cd-c1f54881e56d", factory_id: "f0a1b2c3-d4e5-4f6a-8b9c-0d1e2f3a4b5c", name: "Natural Wood Sanding",   code: "NWS", description: "Sanding and surface preparation" },
+  { id: "32f9075f-6555-416c-9ed2-96cfb9f0134e", factory_id: "f0a1b2c3-d4e5-4f6a-8b9c-0d1e2f3a4b5c", name: "Painting",               code: "PNT", description: "Painting, lacquering and UV coating" },
+  { id: "5e6cb91f-4eb8-4d68-af29-bc667bb33cd6", factory_id: "f0a1b2c3-d4e5-4f6a-8b9c-0d1e2f3a4b5c", name: "Production Management",  code: "PMG", description: "Planning, scheduling and KPIs" },
+  { id: "dfd7d1fb-4f89-4c49-9a45-f874de588d8d", factory_id: "f0a1b2c3-d4e5-4f6a-8b9c-0d1e2f3a4b5c", name: "Solid Wood Factory",     code: "SWF", description: "Solid wood machining" },
+  { id: "cc858321-464e-4f70-98a0-f6460759ddab", factory_id: "f0a1b2c3-d4e5-4f6a-8b9c-0d1e2f3a4b5c", name: "Upholstery",             code: "UPH", description: "Fabric cutting, sewing and foam work" },
+
+  // METAL FACTORY
+  { id: "m1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", factory_id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d", name: "Metal Fabrication",      code: "MFB", description: "Cutting, bending, and welding operations" },
+  { id: "m2a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", factory_id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d", name: "CNC Machining",          code: "CNC", description: "High-precision computer numerical control machining" },
+  { id: "m3a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", factory_id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d", name: "Surface Treatment",       code: "MSF", description: "Powder coating and metal finishing" },
+  { id: "m4a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", factory_id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d", name: "Metal Quality Assurance", code: "MQA", description: "Stress testing and tolerance verification" },
 ];
 
 // ── DEMO USERS ───────────────────────────────────────────────────────────────
 
-// Passwords are stored as plaintext in this demo system (auth.ts does === comparison)
 export const USERS_DEF = [
-  { id: "02cd3916-4d5b-425c-a675-f6d6d124f87f", email: "super_admin@hrm-dev.com", role: "super_admin",    password: "admin123", department_id: null,                                    production_role: "manager"    },
-  { id: "1c2b3ac7-96cb-4cee-a9c3-2dcbdca99d7e", email: "hr@hrm-dev.com",          role: "hr_coordinator", password: "hr123",    department_id: null,                                    production_role: null         },
-  { id: "bc467dbf-6e48-4ff3-9761-f2dbf34b99cb", email: "dept_head@hrm-dev.com",   role: "dept_head",      password: "head123",  department_id: "dec521d4-19b7-41b3-b9d1-9f40ef3567f8", production_role: "supervisor" },
-  { id: "07e01a20-d2fb-40c5-8f79-9e19a86438cd", email: "employee@hrm-dev.com",    role: "employee",       password: "emp123",   department_id: "dec521d4-19b7-41b3-b9d1-9f40ef3567f8", production_role: "engineer"   },
+  // SUPER ADMINS (Access both or context based)
+  { id: "02cd3916-4d5b-425c-a675-f6d6d124f87f", email: "super_admin@hrm-dev.com", role: "super_admin",    password: "admin123", factory_id: "f0a1b2c3-d4e5-4f6a-8b9c-0d1e2f3a4b5c", department_id: null,                                    production_role: "manager"    },
+  
+  // WOODWORKING FACTORY STAFF
+  { id: "1c2b3ac7-96cb-4cee-a9c3-2dcbdca99d7e", email: "hr@hrm-dev.com",          role: "hr_coordinator", password: "hr123",    factory_id: "f0a1b2c3-d4e5-4f6a-8b9c-0d1e2f3a4b5c", department_id: null,                                    production_role: null         },
+  { id: "bc467dbf-6e48-4ff3-9761-f2dbf34b99cb", email: "dept_head@hrm-dev.com",   role: "dept_head",      password: "head123",  factory_id: "f0a1b2c3-d4e5-4f6a-8b9c-0d1e2f3a4b5c", department_id: "dec521d4-19b7-41b3-b9d1-9f40ef3567f8", production_role: "supervisor" },
+  
+  // METAL FACTORY STAFF
+  { id: "m-hr-1234-5678-90ab-cdef12345678",    email: "hr_metal@hrm-dev.com",    role: "hr_coordinator", password: "hr123",    factory_id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d", department_id: null,                                    production_role: null         },
+  { id: "m-head-1234-5678-90ab-cdef12345678",  email: "head_metal@hrm-dev.com",  role: "dept_head",      password: "head123",  factory_id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d", department_id: "m1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", production_role: "supervisor" },
 ] as const;
 
 // ── SKILLS ───────────────────────────────────────────────────────────────────
@@ -122,6 +142,21 @@ export const SKILLS: Array<{ code: string; name: string; department_id: string; 
   { code: "UPH-S06", name: "Material Estimation",    department_id: "cc858321-464e-4f70-98a0-f6460759ddab", category: "Operations", weight: 2, criticality: "Medium" },
   { code: "UPH-009", name: "Pattern Cutting & Layout",   department_id: "cc858321-464e-4f70-98a0-f6460759ddab", category: "Fabric Work",     weight: 3, criticality: "Medium" },
   { code: "UPH-010", name: "Cushion Density Assessment", department_id: "cc858321-464e-4f70-98a0-f6460759ddab", category: "Material Quality", weight: 3, criticality: "Medium" },
+
+  // METAL FABRICATION (MFB)
+  { code: "MFB-S01", name: "TIG Welding",             department_id: "m1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", category: "Technical", weight: 4, criticality: "Critical" },
+  { code: "MFB-S02", name: "Plasma Cutting",          department_id: "m1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", category: "Technical", weight: 4, criticality: "High" },
+  { code: "MFB-S03", name: "Hydraulic Bending",       department_id: "m1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", category: "Technical", weight: 3, criticality: "High" },
+  { code: "MFB-S04", name: "Structural Integrity",    department_id: "m1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", category: "Quality",   weight: 3, criticality: "Critical" },
+
+  // CNC MACHINING (CNC)
+  { code: "CNC-S01", name: "G-Code Programming",      department_id: "m2a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", category: "Technical", weight: 4, criticality: "Critical" },
+  { code: "CNC-S02", name: "Precision Measurement",   department_id: "m2a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", category: "Technical", weight: 4, criticality: "High" },
+  { code: "CNC-S03", name: "Tooling Selection",       department_id: "m2a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", category: "Knowledge", weight: 3, criticality: "High" },
+
+  // SURFACE TREATMENT (MSF)
+  { code: "MSF-S01", name: "Powder Coating",          department_id: "m3a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", category: "Technical", weight: 4, criticality: "Critical" },
+  { code: "MSF-S02", name: "Chemical Pre-treatment",  department_id: "m3a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c", category: "Technical", weight: 3, criticality: "High" },
 ];
 
 // ── EMPLOYEES ────────────────────────────────────────────────────────────────
@@ -344,13 +379,13 @@ async function seedCampaignsAndEvaluations() {
   const completedCampaigns = await db.select({ id: campaignsTable.id, title: campaignsTable.title, start_date: campaignsTable.start_date })
     .from(campaignsTable)
     .where(eq(campaignsTable.status, "Completed"));
-  completedCampaigns.sort((a, b) => (a.start_date ?? "").localeCompare(b.start_date ?? ""));
-  const completedCampaignIds = completedCampaigns.map((c) => c.id);
+  completedCampaigns.sort((a: any, b: any) => (a.start_date ?? "").localeCompare(b.start_date ?? ""));
+  const completedCampaignIds = completedCampaigns.map((c: any) => c.id);
   // Latest completed campaign ID is used to update employee current_class
   const latestCompletedId = completedCampaignIds[completedCampaignIds.length - 1];
   // Map campaign ID -> evaluation date string
   const campaignEvalDates: Record<string, string> = {};
-  completedCampaigns.forEach((c, i) => {
+  completedCampaigns.forEach((c: any, i: number) => {
     campaignEvalDates[c.id] = i === 0 ? "2024-12-15" : "2025-01-28";
   });
 
@@ -419,7 +454,7 @@ async function seedCampaignsAndEvaluations() {
 
       // Create training recommendations for class B and C employees
       if (empClass !== "A") {
-        const weakSkills = empSkills.filter((_, i) => {
+        const weakSkills = empSkills.filter((_: any, i: number) => {
           // We already inserted evaluations, but for simplicity pick the first 2 skills
           return i < 2;
         });

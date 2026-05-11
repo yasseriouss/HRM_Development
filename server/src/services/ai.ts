@@ -30,7 +30,7 @@ DATA SUMMARY:
 - Total Departments: ${departments.length}
 - Total Employees: ${employeeCount[0].count}
 - Average Skill Matrix Score: ${avgScores[0].avg?.toFixed(2) || "N/A"}
-- Departments: ${departments.map(d => d.name).join(", ")}
+- Departments: ${departments.map((d: any) => d.name).join(", ")}
 
 INSIGHT REQUIREMENTS:
 1. Tone: Professional, authoritative, "Industrial-Luxury" (precise, structural, sophisticated).

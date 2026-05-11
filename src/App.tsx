@@ -80,7 +80,7 @@ function AppRoutes() {
   const [location] = useLocation();
 
   if (location === "/login") {
-    return <DashboardLogin />;
+    return <DashboardLogin onLogin={() => window.location.href = "/"} />;
   }
 
   return (

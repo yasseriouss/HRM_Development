@@ -8,6 +8,7 @@ export const employeesTable = pgTable("employees", {
   id: uuid("id").primaryKey().defaultRandom(),
   employee_code: varchar("employee_code", { length: 20 }).unique(),
   full_name: varchar("full_name", { length: 255 }).notNull(),
+  factory_id: uuid("factory_id"),
   department_id: uuid("department_id").notNull(),
   job_title: varchar("job_title", { length: 255 }),
   joined_date: date("joined_date"),

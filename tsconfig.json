@@ -19,8 +19,12 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
+      "@/lib/*": ["src/shared/lib/*"],
+      "@/components/*": ["src/shared/components/*"],
+      "@/hooks/*": ["src/shared/hooks/*"],
       "@shared/*": ["src/shared/*"],
-      "@modules/*": ["src/modules/*"]
+      "@modules/*": ["src/modules/*"],
+      "@hrm-development/api-client-react": ["lib/api-client-react/src/index.ts"]
     }
   },
   "include": ["src"],

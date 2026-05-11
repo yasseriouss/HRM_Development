@@ -17,6 +17,7 @@ const NAV_GROUPS: NavGroup[] = [
     { id: "architecture", labelKey: "docs_nav_system_architecture" },
     { id: "tech-stack", labelKey: "docs_nav_tech_stack" },
     { id: "data-flow", labelKey: "docs_nav_data_flow" },
+    { id: "operational-flow", labelKey: "docs_nav_operational_flow" },
   ]},
   { id: "database", labelKey: "docs_group_database", items: [
     { id: "schema-users", labelKey: "docs_nav_schema_users" },
@@ -57,6 +58,7 @@ const NAV_GROUPS: NavGroup[] = [
     { id: "migration", labelKey: "docs_nav_migration" },
     { id: "deployment", labelKey: "docs_nav_deployment" },
     { id: "env-vars", labelKey: "docs_nav_env_vars" },
+    { id: "roadmap", labelKey: "docs_nav_roadmap" },
     { id: "demo-credentials", labelKey: "docs_nav_demo_credentials" },
     { id: "changelog", labelKey: "docs_nav_changelog" },
   ]},

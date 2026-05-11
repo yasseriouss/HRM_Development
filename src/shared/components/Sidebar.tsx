@@ -125,7 +125,7 @@ export function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
                 <User className="w-4 h-4 text-zinc-500" />
               </div>
               <div className="flex flex-col min-w-0">
-                <span className="text-[10px] font-black text-white truncate uppercase tracking-widest">{user.name}</span>
+                <span className="text-[10px] font-black text-white truncate uppercase tracking-widest">{user.full_name}</span>
                 <span className="text-[8px] font-mono text-zinc-600 truncate uppercase">{user.role}</span>
               </div>
             </div>

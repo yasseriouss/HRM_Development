@@ -146,25 +146,42 @@
 </div>
 
 <!-- ════════════════════ DATA FLOW ════════════════════ -->
-<h2 id="data-flow">Data Flow</h2>
-<pre><span class="pre-label">request lifecycle</span><code>Browser
-  │
-  ▼
-Express API server  (port 8080)
-  │
-  ├─ /hrm-skill-matrix/*  →  static HTML/JS build
-  ├─ /hrm-dashboard/*     →  static HTML/JS build
-  ├─ /hrm-pitch-deck/*    →  static HTML/JS build
-  ├─ /hrm-docs/*          →  static HTML
-  │
-  └─ /api/*  →  Route handlers
-                │
-                ├─ requireAuth middleware  (validates x-user-token header)
-                ├─ requireRole middleware  (checks user role)
-                │
-                └─ Drizzle ORM  →  PostgreSQL</code></pre>
+  <p>Authentication uses an in-memory token store (UUID tokens issued at login, stored in a <code>Map</code>). Each protected route requires <code>x-user-token</code> in the request header.</p>
 
-<p>Authentication uses an in-memory token store (UUID tokens issued at login, stored in a <code>Map</code>). Each protected route requires <code>x-user-token</code> in the request header.</p>
+<!-- ════════════════════ OPERATIONAL FLOW ════════════════════ -->
+<h2 id="operational-flow">Operational Flow</h2>
+<p>The "Industrial Intelligence" cycle from initialization to automated training recommendations. This flow ensures that every evaluation leads to actionable growth plans.</p>
+
+<div class="steps">
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <div class="step-title">Campaign Initialization</div>
+      <div class="step-desc">Admins define the evaluation window, target departments, and active skills.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <div class="step-title">Active Evaluation</div>
+      <div class="step-desc">Department heads and managers enter scores (0-4) for their team members using the industrial grid.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body">
+      <div class="step-title">AI Insights & Classification</div>
+      <div class="step-desc">The system automatically calculates weighted averages and assigns performance classes (A, B, or C).</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-body">
+      <div class="step-title">Training Generation</div>
+      <div class="step-desc">Identified gaps trigger automated training recommendations (Immediate, Short-term, or Long-term).</div>
+    </div>
+  </div>
+</div>
 
 <!-- ════════════════════ DB SCHEMA: USERS ════════════════════ -->
 <h2 id="schema-users">Database — users</h2>
@@ -1457,3 +1474,43 @@ pnpm --filter @workspace/api-server run seed</code></pre>
     &nbsp;·&nbsp; hrm Wood Manufacturing Factory, 2026
   </p>
 </footer>
+<!-- ════════════════════ ROADMAP ════════════════════ -->
+<h2 id="roadmap">Implementation Roadmap</h2>
+<p>Strategic delivery timeline for the HRM Unified Platform 2026.</p>
+
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">Phase 1: Foundation (Q1 2026)</div>
+    <ul style="margin:8px 0 0 18px">
+      <li>PostgreSQL Schema Optimization</li>
+      <li>Centralized Auth System</li>
+      <li>Core Registry Implementation</li>
+    </ul>
+  </div>
+  <div class="card">
+    <div class="card-title">Phase 2: Modules (Q2 2026)</div>
+    <ul style="margin:8px 0 0 18px">
+      <li>Advanced Analytics Dashboard</li>
+      <li>Spreadsheet Matrix Integration</li>
+      <li>Interactive Training Manual</li>
+    </ul>
+  </div>
+  <div class="card">
+    <div class="card-title">Phase 3: Intelligence (Q3 2026)</div>
+    <ul style="margin:8px 0 0 18px">
+      <li>AI Insights Engine</li>
+      <li>Automated Training Protocols</li>
+      <li>Hierarchical Workflow Chain</li>
+    </ul>
+  </div>
+  <div class="card">
+    <div class="card-title">Phase 4: Excellence (Q4 2026)</div>
+    <ul style="margin:8px 0 0 18px">
+      <li>Full Bilingual Parity (EN/AR)</li>
+      <li>Luxury Industrial UI Refinement</li>
+      <li>Final Security & Audit Clearance</li>
+    </ul>
+  </div>
+</div>
+
+<p class="footer">Copyright &copy; 2026 yasserious.com. All rights reserved.</p>

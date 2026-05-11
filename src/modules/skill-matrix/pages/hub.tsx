@@ -38,49 +38,49 @@ export default function Hub() {
 
   const navigationCards = [
     {
-      title: "DASHBOARD",
+      title: t("nav_dashboard"),
       icon: <LayoutDashboard className="h-12 w-12 mb-4 text-primary" />,
       path: "/dashboard",
       show: isAdminOrHR || isDeptHead,
     },
     {
-      title: "MY PROFILE",
+      title: t("nav_my_profile"),
       icon: <UserCircle className="h-12 w-12 mb-4 text-primary" />,
       path: "/my-profile",
       show: true, // Everyone has a profile
     },
     {
-      title: "CAMPAIGNS",
+      title: t("nav_campaigns"),
       icon: <Target className="h-12 w-12 mb-4 text-primary" />,
       path: "/campaigns",
       show: isAdminOrHR || isDeptHead,
     },
     {
-      title: "DEPARTMENTS",
+      title: t("nav_departments"),
       icon: <Building2 className="h-12 w-12 mb-4 text-primary" />,
       path: "/departments",
       show: isAdminOrHR || isDeptHead,
     },
     {
-      title: "EMPLOYEES",
+      title: t("nav_employees"),
       icon: <Users className="h-12 w-12 mb-4 text-primary" />,
       path: "/employees",
       show: isAdminOrHR || isDeptHead,
     },
     {
-      title: "EVALUATIONS",
+      title: t("nav_evaluations"),
       icon: <GraduationCap className="h-12 w-12 mb-4 text-primary" />,
       path: "/evaluations",
       show: isAdminOrHR || isDeptHead,
     },
     {
-      title: "WORKFLOWS",
+      title: t("nav_workflows"),
       icon: <Workflow className="h-12 w-12 mb-4 text-primary" />,
       path: "/workflows",
       show: true,
     },
     {
-      title: "SETTINGS",
+      title: t("nav_settings"),
       icon: <Settings className="h-12 w-12 mb-4 text-primary" />,
       path: "/settings",
       show: true,
