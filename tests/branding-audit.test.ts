@@ -13,7 +13,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const ROOT = path.resolve(__dirname, "..");
-const ARTIFACTS = path.join(ROOT, "artifacts");
+const SRC = path.join(ROOT, "src");
 
 // Patterns that should NOT exist in any source file
 const BANNED_PATTERNS = [
@@ -51,7 +51,7 @@ function scanDirectory(dir: string, extensions: string[]): string[] {
 }
 
 describe("Branding Audit — No Legacy References", () => {
-  const sourceFiles = scanDirectory(ARTIFACTS, [".ts", ".tsx", ".json"]);
+  const sourceFiles = scanDirectory(SRC, [".ts", ".tsx", ".json"]);
 
   it("should have found source files to scan", () => {
     expect(sourceFiles.length).toBeGreaterThan(10);

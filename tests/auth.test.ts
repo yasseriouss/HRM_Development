@@ -30,7 +30,7 @@ import {
   setAuthUser,
   clearAuthUser,
   getAuthHeaders,
-} from "../artifacts/hrm-skill-matrix/src/lib/auth";
+} from "../src/shared/lib/auth";
 
 beforeEach(() => {
   localStorageMock.clear();

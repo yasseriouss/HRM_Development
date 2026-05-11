@@ -301,6 +301,7 @@ export const listEmployeesQueryPageSizeDefault = 20;
 
 export const ListEmployeesQueryParams = zod.object({
   department_id: zod.coerce.string().optional(),
+  factory_id: zod.coerce.string().optional(),
   current_class: zod.enum(["A", "B", "C"]).optional(),
   is_active: zod.coerce.boolean().optional(),
   search: zod.coerce.string().optional(),
@@ -698,6 +699,7 @@ export const GetMyProfileResponse = zod.object({
  */
 export const ListSkillsQueryParams = zod.object({
   department_id: zod.coerce.string().optional(),
+  factory_id: zod.coerce.string().optional(),
   criticality: zod.enum(["Low", "Medium", "High", "Critical"]).optional(),
   is_active: zod.coerce.boolean().optional(),
 });
@@ -835,6 +837,7 @@ export const UpdateSkillResponse = zod.object({
 export const ListCampaignsQueryParams = zod.object({
   status: zod.enum(["Draft", "Active", "Completed", "Archived"]).optional(),
   department_id: zod.coerce.string().optional(),
+  factory_id: zod.coerce.string().optional(),
 });
 
 export const ListCampaignsHeader = zod.object({

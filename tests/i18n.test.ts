@@ -7,8 +7,8 @@
  * - All keys are properly typed
  */
 import { describe, it, expect } from "vitest";
-import en from "../artifacts/hrm-skill-matrix/src/i18n/en";
-import ar from "../artifacts/hrm-skill-matrix/src/i18n/ar";
+import en from "../src/shared/i18n/en";
+import ar from "../src/shared/i18n/ar";
 
 const EN_KEYS = Object.keys(en) as (keyof typeof en)[];
 const AR_KEYS = Object.keys(ar) as (keyof typeof ar)[];
