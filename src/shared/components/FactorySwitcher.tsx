@@ -34,11 +34,11 @@ export function FactorySwitcher({ collapsed = false }: FactorySwitcherProps) {
         "flex items-center gap-3 px-3 py-2 animate-pulse",
         collapsed ? "justify-center" : "mx-3"
       )}>
-        <div className="w-8 h-8 bg-white/5 border border-white/10" />
+        <div className="w-8 h-8 bg-muted/5 border border-muted/10 rounded-md" />
         {!collapsed && (
           <div className="flex flex-col gap-1">
-            <div className="h-2 w-24 bg-white/5" />
-            <div className="h-2 w-16 bg-white/5" />
+            <div className="h-2 w-24 bg-muted/5 rounded-full" />
+            <div className="h-2 w-16 bg-muted/5 rounded-full" />
           </div>
         )}
       </div>
@@ -50,37 +50,37 @@ export function FactorySwitcher({ collapsed = false }: FactorySwitcherProps) {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <button className={cn(
-            "w-full flex items-center gap-3 p-2 transition-all duration-300 group relative",
-            "bg-black/40 border border-white/5 hover:border-primary/30 hover:bg-primary/5",
+            "w-full flex items-center gap-3 p-2 transition-all duration-300 group relative rounded-xl",
+            "bg-surface/50 border border-muted/20 hover:border-primary/30 hover:bg-primary/5",
             collapsed ? "justify-center" : "text-left"
           )}>
             {/* Active Indicator Line */}
-            <div className="absolute inset-y-0 left-0 w-px bg-primary scale-y-0 group-hover:scale-y-100 transition-transform duration-500" />
+            <div className="absolute inset-y-2 left-0 w-1 bg-primary scale-y-0 group-hover:scale-y-100 transition-transform duration-500 rounded-full" />
             
             <div className={cn(
-              "shrink-0 w-8 h-8 flex items-center justify-center relative",
+              "shrink-0 w-8 h-8 flex items-center justify-center relative rounded-lg",
               "bg-primary/10 border border-primary/20 text-primary transition-colors group-hover:bg-primary/20"
             )}>
               <FactoryIcon className="w-4 h-4" />
-              <div className="absolute -top-1 -right-1 w-2 h-2 bg-primary animate-pulse" />
+              <div className="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full shadow-[0_0_8px_rgba(var(--primary),0.4)]" />
             </div>
 
             {!collapsed && (
               <div className="flex flex-col min-w-0 flex-1 animate-in fade-in slide-in-from-left-2 duration-500">
-                <span className="text-[8px] font-mono text-primary/60 font-black tracking-[0.2em] uppercase leading-none mb-1">
+                <span className="text-[8px] font-body-default text-muted font-bold tracking-[0.1em] uppercase leading-none mb-1">
                   {t('label_active_factory' as any)}
                 </span>
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-black text-white truncate uppercase tracking-widest">
-                    {activeFactory?.name || "SELECT NODE"}
+                  <span className="text-[10px] font-bold text-foreground truncate uppercase tracking-widest">
+                    {activeFactory?.name || "SELECT FACTORY"}
                   </span>
-                  <ChevronDown className="w-3 h-3 text-zinc-600 group-hover:text-primary transition-colors" />
+                  <ChevronDown className="w-3 h-3 text-muted group-hover:text-primary transition-colors" />
                 </div>
               </div>
             )}
 
             {collapsed && (
-              <div className="absolute left-full ml-4 px-3 py-2 bg-black border border-white/10 text-[10px] font-black tracking-widest uppercase text-white opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50">
+              <div className="absolute left-full ml-4 px-3 py-2 bg-background border border-muted/20 text-[10px] font-bold tracking-widest uppercase text-foreground opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50 rounded-md shadow-lg">
                 {activeFactory?.name || "SWITCH FACTORY"}
               </div>
             )}
@@ -88,19 +88,19 @@ export function FactorySwitcher({ collapsed = false }: FactorySwitcherProps) {
         </DropdownMenuTrigger>
 
         <DropdownMenuContent 
-          className="w-64 bg-[#0A0A0A] border-white/10 rounded-none p-0 overflow-hidden" 
+          className="w-64 bg-background border border-muted/20 rounded-xl p-0 overflow-hidden shadow-2xl" 
           align={collapsed ? "start" : "center"}
           side={collapsed ? "right" : "bottom"}
         >
-          <div className="bg-primary/5 p-3 border-b border-white/5">
+          <div className="bg-primary/5 p-4 border-b border-muted/10">
             <div className="flex items-center gap-2 mb-1">
               <Shield className="w-3 h-3 text-primary" />
-              <span className="text-[9px] font-black text-primary tracking-[0.2em] uppercase">
+              <span className="text-[9px] font-bold text-primary tracking-[0.1em] uppercase">
                 {t('action_factory_switch' as any)}
               </span>
             </div>
-            <p className="text-[8px] font-mono text-zinc-500 uppercase tracking-wider">
-              AUTHORIZED ACCESS ONLY // NODE REGISTRY
+            <p className="text-[8px] font-body-default text-muted uppercase tracking-wider">
+              Management Portal // Region Selector
             </p>
           </div>
 
@@ -110,26 +110,26 @@ export function FactorySwitcher({ collapsed = false }: FactorySwitcherProps) {
                 key={factory.id}
                 onClick={() => setActiveFactoryId(factory.id)}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 cursor-pointer rounded-none transition-all duration-200",
+                  "flex items-center gap-3 px-3 py-3 cursor-pointer rounded-lg transition-all duration-200 m-1",
                   "focus:bg-primary/10 focus:text-primary group",
-                  activeFactoryId === factory.id ? "bg-primary/5 text-primary" : "text-zinc-500"
+                  activeFactoryId === factory.id ? "bg-primary/5 text-primary" : "text-muted"
                 )}
               >
                 <div className={cn(
-                  "w-6 h-6 flex items-center justify-center border transition-colors",
+                  "w-8 h-8 flex items-center justify-center border transition-colors rounded-lg",
                   activeFactoryId === factory.id 
                     ? "border-primary/50 bg-primary/20" 
-                    : "border-white/5 bg-white/5 group-hover:border-primary/30"
+                    : "border-muted/20 bg-muted/5 group-hover:border-primary/30"
                 )}>
                   <Building2 className="w-3 h-3" />
                 </div>
                 
                 <div className="flex flex-col flex-1 min-w-0">
-                  <span className="text-[10px] font-black tracking-widest uppercase truncate">
+                  <span className="text-[10px] font-bold tracking-widest uppercase truncate text-foreground">
                     {factory.name}
                   </span>
-                  <span className="text-[8px] font-mono text-zinc-600 uppercase truncate">
-                    {factory.location || "OPERATIONAL NODE"}
+                  <span className="text-[8px] font-body-default text-muted uppercase truncate">
+                    {factory.location || "OPERATIONAL SITE"}
                   </span>
                 </div>
 
@@ -140,12 +140,12 @@ export function FactorySwitcher({ collapsed = false }: FactorySwitcherProps) {
             ))}
           </div>
 
-          <DropdownMenuSeparator className="bg-white/5" />
+          <DropdownMenuSeparator className="bg-muted/10" />
           
-          <div className="p-2 bg-black/40">
+          <div className="p-3 bg-muted/5">
             <div className="flex items-center justify-between px-2">
-              <span className="text-[7px] font-mono text-zinc-600 uppercase">Registry v2.4.0</span>
-              <span className="text-[7px] font-mono text-primary/40 uppercase">Secure Link Active</span>
+              <span className="text-[7px] font-body-default text-muted uppercase">Registry v2.4.0</span>
+              <span className="text-[7px] font-body-default text-primary/60 uppercase">Secure Link Active</span>
             </div>
           </div>
         </DropdownMenuContent>

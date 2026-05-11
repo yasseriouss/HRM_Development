@@ -109,43 +109,79 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const isDark = theme === "dark";
 
   return (
-    <div className={`min-h-screen flex bg-[#050505] text-white font-sans selection:bg-primary selection:text-primary-foreground relative overflow-hidden h-screen`}>
-      <div className="scanline" />
+    <div className={`min-h-screen flex bg-background text-foreground font-body-default relative overflow-hidden h-screen ${isAr ? 'rtl' : 'ltr'}`} dir={isAr ? 'rtl' : 'ltr'}>
       
-      <Sidebar collapsed={isSidebarCollapsed} setCollapsed={setIsSidebarCollapsed} />
+      {/* Desktop Sidebar */}
+      <div className="hidden md:block h-full">
+        <Sidebar collapsed={isSidebarCollapsed} setCollapsed={setIsSidebarCollapsed} />
+      </div>
+
+      {/* Mobile Sidebar Overlay */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <>
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 md:hidden"
+            />
+            <motion.div 
+              initial={{ x: isAr ? '100%' : '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: isAr ? '100%' : '-100%' }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed inset-y-0 z-50 md:hidden h-full"
+              style={{ [isAr ? 'right' : 'left']: 0, width: '280px' }}
+            >
+              <Sidebar collapsed={false} setCollapsed={() => setIsMobileMenuOpen(false)} />
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
       <div className="flex-1 flex flex-col min-w-0 relative h-full">
-        <header className="sticky top-0 z-50 border-b border-white/5 bg-[#0A0A0A]/80 backdrop-blur-xl px-8 py-4 flex items-center justify-between gap-10">
-          <div className="flex items-center gap-6">
+        <header className="sticky top-0 z-40 border-b border-muted/10 bg-background/90 backdrop-blur-md px-4 md:px-8 py-4 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="md:hidden h-10 w-10 border border-muted/20 bg-background/50 hover:bg-primary/10 text-muted hover:text-primary rounded-xl"
+            >
+              <Menu className="h-5 w-5" />
+            </Button>
+
             {location !== "/" && (
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => window.history.back()}
-                className="h-10 gap-2 border border-white/10 bg-white/5 hover:bg-primary/20 hover:text-primary hover:border-primary/50 transition-all rounded-none px-4 group"
+                className="h-10 gap-2 border border-muted/10 bg-background/50 hover:bg-primary/5 hover:text-primary hover:border-primary/20 transition-all rounded-xl px-4 group hidden sm:flex"
               >
-                <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
-                <span className="text-[10px] font-black tracking-widest uppercase">Return</span>
+                <ArrowLeft className={`h-4 w-4 transition-transform ${isAr ? 'rotate-180 group-hover:translate-x-1' : 'group-hover:-translate-x-1'}`} />
+                <span className="text-[10px] font-bold tracking-widest uppercase">Return</span>
               </Button>
             )}
             
             <div className="flex flex-col">
-              <h1 className={`text-xl font-headline font-black text-white tracking-tighter uppercase leading-none text-shimmer ${isAr ? 'font-tajawal' : ''}`}>
+              <h1 className={`text-xl font-headline font-bold text-foreground tracking-tight uppercase leading-none ${isAr ? 'font-tajawal' : ''}`}>
                 {SUITE_APPS.find(app => isActive(app.href))?.labelKey ? t(SUITE_APPS.find(app => isActive(app.href))!.labelKey as any) : "HRM UNIFIED"}
               </h1>
-              <span className="text-[8px] font-mono text-zinc-600 font-black tracking-[0.5em] mt-1.5 leading-none uppercase">
-                {location === "/" ? "Integrated Industrial OS" : location.split('/')[1].replace('-', ' ')}
+              <span className="text-[8px] font-body-default text-muted font-medium tracking-[0.3em] mt-1.5 leading-none uppercase">
+                {location === "/" ? "Integrated Management Suite" : location.split('/')[1].replace('-', ' ')}
               </span>
             </div>
           </div>
 
-          <div className="flex items-center gap-4 shrink-0">
+          <div className="flex items-center gap-2 md:gap-4 shrink-0">
             <div className="flex items-center gap-2">
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setTheme(isDark ? "light" : "dark")}
-                className="h-10 w-10 border border-white/5 bg-white/5 hover:bg-white/10 text-secondary/40 hover:text-primary rounded-none transition-colors"
+                className="h-10 w-10 border border-muted/10 bg-background/50 hover:bg-background/80 text-muted hover:text-primary rounded-xl transition-colors"
               >
                 {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
               </Button>
@@ -154,7 +190,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 variant="ghost"
                 size="sm"
                 onClick={() => setLang(lang === "en" ? "ar" : "en")}
-                className="h-10 px-3 border border-white/5 bg-white/5 hover:bg-white/10 text-[10px] font-headline font-black tracking-widest text-secondary/40 hover:text-white rounded-none transition-colors uppercase"
+                className="h-10 px-3 border border-muted/10 bg-muted/5 hover:bg-muted/10 text-[10px] font-headline font-bold tracking-widest text-foreground hover:text-primary rounded-xl transition-colors uppercase"
               >
                 <Globe className="h-3 w-3 me-2" />
                 {lang === "en" ? "AR" : "EN"}
@@ -163,30 +199,25 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </header>
 
-        <main className="flex-1 overflow-auto relative custom-scrollbar">
-          <div className="absolute inset-0 bg-[#050505] pointer-events-none">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,#111111_0%,#050505_100%)]" />
-            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5 mix-blend-overlay" />
-          </div>
-
+        <main className="flex-1 overflow-auto relative custom-scrollbar bg-muted/5">
           <div className={`relative z-10 h-full ${
             location.startsWith("/docs") || location.startsWith("/interactive-presentation") || location.startsWith("/spreadsheet")
               ? "w-full"
-              : "p-8 md:p-12"
+              : "p-4 md:p-8 lg:p-12"
           }`}>
             {children}
           </div>
         </main>
 
-        <footer className="border-t border-white/5 bg-black/40 py-4 px-10">
+        <footer className="border-t border-muted/10 bg-background/90 py-4 px-6 md:px-10 hidden sm:block">
           <div className="flex items-center justify-between">
-            <p className="text-[8px] font-mono text-zinc-700 tracking-widest">HRM UNIFIED // DEPLOYED: v2.4.0</p>
+            <p className="text-[8px] font-mono text-muted tracking-widest uppercase">HRM UNIFIED // DEPLOYED: v2.4.0</p>
             <div className="flex items-center gap-4">
                <div className="flex items-center gap-2">
                   <div className="w-1 h-1 bg-green-500 rounded-full animate-pulse" />
-                  <span className="text-[8px] font-mono text-zinc-700 tracking-widest uppercase">System Optimal</span>
+                  <span className="text-[8px] font-mono text-muted tracking-widest uppercase">System Optimal</span>
                </div>
-               <p className="text-[8px] font-mono text-primary/40 tracking-widest uppercase">{t("common_created_by")}</p>
+               <p className="text-[8px] font-mono text-primary/60 tracking-widest uppercase font-bold">{t("common_created_by")}</p>
             </div>
           </div>
         </footer>

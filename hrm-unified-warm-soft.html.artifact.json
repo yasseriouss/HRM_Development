@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "HRM Unified - Warm Soft Suite",
+  "entry": "hrm-unified-warm-soft.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-05-11T15:33:55.658Z",
+  "updatedAt": "2026-05-11T15:35:28.201Z",
+  "metadata": {
+    "identifier": "hrm-unified-warm-soft",
+    "artifactType": "text/html",
+    "inferred": false
+  }
+}

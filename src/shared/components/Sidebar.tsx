@@ -64,55 +64,55 @@ export function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
 
   return (
     <aside 
-      className={`relative h-full bg-[#0A0A0A] border-r border-white/5 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] flex flex-col z-40 ${
+      className={`relative h-full bg-background border-e border-muted/10 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] flex flex-col z-40 ${
         collapsed ? 'w-20' : 'w-72'
       }`}
     >
-      {/* Sidebar Glow Effect */}
-      <div className="absolute inset-y-0 right-0 w-px bg-linear-to-b from-transparent via-primary/20 to-transparent" />
+      {/* Sidebar Accent Effect */}
+      <div className="absolute inset-y-0 inset-inline-end-0 w-px bg-linear-to-b from-transparent via-primary/20 to-transparent opacity-50" />
       
       {/* Header / Logo */}
-      <div className="h-20 flex items-center px-6 border-b border-white/5 bg-black/20">
+      <div className="h-20 flex items-center px-6 border-b border-muted/5 bg-muted/5">
         <div className="flex items-center gap-4 overflow-hidden">
-          <div className="shrink-0 w-8 h-8 bg-primary/10 border border-primary/30 flex items-center justify-center relative group">
-            <Cpu className="w-4 h-4 text-primary" />
-            <div className="absolute inset-0 bg-primary/20 scale-0 group-hover:scale-100 transition-transform" />
+          <div className="shrink-0 w-10 h-10 bg-primary/5 border border-primary/10 flex items-center justify-center relative group rounded-xl">
+            <Cpu className="w-5 h-5 text-primary" />
+            <div className="absolute inset-0 bg-primary/10 scale-0 group-hover:scale-100 transition-transform rounded-xl" />
           </div>
           {!collapsed && (
-            <div className="flex flex-col whitespace-nowrap animate-in fade-in slide-in-from-left-4 duration-500">
-              <span className="text-sm font-black tracking-tighter uppercase leading-none">HRM UNIFIED</span>
-              <span className="text-[8px] font-mono text-primary/60 font-black tracking-[0.3em] mt-1 uppercase">Industrial OS</span>
+            <div className="flex flex-col whitespace-nowrap animate-in fade-in slide-in-from-inline-start-4 duration-500">
+              <span className="text-sm font-bold tracking-tight uppercase leading-none">HRM UNIFIED</span>
+              <span className="text-[8px] font-body-default text-muted font-bold tracking-[0.25em] mt-1.5 uppercase opacity-60">Management Suite</span>
             </div>
           )}
         </div>
       </div>
       
       {/* Factory Switcher */}
-      <div className="mt-4">
+      <div className="mt-6">
         <FactorySwitcher collapsed={collapsed} />
       </div>
 
       {/* Nav Content */}
-      <div className="flex-1 overflow-y-auto py-6 px-3 custom-scrollbar">
+      <div className="flex-1 overflow-y-auto py-8 px-4 custom-scrollbar">
         <div className="space-y-1">
           {NAV_ITEMS.map((item) => (
             <Link key={item.id} href={item.href}>
               <div
-                className={`flex items-center gap-4 px-4 py-3 cursor-pointer transition-all duration-300 group relative ${
+                className={`flex items-center gap-4 px-4 py-3 cursor-pointer transition-all duration-300 group relative rounded-xl ${
                   isActive(item.href)
-                    ? 'bg-primary/10 text-primary border-l-2 border-primary'
-                    : 'text-zinc-500 hover:text-white hover:bg-white/5 border-l-2 border-transparent'
+                    ? 'bg-primary/5 text-primary'
+                    : 'text-muted hover:text-foreground hover:bg-muted/5'
                 }`}
               >
                 <item.icon className={`w-5 h-5 transition-transform duration-500 ${isActive(item.href) ? 'scale-110' : 'group-hover:scale-110'}`} />
                 {!collapsed && (
-                  <span className="text-[10px] font-black tracking-[0.2em] uppercase whitespace-nowrap animate-in fade-in slide-in-from-left-2 duration-300">
+                  <span className="text-[10px] font-bold tracking-[0.15em] uppercase whitespace-nowrap animate-in fade-in slide-in-from-inline-start-2 duration-300">
                     {t(item.labelKey as any)}
                   </span>
                 )}
                 {/* Tooltip for collapsed mode */}
                 {collapsed && (
-                  <div className="absolute left-full ml-4 px-3 py-2 bg-black border border-white/10 text-[10px] font-black tracking-widest uppercase text-white opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50">
+                  <div className={`absolute ${isAr ? 'right-full mr-4' : 'left-full ml-4'} px-3 py-2 bg-background border border-muted/10 text-[10px] font-bold tracking-widest uppercase text-foreground opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50 rounded-lg shadow-xl`}>
                     {t(item.labelKey as any)}
                   </div>
                 )}
@@ -123,35 +123,35 @@ export function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
       </div>
 
       {/* Footer / User */}
-      <div className="p-4 border-t border-white/5 bg-black/20">
+      <div className="p-4 border-t border-muted/5 bg-muted/5">
         <div className="flex flex-col gap-2">
           {!collapsed && user && (
             <div className="flex items-center gap-3 px-3 py-2 mb-2 animate-in fade-in slide-in-from-bottom-2">
-              <div className="w-8 h-8 rounded-none border border-white/10 bg-white/5 flex items-center justify-center">
-                <User className="w-4 h-4 text-zinc-500" />
+              <div className="w-10 h-10 rounded-xl border border-muted/10 bg-background flex items-center justify-center soft-shadow">
+                <User className="w-5 h-5 text-muted" />
               </div>
               <div className="flex flex-col min-w-0">
-                <span className="text-[10px] font-black text-white truncate uppercase tracking-widest">{user.full_name}</span>
-                <span className="text-[8px] font-mono text-zinc-600 truncate uppercase">{user.role}</span>
+                <span className="text-[10px] font-bold text-foreground truncate uppercase tracking-[0.15em]">{user.full_name}</span>
+                <span className="text-[8px] font-body-default text-muted truncate uppercase font-bold opacity-60 mt-0.5">{user.role}</span>
               </div>
             </div>
           )}
           
           <Button
             variant="ghost"
-            className="w-full justify-start gap-4 px-4 py-3 rounded-none text-zinc-500 hover:text-rose-500 hover:bg-rose-500/5 transition-all"
+            className="w-full justify-start gap-4 px-4 py-3 rounded-xl text-muted hover:text-destructive hover:bg-destructive/5 transition-all"
             onClick={handleLogout}
           >
             <LogOut className="w-5 h-5" />
-            {!collapsed && <span className="text-[10px] font-black tracking-[0.2em] uppercase">LOGOUT</span>}
+            {!collapsed && <span className="text-[10px] font-bold tracking-[0.15em] uppercase">LOGOUT</span>}
           </Button>
 
           <Button
             variant="ghost"
-            className="w-full justify-center py-2 rounded-none text-zinc-600 hover:text-primary transition-all"
+            className="w-full justify-center py-2 rounded-xl text-muted hover:text-primary transition-all"
             onClick={() => setCollapsed(!collapsed)}
           >
-            <ChevronLeft className={`w-4 h-4 transition-transform duration-500 ${collapsed ? 'rotate-180' : ''}`} />
+            <ChevronLeft className={`w-4 h-4 transition-transform duration-500 ${collapsed ? (isAr ? '' : 'rotate-180') : (isAr ? 'rotate-180' : '')}`} />
           </Button>
         </div>
       </div>
