@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { login, setToken } from "@modules/dashboard/lib/api";
+import { login, setToken, setUser } from "@modules/dashboard/lib/api";
 import { useLang } from "@shared/contexts/LangContext";
 import { useTheme } from "next-themes";
 import { Sun, Moon, Globe, Shield, Cpu, Activity, Lock } from "lucide-react";
@@ -36,6 +36,7 @@ export default function Login({ onLogin }: LoginProps) {
     try {
       const res = await login(email, password);
       setToken(res.token as string);
+      setUser(res.user);
       onLogin();
     } catch (err) {
       setError(err instanceof Error ? err.message : t('dash_login_failed'));

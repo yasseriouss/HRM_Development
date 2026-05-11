@@ -1,15 +1,20 @@
 const API_BASE = "/api";
 
 export function getToken(): string | null {
-  return localStorage.getItem("auth_token");
+  return localStorage.getItem("hrm_user_token");
 }
 
 export function setToken(token: string): void {
-  localStorage.setItem("auth_token", token);
+  localStorage.setItem("hrm_user_token", token);
+}
+
+export function setUser(user: any): void {
+  localStorage.setItem("hrm_user", JSON.stringify(user));
 }
 
 export function clearToken(): void {
-  localStorage.removeItem("auth_token");
+  localStorage.removeItem("hrm_user_token");
+  localStorage.removeItem("hrm_user");
 }
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
