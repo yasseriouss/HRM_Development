@@ -1,4 +1,4 @@
-import app from "./app";
+const { default: app } = await import("./app");
 import { logger } from "./lib/logger";
 
 const rawPort = process.env["PORT"];

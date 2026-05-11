@@ -1,7 +1,7 @@
 {
   "version": 2,
   "functions": {
-    "src/index.ts": {
+    "api/index.ts": {
       "includeFiles": "artifacts/**",
       "memory": 1024,
       "maxDuration": 30
@@ -10,31 +10,31 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/src/index.ts"
+      "destination": "/api/index.ts"
     },
     {
       "source": "/hrm-skill-matrix/(.*)",
-      "destination": "/src/index.ts"
+      "destination": "/api/index.ts"
     },
     {
       "source": "/hrm-dashboard/(.*)",
-      "destination": "/src/index.ts"
+      "destination": "/api/index.ts"
     },
     {
       "source": "/hrm-docs/(.*)",
-      "destination": "/src/index.ts"
+      "destination": "/api/index.ts"
     },
     {
       "source": "/hrm-pitch-deck/(.*)",
-      "destination": "/src/index.ts"
+      "destination": "/api/index.ts"
     },
     {
       "source": "/hrm-spreadsheet/(.*)",
-      "destination": "/src/index.ts"
+      "destination": "/api/index.ts"
     },
     {
       "source": "/hrm-skill-matrix-template.xlsx",
-      "destination": "/src/index.ts"
+      "destination": "/api/index.ts"
     }
   ]
 }

@@ -18,8 +18,14 @@ export default defineConfig({
   },
   root: ".",
   server: {
-    port: 8080,
+    port: 8081,
     strictPort: true,
+    proxy: {
+      "/api": {
+        target: "http://127.0.0.1:8080",
+        changeOrigin: true,
+      },
+    },
   },
   build: {
     outDir: "dist",
