@@ -30,8 +30,8 @@
       "@hrm-development/db/schema": ["lib/db/src/schema/index.ts"]
     }
   },
-  "include": ["src"],
-  "exclude": ["server"],
+  "include": ["src", "api", "index.ts", "server/src"],
+  "exclude": ["node_modules", "dist"],
   "references": [
     { "path": "./lib/db" },
     { "path": "./lib/api-client-react" },
