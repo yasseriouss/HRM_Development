@@ -78,15 +78,29 @@ export async function registerFrontend(app: Express) {
     logger.info("Configuring static file serving for production...");
     
     for (const artifact of artifacts) {
-      const distDir = path.resolve(process.cwd(), `artifacts/${artifact.name}/dist/public`);
+      const possibleDistPaths = [
+        path.resolve(process.cwd(), `artifacts/${artifact.name}/dist/public`),
+        path.join(__dirname, `../../artifacts/${artifact.name}/dist/public`),
+        path.join(__dirname, `../../../artifacts/${artifact.name}/dist/public`),
+      ];
+
+      let distDir = possibleDistPaths[0];
+      let found = false;
+      for (const p of possibleDistPaths) {
+        if (fs.existsSync(p)) {
+          distDir = p;
+          found = true;
+          break;
+        }
+      }
       
-      if (fs.existsSync(distDir)) {
+      if (found) {
         app.use(artifact.path, express.static(distDir));
         app.get(`${artifact.path}*`, (_req, res) => {
           res.sendFile(path.join(distDir, "index.html"));
         });
       } else {
-        logger.warn({ artifact: artifact.name }, "Production build not found, skipping static serving");
+        logger.warn({ artifact: artifact.name, checked: possibleDistPaths }, "Production build not found, skipping static serving");
       }
     }
   }

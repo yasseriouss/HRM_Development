@@ -49,25 +49,47 @@ app.get("/", (_req, res) => {
 });
 
 // Serve main app from root dist
-const rootDist = path.resolve(process.cwd(), "dist");
+const possibleDistPaths = [
+  path.resolve(process.cwd(), "dist"),
+  path.resolve(process.cwd(), "server/dist"),
+  path.join(__dirname, "../dist"),
+  path.join(__dirname, "../../dist"),
+];
+
+let rootDist = possibleDistPaths[0];
+for (const p of possibleDistPaths) {
+  if (fs.existsSync(p)) {
+    rootDist = p;
+    logger.info({ path: p }, "Found root dist directory");
+    break;
+  }
+}
+
+logger.info({ 
+  cwd: process.cwd(), 
+  __dirname, 
+  rootDist, 
+  exists: fs.existsSync(rootDist) 
+}, "Static file serving configuration");
+
+// Register SPA routes
+const serveIndex = (req: any, res: any) => {
+  if (fs.existsSync(rootDist)) {
+    res.sendFile(path.join(rootDist, "index.html"));
+  } else {
+    logger.error({ rootDist, path: req.path }, "Root dist directory or index.html not found");
+    res.status(404).send(`Frontend build artifact not found. Please ensure the build completed successfully.`);
+  }
+};
+
+app.get("/skill-matrix*", serveIndex);
+app.get("/job-evaluation*", serveIndex);
+app.get("/spreadsheet*", serveIndex);
+app.get("/my-profile*", serveIndex);
+app.get("/login", serveIndex);
+
 if (fs.existsSync(rootDist)) {
   app.use(express.static(rootDist));
-  // Important: serve index.html for any /skill-matrix or other main app routes
-  app.get("/skill-matrix*", (_req, res) => {
-    res.sendFile(path.join(rootDist, "index.html"));
-  });
-  app.get("/job-evaluation*", (_req, res) => {
-    res.sendFile(path.join(rootDist, "index.html"));
-  });
-  app.get("/spreadsheet*", (_req, res) => {
-    res.sendFile(path.join(rootDist, "index.html"));
-  });
-  app.get("/my-profile*", (_req, res) => {
-    res.sendFile(path.join(rootDist, "index.html"));
-  });
-  app.get("/login", (_req, res) => {
-    res.sendFile(path.join(rootDist, "index.html"));
-  });
 }
 
 // ── Frontend Artifacts (Vite/Static) ─────────────────────────────────────────
