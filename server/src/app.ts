@@ -3,9 +3,13 @@ import cors from "cors";
 import pinoHttp from "pino-http";
 import path from "path";
 import fs from "fs";
+import { fileURLToPath } from "url";
 import router from "./routes";
 import { logger } from "./lib/logger";
 import { registerFrontend } from "./lib/vite";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app: Express = express();
 
