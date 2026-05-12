@@ -86,10 +86,14 @@ const serveIndex = (req: any, res: any) => {
   }
 };
 
-app.get("/skill-matrix*", serveIndex);
-app.get("/job-evaluation*", serveIndex);
-app.get("/spreadsheet*", serveIndex);
-app.get("/my-profile*", serveIndex);
+app.get("/skill-matrix", serveIndex);
+app.get("/skill-matrix/:any*", serveIndex);
+app.get("/job-evaluation", serveIndex);
+app.get("/job-evaluation/:any*", serveIndex);
+app.get("/spreadsheet", serveIndex);
+app.get("/spreadsheet/:any*", serveIndex);
+app.get("/my-profile", serveIndex);
+app.get("/my-profile/:any*", serveIndex);
 app.get("/login", serveIndex);
 
 if (fs.existsSync(rootDist)) {
