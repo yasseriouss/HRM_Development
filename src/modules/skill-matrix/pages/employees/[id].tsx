@@ -184,7 +184,7 @@ export default function EmployeeDetailPage() {
               {/* This would ideally be a radar chart or a detailed list */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {(profile as any).evaluations?.slice(0, 6).map((ev: any, i: number) => (
-                  <div key={i} className="flex items-center justify-between p-5 border border-primary/5 rounded-3xl bg-primary/[0.02] group hover:bg-primary/[0.04] transition-colors">
+                  <div key={i} className="flex items-center justify-between p-5 border border-primary/5 rounded-3xl bg-primary/2 group hover:bg-primary/4 transition-colors">
                     <div className="space-y-1">
                       <p className="font-headline font-bold text-sm tracking-tight text-foreground/80 group-hover:text-primary transition-colors uppercase">{ev.skill?.name}</p>
                       <p className="text-[10px] text-muted-foreground/50 font-bold uppercase tracking-widest">{ev.skill?.category || "General"}</p>

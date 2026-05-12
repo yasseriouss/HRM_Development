@@ -67,7 +67,7 @@ export function FactorySwitcher({ collapsed = false }: FactorySwitcherProps) {
 
             {!collapsed && (
               <div className="flex flex-col min-w-0 flex-1 animate-in fade-in slide-in-from-left-2 duration-500">
-                <span className="text-[8px] font-body-default text-muted font-bold tracking-[0.1em] uppercase leading-none mb-1">
+                <span className="text-[8px] font-body-default text-muted font-bold tracking-widest uppercase leading-none mb-1">
                   {t('label_active_factory' as any)}
                 </span>
                 <div className="flex items-center gap-2">
