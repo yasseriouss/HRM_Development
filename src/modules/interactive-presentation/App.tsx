@@ -15,9 +15,9 @@
 import { useEffect, useRef, useState, useContext } from "react";
 import { useLocation } from "wouter";
 import { useTheme } from "next-themes";
-import { useLang } from "@shared/contexts/LangContext";
-
 import { slides } from "./slideLoader";
+import { Maximize2, Minimize2, ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 
 function getSlideIndex(pathname: string): number {
@@ -166,24 +166,49 @@ function AllSlides() {
 // This component is used for the deployed view at `/`
 function SlideViewer() {
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const [dims, setDims] = useState(() => ({
     width: Math.min(window.innerWidth, window.innerHeight * (16 / 9)),
     height: Math.min(window.innerHeight, window.innerWidth * (9 / 16)),
   }));
 
-  useEffect(() => {
-    const update = () => {
-      setDims({
-        width: Math.min(window.innerWidth, window.innerHeight * (16 / 9)),
-        height: Math.min(window.innerHeight, window.innerWidth * (9 / 16)),
+  const toggleFullscreen = () => {
+    if (!containerRef.current) return;
+    if (!document.fullscreenElement) {
+      containerRef.current.requestFullscreen().catch(err => {
+        console.error(`Error attempting to enable full-screen mode: ${err.message}`);
       });
-    };
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
+    } else {
+      document.exitFullscreen();
+    }
+  };
+
+  useEffect(() => {
+    const handleFsChange = () => setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener("fullscreenchange", handleFsChange);
+    return () => document.removeEventListener("fullscreenchange", handleFsChange);
   }, []);
 
   useEffect(() => {
+    const update = () => {
+      const target = containerRef.current || window;
+      const w = "innerWidth" in target ? target.innerWidth : (target as HTMLElement).clientWidth;
+      const h = "innerHeight" in target ? target.innerHeight : (target as HTMLElement).clientHeight;
+      
+      setDims({
+        width: Math.min(w, h * (16 / 9)),
+        height: Math.min(h, w * (9 / 16)),
+      });
+    };
+    window.addEventListener("resize", update);
+    update();
+    return () => window.removeEventListener("resize", update);
+  }, [isFullscreen]);
+
+  useEffect(() => {
     const onKeyDown = (event: globalThis.KeyboardEvent) => {
+      if (event.key === "f") toggleFullscreen();
       if (event.key !== "ArrowLeft" && event.key !== "ArrowRight" && event.key !== " ") return;
       if (event.key === " ") event.preventDefault();
       iframeRef.current?.contentWindow?.dispatchEvent(
@@ -199,16 +224,41 @@ function SlideViewer() {
 
   return (
     <div
-      className="slide-viewer h-screen w-screen overflow-hidden bg-black flex items-center justify-center"
+      ref={containerRef}
+      className="slide-viewer h-screen w-screen overflow-hidden bg-[#0c0c0c] flex items-center justify-center relative group"
       onClick={() => iframeRef.current?.focus()}
     >
+      {/* Background Texture/Gradient for Premium Feel */}
+      <div className="absolute inset-0 opacity-20 pointer-events-none bg-[radial-gradient(circle_at_center,_var(--primary)_0%,_transparent_70%)]" />
+      
       <iframe
         ref={iframeRef}
         src={`${base}/slide${firstPosition}`}
         style={{ width: dims.width, height: dims.height, border: "none" }}
+        className="shadow-[0_0_100px_rgba(0,0,0,0.8)] z-10"
         onLoad={() => iframeRef.current?.focus()}
         title="Slide viewer"
       />
+
+      {/* Floating Controls Overlay */}
+      <div className="absolute bottom-8 right-8 z-50 flex gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={toggleFullscreen}
+          className="bg-surface/10 backdrop-blur-md border-white/10 text-white hover:bg-white/20 rounded-full w-12 h-12 shadow-2xl"
+          title={isFullscreen ? "Exit Fullscreen (F)" : "Enter Fullscreen (F)"}
+        >
+          {isFullscreen ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
+        </Button>
+      </div>
+
+      {/* Subtle Branding Branding */}
+      <div className="absolute bottom-8 left-8 z-50 opacity-20 pointer-events-none">
+        <div className="font-headline font-black text-[10px] tracking-[0.5em] text-white uppercase">
+          HRM INTERACTIVE PRESENTATION
+        </div>
+      </div>
     </div>
   );
 }

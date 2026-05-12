@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;800;900&display=swap");
 
 @import "tailwindcss";
 
@@ -56,9 +56,9 @@
     --surface: oklch(99% 0.008 70);
     --ring: oklch(64% 0.13 28);
 
-    --font-headline: 'Comfortaa', cursive;
-    --font-body-default: 'Comfortaa', cursive;
-    --font-tajawal: 'Tajawal', sans-serif;
+    --font-headline: "Comfortaa", cursive;
+    --font-body-default: "Comfortaa", cursive;
+    --font-tajawal: "Tajawal", sans-serif;
 
     --radius: 0.75rem;
 
@@ -100,12 +100,12 @@
 
   body {
     @apply bg-background text-foreground antialiased selection:bg-primary/30;
-    font-family: 'Comfortaa', cursive;
+    font-family: "Comfortaa", cursive;
     overflow-x: hidden;
   }
 
   [dir="rtl"] body {
-    font-family: 'Tajawal', sans-serif !important;
+    font-family: "Tajawal", sans-serif !important;
   }
 }
 
@@ -135,9 +135,15 @@
 }
 
 @keyframes shine {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* Custom Scrollbar */
@@ -155,7 +161,7 @@
 
 /* Paper Texture overlay - warm editorial feel */
 body::after {
-  content: '';
+  content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;

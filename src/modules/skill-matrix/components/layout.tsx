@@ -127,11 +127,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const isDark = theme === "dark";
 
   return (
-    <div className={`min-h-screen flex flex-col bg-[#050505] text-white font-sans selection:bg-primary selection:text-primary-foreground relative overflow-hidden`}>
-      {/* Global Scanline Effect */}
-      <div className="scanline" />
+    <div className={`min-h-screen flex flex-col bg-background text-foreground font-sans selection:bg-primary selection:text-primary-foreground relative overflow-hidden`}>
       {/* Top Navigation Bar */}
-      <header className="sticky top-0 z-50 border-b border-zinc-900 bg-[#0A0A0A]/90 backdrop-blur-xl px-8 py-5 flex items-center justify-between gap-10 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
+      <header className="sticky top-0 z-50 border-b border-primary/10 bg-surface/80 backdrop-blur-xl px-8 py-4 flex items-center justify-between gap-10 shadow-sm">
         <div className="flex items-center gap-8">
           <div className="flex items-center gap-4">
              {/* App Launcher */}
@@ -140,49 +138,49 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-10 w-10 border border-white/10 bg-white/5 text-primary hover:bg-primary/20 hover:border-primary/50 transition-all rounded-none"
+                  className="h-10 w-10 border border-primary/10 bg-primary/5 text-primary hover:bg-primary/20 hover:border-primary/50 transition-all rounded-full"
                 >
                   <LayoutGrid className="h-5 w-5" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 align="start"
-                className="w-96 p-6 bg-[#0A0A0A] border-2 border-primary/30 rounded-none shadow-[0_0_50px_rgba(0,0,0,0.8)] animate-in fade-in slide-in-from-top-4 duration-500 overflow-hidden"
+                className="w-96 p-6 bg-surface border-2 border-primary/20 rounded-2xl shadow-2xl animate-in fade-in slide-in-from-top-4 duration-500 overflow-hidden"
               >
-                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5" />
-                <div className="relative z-10 px-4 py-5 border-b border-zinc-800 mb-6 flex items-center justify-between">
+                <div className="absolute inset-0 bg-primary/5 opacity-30" />
+                <div className="relative z-10 px-4 py-5 border-b border-primary/10 mb-6 flex items-center justify-between">
                   <DropdownMenuLabel className="text-[10px] font-headline font-black uppercase tracking-[0.5em] text-primary flex items-center gap-4">
-                    <div className="h-2 w-2 bg-primary animate-pulse shadow-[0_0_8px_rgba(var(--primary),0.5)]" />
-                    <span className="text-shimmer">{t("suite_title")}</span>
+                    <div className="h-2 w-2 bg-primary rounded-full animate-pulse shadow-[0_0_8px_rgba(var(--primary),0.5)]" />
+                    <span className="">{t("suite_title")}</span>
                   </DropdownMenuLabel>
-                  <span className="text-[8px] font-mono text-zinc-700 uppercase tracking-widest">SYS::SECURE</span>
+                  <span className="text-[8px] font-mono text-foreground/30 uppercase tracking-widest">SYS::SECURE</span>
                 </div>
                 <div className="relative z-10 grid grid-cols-1 gap-3">{SUITE_APPS.map((app) => (
                     <DropdownMenuItem
                       key={app.id}
                       asChild
-                      className={`flex items-start gap-4 p-4 rounded-none cursor-pointer transition-all border ${
+                      className={`flex items-start gap-4 p-4 rounded-xl cursor-pointer transition-all border ${
                         app.active
-                          ? "bg-primary/10 border-primary/30"
-                          : "hover:bg-white/5 border-transparent"
+                          ? "bg-primary/5 border-primary/20"
+                          : "hover:bg-muted/50 border-transparent"
                       }`}
                     >
                       <a href={app.href} className="flex items-start gap-4 w-full">
                         <div
-                          className={`p-3 border ${
-                            app.active ? "bg-primary border-primary text-primary-foreground" : "bg-white/5 border-white/10 text-secondary/40"
+                          className={`p-3 border rounded-lg ${
+                            app.active ? "bg-primary border-primary text-primary-foreground" : "bg-muted/50 border-primary/10 text-primary/40"
                           }`}
                         >
                           <app.icon className="h-5 w-5" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between gap-2">
-                            <span className={`font-headline font-black text-sm tracking-widest uppercase ${app.active ? "text-primary" : "text-white"}`}>
+                            <span className={`font-headline font-black text-sm tracking-widest uppercase ${app.active ? "text-primary" : "text-foreground"}`}>
                               {t(app.labelKey as any)}
                             </span>
-                            {!app.active && <ExternalLink className="h-3 w-3 text-secondary/20" />}
+                            {!app.active && <ExternalLink className="h-3 w-3 text-foreground/20" />}
                           </div>
-                          <p className="text-[10px] text-secondary/40 leading-tight mt-1 font-medium italic">
+                          <p className="text-[10px] text-foreground/40 leading-tight mt-1 font-medium italic">
                             {app.description}
                           </p>
                         </div>
@@ -198,10 +196,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </DropdownMenu>
 
             <div className="flex items-center gap-4">
-              <img src={`${import.meta.env.BASE_URL}logo.png`} alt="System Logo" className="h-8 w-auto object-contain grayscale brightness-200 contrast-200" />
+              <img src={`${import.meta.env.BASE_URL}logo.png`} alt="System Logo" className="h-8 w-auto object-contain" />
               <div className="flex flex-col">
-                <h1 className={`text-2xl font-headline font-black text-white tracking-tighter uppercase leading-none text-shimmer ${isAr ? 'font-tajawal' : ''}`}>HRM DEV</h1>
-                <span className="text-[8px] font-mono text-primary/60 font-black tracking-[0.5em] mt-1.5 leading-none">{t("label_command_center")}</span>
+                <h1 className={`text-2xl font-headline font-black text-foreground tracking-tighter uppercase leading-none ${isAr ? 'font-tajawal' : ''}`}>HRM DEV</h1>
+                <span className="text-[8px] font-mono text-primary/60 font-black tracking-[0.5em] mt-1.5 leading-none uppercase">{t("label_command_center")}</span>
               </div>
             </div>
           </div>
@@ -215,7 +213,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 className={`px-5 py-3 font-headline font-black text-[10px] tracking-[0.2em] uppercase transition-all duration-300 whitespace-nowrap border-b-2 relative group/nav ${
                   isActive(item.href)
                     ? "text-primary border-primary bg-primary/5"
-                    : "text-zinc-600 border-transparent hover:text-white hover:bg-white/5"
+                    : "text-foreground/40 border-transparent hover:text-foreground hover:bg-muted/50"
                 }`}
               >
                 {t(item.labelKey)}
@@ -228,7 +226,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="flex items-center gap-4 shrink-0">
           {/* User Profile Info */}
           <div className="hidden lg:flex flex-col items-end me-4">
-            <span className="text-[11px] font-headline font-black text-white uppercase tracking-wider leading-none">{user?.full_name}
+            <span className="text-[11px] font-headline font-black text-foreground uppercase tracking-wider leading-none">{user?.full_name}
             </span>
             <span className="text-[9px] font-mono text-primary/60 font-black tracking-widest mt-1 uppercase leading-none">
               {t(roleNavKeys[role] as any)}
@@ -244,7 +242,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               variant="ghost"
               size="icon"
               onClick={() => setTheme(isDark ? "light" : "dark")}
-              className="h-10 w-10 border border-white/5 bg-white/5 hover:bg-white/10 text-secondary/40 hover:text-primary rounded-none transition-colors"
+              className="h-10 w-10 border border-primary/10 bg-primary/5 hover:bg-primary/10 text-foreground/40 hover:text-primary rounded-full transition-colors"
             >
               {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </Button>
@@ -253,7 +251,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               variant="ghost"
               size="sm"
               onClick={() => setLang(lang === "en" ? "ar" : "en")}
-              className="h-10 px-3 border border-white/5 bg-white/5 hover:bg-white/10 text-[10px] font-headline font-black tracking-widest text-secondary/40 hover:text-white rounded-none transition-colors uppercase"
+              className="h-10 px-3 border border-primary/10 bg-primary/5 hover:bg-primary/10 text-[10px] font-headline font-black tracking-widest text-foreground/40 hover:text-foreground rounded-full transition-colors uppercase"
             >
               <Globe className="h-3 w-3 me-2" />
               {lang === "en" ? "AR" : "EN"}
@@ -263,7 +261,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               variant="outline"
               size="sm"
               onClick={handleLogout}
-              className="h-10 px-4 border border-rose-500/30 bg-rose-500/5 text-rose-500 hover:bg-rose-500 hover:text-white rounded-none font-headline font-black text-[10px] tracking-widest uppercase transition-all"
+              className="h-10 px-4 border-rose-500/20 bg-rose-500/5 text-rose-600 hover:bg-rose-600 hover:text-white rounded-full font-headline font-black text-[10px] tracking-widest uppercase transition-all shadow-sm shadow-rose-500/5"
             >
               <LogOut className="h-3 w-3 me-2" />{t("nav_logout")}
             </Button>
@@ -272,7 +270,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <Button
               variant="ghost"
               size="icon"
-              className="xl:hidden h-10 w-10 border border-white/10 rounded-none text-white hover:bg-white/5"
+              className="xl:hidden h-10 w-10 border border-primary/10 rounded-full text-foreground hover:bg-muted"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -288,17 +286,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="xl:hidden bg-[#0A0A0A] border-b border-white/10 overflow-hidden"
+            className="xl:hidden bg-surface border-b border-primary/10 overflow-hidden"
           >
             <nav className="p-6 grid grid-cols-2 gap-4">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`p-4 font-headline font-black text-[9px] tracking-widest uppercase border ${
+                  className={`p-4 font-headline font-black text-[9px] tracking-widest uppercase border rounded-xl transition-all ${
                     isActive(item.href)
-                      ? "bg-primary/10 border-primary/30 text-primary"
-                      : "bg-white/5 border-white/10 text-secondary/40"
+                      ? "bg-primary/5 border-primary/20 text-primary"
+                      : "bg-muted/30 border-primary/5 text-foreground/40"
                   }`}
                 >
                   {t(item.labelKey)}
@@ -312,10 +310,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
       {/* Main Content Area */}
       <main className="flex-1 relative">
         {/* Background Patterns */}
-        <div className="absolute inset-0 bg-[#050505] pointer-events-none">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,#111111_0%,#050505_100%)]" />
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 mix-blend-overlay" />
-          <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "linear-gradient(#primary 1px, transparent 1px), linear-gradient(90deg, #primary 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
+        <div className="absolute inset-0 bg-background pointer-events-none">
+          <div className="absolute inset-0 bg-primary/5 opacity-30" />
+          <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "linear-gradient(var(--primary) 1px, transparent 1px), linear-gradient(90deg, var(--primary) 1px, transparent 1px)", backgroundSize: "60px 60px" }} />
         </div>
 
         {/* Content Wrapper */}
@@ -324,20 +321,20 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </div>
       </main>
 
-      {/* Footer - Terminal Style */}
-      <footer className="border-t border-zinc-900 bg-[#080808] py-12 px-10 relative overflow-hidden">
-        <div className="absolute inset-0 bg-primary/1 pointer-events-none" />
+      {/* Footer - Editorial Style */}
+      <footer className="border-t border-primary/10 bg-surface py-12 px-10 relative overflow-hidden">
+        <div className="absolute inset-0 bg-primary/5 opacity-30 pointer-events-none" />
         <div className="max-w-[1600px] mx-auto flex flex-col md:flex-row items-center justify-between gap-10 relative z-10">
           <div className="flex items-center gap-8">
-            <div className="h-14 w-14 border border-zinc-800 bg-black flex items-center justify-center relative group">
-               <Activity className="h-6 w-6 text-primary/40 group-hover:text-primary transition-colors animate-pulse" />
-               <div className="absolute inset-0 border border-primary/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="h-14 w-14 border border-primary/10 bg-background flex items-center justify-center relative group rounded-xl shadow-sm">
+               <Activity className="h-6 w-6 text-primary/30 group-hover:text-primary transition-colors animate-pulse" />
+               <div className="absolute inset-0 border border-primary/20 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl" />
             </div>
             <div className="flex flex-col">
-              <p className="text-[11px] font-headline font-black text-white tracking-[0.4em] uppercase text-shimmer">{t("label_system_operational")}</p>
+              <p className="text-[11px] font-headline font-black text-foreground tracking-[0.4em] uppercase">{t("label_system_operational")}</p>
               <div className="flex items-center gap-4 mt-2">
-                 <span className="text-[8px] font-mono text-emerald-500/60 flex items-center gap-2 uppercase tracking-widest"><div className="h-1 w-1 bg-emerald-500 rounded-full animate-ping" /> {t("label_status_optimal")}</span>
-                 <span className="text-[8px] font-mono text-zinc-700 uppercase tracking-widest">{t("label_node_uptime")}</span>
+                 <span className="text-[8px] font-mono text-emerald-600/60 flex items-center gap-2 uppercase tracking-widest"><div className="h-1 w-1 bg-emerald-500 rounded-full animate-ping" /> {t("label_status_optimal")}</span>
+                 <span className="text-[8px] font-mono text-foreground/30 uppercase tracking-widest">{t("label_node_uptime")}</span>
               </div>
             </div>
           </div>
@@ -349,14 +346,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
               rel="noopener noreferrer"
               className="group flex flex-col items-end"
             >
-              <span className="text-[9px] font-headline font-black text-zinc-600 group-hover:text-primary transition-colors tracking-[0.3em] uppercase">{t('common_created_by')}
+              <span className="text-[9px] font-headline font-black text-foreground/30 group-hover:text-primary transition-colors tracking-[0.3em] uppercase">{t('common_created_by')}
               </span>
-              <span className="text-sm font-headline font-black text-white group-hover:text-primary transition-all mt-1 tracking-tighter uppercase">{t("label_yasserious_eng")}
+              <span className="text-sm font-headline font-black text-foreground group-hover:text-primary transition-all mt-1 tracking-tighter uppercase">{t("label_yasserious_eng")}
               </span>
             </a>
             
-            <div className="h-12 w-12 border border-zinc-800 bg-zinc-900/50 flex items-center justify-center hover:border-primary/50 transition-colors duration-500">
-              <Cpu className="h-5 w-5 text-primary/40 hover:text-primary transition-colors" />
+            <div className="h-12 w-12 border border-primary/10 bg-background/50 flex items-center justify-center hover:border-primary/50 transition-colors duration-500 rounded-xl shadow-sm">
+              <Cpu className="h-5 w-5 text-primary/30 hover:text-primary transition-colors" />
             </div>
           </div>
         </div>
