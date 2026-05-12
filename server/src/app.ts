@@ -42,6 +42,11 @@ app.get("/healthz", (_req, res) => {
 // ── API Routes ───────────────────────────────────────────────────────────────
 app.use("/api", router);
 
+// Redirect root to main app
+app.get("/", (_req, res) => {
+  res.redirect("/skill-matrix");
+});
+
 // ── Frontend Artifacts (Vite/Static) ─────────────────────────────────────────
 // This handles /hrm-skill-matrix, /hrm-dashboard, etc.
 try {

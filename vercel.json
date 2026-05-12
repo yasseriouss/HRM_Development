@@ -35,6 +35,14 @@
     {
       "source": "/hrm-skill-matrix-template.xlsx",
       "destination": "/api/index.ts"
+    },
+    {
+      "source": "/",
+      "destination": "/api/index.ts"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/api/index.ts"
     }
   ]
 }
