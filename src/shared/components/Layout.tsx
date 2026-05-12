@@ -148,7 +148,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               variant="ghost"
               size="icon"
               onClick={() => setIsMobileMenuOpen(true)}
-              className="md:hidden h-10 w-10 border border-muted/20 bg-background/50 hover:bg-primary/10 text-muted hover:text-primary rounded-xl"
+              className="md:hidden h-10 w-10 border border-muted/20 bg-background/50 hover:bg-primary/10 text-muted hover:text-primary rounded-2xl"
             >
               <Menu className="h-5 w-5" />
             </Button>
@@ -158,10 +158,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 variant="ghost"
                 size="sm"
                 onClick={() => window.history.back()}
-                className="h-10 gap-2 border border-muted/10 bg-background/50 hover:bg-primary/5 hover:text-primary hover:border-primary/20 transition-all rounded-xl px-4 group hidden sm:flex"
+                className="h-10 gap-2 border border-muted/10 bg-background/50 hover:bg-primary/5 hover:text-primary hover:border-primary/20 transition-all rounded-2xl px-4 group hidden sm:flex"
               >
                 <ArrowLeft className={`h-4 w-4 transition-transform ${isAr ? 'rotate-180 group-hover:translate-x-1' : 'group-hover:-translate-x-1'}`} />
-                <span className="text-[10px] font-bold tracking-widest uppercase">Return</span>
+                <span className="text-[10px] font-headline font-bold tracking-widest uppercase">Go Back</span>
               </Button>
             )}
             
@@ -169,8 +169,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <h1 className={`text-xl font-headline font-bold text-foreground tracking-tight uppercase leading-none ${isAr ? 'font-tajawal' : ''}`}>
                 {SUITE_APPS.find(app => isActive(app.href))?.labelKey ? t(SUITE_APPS.find(app => isActive(app.href))!.labelKey as any) : "HRM UNIFIED"}
               </h1>
-              <span className="text-[8px] font-body-default text-muted font-medium tracking-[0.3em] mt-1.5 leading-none uppercase">
-                {location === "/" ? "Integrated Management Suite" : location.split('/')[1].replace('-', ' ')}
+              <span className="text-[8px] font-headline text-muted font-bold tracking-[0.3em] mt-1.5 leading-none uppercase">
+                {location === "/" ? "Enterprise Management Platform" : location.split('/')[1].replace('-', ' ')}
               </span>
             </div>
           </div>
@@ -181,7 +181,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 variant="ghost"
                 size="icon"
                 onClick={() => setTheme(isDark ? "light" : "dark")}
-                className="h-10 w-10 border border-muted/10 bg-background/50 hover:bg-background/80 text-muted hover:text-primary rounded-xl transition-colors"
+                className="h-10 w-10 border border-muted/10 bg-background/50 hover:bg-background/80 text-muted hover:text-primary rounded-2xl transition-colors"
               >
                 {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
               </Button>
@@ -190,7 +190,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 variant="ghost"
                 size="sm"
                 onClick={() => setLang(lang === "en" ? "ar" : "en")}
-                className="h-10 px-3 border border-muted/10 bg-muted/5 hover:bg-muted/10 text-[10px] font-headline font-bold tracking-widest text-foreground hover:text-primary rounded-xl transition-colors uppercase"
+                className="h-10 px-3 border border-muted/10 bg-muted/5 hover:bg-muted/10 text-[10px] font-headline font-bold tracking-widest text-foreground hover:text-primary rounded-2xl transition-colors uppercase"
               >
                 <Globe className="h-3 w-3 me-2" />
                 {lang === "en" ? "AR" : "EN"}

@@ -166,11 +166,11 @@ export function ImportDialog({ open, onOpenChange, onSuccess, type }: ImportDial
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl bg-background/95 backdrop-blur-xl border-border/50 shadow-2xl p-0 overflow-hidden">
-        <DialogHeader className="p-6 border-b border-border/50 bg-muted/10">
-          <DialogTitle className="flex items-center gap-2 text-xl font-bold">
-            <div className="p-2 rounded-lg bg-primary/10">
-              <FileSpreadsheet className="h-5 w-5 text-primary" />
+      <DialogContent className="max-w-2xl bg-surface border border-muted/20 rounded-4xl p-0 overflow-hidden text-foreground shadow-2xl">
+        <DialogHeader className="p-8 border-b border-muted/10 bg-muted/5">
+          <DialogTitle className="flex items-center gap-3 text-2xl font-headline font-bold tracking-tight">
+            <div className="p-3 rounded-2xl bg-primary/10 border border-primary/20">
+              <FileSpreadsheet className="h-6 w-6 text-primary" />
             </div>
             {isAr ? `Ø§Ø³ØªÙŠØ±Ø§Ø¯ ${type}` : `Import ${type.charAt(0).toUpperCase() + type.slice(1)}`}
           </DialogTitle>
@@ -179,20 +179,20 @@ export function ImportDialog({ open, onOpenChange, onSuccess, type }: ImportDial
           </p>
         </DialogHeader>
         
-        <div className="p-8 space-y-6">
+        <div className="p-10 space-y-8">
           {/* Step 1: Template */}
-          <div className="flex items-center justify-between p-4 border border-primary/20 rounded-2xl bg-primary/5 group hover:border-primary/40 transition-all">
-            <div className="flex items-center gap-4">
-              <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-                <FileDown className="h-5 w-5" />
+          <div className="flex items-center justify-between p-6 border border-primary/10 rounded-3xl bg-primary/5 group hover:border-primary/30 transition-all shadow-sm">
+            <div className="flex items-center gap-5">
+              <div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20 group-hover:scale-110 transition-transform">
+                <FileDown className="h-6 w-6" />
               </div>
-              <div className="space-y-0.5">
-                <p className="text-sm font-bold">{isAr ? "ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ù†Ù…ÙˆØ°Ø¬" : "Download Template"}</p>
-                <p className="text-[10px] text-muted-foreground uppercase tracking-widest">{isAr ? "Ø§Ø³ØªØ®Ø¯Ù… Ø§Ù„Ù†Ù…ÙˆØ°Ø¬ Ø§Ù„ØµØ­ÙŠØ­ Ù„ØªØ¬Ù†Ø¨ Ø§Ù„Ø£Ø®Ø·Ø§Ø¡" : "Use the correct format to avoid errors"}</p>
+              <div className="space-y-1">
+                <p className="text-base font-bold tracking-tight">{isAr ? "تحميل النموذج" : "Download Template"}</p>
+                <p className="text-[10px] text-muted-foreground font-headline font-black uppercase tracking-widest opacity-60">{isAr ? "استخدم النموذج الصحيح لتجنب الأخطاء" : "Use the correct format to avoid errors"}</p>
               </div>
             </div>
-            <Button variant="outline" size="sm" onClick={downloadTemplate} className="gap-2 border-primary/20 hover:bg-primary/10 hover:text-primary">
-              {isAr ? "ØªØ­Ù…ÙŠÙ„" : "Download"}
+            <Button variant="outline" size="sm" onClick={downloadTemplate} className="gap-2 border-primary/10 rounded-2xl bg-background hover:bg-background/80 hover:text-primary h-10 px-6 font-headline font-black text-[10px] tracking-widest uppercase">
+              {isAr ? "تحميل" : "Download"}
             </Button>
           </div>
 
@@ -200,8 +200,8 @@ export function ImportDialog({ open, onOpenChange, onSuccess, type }: ImportDial
           <motion.div 
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.99 }}
-            className={`relative border-2 border-dashed rounded-3xl p-12 text-center transition-all cursor-pointer group
-              ${file ? 'border-primary bg-primary/5' : 'border-border/50 hover:border-primary/50 hover:bg-muted/10'}`}
+            className={`relative border-2 border-dashed rounded-4xl p-16 text-center transition-all cursor-pointer group
+              ${file ? 'border-primary bg-primary/5 shadow-inner' : 'border-muted/20 hover:border-primary/30 hover:bg-muted/5'}`}
             onClick={() => fileInputRef.current?.click()}
           >
             <input 
@@ -213,12 +213,12 @@ export function ImportDialog({ open, onOpenChange, onSuccess, type }: ImportDial
             />
             {file ? (
               <div className="space-y-3">
-                <div className="h-16 w-16 mx-auto rounded-2xl bg-primary flex items-center justify-center text-primary-foreground shadow-lg shadow-primary/30">
-                  <CheckCircle2 className="h-8 w-8" />
+                <div className="h-20 w-20 mx-auto rounded-3xl bg-primary flex items-center justify-center text-primary-foreground shadow-xl shadow-primary/30 border-4 border-surface">
+                  <CheckCircle2 className="h-10 w-10" />
                 </div>
                 <div>
-                  <p className="text-lg font-black">{file.name}</p>
-                  <p className="text-xs text-muted-foreground mt-1 uppercase tracking-widest">{(file.size / 1024).toFixed(2)} KB</p>
+                  <p className="text-xl font-headline font-black tracking-tight text-foreground uppercase">{file.name}</p>
+                  <p className="text-[10px] text-muted-foreground mt-2 font-headline font-black uppercase tracking-widest opacity-60">{(file.size / 1024).toFixed(2)} KB</p>
                 </div>
                 <Button 
                   variant="ghost" 
@@ -234,9 +234,9 @@ export function ImportDialog({ open, onOpenChange, onSuccess, type }: ImportDial
                 </Button>
               </div>
             ) : (
-              <div className="space-y-4">
-                <div className="h-16 w-16 mx-auto rounded-2xl bg-muted/50 flex items-center justify-center text-muted-foreground group-hover:text-primary group-hover:bg-primary/10 transition-all">
-                  <Upload className="h-8 w-8" />
+              <div className="space-y-6">
+                <div className="h-20 w-20 mx-auto rounded-3xl bg-muted/10 flex items-center justify-center text-muted-foreground/30 group-hover:text-primary group-hover:bg-primary/10 transition-all border border-muted/5 group-hover:border-primary/20">
+                  <Upload className="h-10 w-10" />
                 </div>
                 <div>
                   <p className="text-lg font-bold">{isAr ? "Ø§Ø®ØªØ± Ù…Ù„Ù Excel" : "Select Excel File"}</p>
@@ -262,20 +262,20 @@ export function ImportDialog({ open, onOpenChange, onSuccess, type }: ImportDial
                     READY FOR IMPORT
                   </div>
                 </div>
-                <div className="max-h-[200px] overflow-auto rounded-2xl border border-border/50 bg-background/50 custom-scrollbar shadow-inner">
+                <div className="max-h-[240px] overflow-auto rounded-3xl border border-muted/10 bg-background/50 custom-scrollbar shadow-inner">
                   <table className="w-full text-[10px]">
-                    <thead className="sticky top-0 bg-muted/80 backdrop-blur-sm border-b border-border/50">
+                    <thead className="sticky top-0 bg-muted/5 backdrop-blur-md border-b border-muted/10">
                       <tr>
                         {Object.keys(preview[0] || {}).map((k, i) => (
                           <th key={i} className="px-3 py-2 text-start font-bold text-muted-foreground">Col {k}</th>
                         ))}
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-border/20">
+                    <tbody className="divide-y divide-muted/5">
                       {preview.slice(0, 5).map((row, i) => (
-                        <tr key={i} className="hover:bg-primary/5 transition-colors">
+                        <tr key={i} className="hover:bg-primary/5 transition-colors group/row">
                           {Object.values(row).map((val: any, j) => (
-                            <td key={j} className="px-3 py-2 truncate max-w-[150px] font-medium">{String(val)}</td>
+                            <td key={j} className="px-4 py-3 truncate max-w-[150px] font-sans font-bold text-foreground/70 group-hover/row:text-foreground">{String(val)}</td>
                           ))}
                         </tr>
                       ))}
@@ -290,26 +290,26 @@ export function ImportDialog({ open, onOpenChange, onSuccess, type }: ImportDial
           </AnimatePresence>
         </div>
 
-        <DialogFooter className="p-6 border-t border-border/50 bg-muted/10">
+        <DialogFooter className="p-8 border-t border-muted/10 bg-muted/5">
           <div className="flex items-center justify-between w-full">
-            <Button variant="ghost" onClick={() => onOpenChange(false)} className="text-muted-foreground hover:text-foreground">
-              {isAr ? "Ø¥Ù„ØºØ§Ø¡" : "Cancel"}
+            <Button variant="ghost" onClick={() => onOpenChange(false)} className="rounded-2xl font-headline font-black text-[10px] tracking-widest uppercase text-muted-foreground hover:bg-background h-12 px-10">
+              {isAr ? "إلغاء" : "Cancel"}
             </Button>
             <Button 
               size="lg" 
               onClick={handleImport} 
               disabled={!preview.length || loading}
-              className="gap-2 px-8 bg-primary text-primary-foreground shadow-xl shadow-primary/20 hover:scale-105 transition-transform"
+              className="gap-3 px-12 h-14 rounded-2xl bg-primary text-white font-headline font-black text-[10px] tracking-widest uppercase shadow-xl shadow-primary/20 hover:scale-105 transition-all"
             >
               {loading ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  {isAr ? "Ø¬Ø§Ø±ÙŠ Ø§Ù„Ø§Ø³ØªÙŠØ±Ø§Ø¯..." : "Importing..."}
+                  {isAr ? "جاري الاستيراد..." : "Importing..."}
                 </>
               ) : (
                 <>
                   <Upload className="h-4 w-4" />
-                  {isAr ? "ØªØ£ÙƒÙŠØ¯ Ø§Ù„Ø§Ø³ØªÙŠØ±Ø§Ø¯" : "Confirm Import"}
+                  {isAr ? "تأكيد الاستيراد" : "Confirm Import"}
                 </>
               )}
             </Button>

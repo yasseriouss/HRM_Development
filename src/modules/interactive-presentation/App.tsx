@@ -154,7 +154,7 @@ function AllSlides() {
           className="slide relative aspect-video overflow-hidden"
           style={{ width: "1920px", height: "1080px" }}
         >
-          <div className="h-full w-full [&_.h-screen]:!h-full [&_.w-screen]:!w-full">
+          <div className="h-full w-full [&_.h-screen]:h-full! [&_.w-screen]:w-full!">
             <slide.Component />
           </div>
         </div>
@@ -193,12 +193,16 @@ function SlideViewer() {
   useEffect(() => {
     const update = () => {
       const target = containerRef.current || window;
-      const w = "innerWidth" in target ? target.innerWidth : (target as HTMLElement).clientWidth;
-      const h = "innerHeight" in target ? target.innerHeight : (target as HTMLElement).clientHeight;
+      const w = "innerWidth" in target ? (target as Window).innerWidth : (target as HTMLElement).clientWidth;
+      const h = "innerHeight" in target ? (target as Window).innerHeight : (target as HTMLElement).clientHeight;
       
+      const padding = isFullscreen ? 0 : 80;
+      const availableW = w - padding;
+      const availableH = h - padding;
+
       setDims({
-        width: Math.min(w, h * (16 / 9)),
-        height: Math.min(h, w * (9 / 16)),
+        width: Math.min(availableW, availableH * (16 / 9)),
+        height: Math.min(availableH, availableW * (9 / 16)),
       });
     };
     window.addEventListener("resize", update);
@@ -225,38 +229,85 @@ function SlideViewer() {
   return (
     <div
       ref={containerRef}
-      className="slide-viewer h-screen w-screen overflow-hidden bg-[#0c0c0c] flex items-center justify-center relative group"
+      className="slide-viewer w-full h-full min-h-[500px] overflow-hidden bg-background flex items-center justify-center relative group"
       onClick={() => iframeRef.current?.focus()}
     >
-      {/* Background Texture/Gradient for Premium Feel */}
-      <div className="absolute inset-0 opacity-20 pointer-events-none bg-[radial-gradient(circle_at_center,_var(--primary)_0%,_transparent_70%)]" />
-      
-      <iframe
-        ref={iframeRef}
-        src={`${base}/slide${firstPosition}`}
-        style={{ width: dims.width, height: dims.height, border: "none" }}
-        className="shadow-[0_0_100px_rgba(0,0,0,0.8)] z-10"
-        onLoad={() => iframeRef.current?.focus()}
-        title="Slide viewer"
-      />
+      <style dangerouslySetInnerHTML={{ __html: `
+        .slide-viewer {
+          background-image: radial-gradient(circle at 20% 20%, oklch(64% 0.13 28 / 0.03) 0%, transparent 40%),
+                            radial-gradient(circle at 80% 80%, oklch(64% 0.13 28 / 0.03) 0%, transparent 40%);
+        }
+        
+        .slide-frame-container {
+          transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-      {/* Floating Controls Overlay */}
-      <div className="absolute bottom-8 right-8 z-50 flex gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={toggleFullscreen}
-          className="bg-surface/10 backdrop-blur-md border-white/10 text-white hover:bg-white/20 rounded-full w-12 h-12 shadow-2xl"
-          title={isFullscreen ? "Exit Fullscreen (F)" : "Enter Fullscreen (F)"}
-        >
-          {isFullscreen ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
-        </Button>
+        .fs-toggle-btn {
+          backdrop-filter: blur(16px);
+          background: oklch(var(--color-surface) / 0.8);
+          border: 1px solid oklch(var(--color-primary) / 0.1);
+          box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1);
+        }
+
+        .fs-toggle-btn:hover {
+          background: oklch(var(--color-primary) / 0.05);
+          border-color: oklch(var(--color-primary) / 0.2);
+        }
+      `}} />
+      
+      <div className="slide-frame-container relative z-10" style={{ width: dims.width, height: dims.height }}>
+        <iframe
+          ref={iframeRef}
+          src={`${base}/slide${firstPosition}`}
+          className="w-full h-full border-none shadow-[0_40px_100px_-20px_rgba(0,0,0,0.15)] rounded-3xl overflow-hidden"
+          onLoad={() => iframeRef.current?.focus()}
+          title="Slide viewer"
+        />
+        
+        {/* Floating Controls Overlay - Editorial Style */}
+        <div className="absolute bottom-8 right-8 z-50 flex items-center gap-3 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+          <div className="flex fs-toggle-btn p-2 rounded-2xl">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => {
+                 iframeRef.current?.contentWindow?.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowLeft" }));
+              }}
+              className="rounded-xl h-10 w-10 hover:bg-primary/10 text-primary transition-colors"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => {
+                 iframeRef.current?.contentWindow?.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight" }));
+              }}
+              className="rounded-xl h-10 w-10 hover:bg-primary/10 text-primary transition-colors"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </Button>
+            <div className="w-px h-5 bg-primary/10 self-center mx-1" />
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleFullscreen}
+              className="rounded-xl h-10 w-10 hover:bg-primary/10 text-primary transition-colors"
+              title={isFullscreen ? "Exit Fullscreen (F)" : "Enter Fullscreen (F)"}
+            >
+              {isFullscreen ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
+            </Button>
+          </div>
+        </div>
       </div>
 
-      {/* Subtle Branding Branding */}
-      <div className="absolute bottom-8 left-8 z-50 opacity-20 pointer-events-none">
-        <div className="font-headline font-black text-[10px] tracking-[0.5em] text-white uppercase">
-          HRM INTERACTIVE PRESENTATION
+      {/* Subtle Branding */}
+      <div className="absolute top-10 left-10 z-50 opacity-20 pointer-events-none transition-opacity duration-1000">
+        <div className="flex items-center gap-4">
+          <div className="font-headline font-black text-xs tracking-[0.3em] text-primary uppercase">
+            EDITORIAL PRESENTATION
+          </div>
+          <div className="h-px w-12 bg-primary/20" />
         </div>
       </div>
     </div>

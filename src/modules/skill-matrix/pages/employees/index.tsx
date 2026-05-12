@@ -26,20 +26,11 @@ import { exportToPDF, exportToExcel } from "@modules/skill-matrix/lib/export-uti
 import { ImportDialog } from "@modules/skill-matrix/components/import-dialog";
 import { useFactory } from "@shared/contexts/FactoryContext";
 
-const CornerMarks = ({ color = "primary" }: { color?: string }) => (
-  <>
-    <div className={`absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
-    <div className={`absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
-    <div className={`absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
-    <div className={`absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
-  </>
-);
-
 function classBadge(cls: string | null | undefined, t: any) {
-  if (cls === "A") return <Badge variant="outline" className="rounded-none border-emerald-500/40 bg-emerald-500/5 text-emerald-400 font-mono text-[8px] font-black tracking-[0.2em] px-2 py-1 uppercase shadow-[0_0_10px_rgba(16,185,129,0.1)]">{t("dept_class_a")}</Badge>;
-  if (cls === "B") return <Badge variant="outline" className="rounded-none border-amber-500/40 bg-amber-500/5 text-amber-400 font-mono text-[8px] font-black tracking-[0.2em] px-2 py-1 uppercase shadow-[0_0_10px_rgba(245,158,11,0.1)]">{t("employees_class_b")}</Badge>;
-  if (cls === "C") return <Badge variant="outline" className="rounded-none border-rose-500/40 bg-rose-500/5 text-rose-400 font-mono text-[8px] font-black tracking-[0.2em] px-2 py-1 uppercase shadow-[0_0_10px_rgba(244,63,94,0.1)]">{t("employees_class_c")}</Badge>;
-  return <Badge variant="outline" className="rounded-none border-white/5 bg-white/5 text-secondary/30 font-mono text-[8px] font-black tracking-[0.2em] px-2 py-1 uppercase">{t("label_unclassified")}</Badge>;
+  if (cls === "A") return <Badge variant="outline" className="rounded-full border-emerald-500/20 bg-emerald-50 text-emerald-700 font-bold text-[9px] tracking-wider px-2.5 py-0.5 uppercase shadow-sm">{t("dept_class_a")}</Badge>;
+  if (cls === "B") return <Badge variant="outline" className="rounded-full border-amber-500/20 bg-amber-50 text-amber-700 font-bold text-[9px] tracking-wider px-2.5 py-0.5 uppercase shadow-sm">{t("employees_class_b")}</Badge>;
+  if (cls === "C") return <Badge variant="outline" className="rounded-full border-rose-500/20 bg-rose-50 text-rose-700 font-bold text-[9px] tracking-wider px-2.5 py-0.5 uppercase shadow-sm">{t("employees_class_c")}</Badge>;
+  return <Badge variant="outline" className="rounded-full border-primary/10 bg-muted/30 text-muted-foreground font-bold text-[9px] tracking-wider px-2.5 py-0.5 uppercase">{t("label_unclassified")}</Badge>;
 }
 
 interface EmpForm {
@@ -179,249 +170,250 @@ export default function EmployeesPage() {
   };
 
   return (
-    <div className="space-y-8 pb-20 font-sans selection:bg-primary selection:text-primary-foreground">
+    <div className="space-y-10 pb-20 font-sans selection:bg-primary/20 selection:text-primary">
       {/* Header - Editorial Style */}
-      <div className="relative p-10 bg-surface border-2 border-primary/20 overflow-hidden shadow-sm">
-        <div className="absolute inset-0 bg-primary/5 opacity-40" />
-        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <Users className="h-4 w-4 text-primary animate-pulse" />
-              <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">{t("label_personnel_registry")}</span>
+      <div className="relative pt-12 pb-6 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="h-px w-8 bg-primary/20" />
+                <span className="font-sans font-bold tracking-widest text-[10px] text-primary uppercase">{t("label_personnel_registry")}</span>
+              </div>
+              <h1 className="text-6xl font-headline font-bold tracking-tight text-foreground leading-none">
+                {t("employees_title")}
+              </h1>
+              <p className="text-muted-foreground font-medium text-lg max-w-2xl">{t("employees_subtitle")}</p>
             </div>
-            <h2 className="text-5xl font-headline font-black tracking-tighter text-foreground uppercase leading-none">{t("employees_title")}
-            </h2>
-            <p className="text-foreground/60 font-medium border-s-2 border-primary/20 ps-4">{t("employees_subtitle")}</p>
-          </div>
-          
-          <div className="flex flex-wrap items-center gap-3">
-            <Button variant="outline" className="rounded-xl border-primary/10 bg-background hover:bg-muted/10 text-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto shadow-sm" onClick={() =>exportToPDF({
-              title: t("employees_title"),
-              filename: "Employees_List",
-              headers: [t("field_name"), t("field_code"), t("field_department"), t("field_job_title"), t("field_class")],
-              rows: (employees ?? []).map(e => [e.full_name ?? "â€”", e.employee_code ?? "â€”", e.department?.name ?? "â€”", e.job_title ?? "â€”", e.current_class ?? "â€”"])
-            })}>
-              <Download className="h-4 w-4 me-2" /> PDF
-            </Button>
-            <Button variant="outline" className="rounded-xl border-primary/10 bg-background hover:bg-muted/10 text-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto shadow-sm" onClick={() =>exportToExcel({
-              title: t("employees_title"),
-              filename: "Employees_List",
-              headers: [t("field_name"), t("field_code"), t("field_department"), t("field_job_title"), t("field_class")],
-              rows: (employees ?? []).map(e => [e.full_name ?? "â€”", e.employee_code ?? "â€”", e.department?.name ?? "â€”", e.job_title ?? "â€”", e.current_class ?? "â€”"])
-            })}>
-              <Download className="h-4 w-4 me-2" /> EXCEL
-            </Button>
-            {isAdmin && (
-              <>
-                <Button variant="outline" className="rounded-xl border-primary/10 bg-background hover:bg-muted/10 text-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto shadow-sm" onClick={() => setShowImport(true)}>
-                  <Upload className="h-4 w-4 me-2" />{t("action_import_csv")}
-                </Button>
-                <Button className="rounded-xl bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto hover:bg-primary/90 shadow-md" onClick={openCreate}>
-                  <Plus className="h-4 w-4 me-2" />{t("action_register_operative")}
-                </Button>
-              </>
-            )}
+            
+            <div className="flex flex-wrap items-center gap-3">
+              <Button variant="outline" className="rounded-full border-primary/10 bg-surface/50 hover:bg-surface text-foreground font-bold text-[11px] tracking-wide uppercase px-6 h-12" onClick={() => exportToPDF({
+                title: t("employees_title"),
+                filename: "Employees_List",
+                headers: [t("field_name"), t("field_code"), t("field_department"), t("field_job_title"), t("field_class")],
+                rows: (employees ?? []).map(e => [e.full_name ?? "—", e.employee_code ?? "—", e.department?.name ?? "—", e.job_title ?? "—", e.current_class ?? "—"])
+              })}>
+                <Download className="h-4 w-4 me-2 opacity-50" /> PDF
+              </Button>
+              <Button variant="outline" className="rounded-full border-primary/10 bg-surface/50 hover:bg-surface text-foreground font-bold text-[11px] tracking-wide uppercase px-6 h-12" onClick={() => exportToExcel({
+                title: t("employees_title"),
+                filename: "Employees_List",
+                headers: [t("field_name"), t("field_code"), t("field_department"), t("field_job_title"), t("field_class")],
+                rows: (employees ?? []).map(e => [e.full_name ?? "—", e.employee_code ?? "—", e.department?.name ?? "—", e.job_title ?? "—", e.current_class ?? "—"])
+              })}>
+                <Download className="h-4 w-4 me-2 opacity-50" /> EXCEL
+              </Button>
+              {isAdmin && (
+                <>
+                  <Button variant="outline" className="rounded-full border-primary/10 bg-surface/50 hover:bg-surface text-foreground font-bold text-[11px] tracking-wide uppercase px-6 h-12" onClick={() => setShowImport(true)}>
+                    <Upload className="h-4 w-4 me-2 opacity-50" /> IMPORT
+                  </Button>
+                  <Button className="rounded-full bg-primary text-primary-foreground font-bold text-[11px] tracking-wide uppercase px-8 h-12 shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all" onClick={openCreate}>
+                    <Plus className="h-4 w-4 me-2" /> {t("action_register_operative")}
+                  </Button>
+                </>
+              )}
+            </div>
           </div>
         </div>
-        <CornerMarks />
       </div>
 
       {/* Control Panel */}
-      <Card className="bg-surface/50 backdrop-blur-md border border-primary/10 rounded-xl relative shadow-sm">
-        <CardContent className="p-8">
-          <div className="flex flex-col md:flex-row items-center gap-6">
-            <div className="flex-1 w-full relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-foreground/20" />
-              <Input 
-                placeholder={t("search_by_name_or_code")} 
-                className="ps-12 h-14 bg-background/50 border-primary/10 rounded-xl font-mono text-sm tracking-widest text-foreground placeholder:text-foreground/20 focus-visible:ring-primary/50"
-                value={search}
-                onChange={(e) => { setSearch(e.target.value); resetPage(); }}
-              />
+      <div className="max-w-7xl mx-auto px-4">
+        <Card className="bg-surface border-primary/10 rounded-4xl shadow-sm overflow-hidden border">
+          <CardContent className="p-4">
+            <div className="flex flex-col md:flex-row items-center gap-4">
+              <div className="flex-1 w-full relative">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground opacity-50" />
+                <Input 
+                  placeholder={t("search_by_name_or_code")} 
+                  className="ps-10 h-12 bg-background border-primary/5 rounded-3xl text-sm text-foreground placeholder:text-muted-foreground/50 focus-visible:ring-primary/20"
+                  value={search}
+                  onChange={(e) => { setSearch(e.target.value); resetPage(); }}
+                />
+              </div>
+              <div className="w-full md:w-64">
+                <Select value={deptFilter} onValueChange={(v) => { setDeptFilter(v); resetPage(); }}>
+                  <SelectTrigger className="h-12 bg-background border-primary/5 rounded-3xl font-bold text-[11px] tracking-wide text-foreground uppercase">
+                    <SelectValue placeholder={t("all_departments")} />
+                  </SelectTrigger>
+                  <SelectContent className="bg-surface border-primary/10 rounded-3xl">
+                    <SelectItem value="all" className="font-bold text-[10px] tracking-wide uppercase">{t("all_departments")}</SelectItem>
+                    {departments?.map((d) => <SelectItem key={d.id} value={d.id} className="font-bold text-[10px] tracking-wide uppercase">{d.name}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="w-full md:w-56">
+                <Select value={classFilter} onValueChange={(v) => { setClassFilter(v); resetPage(); }}>
+                  <SelectTrigger className="h-12 bg-background border-primary/5 rounded-3xl font-bold text-[11px] tracking-wide text-foreground uppercase">
+                    <SelectValue placeholder={t("all_classes")} />
+                  </SelectTrigger>
+                  <SelectContent className="bg-surface border-primary/10 rounded-3xl">
+                    <SelectItem value="all" className="font-bold text-[10px] tracking-wide uppercase">{t("all_classes")}</SelectItem>
+                    <SelectItem value="A" className="font-bold text-[10px] tracking-wide uppercase text-emerald-600">{t("employees_class_a")}</SelectItem>
+                    <SelectItem value="B" className="font-bold text-[10px] tracking-wide uppercase text-amber-600">{t("employees_class_b")}</SelectItem>
+                    <SelectItem value="C" className="font-bold text-[10px] tracking-wide uppercase text-rose-600">{t("employees_class_c")}</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-            <div className="w-full md:w-64 relative">
-              <Filter className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-foreground/20" />
-              <Select value={deptFilter} onValueChange={(v) => { setDeptFilter(v); resetPage(); }}>
-                <SelectTrigger className="ps-12 h-14 bg-background/50 border-primary/10 rounded-xl font-headline font-black text-[10px] tracking-widest text-foreground uppercase">
-                  <SelectValue placeholder={t("all_departments")} />
-                </SelectTrigger>
-                <SelectContent className="bg-surface border-primary/10 rounded-xl text-foreground">
-                  <SelectItem value="all" className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{t("all_departments")}</SelectItem>
-                  {departments?.map((d) => <SelectItem key={d.id} value={d.id} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{d.name}</SelectItem>)}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="w-full md:w-56 relative">
-              <Shield className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-foreground/20" />
-              <Select value={classFilter} onValueChange={(v) => { setClassFilter(v); resetPage(); }}>
-                <SelectTrigger className="ps-12 h-14 bg-background/50 border-primary/10 rounded-xl font-headline font-black text-[10px] tracking-widest text-foreground uppercase">
-                  <SelectValue placeholder={t("all_classes")} />
-                </SelectTrigger>
-                <SelectContent className="bg-surface border-primary/10 rounded-xl text-foreground">
-                  <SelectItem value="all" className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{t("all_classes")}</SelectItem>
-                  <SelectItem value="A" className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20 text-emerald-500">{t("employees_class_a")}</SelectItem>
-                  <SelectItem value="B" className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20 text-amber-500">{t("employees_class_b")}</SelectItem>
-                  <SelectItem value="C" className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20 text-rose-500">{t("employees_class_c")}</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Data Table */}
-      <div className="relative border border-primary/10 bg-surface/50 backdrop-blur-sm rounded-xl overflow-hidden shadow-sm">
-        {isLoading ? (
-          <div className="p-8 space-y-4">{Array.from({ length: 10 }).map((_, i) => (
-                <Skeleton key={i} className="h-16 w-full bg-muted/20 rounded-xl" />
-             ))}
-          </div>
-        ) : !employees.length ? (
-          <div className="p-20 text-center space-y-4">
-            <HardDrive className="h-12 w-12 text-foreground/5 mx-auto" />
-            <p className="font-mono text-xs text-foreground/30 uppercase tracking-[0.3em]">{t("label_no_records")}</p>
-          </div>
-        ) : (
-          <>
-            <div className="overflow-x-auto">
-              <table className="w-full text-start border-collapse text-sm">
-                <thead>
-                  <tr className="bg-muted/10 border-b border-primary/10">
-                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-foreground/40 uppercase whitespace-nowrap">{t("employees_col_name")}</th>
-                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-foreground/40 uppercase whitespace-nowrap">{t("employees_col_code")}</th>
-                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-foreground/40 uppercase whitespace-nowrap">{t("employees_col_department")}</th>
-                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-foreground/40 uppercase whitespace-nowrap">{t("employees_col_job_title")}</th>
-                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-foreground/40 uppercase whitespace-nowrap">{t("employees_col_class")}</th>
-                    <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-foreground/40 uppercase whitespace-nowrap text-end">{t("common_actions")}</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-primary/5">
-                  {employees.map((emp) => (
-                    <tr key={emp.id} className="group hover:bg-primary/5 border-l-2 border-transparent hover:border-primary transition-all duration-300">
-                      <td className="px-8 py-6 whitespace-nowrap">
-                        <Link href={`/employees/${emp.id}`} className="group/link">
-                          <p className="font-headline font-black text-foreground text-sm tracking-widest group-hover/link:text-primary transition-colors uppercase">{emp.full_name}
-                          </p>
-                          <div className="flex items-center gap-1 text-[8px] font-mono text-foreground/20 mt-1 uppercase tracking-widest">
-                            <ExternalLink className="h-3 w-3" />{t("label_node_profile")}
-                          </div>
-                        </Link>
-                      </td>
-                      <td className="px-8 py-6 font-mono text-[10px] text-zinc-500 tracking-widest whitespace-nowrap">{emp.employee_code ?? "—"}</td>
-                      <td className="px-8 py-6 whitespace-nowrap">
-                        <Badge variant="outline" className="rounded-none border-white/5 bg-white/5 text-[8px] font-mono text-zinc-400 py-1 uppercase px-2 tracking-widest">
-                          {emp.department?.name ?? "UNASSIGNED"}
-                        </Badge>
-                      </td>
-                      <td className="px-8 py-6 font-headline font-black text-[9px] text-zinc-600 tracking-[0.3em] uppercase whitespace-nowrap">{emp.job_title ?? "OPERATIVE"}</td>
-                      <td className="px-8 py-6 whitespace-nowrap">{classBadge(emp.current_class, t)}</td>
-                      <td className="px-8 py-6 text-end whitespace-nowrap">
-                        {isAdmin && (
-                          <div className="flex items-center justify-end gap-2">
-                            <Button size="icon" variant="ghost" className="h-10 w-10 rounded-xl border border-transparent hover:border-primary/30 hover:bg-primary/5 text-foreground/30 hover:text-primary" onClick={() => openEdit(emp)}>
-                              <Pencil className="h-4 w-4" />
-                            </Button>
-                            <Button size="icon" variant="ghost" className="h-10 w-10 rounded-xl border border-transparent hover:border-rose-500/30 hover:bg-rose-500/5 text-foreground/30 hover:text-rose-500" onClick={() =>setDeleteTarget({ id: emp.id, name: emp.full_name ?? "" })}>
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="bg-surface border border-primary/10 rounded-4xl shadow-sm overflow-hidden">
+          {isLoading ? (
+            <div className="p-8 space-y-4">
+              {Array.from({ length: 10 }).map((_, i) => (
+                <Skeleton key={i} className="h-16 w-full bg-muted/50 rounded-2xl" />
+              ))}
             </div>
-
-            {totalPages > 1 && (
-              <div className="p-8 border-t border-primary/10 flex items-center justify-between bg-surface/30">
-                <p className="font-mono text-[10px] text-foreground/40 uppercase tracking-widest">{t("employees_page_info", { page: data?.page ?? page, total: totalPages, count: data?.total ?? 0 })}
-                </p>
-                <div className="flex gap-4">
-                  <Button variant="outline" size="sm" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1} className="rounded-xl border-primary/10 bg-background hover:bg-muted/10 h-10 w-10 p-0 text-foreground">
-                    <ChevronLeft className="h-4 w-4" />
-                  </Button>
-                  <Button variant="outline" size="sm" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={page === totalPages} className="rounded-xl border-primary/10 bg-background hover:bg-muted/10 h-10 w-10 p-0 text-foreground">
-                    <ChevronRight className="h-4 w-4" />
-                  </Button>
-                </div>
+          ) : !employees.length ? (
+            <div className="p-20 text-center space-y-4">
+              <div className="h-16 w-16 bg-muted/50 rounded-full flex items-center justify-center mx-auto">
+                <Users className="h-8 w-8 text-muted-foreground opacity-20" />
               </div>
-            )}
-          </>
-        )}
+              <p className="font-sans text-sm text-muted-foreground uppercase tracking-widest font-bold opacity-50">{t("label_no_records")}</p>
+            </div>
+          ) : (
+            <>
+              <div className="overflow-x-auto">
+                <table className="w-full text-start border-collapse text-sm">
+                  <thead>
+                    <tr className="bg-muted/10 border-b border-primary/5">
+                      <th className="px-6 py-5 font-bold text-[10px] tracking-wider text-muted-foreground uppercase whitespace-nowrap">{t("employees_col_name")}</th>
+                      <th className="px-6 py-5 font-bold text-[10px] tracking-wider text-muted-foreground uppercase whitespace-nowrap">{t("employees_col_code")}</th>
+                      <th className="px-6 py-5 font-bold text-[10px] tracking-wider text-muted-foreground uppercase whitespace-nowrap">{t("employees_col_department")}</th>
+                      <th className="px-6 py-5 font-bold text-[10px] tracking-wider text-muted-foreground uppercase whitespace-nowrap">{t("employees_col_job_title")}</th>
+                      <th className="px-6 py-5 font-bold text-[10px] tracking-wider text-muted-foreground uppercase whitespace-nowrap">{t("employees_col_class")}</th>
+                      <th className="px-6 py-5 font-bold text-[10px] tracking-wider text-muted-foreground uppercase whitespace-nowrap text-end">{t("common_actions")}</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-primary/5">
+                    {employees.map((emp) => (
+                      <tr key={emp.id} className="group hover:bg-primary/3 transition-colors">
+                        <td className="px-6 py-6 whitespace-nowrap">
+                          <Link href={`/employees/${emp.id}`} className="group/link">
+                            <p className="font-bold text-foreground text-sm tracking-tight group-hover/link:text-primary transition-colors uppercase">{emp.full_name}</p>
+                            <div className="flex items-center gap-1.5 text-[9px] font-bold text-muted-foreground opacity-40 mt-0.5 uppercase tracking-wider">
+                              <ExternalLink className="h-3 w-3" /> {t("label_node_profile")}
+                            </div>
+                          </Link>
+                        </td>
+                        <td className="px-6 py-6 font-sans text-[11px] font-bold text-primary/60 whitespace-nowrap">{emp.employee_code ?? "—"}</td>
+                        <td className="px-6 py-6 whitespace-nowrap">
+                          <Badge variant="outline" className="rounded-full border-primary/10 bg-background text-[10px] font-bold text-muted-foreground py-0.5 px-3 uppercase">
+                            {emp.department?.name ?? "UNASSIGNED"}
+                          </Badge>
+                        </td>
+                        <td className="px-6 py-6 font-bold text-[10px] text-muted-foreground/60 tracking-wider uppercase whitespace-nowrap">{emp.job_title ?? "OPERATIVE"}</td>
+                        <td className="px-6 py-6 whitespace-nowrap">{classBadge(emp.current_class, t)}</td>
+                        <td className="px-6 py-6 text-end whitespace-nowrap">
+                          {isAdmin && (
+                            <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                              <Button size="icon" variant="ghost" className="h-9 w-9 rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10" onClick={() => openEdit(emp)}>
+                                <Pencil className="h-4 w-4" />
+                              </Button>
+                              <Button size="icon" variant="ghost" className="h-9 w-9 rounded-full text-muted-foreground hover:text-rose-600 hover:bg-rose-50" onClick={() =>setDeleteTarget({ id: emp.id, name: emp.full_name ?? "" })}>
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {totalPages > 1 && (
+                <div className="px-6 py-6 border-t border-primary/5 flex items-center justify-between bg-muted/5">
+                  <p className="font-sans text-[10px] font-bold text-muted-foreground/50 uppercase tracking-widest">{t("employees_page_info", { page: data?.page ?? page, total: totalPages, count: data?.total ?? 0 })}</p>
+                  <div className="flex gap-2">
+                    <Button variant="ghost" size="sm" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1} className="rounded-full h-10 w-10 p-0 hover:bg-primary/10 hover:text-primary">
+                      <ChevronLeft className="h-5 w-5" />
+                    </Button>
+                    <Button variant="ghost" size="sm" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={page === totalPages} className="rounded-full h-10 w-10 p-0 hover:bg-primary/10 hover:text-primary">
+                      <ChevronRight className="h-5 w-5" />
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+        </div>
       </div>
 
       {/* Forms & Dialogs */}
       <Dialog open={showCreate || !!editTarget} onOpenChange={(open) => { if (!open) { setShowCreate(false); setEditTarget(null); } }}>
-        <DialogContent className="max-w-2xl bg-surface border-2 border-primary/30 rounded-xl p-0 overflow-hidden text-foreground">
-          <div className="absolute inset-0 bg-primary/5 opacity-10" />
+        <DialogContent className="max-w-2xl bg-surface border-primary/20 rounded-4xl p-0 overflow-hidden shadow-2xl">
           <div className="relative z-10">
-            <div className="p-8 border-b border-primary/10 bg-surface/50 backdrop-blur-sm">
-              <h2 className="font-headline font-black text-2xl text-foreground uppercase tracking-tighter">{editTarget ? t("action_reconfigure") : t("action_init_operative")}
-              </h2>
-              <p className="text-[10px] font-mono text-primary tracking-[0.3em] mt-2 uppercase">{t("label_node_assignment")}</p>
+            <div className="p-10 border-b border-primary/5 bg-background/50 backdrop-blur-sm">
+              <h2 className="font-headline font-bold text-4xl text-foreground tracking-tight uppercase">{editTarget ? t("action_reconfigure") : t("action_init_operative")}</h2>
+              <p className="text-[11px] font-sans font-bold text-primary tracking-widest mt-2 uppercase opacity-60">{t("label_node_assignment")}</p>
             </div>
             
-            <div className="p-10 grid grid-cols-2 gap-8">
+            <div className="p-12 grid grid-cols-2 gap-8">
               <div className="col-span-2 space-y-3">
-                <Label className="font-headline font-black text-[10px] text-foreground/40 tracking-[0.2em] uppercase">{t("field_name")} *</Label>
-                <Input placeholder={t("field_name")} value={form.full_name} onChange={(e) =>setForm({ ...form, full_name: e.target.value })} className="h-14 bg-background border-primary/10 rounded-xl font-mono text-sm tracking-widest text-foreground focus-visible:ring-primary/50" />
+                <Label className="font-bold text-[11px] text-muted-foreground tracking-widest uppercase ps-1">{t("field_name")} *</Label>
+                <Input placeholder={t("field_name")} value={form.full_name} onChange={(e) =>setForm({ ...form, full_name: e.target.value })} className="h-14 bg-background border-primary/5 rounded-3xl font-sans text-sm font-bold text-foreground focus-visible:ring-primary/20" />
               </div>
               <div className="space-y-3">
-                <Label className="font-headline font-black text-[10px] text-foreground/40 tracking-[0.2em] uppercase">{t("field_department")} *</Label>
+                <Label className="font-bold text-[11px] text-muted-foreground tracking-widest uppercase ps-1">{t("field_department")} *</Label>
                 <Select value={form.department_id || "none"} onValueChange={(v) =>setForm({ ...form, department_id: v === "none" ? "" : v })}>
-                  <SelectTrigger className="h-14 bg-background border-primary/10 rounded-xl font-headline font-black text-[10px] tracking-widest text-foreground uppercase">
+                  <SelectTrigger className="h-14 bg-background border-primary/5 rounded-3xl font-bold text-[11px] tracking-wide text-foreground uppercase">
                     <SelectValue placeholder={t("select_dept")} />
                   </SelectTrigger>
-                  <SelectContent className="bg-surface border-primary/10 rounded-xl text-foreground">
-                    <SelectItem value="none" className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{t("select_none")}</SelectItem>
-                    {departments?.map((d) => <SelectItem key={d.id} value={d.id} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{d.name}</SelectItem>)}
+                  <SelectContent className="bg-surface border-primary/10 rounded-3xl">
+                    <SelectItem value="none" className="font-bold text-[10px] tracking-wide uppercase">{t("select_none")}</SelectItem>
+                    {departments?.map((d) => <SelectItem key={d.id} value={d.id} className="font-bold text-[10px] tracking-wide uppercase">{d.name}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>
               <div className="space-y-3">
-                <Label className="font-headline font-black text-[10px] text-foreground/40 tracking-[0.2em] uppercase">{t("field_employee_code")}</Label>
-                <Input placeholder={t("field_employee_code")} value={form.employee_code} onChange={(e) =>setForm({ ...form, employee_code: e.target.value })} className="h-14 bg-background border-primary/10 rounded-xl font-mono text-sm tracking-widest text-foreground" />
+                <Label className="font-bold text-[11px] text-muted-foreground tracking-widest uppercase ps-1">{t("field_employee_code")}</Label>
+                <Input placeholder={t("field_employee_code")} value={form.employee_code} onChange={(e) =>setForm({ ...form, employee_code: e.target.value })} className="h-14 bg-background border-primary/5 rounded-3xl font-sans text-sm text-foreground" />
               </div>
               <div className="space-y-3">
-                <Label className="font-headline font-black text-[10px] text-foreground/40 tracking-[0.2em] uppercase">{t("field_job_title")}</Label>
-                <Input placeholder={t("field_job_title")} value={form.job_title} onChange={(e) =>setForm({ ...form, job_title: e.target.value })} className="h-14 bg-background border-primary/10 rounded-xl font-mono text-sm tracking-widest text-foreground" />
+                <Label className="font-bold text-[11px] text-muted-foreground tracking-widest uppercase ps-1">{t("field_job_title")}</Label>
+                <Input placeholder={t("field_job_title")} value={form.job_title} onChange={(e) =>setForm({ ...form, job_title: e.target.value })} className="h-14 bg-background border-primary/5 rounded-3xl font-sans text-sm text-foreground" />
               </div>
               <div className="space-y-3">
-                <Label className="font-headline font-black text-[10px] text-foreground/40 tracking-[0.2em] uppercase">{t("field_email")}</Label>
-                <Input type="email" placeholder={t("field_email")} value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="h-14 bg-background border-primary/10 rounded-xl font-mono text-sm tracking-widest text-foreground" />
+                <Label className="font-bold text-[11px] text-muted-foreground tracking-widest uppercase ps-1">{t("field_email")}</Label>
+                <Input type="email" placeholder={t("field_email")} value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="h-14 bg-background border-primary/5 rounded-3xl font-sans text-sm text-foreground" />
               </div>
               <div className="space-y-3">
-                <Label className="font-headline font-black text-[10px] text-foreground/40 tracking-[0.2em] uppercase">{t("field_phone")}</Label>
-                <Input placeholder={t("field_phone")} value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="h-14 bg-background border-primary/10 rounded-xl font-mono text-sm tracking-widest text-foreground" />
+                <Label className="font-bold text-[11px] text-muted-foreground tracking-widest uppercase ps-1">{t("field_phone")}</Label>
+                <Input placeholder={t("field_phone")} value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="h-14 bg-background border-primary/5 rounded-3xl font-sans text-sm text-foreground" />
               </div>
               <div className="space-y-3">
-                <Label className="font-headline font-black text-[10px] text-foreground/40 tracking-[0.2em] uppercase">{t("field_joined_date")}</Label>
-                <Input type="date" value={form.joined_date} onChange={(e) =>setForm({ ...form, joined_date: e.target.value })} className="h-14 bg-background border-primary/10 rounded-xl font-mono text-sm tracking-widest text-foreground uppercase" />
+                <Label className="font-bold text-[11px] text-muted-foreground tracking-widest uppercase ps-1">{t("field_joined_date")}</Label>
+                <Input type="date" value={form.joined_date} onChange={(e) =>setForm({ ...form, joined_date: e.target.value })} className="h-14 bg-background border-primary/5 rounded-3xl font-sans text-sm text-foreground uppercase" />
               </div>
             </div>
             
-            <div className="p-8 border-t border-primary/10 bg-surface/50 backdrop-blur-sm flex justify-end gap-4">
-              <Button variant="ghost" className="rounded-xl font-headline font-black text-[10px] tracking-widest uppercase text-foreground hover:bg-muted/10" onClick={() =>{ setShowCreate(false); setEditTarget(null); }}>{t("common_cancel")}</Button>
-              <Button onClick={handleSave} disabled={saving} className="rounded-xl bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase px-10 py-6 h-auto shadow-md">{saving ? t("action_synchronizing") : editTarget ? t("action_apply_config") : t("action_init_operative")}
+            <div className="p-10 border-t border-primary/5 bg-background/50 flex justify-end gap-3">
+              <Button variant="ghost" className="rounded-full font-bold text-[11px] tracking-wide uppercase text-muted-foreground hover:bg-primary/5 px-8 h-12" onClick={() =>{ setShowCreate(false); setEditTarget(null); }}>{t("common_cancel")}</Button>
+              <Button onClick={handleSave} disabled={saving} className="rounded-full bg-primary text-primary-foreground font-bold text-[11px] tracking-wide uppercase px-12 h-12 shadow-lg shadow-primary/20">{saving ? t("action_synchronizing") : editTarget ? t("action_apply_config") : t("action_init_operative")}
               </Button>
             </div>
           </div>
-          <CornerMarks />
         </DialogContent>
       </Dialog>
 
       <AlertDialog open={!!deleteTarget} onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}>
-        <AlertDialogContent className="bg-surface border-2 border-rose-500/10 rounded-2xl text-foreground shadow-2xl">
+        <AlertDialogContent className="bg-surface border-primary/20 rounded-4xl shadow-2xl p-8">
           <AlertDialogHeader>
-            <AlertDialogTitle className="font-headline font-black text-2xl text-foreground uppercase tracking-tighter">{t("action_confirm_deactivate")} — {deleteTarget?.name}</AlertDialogTitle>
-            <AlertDialogDescription className="text-foreground/40 font-mono text-[10px] uppercase tracking-widest">{t("employees_deactivate_desc")}</AlertDialogDescription>
+            <AlertDialogTitle className="font-headline font-bold text-3xl text-foreground tracking-tight uppercase">{t("action_confirm_deactivate")} — {deleteTarget?.name}</AlertDialogTitle>
+            <AlertDialogDescription className="text-muted-foreground font-sans text-base mt-2">{t("employees_deactivate_desc")}</AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter className="mt-8 gap-3">
-            <AlertDialogCancel className="rounded-full border-primary/10 bg-muted/20 text-foreground font-headline font-black text-[10px] tracking-widest uppercase hover:bg-muted/30 h-auto py-3 px-8 transition-all">{t("common_cancel")}</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete} disabled={deleting} className="rounded-full bg-rose-600 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-rose-700 px-8 h-auto py-3 transition-all shadow-lg shadow-rose-500/20">{deleting ? t("action_purging") : t("action_confirm_deactivate")}</AlertDialogAction>
+          <AlertDialogFooter className="mt-10 gap-4">
+            <AlertDialogCancel className="rounded-full border-primary/10 bg-background text-foreground font-bold text-[11px] tracking-wide uppercase hover:bg-primary/5 h-12 px-10">{t("common_cancel")}</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete} disabled={deleting} className="rounded-full bg-rose-600 text-white font-bold text-[11px] tracking-wide uppercase hover:bg-rose-700 px-10 h-12 shadow-lg shadow-rose-600/20">{deleting ? t("action_purging") : t("action_confirm_deactivate")}
+            </AlertDialogAction>
           </AlertDialogFooter>
-          <CornerMarks />
         </AlertDialogContent>
       </AlertDialog>
 

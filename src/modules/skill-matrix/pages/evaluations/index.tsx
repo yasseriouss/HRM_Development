@@ -16,23 +16,14 @@ import { useFactory } from "@shared/contexts/FactoryContext";
 
 type EmployeeClass = "A" | "B" | "C" | null | undefined;
 
-const CornerMarks = ({ color = "primary" }: { color?: string }) => (
-  <>
-    <div className={`absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
-    <div className={`absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
-    <div className={`absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
-    <div className={`absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
-  </>
-);
-
 function classBadge(cls: EmployeeClass) {
   const map: Record<string, string> = {
-    A: "border-emerald-500/40 bg-emerald-500/5 text-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.1)]",
-    B: "border-amber-500/40 bg-amber-500/5 text-amber-400 shadow-[0_0_10px_rgba(245,158,11,0.1)]",
-    C: "border-rose-500/40 bg-rose-500/5 text-rose-400 shadow-[0_0_10px_rgba(244,63,94,0.1)]",
+    A: "border-emerald-500/20 bg-emerald-50 text-emerald-700",
+    B: "border-amber-500/20 bg-amber-50 text-amber-700",
+    C: "border-rose-500/20 bg-rose-50 text-rose-700",
   };
   return (
-    <Badge variant="outline" className={`rounded-none font-mono text-[8px] font-black tracking-[0.2em] px-2 py-1 uppercase ${map[cls ?? ""] ?? "border-zinc-800 text-zinc-600"}`}>
+    <Badge variant="outline" className={`rounded-full font-bold text-[9px] tracking-wider px-2.5 py-0.5 uppercase shadow-sm ${map[cls ?? ""] ?? "border-primary/10 bg-muted/30 text-muted-foreground"}`}>
       {cls ?? "N/A"}
     </Badge>
   );
@@ -40,17 +31,17 @@ function classBadge(cls: EmployeeClass) {
 
 function statusBadge(status: string, t: (k: any) => string) {
   const map: Record<string, string> = {
-    Active: "border-emerald-500/40 bg-emerald-500/5 text-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.1)]",
-    Completed: "border-blue-500/40 bg-blue-500/5 text-blue-400 shadow-[0_0_10px_rgba(59,130,246,0.1)]",
-    Draft: "border-amber-500/40 bg-amber-500/5 text-amber-400 shadow-[0_0_10px_rgba(245,158,11,0.1)]",
-    Archived: "border-zinc-800 bg-zinc-900/50 text-zinc-600",
+    Active: "border-emerald-500/20 bg-emerald-50 text-emerald-700",
+    Completed: "border-blue-500/20 bg-blue-50 text-blue-700",
+    Draft: "border-amber-500/20 bg-amber-50 text-amber-700",
+    Archived: "border-primary/10 bg-muted/30 text-muted-foreground",
   };
   const keyMap: Record<string, string>= {
     Active: "status_active", Completed: "status_completed",
     Draft: "status_draft", Archived: "status_archived",
   };
   return (
-    <Badge variant="outline" className={`rounded-none font-mono text-[8px] font-black tracking-[0.2em] px-2 py-1 uppercase whitespace-nowrap ${map[status] ?? ""}`}>{t((keyMap[status] ?? "status_draft") as any)}
+    <Badge variant="outline" className={`rounded-full font-bold text-[9px] tracking-wider px-2.5 py-0.5 uppercase shadow-sm ${map[status] ?? ""}`}>{t((keyMap[status] ?? "status_draft") as any)}
     </Badge>
   );
 }
@@ -83,36 +74,35 @@ function SummaryTable({ campaignId }: { campaignId: string }) {
   const classC = items.filter((r) => r.class === "C").length;
 
   return (
-    <div className="space-y-8">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">{[
+    <div className="space-y-10">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">{[
           { label: t("evaluations_evaluated"), value: items.length, color: "primary", icon: Users },
           { label: t("class_a"), value: classA, color: "emerald", icon: Target },
           { label: t("class_b"), value: classB, color: "amber", icon: TrendingUp },
           { label: t("class_c"), value: classC, color: "rose", icon: ShieldCheck }
         ].map((stat, i) => (
-          <div key={i} className="bg-zinc-900/50 border border-zinc-800 p-6 relative group overflow-hidden">
-             <stat.icon className={`absolute -right-2 -bottom-2 h-12 w-12 text-${stat.color}-500 opacity-5 group-hover:opacity-10 transition-opacity`} />
-             <p className="text-[9px] font-headline font-black text-zinc-500 uppercase tracking-widest">{stat.label}</p>
-             <p className={`text-3xl font-mono font-black text-white mt-2`}>{stat.value}</p>
-             <CornerMarks color={stat.color} />
+          <div key={i} className="bg-surface border border-primary/10 p-8 rounded-3xl relative group overflow-hidden shadow-sm hover:shadow-md transition-all">
+             <stat.icon className={`absolute -right-4 -bottom-4 h-20 w-20 text-${stat.color}-500/5 group-hover:scale-110 transition-transform`} />
+             <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{stat.label}</p>
+             <p className={`text-4xl font-headline font-bold text-foreground mt-3`}>{stat.value}</p>
           </div>
         ))}
       </div>
 
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-6 bg-zinc-900/30 border-s-4 border-primary">
-        <div className="flex items-center gap-4">
-          <div className="h-12 w-12 rounded-none bg-primary/10 flex items-center justify-center border border-primary/20">
-            <Activity className="h-6 w-6 text-primary" />
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-6 p-8 bg-surface border border-primary/10 rounded-3xl shadow-sm">
+        <div className="flex items-center gap-5">
+          <div className="h-14 w-14 rounded-2xl bg-primary/5 flex items-center justify-center border border-primary/10">
+            <Activity className="h-7 w-7 text-primary" />
           </div>
           <div>
-            <p className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">{t("evaluations_avg_score")}</p>
-            <p className="text-2xl font-mono font-black text-white">{avgPct.toFixed(1)}%</p>
+            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">{t("evaluations_avg_score")}</p>
+            <p className="text-3xl font-headline font-bold text-foreground leading-none">{avgPct.toFixed(1)}%</p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <Button
             variant="outline"
-            className="rounded-none border-zinc-800 bg-zinc-900 hover:bg-zinc-800 text-white font-headline font-black text-[10px] tracking-widest uppercase h-auto py-3 px-6"
+            className="rounded-full border-primary/10 bg-background hover:bg-primary/5 text-foreground font-bold text-[11px] tracking-wide uppercase h-11 px-6 shadow-sm"
             onClick={() =>exportToPDF({
               title: `${t("evaluations_title")} - ${campaignId}`,
               filename: `Evaluation_Report_${campaignId}`,
@@ -124,7 +114,7 @@ function SummaryTable({ campaignId }: { campaignId: string }) {
           </Button>
           <Button
             variant="outline"
-            className="rounded-none border-zinc-800 bg-zinc-900 hover:bg-zinc-800 text-white font-headline font-black text-[10px] tracking-widest uppercase h-auto py-3 px-6"
+            className="rounded-full border-primary/10 bg-background hover:bg-primary/5 text-foreground font-bold text-[11px] tracking-wide uppercase h-11 px-6 shadow-sm"
             onClick={() =>exportToExcel({
               title: `${t("evaluations_title")} - ${campaignId}`,
               filename: `Evaluation_Export_${campaignId}`,
@@ -137,34 +127,33 @@ function SummaryTable({ campaignId }: { campaignId: string }) {
         </div>
       </div>
 
-      <div className="border border-zinc-900 bg-[#0A0A0A] overflow-hidden">
+      <Card className="bg-surface border-primary/10 rounded-3xl overflow-hidden shadow-sm">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-zinc-900 bg-white/5 text-zinc-500">
-              <th className="px-6 py-4 font-headline font-black text-[10px] uppercase tracking-widest text-start">{t("field_employee")}</th>
-              <th className="px-6 py-4 font-headline font-black text-[10px] uppercase tracking-widest text-start">{t("field_code")}</th>
-              <th className="px-6 py-4 font-headline font-black text-[10px] uppercase tracking-widest text-end">{t("evaluations_col_score")}</th>
-              <th className="px-6 py-4 font-headline font-black text-[10px] uppercase tracking-widest text-end">%</th>
-              <th className="px-6 py-4 font-headline font-black text-[10px] uppercase tracking-widest text-start">{t("field_class")}</th>
+            <tr className="border-b border-primary/5 bg-muted/30 text-muted-foreground">
+              <th className="px-8 py-5 font-bold text-[10px] uppercase tracking-widest text-start">{t("field_employee")}</th>
+              <th className="px-8 py-5 font-bold text-[10px] uppercase tracking-widest text-start">{t("field_code")}</th>
+              <th className="px-8 py-5 font-bold text-[10px] uppercase tracking-widest text-end">{t("evaluations_col_score")}</th>
+              <th className="px-8 py-5 font-bold text-[10px] uppercase tracking-widest text-end">%</th>
+              <th className="px-8 py-5 font-bold text-[10px] uppercase tracking-widest text-start">{t("field_class")}</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-zinc-900">
+          <tbody className="divide-y divide-primary/5">
             {items.map((row) => (
-              <tr key={row.id} className="hover:bg-white/5 border-l-2 border-transparent hover:border-primary transition-all duration-300 group">
-                <td className="px-6 py-4 font-headline font-black text-white text-xs tracking-widest uppercase group-hover:text-primary transition-colors whitespace-nowrap">
-                  <Link href={`/employees/${row.employee_id}`}>{row.employee_name ?? "â€”"}
-                  </Link>
+              <tr key={row.id} className="hover:bg-primary/[0.01] transition-all duration-300 group">
+                <td className="px-8 py-5 font-bold text-foreground text-sm tracking-tight group-hover:text-primary transition-colors whitespace-nowrap">
+                  <Link href={`/employees/${row.employee_id}`}>{row.employee_name ?? "—"}</Link>
                 </td>
-                <td className="px-6 py-4 font-mono text-[10px] text-zinc-600 whitespace-nowrap uppercase tracking-widest">{row.employee_code ?? "â€”"}</td>
-                <td className="px-6 py-4 text-end font-mono text-[11px] text-zinc-500 whitespace-nowrap uppercase tracking-tighter">{Number(row.total_score).toFixed(0)} / {Number(row.max_possible_score).toFixed(0)}
+                <td className="px-8 py-5 font-sans font-bold text-[10px] text-muted-foreground whitespace-nowrap uppercase tracking-widest opacity-50">{row.employee_code ?? "—"}</td>
+                <td className="px-8 py-5 text-end font-sans font-bold text-[11px] text-muted-foreground whitespace-nowrap uppercase tracking-tighter">{Number(row.total_score).toFixed(0)} / {Number(row.max_possible_score).toFixed(0)}
                 </td>
-                <td className="px-6 py-4 text-end font-mono font-black text-white whitespace-nowrap">{Number(row.percentage).toFixed(1)}%</td>
-                <td className="px-6 py-4 whitespace-nowrap">{classBadge(row.class as EmployeeClass)}</td>
+                <td className="px-8 py-5 text-end font-sans font-bold text-foreground whitespace-nowrap">{Number(row.percentage).toFixed(1)}%</td>
+                <td className="px-8 py-5 whitespace-nowrap">{classBadge(row.class as EmployeeClass)}</td>
               </tr>
             ))}
           </tbody>
         </table>
-      </div>
+      </Card>
     </div>
   );
 }
@@ -188,57 +177,55 @@ export default function EvaluationsPage() {
     selectedCampaignId !== "all" ? allCampaigns.find((c) => c.id === selectedCampaignId) : null;
 
   return (
-    <div className="space-y-10 pb-20 font-sans text-white">
+    <div className="space-y-10 pb-20 font-sans selection:bg-primary/20 selection:text-primary">
       {/* Header */}
-      <div className="relative p-10 bg-[#0A0A0A] border-2 border-primary/20 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
-        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <ClipboardList className="h-4 w-4 text-primary" />
-              <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">{t("label_mission_control")}</span>
+      <div className="relative pt-12 pb-6 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="h-px w-8 bg-primary/20" />
+                <span className="font-sans font-bold tracking-widest text-[10px] text-primary uppercase">{t("label_mission_control")}</span>
+              </div>
+              <h1 className="text-6xl font-headline font-bold tracking-tight text-foreground leading-none">
+                {t("evaluations_title")}
+              </h1>
+              <p className="text-muted-foreground font-medium text-lg max-w-2xl ps-4 border-s-2 border-primary/10">{t("evaluations_subtitle")}</p>
             </div>
-            <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">{t("evaluations_title")}
-            </h2>
-            <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4">{t("evaluations_subtitle")}</p>
           </div>
         </div>
-        <CornerMarks />
       </div>
 
       {/* Metrics Row */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">{campaignsLoading ? (
-          Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="h-32 w-full bg-zinc-900 rounded-none" />)
+      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">{campaignsLoading ? (
+          Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="h-40 w-full bg-muted/50 rounded-3xl" />)
         ) : (
           <>
-            <Card className="bg-[#0D0D0D] border-zinc-800 rounded-none p-8 relative overflow-hidden group">
-              <ClipboardList className="absolute -right-2 -bottom-2 h-16 w-16 text-primary opacity-5 group-hover:opacity-10 transition-opacity" />
-              <p className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-4">{t("evaluations_total")}</p>
-              <h3 className="text-4xl font-mono font-black text-white">{allCampaigns.length}</h3>
-              <CornerMarks />
+            <Card className="bg-surface border-primary/10 rounded-3xl p-8 relative overflow-hidden group shadow-sm hover:shadow-md transition-all">
+              <ClipboardList className="absolute -right-4 -bottom-4 h-24 w-24 text-primary/5 group-hover:scale-110 transition-transform" />
+              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-4">{t("evaluations_total")}</p>
+              <h3 className="text-5xl font-headline font-bold text-foreground">{allCampaigns.length}</h3>
             </Card>
-            <Card className="bg-[#0D0D0D] border-zinc-800 rounded-none p-8 relative overflow-hidden group">
-              <Activity className="absolute -right-2 -bottom-2 h-16 w-16 text-emerald-500 opacity-5 group-hover:opacity-10 transition-opacity" />
-              <p className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-4">{t("evaluations_active")}</p>
-              <h3 className="text-4xl font-mono font-black text-emerald-500">{activeCampaigns.length}</h3>
-              <CornerMarks color="emerald" />
+            <Card className="bg-surface border-primary/10 rounded-3xl p-8 relative overflow-hidden group shadow-sm hover:shadow-md transition-all">
+              <Activity className="absolute -right-4 -bottom-4 h-24 w-24 text-emerald-500/5 group-hover:scale-110 transition-transform" />
+              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-4">{t("evaluations_active")}</p>
+              <h3 className="text-5xl font-headline font-bold text-emerald-600">{activeCampaigns.length}</h3>
             </Card>
-            <Card className="bg-[#0D0D0D] border-zinc-800 rounded-none p-8 relative overflow-hidden group">
-              <ShieldCheck className="absolute -right-2 -bottom-2 h-16 w-16 text-blue-500 opacity-5 group-hover:opacity-10 transition-opacity" />
-              <p className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-4">{t("evaluations_completed_count")}</p>
-              <h3 className="text-4xl font-mono font-black text-blue-400">{completedCampaigns.length}</h3>
-              <CornerMarks color="blue" />
+            <Card className="bg-surface border-primary/10 rounded-3xl p-8 relative overflow-hidden group shadow-sm hover:shadow-md transition-all">
+              <ShieldCheck className="absolute -right-4 -bottom-4 h-24 w-24 text-blue-500/5 group-hover:scale-110 transition-transform" />
+              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-4">{t("evaluations_completed_count")}</p>
+              <h3 className="text-5xl font-headline font-bold text-blue-600">{completedCampaigns.length}</h3>
             </Card>
           </>
         )}
       </div>
 
-      <div className="grid gap-8 lg:grid-cols-4">
-        <div className="lg:col-span-3 space-y-8">
-          <div className="p-1 bg-zinc-900/50 border border-zinc-800 flex flex-wrap gap-2">
+      <div className="max-w-7xl mx-auto px-4 grid gap-8 lg:grid-cols-4">
+        <div className="lg:col-span-3 space-y-10">
+          <div className="flex flex-wrap gap-2 p-1.5 bg-muted/30 rounded-2xl border border-primary/5">
             <Button 
               variant={selectedCampaignId === "all" ? "default" : "ghost"}
-              className={`rounded-none font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto ${selectedCampaignId === "all" ? "bg-primary" : "text-zinc-500 hover:text-white"}`}
+              className={`rounded-xl font-bold text-[10px] tracking-wide uppercase px-8 h-12 ${selectedCampaignId === "all" ? "bg-primary shadow-lg shadow-primary/20" : "text-muted-foreground hover:bg-primary/5 hover:text-primary"}`}
               onClick={() =>setSelectedCampaignId("all")}
             >
               {t("evaluations_all_campaigns")}
@@ -247,7 +234,7 @@ export default function EvaluationsPage() {
               <Button 
                 key={c.id}
                 variant={selectedCampaignId === c.id ? "default" : "ghost"}
-                className={`rounded-none font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto ${selectedCampaignId === c.id ? "bg-primary" : "text-zinc-500 hover:text-white"}`}
+                className={`rounded-xl font-bold text-[10px] tracking-wide uppercase px-8 h-12 ${selectedCampaignId === c.id ? "bg-primary shadow-lg shadow-primary/20" : "text-muted-foreground hover:bg-primary/5 hover:text-primary"}`}
                 onClick={() => setSelectedCampaignId(c.id)}
               >
                 {c.title}
@@ -256,14 +243,14 @@ export default function EvaluationsPage() {
           </div>
 
           {selectedCampaign ? (
-            <div className="space-y-6">
-              <div className="flex items-center justify-between border-b border-zinc-800 pb-6">
+            <div className="space-y-10">
+              <div className="flex items-center justify-between border-b border-primary/5 pb-8">
                 <div>
-                   <h3 className="text-3xl font-headline font-black text-white uppercase tracking-tighter">{selectedCampaign.title}</h3>
-                   <div className="flex items-center gap-4 mt-2">
-                      <span className="text-[10px] font-mono text-primary uppercase tracking-[0.3em]">{selectedCampaign.type}</span>
-                      <div className="h-1 w-1 rounded-full bg-zinc-800" />
-                      <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">{new Date(selectedCampaign.start_date).toLocaleDateString()} â€” {new Date(selectedCampaign.end_date).toLocaleDateString()}
+                   <h3 className="text-4xl font-headline font-bold text-foreground tracking-tight uppercase leading-tight">{selectedCampaign.title}</h3>
+                   <div className="flex items-center gap-6 mt-3">
+                      <span className="text-[10px] font-bold text-primary uppercase tracking-widest">{selectedCampaign.type}</span>
+                      <div className="h-1 w-1 rounded-full bg-primary/20" />
+                      <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-60">{new Date(selectedCampaign.start_date).toLocaleDateString()} — {new Date(selectedCampaign.end_date).toLocaleDateString()}
                       </span>
                    </div>
                 </div>
@@ -271,15 +258,15 @@ export default function EvaluationsPage() {
               </div>
               <SummaryTable campaignId={selectedCampaign.id} />
               
-              <div className="pt-6">
+              <div className="pt-8">
                 <Link href={`/campaigns/${selectedCampaign.id}`}>
-                  <Button className="rounded-none border border-primary/30 bg-primary/10 hover:bg-primary/20 text-primary font-headline font-black text-[11px] tracking-widest uppercase h-auto py-5 px-10">{t("campaign_enter_scores")} <ExternalLink className="ms-3 h-4 w-4" />
+                  <Button className="rounded-full bg-primary text-primary-foreground font-bold text-[11px] tracking-wide uppercase h-12 px-10 shadow-lg shadow-primary/20 transition-all">{t("campaign_enter_scores")} <ExternalLink className="ms-3 h-4 w-4" />
                   </Button>
                 </Link>
               </div>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                {allCampaigns.map(c => (
                  <motion.div 
                     key={c.id} 
@@ -287,17 +274,16 @@ export default function EvaluationsPage() {
                     onClick={() => setSelectedCampaignId(c.id)}
                     className="cursor-pointer"
                  >
-                    <Card className="bg-[#0D0D0D] border-zinc-800 rounded-none p-8 hover:border-primary/50 transition-all relative group">
+                    <Card className="bg-surface border-primary/10 rounded-3xl p-8 hover:border-primary/30 transition-all relative group shadow-sm hover:shadow-md flex flex-col h-full">
                        <div className="flex justify-between items-start mb-6">
-                          <span className="text-[9px] font-mono text-zinc-600 uppercase tracking-widest">{c.type}</span>
+                          <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-60">{c.type}</span>
                           {statusBadge(c.status, t)}
                        </div>
-                       <h4 className="text-xl font-headline font-black text-white uppercase group-hover:text-primary transition-colors tracking-tight leading-tight">{c.title}</h4>
-                       <div className="mt-8 pt-6 border-t border-zinc-900 flex justify-between items-center text-[10px] font-mono uppercase tracking-widest">
-                          <span className="text-zinc-500">{t("evaluations_evaluated_count", { evaluated: c.evaluated_count, total: c.total_employees })}</span>
-                          <ChevronRight className="h-4 w-4 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
+                       <h4 className="text-2xl font-headline font-bold text-foreground uppercase group-hover:text-primary transition-colors tracking-tight leading-tight mb-auto">{c.title}</h4>
+                       <div className="mt-8 pt-6 border-t border-primary/5 flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground opacity-60">
+                          <span>{t("evaluations_evaluated_count", { evaluated: c.evaluated_count, total: c.total_employees })}</span>
+                          <ChevronRight className="h-4 w-4 text-primary opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0" />
                        </div>
-                       <CornerMarks />
                     </Card>
                  </motion.div>
                ))}
@@ -306,51 +292,49 @@ export default function EvaluationsPage() {
         </div>
 
         <div className="space-y-8">
-          <Card className="bg-[#0A0A0A] border-2 border-primary/20 rounded-none p-0 overflow-hidden relative shadow-2xl">
-            <div className="absolute inset-0 bg-primary/5 pointer-events-none" />
-            <div className="p-8 space-y-8 relative z-10">
-              <div className="flex items-center gap-3 border-b border-white/5 pb-6">
-                <LayoutPanelLeft className="h-5 w-5 text-primary" />
-                <h3 className="font-headline font-black text-sm uppercase tracking-widest text-white">{t("evaluations_bulk_tools")}</h3>
+          <Card className="bg-surface border border-primary/10 rounded-3xl p-0 overflow-hidden relative shadow-sm">
+            <div className="p-8 space-y-10 relative z-10">
+              <div className="flex items-center gap-4 border-b border-primary/5 pb-6">
+                <LayoutPanelLeft className="h-6 w-6 text-primary" />
+                <h3 className="font-bold text-xs uppercase tracking-widest text-foreground">{t("evaluations_bulk_tools")}</h3>
               </div>
               
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <p className="text-[9px] font-mono text-zinc-500 uppercase tracking-[0.3em]">{t("evaluations_spreadsheet_tool")}</p>
-                  <Button asChild variant="outline" className="w-full justify-between h-auto py-5 rounded-none border-zinc-800 bg-zinc-900 hover:bg-zinc-800 group border-s-4 border-s-emerald-500">
-                    <a href="/hrm-spreadsheet" className="flex items-center gap-3 w-full">
-                      <Table className="h-5 w-5 text-emerald-500 group-hover:scale-110 transition-transform" />
-                      <span className="font-headline font-black text-[10px] tracking-widest uppercase text-white flex-1 text-start">{t("evaluations_spreadsheet_tool")}</span>
-                      <ExternalLink className="h-3 w-3 text-zinc-600" />
+              <div className="space-y-6">
+                <div className="space-y-3">
+                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-60">{t("evaluations_spreadsheet_tool")}</p>
+                  <Button asChild variant="outline" className="w-full justify-between h-14 rounded-2xl border-primary/10 bg-background hover:bg-primary/5 group transition-all">
+                    <a href="/hrm-spreadsheet" className="flex items-center gap-4 w-full">
+                      <Table className="h-5 w-5 text-emerald-600 group-hover:scale-110 transition-transform" />
+                      <span className="font-bold text-[11px] tracking-wide uppercase text-foreground flex-1 text-start">{t("evaluations_spreadsheet_tool")}</span>
+                      <ExternalLink className="h-4 w-4 text-muted-foreground opacity-40" />
                     </a>
                   </Button>
-                  <p className="text-[9px] font-mono text-zinc-600 leading-relaxed uppercase tracking-tighter italic">{t("evaluations_spreadsheet_desc")}
+                  <p className="text-[10px] font-medium text-muted-foreground leading-relaxed italic opacity-70 ps-1">{t("evaluations_spreadsheet_desc")}
                   </p>
                 </div>
 
-                <div className="space-y-2 pt-6 border-t border-white/5">
-                  <p className="text-[9px] font-mono text-zinc-500 uppercase tracking-[0.3em]">{t("evaluations_download_template")}</p>
-                  <Button asChild variant="outline" className="w-full justify-between h-auto py-5 rounded-none border-zinc-800 bg-zinc-900 hover:bg-zinc-800 group border-s-4 border-s-blue-500">
-                    <a href="/hrm-skill-matrix-template.xlsx" download className="flex items-center gap-3 w-full">
-                      <FileText className="h-5 w-5 text-blue-500 group-hover:scale-110 transition-transform" />
-                      <span className="font-headline font-black text-[10px] tracking-widest uppercase text-white flex-1 text-start">{t("evaluations_download_template")}</span>
-                      <Download className="h-3 w-3 text-zinc-600" />
+                <div className="space-y-3 pt-6 border-t border-primary/5">
+                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-60">{t("evaluations_download_template")}</p>
+                  <Button asChild variant="outline" className="w-full justify-between h-14 rounded-2xl border-primary/10 bg-background hover:bg-primary/5 group transition-all">
+                    <a href="/hrm-skill-matrix-template.xlsx" download className="flex items-center gap-4 w-full">
+                      <FileText className="h-5 w-5 text-blue-600 group-hover:scale-110 transition-transform" />
+                      <span className="font-bold text-[11px] tracking-wide uppercase text-foreground flex-1 text-start">{t("evaluations_download_template")}</span>
+                      <Download className="h-4 w-4 text-muted-foreground opacity-40" />
                     </a>
                   </Button>
                 </div>
               </div>
             </div>
-            <CornerMarks />
           </Card>
 
-          <div className="p-8 border-2 border-emerald-500/10 bg-emerald-500/2 relative overflow-hidden group">
-             <Activity className="absolute -right-4 -top-4 h-24 w-24 text-emerald-500 opacity-5 group-hover:opacity-10 transition-all duration-700 group-hover:rotate-12" />
-             <p className="font-headline font-black text-[11px] text-emerald-500 uppercase tracking-[0.3em] mb-4">{t("label_system_intelligence")}</p>
-             <p className="text-xs text-zinc-500 leading-relaxed uppercase tracking-tight font-medium">{t("evaluations_intelligence_desc")}
+          <div className="p-8 border border-emerald-500/10 bg-emerald-50/50 rounded-3xl relative overflow-hidden group shadow-sm">
+             <Activity className="absolute -right-8 -top-8 h-32 w-32 text-emerald-500/5 group-hover:scale-110 transition-all duration-700 group-hover:rotate-12" />
+             <p className="font-bold text-[11px] text-emerald-600 uppercase tracking-widest mb-4">{t("label_system_intelligence")}</p>
+             <p className="text-xs text-muted-foreground leading-relaxed font-medium">{t("evaluations_intelligence_desc")}
              </p>
              <div className="mt-8 flex items-center gap-3 group/link cursor-pointer">
-                <span className="font-headline font-black text-[10px] text-white tracking-widest uppercase border-b border-transparent group-hover/link:border-emerald-500 transition-all">{t("suite_dashboard")}</span>
-                <TrendingUp className="h-3 w-3 text-emerald-500 group-hover/link:translate-x-1 transition-transform" />
+                <span className="font-bold text-[11px] text-foreground tracking-widest uppercase border-b border-transparent group-hover/link:border-emerald-500 transition-all">{t("suite_dashboard")}</span>
+                <TrendingUp className="h-3.5 w-3.5 text-emerald-600 group-hover/link:translate-x-1 transition-transform" />
              </div>
           </div>
         </div>

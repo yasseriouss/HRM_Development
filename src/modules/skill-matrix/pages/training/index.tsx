@@ -38,25 +38,19 @@ const TYPES = ["Immediate", "Short-term", "Long-term", "Promotion"] as const;
 type TrainingType = (typeof TYPES)[number];
 type TrainingStatus = (typeof STATUSES)[number];
 
-const CornerMarks = ({ color = "primary" }: { color?: string }) => (
-  <>
-    <div className={`absolute top-0 left-0 w-2 h-2 border-t border-l border-${color}/40`} />
-    <div className={`absolute top-0 right-0 w-2 h-2 border-t border-r border-${color}/40`} />
-    <div className={`absolute bottom-0 left-0 w-2 h-2 border-b border-l border-${color}/40`} />
-    <div className={`absolute bottom-0 right-0 w-2 h-2 border-b border-r border-${color}/40`} />
-  </>
-);
+// CornerMarks removed - legacy industrial element
+
 
 function statusBadge(status: string, t: (k: any) => string) {
   const map: Record<string, { bg: string; text: string; key: string }>= {
-    Pending: { bg: "bg-amber-500/10", text: "text-amber-500", key: "training_pending" },
-    "In Progress": { bg: "bg-sky-500/10", text: "text-sky-500", key: "training_in_progress" },
-    Completed: { bg: "bg-emerald-500/10", text: "text-emerald-500", key: "training_completed" },
-    Cancelled: { bg: "bg-zinc-500/10", text: "text-zinc-500", key: "training_cancelled" },
+    Pending: { bg: "bg-amber-100 text-amber-700 border-amber-200", text: "", key: "training_pending" },
+    "In Progress": { bg: "bg-sky-100 text-sky-700 border-sky-200", text: "", key: "training_in_progress" },
+    Completed: { bg: "bg-emerald-100 text-emerald-700 border-emerald-200", text: "", key: "training_completed" },
+    Cancelled: { bg: "bg-zinc-100 text-zinc-700 border-zinc-200", text: "", key: "training_cancelled" },
   };
   const config = map[status] ?? map.Pending;
   return (
-    <Badge variant="outline" className={`rounded-none font-mono text-[9px] font-black border-current/20 px-2 py-0.5 uppercase tracking-widest whitespace-nowrap ${config.bg} ${config.text}`}>
+    <Badge variant="outline" className={`rounded-full font-headline text-[10px] font-bold px-3 py-1 uppercase tracking-tight whitespace-nowrap ${config.bg}`}>
       {t(config.key)}
     </Badge>);
 }
@@ -70,14 +64,14 @@ const TRAINING_TYPE_KEYS: Record<string, string>= {
 
 function typeBadge(type: string, t: (k: any) => string) {
   const map: Record<string, { bg: string; text: string }> = {
-    Immediate: { bg: "bg-rose-500/10", text: "text-rose-500" },
-    "Short-term": { bg: "bg-amber-500/10", text: "text-amber-500" },
-    "Long-term": { bg: "bg-sky-500/10", text: "text-sky-500" },
-    Promotion: { bg: "bg-violet-500/10", text: "text-violet-500" },
+    Immediate: { bg: "bg-rose-100 text-rose-700 border-rose-200", text: "" },
+    "Short-term": { bg: "bg-amber-100 text-amber-700 border-amber-200", text: "" },
+    "Long-term": { bg: "bg-sky-100 text-sky-700 border-sky-200", text: "" },
+    Promotion: { bg: "bg-violet-100 text-violet-700 border-violet-200", text: "" },
   };
   const config = map[type] ?? map.Immediate;
   return (
-    <Badge variant="outline" className={`rounded-none font-mono text-[9px] font-black border-current/20 px-2 py-0.5 uppercase tracking-widest whitespace-nowrap ${config.bg} ${config.text}`}>{t((TRAINING_TYPE_KEYS[type] ?? "training_type_short") as any)}
+    <Badge variant="outline" className={`rounded-full font-headline text-[10px] font-bold px-3 py-1 uppercase tracking-tight whitespace-nowrap ${config.bg}`}>{t((TRAINING_TYPE_KEYS[type] ?? "training_type_short") as any)}
     </Badge>);
 }
 
@@ -243,45 +237,45 @@ export default function TrainingPage() {
   };
 
   return (
-    <div className="space-y-8 pb-20 font-sans selection:bg-primary selection:text-primary-foreground">
-      {/* Header - Industrial Style */}
-      <div className="relative p-10 bg-[#0A0A0A] border-2 border-primary/20 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
+    <div className="space-y-8 pb-20 font-sans selection:bg-primary/30">
+      {/* Header - Editorial Style */}
+      <div className="relative p-12 bg-surface border border-muted/20 rounded-3xl overflow-hidden shadow-sm">
         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="space-y-3">
+          <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <Activity className="h-4 w-4 text-primary animate-pulse" />
-              <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">{t("training_protocol_label")}</span>
+              <div className="p-2 bg-primary/10 rounded-xl">
+                <Target className="h-5 w-5 text-primary" />
+              </div>
+              <span className="font-headline font-bold tracking-tight text-sm text-primary uppercase">{t("training_protocol_label")}</span>
             </div>
-            <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">{t("training_title")}
+            <h2 className="text-5xl font-headline font-extrabold tracking-tight text-foreground leading-none">{t("training_title")}
             </h2>
-            <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4">{t("training_subtitle")}</p>
+            <p className="text-muted-foreground font-medium border-s-2 border-primary/20 ps-6 max-w-2xl">{t("training_subtitle")}</p>
           </div>
           
           {isAdmin && (
-            <Button className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto hover:bg-primary/90" onClick={() => { setCreateForm(emptyCreateForm()); setShowCreate(true); }}>
-              <Plus className="h-4 w-4 me-2" />{t("training_new")}
+            <Button className="rounded-2xl bg-primary text-primary-foreground font-headline font-bold text-sm tracking-tight py-7 px-10 h-auto hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all hover:scale-[1.02]" onClick={() => { setCreateForm(emptyCreateForm()); setShowCreate(true); }}>
+              <Plus className="h-5 w-5 me-2" />{t("training_new")}
             </Button>
           )}
         </div>
-        <CornerMarks />
       </div>
 
       {/* Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">{[
-          { label: t("training_pending"), value: pending, icon: Target, color: "text-amber-500" },
-          { label: t("training_in_progress"), value: inProgress, icon: Cpu, color: "text-sky-500" },
-          { label: t("training_completed"), value: completed, icon: Shield, color: "text-emerald-500" },
+          { label: t("training_pending"), value: pending, icon: Target, color: "text-amber-600", bg: "bg-amber-50" },
+          { label: t("training_in_progress"), value: inProgress, icon: Cpu, color: "text-sky-600", bg: "bg-sky-50" },
+          { label: t("training_completed"), value: completed, icon: Shield, color: "text-emerald-600", bg: "bg-emerald-50" },
         ].map((m, i) => (
-          <Card key={i} className="bg-[#121212] border border-white/10 rounded-none relative group overflow-hidden">
-             <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+          <Card key={i} className="bg-surface border border-muted/20 rounded-3xl relative group overflow-hidden hover:border-primary/30 transition-all duration-300">
+             <div className={`absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity ${m.color}`}>
                 <m.icon className="h-16 w-16" />
              </div>
              <CardContent className="p-8">
-                <p className="font-headline font-black text-[9px] tracking-[0.3em] text-secondary/40 uppercase mb-2">{m.label}</p>
+                <p className="font-headline font-bold text-xs tracking-tight text-muted-foreground uppercase mb-3">{m.label}</p>
                 <div className="flex items-baseline gap-2">
-                   <p className={`text-4xl font-headline font-black tracking-tighter ${m.color}`}>{m.value}</p>
-                   <span className="text-[10px] font-mono text-secondary/20 uppercase">{t("label_total_nodes")}</span>
+                   <p className={`text-4xl font-headline font-extrabold tracking-tight ${m.color}`}>{m.value}</p>
+                   <span className="text-[10px] font-medium text-muted-foreground/40 uppercase">{t("label_total_nodes")}</span>
                 </div>
              </CardContent>
           </Card>
@@ -289,17 +283,19 @@ export default function TrainingPage() {
       </div>
 
       {/* Control Panel */}
-      <Card className="bg-[#121212] border border-white/10 rounded-none relative">
-        <CardContent className="p-8">
+      <Card className="bg-surface border border-muted/20 rounded-3xl relative">
+        <CardContent className="p-6">
           <div className="flex flex-col md:flex-row items-center gap-6">
             <div className="w-full md:w-80 relative">
-              <Label className="font-headline font-black text-[9px] text-secondary/40 tracking-widest uppercase mb-2 block">{t("filter_by_status_label")}</Label>
+              <Label className="font-headline font-bold text-xs text-muted-foreground tracking-tight uppercase mb-3 block">{t("filter_by_status_label")}</Label>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
+                <SelectTrigger className="h-12 bg-background border-muted/20 rounded-xl font-headline font-bold text-sm tracking-tight text-foreground">
                   <SelectValue placeholder={t("filter_by_status")} />
                 </SelectTrigger>
-                <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">{STATUS_OPTIONS.map((opt) => (
-                    <SelectItem key={opt.value} value={opt.value} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{STATUS_LABELS[opt.value]}
+                <SelectContent className="bg-surface border-muted/20 rounded-xl">
+                  {STATUS_OPTIONS.map((opt) => (
+                    <SelectItem key={opt.value} value={opt.value} className="font-headline font-medium text-sm focus:bg-primary/10">
+                      {STATUS_LABELS[opt.value]}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -310,58 +306,60 @@ export default function TrainingPage() {
       </Card>
 
       {/* Data Table */}
-      <div className="relative border border-white/10 bg-[#0A0A0A] overflow-hidden">
+      <div className="relative border border-muted/20 bg-surface rounded-3xl overflow-hidden shadow-sm">
         {isLoading ? (
           <div className="p-8 space-y-4">{Array.from({ length: 6 }).map((_, i) => (
-                <Skeleton key={i} className="h-16 w-full bg-white/5 rounded-none" />
+                <Skeleton key={i} className="h-16 w-full bg-muted/5 rounded-xl" />
              ))}
           </div>
         ) : items.length === 0 ? (
-          <div className="p-20 text-center space-y-4">
-            <HardDrive className="h-12 w-12 text-secondary/10 mx-auto" />
-            <p className="font-mono text-xs text-secondary/30 uppercase tracking-[0.3em]">{t("label_no_records")}</p>
+          <div className="p-24 text-center space-y-6">
+            <div className="p-6 bg-background rounded-full w-24 h-24 flex items-center justify-center mx-auto">
+              <HardDrive className="h-10 w-10 text-muted/30" />
+            </div>
+            <p className="font-headline font-bold text-sm text-muted-foreground uppercase tracking-widest">{t("label_no_records")}</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-start border-collapse text-sm">
               <thead>
-                <tr className="bg-white/5 border-b border-white/10">
-                  <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase whitespace-nowrap">{t("field_employee")}</th>
-                  <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase whitespace-nowrap">{t("field_skill")}</th>
-                  <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase whitespace-nowrap">{t("field_type")}</th>
-                  <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase whitespace-nowrap">{t("field_status")}</th>
-                  <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase whitespace-nowrap">{t("training_col_target_date")}</th>
-                  <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase whitespace-nowrap">{t("field_notes")}</th>
-                  <th className="px-8 py-5 font-headline font-black text-[10px] tracking-widest text-secondary/40 uppercase whitespace-nowrap text-end">{t("common_actions")}</th>
+                <tr className="bg-muted/5 border-b border-muted/10">
+                  <th className="px-8 py-6 font-headline font-bold text-xs tracking-tight text-muted-foreground uppercase whitespace-nowrap">{t("field_employee")}</th>
+                  <th className="px-8 py-6 font-headline font-bold text-xs tracking-tight text-muted-foreground uppercase whitespace-nowrap">{t("field_skill")}</th>
+                  <th className="px-8 py-6 font-headline font-bold text-xs tracking-tight text-muted-foreground uppercase whitespace-nowrap">{t("field_type")}</th>
+                  <th className="px-8 py-6 font-headline font-bold text-xs tracking-tight text-muted-foreground uppercase whitespace-nowrap">{t("field_status")}</th>
+                  <th className="px-8 py-6 font-headline font-bold text-xs tracking-tight text-muted-foreground uppercase whitespace-nowrap">{t("training_col_target_date")}</th>
+                  <th className="px-8 py-6 font-headline font-bold text-xs tracking-tight text-muted-foreground uppercase whitespace-nowrap">{t("field_notes")}</th>
+                  <th className="px-8 py-6 font-headline font-bold text-xs tracking-tight text-muted-foreground uppercase whitespace-nowrap text-end">{t("common_actions")}</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5">
+              <tbody className="divide-y divide-muted/10">
                 {items.map((r) => (
-                  <tr key={r.id} className="group hover:bg-white/2 transition-colors">
-                    <td className="px-8 py-6 whitespace-nowrap">
+                  <tr key={r.id} className="group hover:bg-muted/5 transition-colors">
+                    <td className="px-8 py-7 whitespace-nowrap">
                       <Link href={`/employees/${r.employee_id}`} className="group/link">
-                        <p className="font-headline font-black text-white text-base tracking-tight group-hover/link:text-primary transition-colors uppercase whitespace-nowrap">{r.employee_name ?? "—"}
+                        <p className="font-headline font-bold text-foreground text-base tracking-tight group-hover/link:text-primary transition-colors whitespace-nowrap">{r.employee_name ?? "—"}
                         </p>
-                        <div className="flex items-center gap-1 text-[9px] font-mono text-secondary/20 mt-1 uppercase whitespace-nowrap">
+                        <div className="flex items-center gap-1.5 text-[10px] font-bold text-muted-foreground/60 mt-1 uppercase whitespace-nowrap">
                           <ExternalLink className="h-3 w-3" />{t("label_node_profile")}
                         </div>
                       </Link>
                     </td>
-                    <td className="px-8 py-6 font-mono text-[11px] text-primary/60 whitespace-nowrap">{r.skill_name ?? "—"}</td>
-                    <td className="px-8 py-6 whitespace-nowrap">{typeBadge(r.recommendation_type, t)}</td>
-                    <td className="px-8 py-6 whitespace-nowrap">{statusBadge(r.status, t)}</td>
-                    <td className="px-8 py-6 font-mono text-[11px] text-secondary/40 whitespace-nowrap">{r.target_date ? new Date(r.target_date).toLocaleDateString() : t("common_no_data")}
+                    <td className="px-8 py-7 font-headline font-bold text-xs text-primary/70 whitespace-nowrap">{r.skill_name ?? "—"}</td>
+                    <td className="px-8 py-7 whitespace-nowrap">{typeBadge(r.recommendation_type, t)}</td>
+                    <td className="px-8 py-7 whitespace-nowrap">{statusBadge(r.status, t)}</td>
+                    <td className="px-8 py-7 font-headline font-bold text-xs text-muted-foreground whitespace-nowrap">{r.target_date ? new Date(r.target_date).toLocaleDateString() : t("common_no_data")}
                     </td>
-                    <td className="px-8 py-6">
-                       <p className="text-[11px] font-medium text-secondary/40 max-w-xs truncate italic">{r.notes ?? "—"}</p>
+                    <td className="px-8 py-7">
+                       <p className="text-xs font-medium text-muted-foreground max-w-xs truncate italic">{r.notes ?? "—"}</p>
                     </td>
-                    <td className="px-8 py-6 text-end">
+                    <td className="px-8 py-7 text-end">
                       {isAdmin && (
-                        <div className="flex items-center justify-end gap-2">
-                          <Button size="icon" variant="ghost" className="h-10 w-10 rounded-none border border-transparent hover:border-primary/30 hover:bg-primary/5 text-secondary/30 hover:text-primary" onClick={() => openEdit(r)}>
+                        <div className="flex items-center justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Button size="icon" variant="ghost" className="h-10 w-10 rounded-xl border border-transparent hover:border-primary/30 hover:bg-primary/10 text-muted-foreground hover:text-primary" onClick={() => openEdit(r)}>
                             <Pencil className="h-4 w-4" />
                           </Button>
-                          <Button size="icon" variant="ghost" className="h-10 w-10 rounded-none border border-transparent hover:border-rose-500/30 hover:bg-rose-500/5 text-secondary/30 hover:text-rose-500" onClick={() =>setDeleteTarget({ id: r.id, name: r.employee_name ?? r.id })}>
+                          <Button size="icon" variant="ghost" className="h-10 w-10 rounded-xl border border-transparent hover:border-rose-500/30 hover:bg-rose-500/10 text-muted-foreground hover:text-rose-500" onClick={() =>setDeleteTarget({ id: r.id, name: r.employee_name ?? r.id })}>
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>
@@ -377,133 +375,128 @@ export default function TrainingPage() {
 
       {/* Forms & Dialogs */}
       <Dialog open={showCreate} onOpenChange={(open) => { if (!open) setShowCreate(false); }}>
-        <DialogContent className="max-w-2xl bg-[#0A0A0A] border-2 border-primary/30 rounded-none p-0 overflow-hidden text-white">
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5" />
+        <DialogContent className="max-w-2xl bg-surface border border-muted/20 rounded-3xl p-0 overflow-hidden text-foreground">
           <div className="relative z-10">
-            <div className="p-8 border-b border-white/10 bg-white/5">
-              <h2 className="font-headline font-black text-2xl text-white uppercase tracking-tighter">{t("training_create_title")}
+            <div className="p-8 border-b border-muted/10 bg-muted/5">
+              <h2 className="font-headline font-extrabold text-3xl text-foreground tracking-tight">{t("training_create_title")}
               </h2>
-              <p className="text-[10px] font-mono text-primary tracking-[0.3em] mt-2 uppercase">{t("label_protocol_sequence")}</p>
+              <p className="text-xs font-bold text-primary tracking-widest mt-2 uppercase">{t("label_protocol_sequence")}</p>
             </div>
             
             <div className="p-10 grid grid-cols-2 gap-8">
               <div className="col-span-2 space-y-3">
-                <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_employee")} *</Label>
+                <Label className="font-headline font-bold text-xs text-muted-foreground tracking-tight uppercase">{t("field_employee")} *</Label>
                 <Select value={createForm.employee_id || "none"} onValueChange={(v) =>setCreateForm({ ...createForm, employee_id: v === "none" ? "" : v })}>
-                  <SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
+                  <SelectTrigger className="h-14 bg-background border-muted/20 rounded-2xl font-headline font-bold text-sm text-foreground">
                     <SelectValue placeholder={t("select_none")} />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">
-                    <SelectItem value="none" className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{t("select_none")}</SelectItem>
+                  <SelectContent className="bg-surface border-muted/20 rounded-2xl">
+                    <SelectItem value="none" className="font-headline font-bold text-xs focus:bg-primary/10">{t("select_none")}</SelectItem>
                     {(employeesData?.data ?? []).map((e: Employee) => (
-                      <SelectItem key={e.id} value={e.id} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{e.full_name}</SelectItem>
+                      <SelectItem key={e.id} value={e.id} className="font-headline font-bold text-xs focus:bg-primary/10">{e.full_name}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
               <div className="space-y-3">
-                <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_type")} *</Label>
+                <Label className="font-headline font-bold text-xs text-muted-foreground tracking-tight uppercase">{t("field_type")} *</Label>
                 <Select value={createForm.recommendation_type} onValueChange={(v) =>setCreateForm({ ...createForm, recommendation_type: v as TrainingType })}>
-                  <SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
+                  <SelectTrigger className="h-14 bg-background border-muted/20 rounded-2xl font-headline font-bold text-sm text-foreground">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">
-                    {TYPES.map((tp) => <SelectItem key={tp} value={tp} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{tp}</SelectItem>)}
+                  <SelectContent className="bg-surface border-muted/20 rounded-2xl">
+                    {TYPES.map((tp) => <SelectItem key={tp} value={tp} className="font-headline font-bold text-xs focus:bg-primary/10">{tp}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>
               <div className="space-y-3">
-                <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_related_skill")}</Label>
+                <Label className="font-headline font-bold text-xs text-muted-foreground tracking-tight uppercase">{t("field_related_skill")}</Label>
                 <Select value={createForm.skill_id || "none"} onValueChange={(v) =>setCreateForm({ ...createForm, skill_id: v === "none" ? "" : v })}>
-                  <SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
+                  <SelectTrigger className="h-14 bg-background border-muted/20 rounded-2xl font-headline font-bold text-sm text-foreground">
                     <SelectValue placeholder={t("optional")} />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">
-                    <SelectItem value="none" className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{t("select_none")}</SelectItem>
-                    {(skills ?? []).map((s: Skill) => <SelectItem key={s.id} value={s.id} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{s.name}</SelectItem>)}
+                  <SelectContent className="bg-surface border-muted/20 rounded-2xl">
+                    <SelectItem value="none" className="font-headline font-bold text-xs focus:bg-primary/10">{t("select_none")}</SelectItem>
+                    {(skills ?? []).map((s: Skill) => <SelectItem key={s.id} value={s.id} className="font-headline font-bold text-xs focus:bg-primary/10">{s.name}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>
               <div className="space-y-3">
-                <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("training_col_target_date")}</Label>
-                <Input type="date" value={createForm.target_date} onChange={(e) =>setCreateForm({ ...createForm, target_date: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white uppercase" />
+                <Label className="font-headline font-bold text-xs text-muted-foreground tracking-tight uppercase">{t("training_col_target_date")}</Label>
+                <Input type="date" value={createForm.target_date} onChange={(e) =>setCreateForm({ ...createForm, target_date: e.target.value })} className="h-14 bg-background border-muted/20 rounded-2xl font-headline font-bold text-sm text-foreground" />
               </div>
               <div className="col-span-2 space-y-3">
-                <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_notes")}</Label>
-                <Input placeholder={t("label_remarks_spec")} value={createForm.notes} onChange={(e) => setCreateForm({ ...createForm, notes: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white" />
+                <Label className="font-headline font-bold text-xs text-muted-foreground tracking-tight uppercase">{t("field_notes")}</Label>
+                <Input placeholder={t("label_remarks_spec")} value={createForm.notes} onChange={(e) => setCreateForm({ ...createForm, notes: e.target.value })} className="h-14 bg-background border-muted/20 rounded-2xl font-headline font-bold text-sm text-foreground" />
               </div>
             </div>
             
-            <div className="p-8 border-t border-white/10 bg-white/5 flex justify-end gap-4">
-              <Button variant="ghost" className="rounded-none font-headline font-black text-[10px] tracking-widest uppercase text-white hover:bg-white/5" onClick={() =>setShowCreate(false)}>{t("common_cancel")}</Button>
-              <Button onClick={handleCreate} disabled={saving} className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase px-10 py-6 h-auto">{saving ? t("action_synchronizing") : t("training_new")}
+            <div className="p-8 border-t border-muted/10 bg-muted/5 flex justify-end gap-4">
+              <Button variant="ghost" className="rounded-2xl font-headline font-bold text-sm text-muted-foreground hover:bg-muted/10" onClick={() =>setShowCreate(false)}>{t("common_cancel")}</Button>
+              <Button onClick={handleCreate} disabled={saving} className="rounded-2xl bg-primary text-primary-foreground font-headline font-bold text-sm px-10 py-7 h-auto shadow-lg shadow-primary/20">{saving ? t("action_synchronizing") : t("training_new")}
               </Button>
             </div>
           </div>
-          <CornerMarks />
         </DialogContent>
       </Dialog>
 
       <Dialog open={!!editTarget} onOpenChange={(open) => { if (!open) setEditTarget(null); }}>
-        <DialogContent className="max-w-md bg-[#0A0A0A] border-2 border-primary/30 rounded-none p-0 overflow-hidden text-white">
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5" />
+        <DialogContent className="max-w-md bg-surface border border-muted/20 rounded-3xl p-0 overflow-hidden text-foreground">
           <div className="relative z-10">
-            <div className="p-8 border-b border-white/10 bg-white/5">
-              <h2 className="font-headline font-black text-2xl text-white uppercase tracking-tighter">{t("action_reconfigure")}</h2>
-              <p className="text-[10px] font-mono text-primary tracking-[0.3em] mt-2 uppercase">{t("label_update_sequence")}</p>
+            <div className="p-8 border-b border-muted/10 bg-muted/5">
+              <h2 className="font-headline font-extrabold text-2xl text-foreground tracking-tight">{t("action_reconfigure")}</h2>
+              <p className="text-xs font-bold text-primary tracking-widest mt-2 uppercase">{t("label_update_sequence")}</p>
             </div>
             
             <div className="p-8 space-y-6">
               {editTarget && (
-                <div className="bg-white/5 p-4 border border-white/10">
-                  <p className="font-headline font-black text-[10px] text-primary tracking-widest uppercase mb-1">{t("label_target_node")}</p>
-                  <p className="text-sm font-black text-white uppercase">{editTarget.employee_name}</p>
-                  <p className="text-[9px] font-mono text-secondary/40 mt-1 uppercase">{editTarget.skill_name || t("label_general_development")}</p>
+                <div className="bg-muted/5 p-5 border border-muted/20 rounded-2xl">
+                  <p className="font-headline font-bold text-[10px] text-primary tracking-widest uppercase mb-2">{t("label_target_node")}</p>
+                  <p className="text-lg font-extrabold text-foreground tracking-tight">{editTarget.employee_name}</p>
+                  <p className="text-xs font-medium text-muted-foreground mt-1">{editTarget.skill_name || t("label_general_development")}</p>
                 </div>
               )}
               <div className="space-y-3">
-                <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_status")}</Label>
+                <Label className="font-headline font-bold text-xs text-muted-foreground tracking-tight uppercase">{t("field_status")}</Label>
                 <Select value={editForm.status} onValueChange={(v) => setEditForm({ ...editForm, status: v as TrainingStatus })}>
-                  <SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
+                  <SelectTrigger className="h-14 bg-background border-muted/20 rounded-2xl font-headline font-bold text-sm text-foreground">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">
-                    {STATUSES.map((s) => <SelectItem key={s} value={s} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{STATUS_LABELS[s] ?? s}</SelectItem>)}
+                  <SelectContent className="bg-surface border-muted/20 rounded-2xl">
+                    {STATUSES.map((s) => <SelectItem key={s} value={s} className="font-headline font-bold text-xs focus:bg-primary/10">{STATUS_LABELS[s] ?? s}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>
               <div className="space-y-3">
-                <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("training_col_target_date")}</Label>
-                <Input type="date" value={editForm.target_date} onChange={(e) =>setEditForm({ ...editForm, target_date: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white uppercase" />
+                <Label className="font-headline font-bold text-xs text-muted-foreground tracking-tight uppercase">{t("training_col_target_date")}</Label>
+                <Input type="date" value={editForm.target_date} onChange={(e) =>setEditForm({ ...editForm, target_date: e.target.value })} className="h-14 bg-background border-muted/20 rounded-2xl font-headline font-bold text-sm text-foreground" />
               </div>
               <div className="space-y-3">
-                <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">{t("field_notes")}</Label>
-                <Input placeholder="REMARKS..." value={editForm.notes} onChange={(e) => setEditForm({ ...editForm, notes: e.target.value })} className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white" />
+                <Label className="font-headline font-bold text-xs text-muted-foreground tracking-tight uppercase">{t("field_notes")}</Label>
+                <Input placeholder="REMARKS..." value={editForm.notes} onChange={(e) => setEditForm({ ...editForm, notes: e.target.value })} className="h-14 bg-background border-muted/20 rounded-2xl font-headline font-bold text-sm text-foreground" />
               </div>
             </div>
             
-            <div className="p-8 border-t border-white/10 bg-white/5 flex justify-end gap-4">
-              <Button variant="ghost" className="rounded-none font-headline font-black text-[10px] tracking-widest uppercase text-white hover:bg-white/5" onClick={() =>setEditTarget(null)}>{t("common_cancel")}</Button>
-              <Button size="sm" onClick={handleEdit} disabled={saving} className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase px-10 py-6 h-auto">{saving ? t("action_synchronizing") : t("action_apply_config")}
+            <div className="p-8 border-t border-muted/10 bg-muted/5 flex justify-end gap-4">
+              <Button variant="ghost" className="rounded-2xl font-headline font-bold text-sm text-muted-foreground hover:bg-muted/10" onClick={() =>setEditTarget(null)}>{t("common_cancel")}</Button>
+              <Button size="sm" onClick={handleEdit} disabled={saving} className="rounded-2xl bg-primary text-primary-foreground font-headline font-bold text-sm px-10 py-7 h-auto shadow-lg shadow-primary/20">{saving ? t("action_synchronizing") : t("action_apply_config")}
               </Button>
             </div>
           </div>
-          <CornerMarks />
         </DialogContent>
       </Dialog>
 
       <AlertDialog open={!!deleteTarget} onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}>
-        <AlertDialogContent className="bg-[#0A0A0A] border-2 border-rose-500/30 rounded-none">
+        <AlertDialogContent className="bg-surface border border-rose-500/30 rounded-3xl overflow-hidden shadow-xl">
           <AlertDialogHeader>
-            <AlertDialogTitle className="font-headline font-black text-2xl text-white uppercase tracking-tighter">{t("action_confirm_delete")} — {deleteTarget?.name}</AlertDialogTitle>
-            <AlertDialogDescription className="text-secondary/40 font-mono text-xs uppercase tracking-widest">{t("training_delete_desc")}</AlertDialogDescription>
+            <AlertDialogTitle className="font-headline font-extrabold text-3xl text-foreground tracking-tight">{t("action_confirm_delete")} — {deleteTarget?.name}</AlertDialogTitle>
+            <AlertDialogDescription className="text-muted-foreground font-medium text-sm">{t("training_delete_desc")}</AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter className="mt-8">
-            <AlertDialogCancel className="rounded-none border-white/10 bg-white/5 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-white/10 h-auto py-4 px-8">{t("common_cancel")}</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete} disabled={deleting} className="rounded-none bg-rose-600 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-rose-700 px-8 h-auto py-4">{deleting ? t("action_purging") : t("action_confirm_delete")}
+          <AlertDialogFooter className="mt-10 gap-3">
+            <AlertDialogCancel className="rounded-2xl border-muted/20 bg-background text-foreground font-headline font-bold text-sm tracking-tight hover:bg-muted/10 h-auto py-4 px-8 transition-colors">{t("common_cancel")}</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete} disabled={deleting} className="rounded-2xl bg-rose-600 text-white font-headline font-bold text-sm tracking-tight hover:bg-rose-700 px-10 h-auto py-4 shadow-lg shadow-rose-600/20 transition-all">{deleting ? t("action_purging") : t("action_confirm_delete")}
             </AlertDialogAction>
           </AlertDialogFooter>
-          <CornerMarks color="rose" />
         </AlertDialogContent>
       </AlertDialog>
     </div>

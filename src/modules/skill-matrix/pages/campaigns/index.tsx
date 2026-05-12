@@ -26,25 +26,16 @@ import { useFactory } from "@shared/contexts/FactoryContext";
 const CAMPAIGN_TYPES = ["Monthly", "Quarterly", "Bi-Annually", "Custom"];
 const CAMPAIGN_STATUSES = ["Draft", "Active", "Completed", "Archived"];
 
-const CornerMarks = ({ color = "primary" }: { color?: string }) => (
-  <>
-    <div className={`absolute top-0 left-0 w-2 h-2 border-t border-l border-${color}/40`} />
-    <div className={`absolute top-0 right-0 w-2 h-2 border-t border-r border-${color}/40`} />
-    <div className={`absolute bottom-0 left-0 w-2 h-2 border-b border-l border-${color}/40`} />
-    <div className={`absolute bottom-0 right-0 w-2 h-2 border-b border-r border-${color}/40`} />
-  </>
-);
-
 function statusBadge(status: string, t: (k: any) => string) {
   const map: Record<string, { cls: string; key: string }>= {
-    Active: { cls: "border-emerald-500/30 bg-emerald-500/10 text-emerald-500", key: "status_active" },
-    Completed: { cls: "border-blue-500/30 bg-blue-500/10 text-blue-500", key: "status_completed" },
-    Draft: { cls: "border-amber-500/30 bg-amber-500/10 text-amber-500", key: "status_draft" },
-    Archived: { cls: "border-zinc-700 bg-zinc-900 text-zinc-500", key: "status_archived" },
+    Active: { cls: "border-emerald-500/20 bg-emerald-50 text-emerald-700", key: "status_active" },
+    Completed: { cls: "border-blue-500/20 bg-blue-50 text-blue-700", key: "status_completed" },
+    Draft: { cls: "border-amber-500/20 bg-amber-50 text-amber-700", key: "status_draft" },
+    Archived: { cls: "border-primary/10 bg-muted/30 text-muted-foreground", key: "status_archived" },
   };
   const cfg = map[status] ?? map.Draft;
   return (
-    <Badge variant="outline" className={`rounded-none font-mono text-[9px] font-black tracking-widest px-2 py-0.5 uppercase ${cfg.cls}`}>
+    <Badge variant="outline" className={`rounded-full font-bold text-[9px] tracking-wider px-2.5 py-0.5 uppercase shadow-sm ${cfg.cls}`}>
       {t(cfg.key as any)}
     </Badge>);
 }
@@ -183,242 +174,248 @@ export default function CampaignsPage() {
   };
 
   return (
-    <div className="space-y-8 pb-20 font-sans text-white">
-      {/* Header */}
-      <div className="relative p-10 bg-[#0A0A0A] border-2 border-primary/20 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
-        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <Activity className="h-4 w-4 text-primary animate-pulse" />
-              <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">{t("label_mission_control")}</span>
+    <div className="space-y-10 pb-20 font-sans selection:bg-primary/20 selection:text-primary">
+      {/* Header - Editorial Style */}
+      <div className="relative pt-12 pb-6 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="h-px w-8 bg-primary/20" />
+                <span className="font-sans font-bold tracking-widest text-[10px] text-primary uppercase">{t("label_mission_control")}</span>
+              </div>
+              <h1 className="text-6xl font-headline font-bold tracking-tight text-foreground leading-none">
+                {t("campaigns_title")}
+              </h1>
+              <p className="text-muted-foreground font-medium text-lg max-w-2xl">{t("campaigns_subtitle")}</p>
             </div>
-            <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">{t("campaigns_title")}
-            </h2>
-            <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4">{t("campaigns_subtitle")}</p>
-          </div>
-
-          {isAdmin && (
-            <Button className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-10 h-auto hover:bg-primary/90 shadow-[0_0_20px_rgba(255,255,255,0.05)]" onClick={openCreate}>
-              <Plus className="h-4 w-4 me-2" />{t("action_init_campaign")}
-            </Button>
-          )}
-        </div>
-        <CornerMarks />
-      </div>
-
-      {/* Search + Status Filter Control Panel */}
-      <Card className="bg-[#121212] border border-white/10 rounded-none">
-        <CardContent className="p-6">
-          <div className="flex flex-col sm:flex-row items-center gap-4">
-            <div className="flex-1 w-full relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-secondary/30" />
-              <Input
-                placeholder={t("search_campaigns")}
-                className="ps-12 h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white placeholder:text-secondary/20 focus-visible:ring-primary/50"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-            <div className="w-full sm:w-64 relative">
-              <Filter className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-secondary/30" />
-              <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="ps-12 h-14 bg-white/5 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
-                  <SelectValue placeholder={t("filter_by_status_label")} />
-                </SelectTrigger>
-                <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">
-                  <SelectItem value="all" className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{t("all_statuses")}</SelectItem>{CAMPAIGN_STATUSES.map((s) => (
-                    <SelectItem key={s} value={s} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{t(`status_${s.toLowerCase()}` as any)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            {(searchQuery || statusFilter !== "all") && (
-              <Button
-                variant="ghost"
-                className="h-14 px-6 rounded-none border border-white/10 text-secondary/40 hover:text-white font-headline font-black text-[10px] tracking-widest uppercase"
-                onClick={() =>{ setSearchQuery(""); setStatusFilter("all"); }}
-              >
-                {t("filter_reset")}
+            
+            {isAdmin && (
+              <Button className="rounded-full bg-primary text-primary-foreground font-bold text-[11px] tracking-wide uppercase px-8 h-12 shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all" onClick={openCreate}>
+                <Plus className="h-4 w-4 me-2" /> {t("action_init_campaign")}
               </Button>
             )}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
+
+      {/* Search + Status Filter Control Panel */}
+      {/* Control Panel */}
+      <div className="max-w-7xl mx-auto px-4">
+        <Card className="bg-surface border-primary/10 rounded-2xl shadow-sm overflow-hidden border">
+          <CardContent className="p-4">
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <div className="flex-1 w-full relative">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground opacity-50" />
+                <Input
+                  placeholder={t("search_campaigns")}
+                  className="ps-10 h-12 bg-background border-primary/5 rounded-xl text-sm text-foreground placeholder:text-muted-foreground/50 focus-visible:ring-primary/20"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+              <div className="w-full sm:w-64">
+                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                  <SelectTrigger className="h-12 bg-background border-primary/5 rounded-xl font-bold text-[11px] tracking-wide text-foreground uppercase">
+                    <SelectValue placeholder={t("filter_by_status_label")} />
+                  </SelectTrigger>
+                  <SelectContent className="bg-surface border-primary/10 rounded-xl">
+                    <SelectItem value="all" className="font-bold text-[10px] tracking-wide uppercase">{t("all_statuses")}</SelectItem>
+                    {CAMPAIGN_STATUSES.map((s) => (
+                      <SelectItem key={s} value={s} className="font-bold text-[10px] tracking-wide uppercase">
+                        {t(`status_${s.toLowerCase()}` as any)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              {(searchQuery || statusFilter !== "all") && (
+                <Button
+                  variant="ghost"
+                  className="rounded-full font-bold text-[11px] tracking-wide uppercase text-muted-foreground hover:bg-primary/5 h-12 px-6"
+                  onClick={() =>{ setSearchQuery(""); setStatusFilter("all"); }}
+                >
+                  {t("filter_reset")}
+                </Button>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Campaign Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">{isLoading ? (
-          Array.from({ length: 6 }).map((_, i) => (
-            <Card key={i} className="bg-[#0D0D0D] border-zinc-800 rounded-none h-48">
-              <CardContent className="p-6">
-                <Skeleton className="h-4 w-2/3 bg-zinc-900 mb-4" />
-                <Skeleton className="h-3 w-1/2 bg-zinc-900 mb-2" />
-                <Skeleton className="h-3 w-full bg-zinc-900" />
-              </CardContent>
-            </Card>
-          ))
-        ) : !filteredCampaigns.length ? (
-          <div className="col-span-full p-20 text-center border border-zinc-800 bg-[#0D0D0D]">
-            <Target className="h-12 w-12 text-zinc-900 mx-auto mb-4" />
-            <p className="font-mono text-xs text-zinc-600 uppercase tracking-[0.3em]">{t("label_no_active_missions")}</p>
-          </div>) : (
-          filteredCampaigns.map((c) => {
-            const evaluated = c.evaluated_count;
-            const total = c.total_employees;
-            const progress = total > 0 ? Math.round((evaluated / total) * 100) : 0;
-            return (
-              <Card key={c.id} className="bg-[#0D0D0D] border-zinc-800 rounded-none relative overflow-hidden group hover:border-primary/50 transition-all duration-500 shadow-xl">
-                <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                  <Activity className="h-12 w-12 text-white" />
-                </div>
-                <CardHeader className="border-b border-zinc-900 pb-4">
-                  <div className="flex justify-between items-start mb-2">
-                    <span className="text-[9px] font-mono text-zinc-600 uppercase tracking-widest">{c.type} // {c.department_id ? t("status_dept_specific") : t("status_global")}
-                    </span>
-                    {statusBadge(c.status, t)}
-                  </div>
-                  <CardTitle className="text-xl font-headline font-black text-white group-hover:text-primary transition-colors tracking-tight uppercase leading-tight">
-                    {c.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="pt-6 space-y-6">
-                  <div className="flex items-center justify-between text-xs font-mono text-zinc-500 uppercase">
-                    <div className="flex items-center gap-2">
-                      <CalendarDays className="h-3.5 w-3.5 text-primary/60" />{new Date(c.start_date).toLocaleDateString()} — {new Date(c.end_date).toLocaleDateString()}
-                    </div>
-                  </div>
-
-                  {total > 0 && (
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-end">
-                        <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest">{t("label_deployment_progress")}</span>
-                        <span className="text-xs font-black text-white">{progress}%</span>
-                      </div>
-                      <div className="h-1.5 bg-zinc-900 overflow-hidden">
-                        <div
-                          className="h-full bg-primary shadow-[0_0_10px_rgba(255,255,255,0.1)] transition-all duration-1000 ease-out"
-                          style={{ width: `${progress}%` }}
-                        />
-                      </div>
-                      <div className="flex justify-between text-[10px] font-mono text-zinc-500 uppercase">
-                        <span>{evaluated} {t("label_evaluated")}</span>
-                        <span>{total} {t("label_total_nodes")}</span>
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="pt-4 border-t border-zinc-900 flex justify-between gap-3">
-                    <Link href={`/campaigns/${c.id}`} className="flex-1">
-                      <Button className="w-full rounded-none bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 text-white font-headline font-black text-[10px] tracking-widest uppercase h-10">{t("campaign_enter_scores")}
-                      </Button>
-                    </Link>
-                    {isAdmin && (
-                      <div className="flex gap-2">
-                        <Button size="icon" variant="ghost" className="h-10 w-10 rounded-none border border-zinc-800 hover:bg-primary/10 hover:text-primary" onClick={() => openEdit(c)}>
-                          <Pencil className="h-4 w-4" />
-                        </Button>
-                        <Button size="icon" variant="ghost" className="h-10 w-10 rounded-none border border-zinc-800 hover:bg-rose-500/10 hover:text-rose-500" onClick={() => setDeleteTarget({ id: c.id, title: c.title })}>
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    )}
-                  </div>
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+          {isLoading ? (
+            Array.from({ length: 6 }).map((_, i) => (
+              <Card key={i} className="bg-surface border-primary/10 rounded-2xl h-64 shadow-sm overflow-hidden">
+                <CardContent className="p-8 space-y-4">
+                  <Skeleton className="h-6 w-2/3 bg-muted/50 rounded-lg" />
+                  <Skeleton className="h-4 w-1/2 bg-muted/50 rounded-lg" />
+                  <Skeleton className="h-2 w-full bg-muted/50 rounded-lg mt-8" />
+                  <Skeleton className="h-10 w-full bg-muted/50 rounded-xl mt-auto" />
                 </CardContent>
               </Card>
-            );
-          })
-        )}
+            ))
+          ) : !filteredCampaigns.length ? (
+            <div className="col-span-full p-20 text-center border border-primary/10 bg-surface rounded-2xl shadow-sm space-y-4">
+              <div className="h-16 w-16 bg-muted/50 rounded-full flex items-center justify-center mx-auto">
+                <Target className="h-8 w-8 text-muted-foreground opacity-20" />
+              </div>
+              <p className="font-sans text-sm text-muted-foreground uppercase tracking-widest font-bold opacity-50">{t("label_no_active_missions")}</p>
+            </div>
+          ) : (
+            filteredCampaigns.map((c) => {
+              const evaluated = c.evaluated_count;
+              const total = c.total_employees;
+              const progress = total > 0 ? Math.round((evaluated / total) * 100) : 0;
+              return (
+                <Card key={c.id} className="bg-surface border-primary/10 rounded-2xl relative overflow-hidden group hover:border-primary/30 transition-all duration-500 shadow-sm hover:shadow-md flex flex-col">
+                  <CardHeader className="p-8 pb-4">
+                    <div className="flex justify-between items-start mb-4">
+                      <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-60">
+                        {c.type} • {c.department_id ? t("status_dept_specific") : t("status_global")}
+                      </span>
+                      {statusBadge(c.status, t)}
+                    </div>
+                    <CardTitle className="text-2xl font-headline font-bold text-foreground group-hover:text-primary transition-colors tracking-tight uppercase leading-tight">
+                      {c.title}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-8 pt-2 flex-1 flex flex-col space-y-6">
+                    <div className="flex items-center gap-2 text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-60">
+                      <CalendarDays className="h-3.5 w-3.5 text-primary" />
+                      {new Date(c.start_date).toLocaleDateString()} — {new Date(c.end_date).toLocaleDateString()}
+                    </div>
+
+                    {total > 0 && (
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-end">
+                          <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-40">{t("label_deployment_progress")}</span>
+                          <span className="text-xs font-bold text-foreground">{progress}%</span>
+                        </div>
+                        <div className="h-2 bg-muted/50 rounded-full overflow-hidden border border-primary/5">
+                          <div
+                            className="h-full bg-primary transition-all duration-1000 ease-out"
+                            style={{ width: `${progress}%` }}
+                          />
+                        </div>
+                        <div className="flex justify-between text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-40">
+                          <span>{evaluated} {t("label_evaluated")}</span>
+                          <span>{total} {t("label_total_nodes")}</span>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="pt-6 mt-auto border-t border-primary/5 flex justify-between gap-3">
+                      <Link href={`/campaigns/${c.id}`} className="flex-1">
+                        <Button className="w-full rounded-full bg-primary/5 hover:bg-primary text-primary hover:text-primary-foreground font-bold text-[11px] tracking-wide uppercase h-11 transition-all">
+                          {t("campaign_enter_scores")}
+                        </Button>
+                      </Link>
+                      {isAdmin && (
+                        <div className="flex gap-2">
+                          <Button size="icon" variant="ghost" className="h-11 w-11 rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors" onClick={() => openEdit(c)}>
+                            <Pencil className="h-4 w-4" />
+                          </Button>
+                          <Button size="icon" variant="ghost" className="h-11 w-11 rounded-full text-muted-foreground hover:text-rose-600 hover:bg-rose-50 transition-colors" onClick={() => setDeleteTarget({ id: c.id, title: c.title })}>
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })
+          )}
+        </div>
       </div>
 
       {/* Forms & Dialogs */}
       <Dialog open={showCreate || !!editTarget} onOpenChange={(open) => { if (!open) { setShowCreate(false); setEditTarget(null); } }}>
-        <DialogContent className="max-w-xl bg-[#0A0A0A] border-2 border-primary/30 rounded-none p-0 overflow-hidden text-white">
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5" />
+        <DialogContent className="max-w-xl bg-surface border-primary/20 rounded-3xl p-0 overflow-hidden shadow-2xl">
           <div className="relative z-10">
-            <div className="p-8 border-b border-white/10 bg-white/5">
-              <h2 className="font-headline font-black text-2xl text-white uppercase tracking-tighter">{editTarget ? t("action_reconfigure") : t("action_init_campaign")}
-              </h2>
-              <p className="text-[10px] font-mono text-primary tracking-[0.3em] mt-2 uppercase">STRATEGIC EVAL_v2.1</p>
+            <div className="p-8 border-b border-primary/5 bg-background/50 backdrop-blur-sm">
+              <h2 className="font-headline font-bold text-3xl text-foreground tracking-tight uppercase">{editTarget ? t("action_reconfigure") : t("action_init_campaign")}</h2>
+              <p className="text-[10px] font-sans font-bold text-primary tracking-widest mt-2 uppercase opacity-50">STRATEGIC EVAL_v2.1</p>
             </div>
 
             <div className="p-10 grid grid-cols-2 gap-8">
               <div className="col-span-2 space-y-3">
-                <Label className="font-headline font-black text-[10px] text-zinc-500 tracking-[0.2em] uppercase">{t("campaigns_col_title")} *</Label>
-                <Input placeholder="Q2 2026 EVALUATION" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="h-14 bg-zinc-900 border-zinc-800 rounded-none font-mono text-sm tracking-widest text-white focus-visible:ring-primary/50" />
+                <Label className="font-bold text-[10px] text-muted-foreground tracking-widest uppercase">{t("campaigns_col_title")} *</Label>
+                <Input placeholder="Q2 2026 EVALUATION" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="h-14 bg-background border-primary/5 rounded-xl font-sans text-sm font-bold text-foreground focus-visible:ring-primary/20" />
               </div>
 
               <div className="space-y-3">
-                <Label className="font-headline font-black text-[10px] text-zinc-500 tracking-[0.2em] uppercase">{t("field_type")} *</Label>
+                <Label className="font-bold text-[10px] text-muted-foreground tracking-widest uppercase">{t("field_type")} *</Label>
                 <Select value={form.type} onValueChange={(v) => setForm({ ...form, type: v })}>
-                  <SelectTrigger className="h-14 bg-zinc-900 border-zinc-800 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
+                  <SelectTrigger className="h-14 bg-background border-primary/5 rounded-xl font-bold text-[11px] tracking-wide text-foreground uppercase">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#121212] border-zinc-800 rounded-none text-white">{CAMPAIGN_TYPES.map((tp) => <SelectItem key={tp} value={tp} className="font-headline font-black text-[9px] tracking-widest uppercase">{tp}</SelectItem>)}
+                  <SelectContent className="bg-surface border-primary/10 rounded-xl">{CAMPAIGN_TYPES.map((tp) => <SelectItem key={tp} value={tp} className="font-bold text-[10px] tracking-wide uppercase">{tp}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="space-y-3">
-                <Label className="font-headline font-black text-[10px] text-zinc-500 tracking-[0.2em] uppercase">{editTarget ? t("field_status") : t("field_department")}</Label>
+                <Label className="font-bold text-[10px] text-muted-foreground tracking-widest uppercase">{editTarget ? t("field_status") : t("field_department")}</Label>
                 {editTarget ? (
                   <Select value={form.status} onValueChange={(v) => setForm({ ...form, status: v })}>
-                    <SelectTrigger className="h-14 bg-zinc-900 border-zinc-800 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
+                    <SelectTrigger className="h-14 bg-background border-primary/5 rounded-xl font-bold text-[11px] tracking-wide text-foreground uppercase">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-[#121212] border-zinc-800 rounded-none text-white">{CAMPAIGN_STATUSES.map((s) => <SelectItem key={s} value={s} className="font-headline font-black text-[9px] tracking-widest uppercase">{t(`status_${s.toLowerCase()}` as any)}</SelectItem>)}
+                    <SelectContent className="bg-surface border-primary/10 rounded-xl">{CAMPAIGN_STATUSES.map((s) => <SelectItem key={s} value={s} className="font-bold text-[10px] tracking-wide uppercase">{t(`status_${s.toLowerCase()}` as any)}</SelectItem>)}
                     </SelectContent>
                   </Select>
                 ) : (
                   <Select value={form.department_id || "all"} onValueChange={(v) =>setForm({ ...form, department_id: v === "all" ? "" : v })}>
-                    <SelectTrigger className="h-14 bg-zinc-900 border-zinc-800 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
+                    <SelectTrigger className="h-14 bg-background border-primary/5 rounded-xl font-bold text-[11px] tracking-wide text-foreground uppercase">
                       <SelectValue placeholder={t("campaigns_all_departments")} />
                     </SelectTrigger>
-                    <SelectContent className="bg-[#121212] border-zinc-800 rounded-none text-white">
-                      <SelectItem value="all" className="font-headline font-black text-[9px] tracking-widest uppercase">{t("campaigns_all_departments")}</SelectItem>
-                      {departments?.map((d) => <SelectItem key={d.id} value={d.id} className="font-headline font-black text-[9px] tracking-widest uppercase">{d.name}</SelectItem>)}
+                    <SelectContent className="bg-surface border-primary/10 rounded-xl">
+                      <SelectItem value="all" className="font-bold text-[10px] tracking-wide uppercase">{t("campaigns_all_departments")}</SelectItem>
+                      {departments?.map((d) => <SelectItem key={d.id} value={d.id} className="font-bold text-[10px] tracking-wide uppercase">{d.name}</SelectItem>)}
                     </SelectContent>
                   </Select>
                 )}
               </div>
 
               <div className="space-y-3">
-                <Label className="font-headline font-black text-[10px] text-zinc-500 tracking-[0.2em] uppercase">{t("field_start_date")} *</Label>
-                <Input type="date" value={form.start_date} onChange={(e) =>setForm({ ...form, start_date: e.target.value })} disabled={!!editTarget} className="h-14 bg-zinc-900 border-zinc-800 rounded-none font-mono text-sm tracking-widest text-white uppercase disabled:opacity-30" />
+                <Label className="font-bold text-[10px] text-muted-foreground tracking-widest uppercase">{t("field_start_date")} *</Label>
+                <Input type="date" value={form.start_date} onChange={(e) =>setForm({ ...form, start_date: e.target.value })} disabled={!!editTarget} className="h-14 bg-background border-primary/5 rounded-xl font-sans text-sm text-foreground uppercase disabled:opacity-30" />
               </div>
               <div className="space-y-3">
-                <Label className="font-headline font-black text-[10px] text-zinc-500 tracking-[0.2em] uppercase">{t("field_end_date")} *</Label>
-                <Input type="date" value={form.end_date} onChange={(e) =>setForm({ ...form, end_date: e.target.value })} className="h-14 bg-zinc-900 border-zinc-800 rounded-none font-mono text-sm tracking-widest text-white uppercase" />
+                <Label className="font-bold text-[10px] text-muted-foreground tracking-widest uppercase">{t("field_end_date")} *</Label>
+                <Input type="date" value={form.end_date} onChange={(e) =>setForm({ ...form, end_date: e.target.value })} className="h-14 bg-background border-primary/5 rounded-xl font-sans text-sm text-foreground uppercase" />
               </div>
 
               <div className="col-span-2 space-y-3">
-                <Label className="font-headline font-black text-[10px] text-zinc-500 tracking-[0.2em] uppercase">{t("field_notes")}</Label>
-                <Input placeholder="MISSION OBJECTIVES..." value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} className="h-14 bg-zinc-900 border-zinc-800 rounded-none font-mono text-sm tracking-widest text-white" />
+                <Label className="font-bold text-[10px] text-muted-foreground tracking-widest uppercase">{t("field_notes")}</Label>
+                <Input placeholder="MISSION OBJECTIVES..." value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} className="h-14 bg-background border-primary/5 rounded-xl font-sans text-sm text-foreground" />
               </div>
             </div>
 
-            <div className="p-8 border-t border-white/10 bg-white/5 flex justify-end gap-4">
-              <Button variant="ghost" className="rounded-none font-headline font-black text-[10px] tracking-widest uppercase text-white hover:bg-white/5" onClick={() =>{ setShowCreate(false); setEditTarget(null); }}>{t("common_cancel")}</Button>
-              <Button onClick={handleSave} disabled={saving} className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase px-10 py-6 h-auto">{saving ? t("action_synchronizing") : editTarget ? t("action_apply_config") : t("action_init_campaign")}
+            <div className="p-8 border-t border-primary/5 bg-background/50 flex justify-end gap-3">
+              <Button variant="ghost" className="rounded-full font-bold text-[11px] tracking-wide uppercase text-muted-foreground hover:bg-primary/5" onClick={() =>{ setShowCreate(false); setEditTarget(null); }}>{t("common_cancel")}</Button>
+              <Button onClick={handleSave} disabled={saving} className="rounded-full bg-primary text-primary-foreground font-bold text-[11px] tracking-wide uppercase px-10 h-12 shadow-lg shadow-primary/20 transition-all">{saving ? t("action_synchronizing") : editTarget ? t("action_apply_config") : t("action_init_campaign")}
               </Button>
             </div>
           </div>
-          <CornerMarks />
         </DialogContent>
       </Dialog>
 
       <AlertDialog open={!!deleteTarget} onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}>
-        <AlertDialogContent className="bg-[#0A0A0A] border-2 border-rose-500/30 rounded-none text-white">
+        <AlertDialogContent className="bg-surface border-primary/20 rounded-3xl shadow-2xl">
           <AlertDialogHeader>
-            <AlertDialogTitle className="font-headline font-black text-2xl text-white uppercase tracking-tighter">{t("common_delete")} — {deleteTarget?.title}</AlertDialogTitle>
-            <AlertDialogDescription className="text-zinc-500 font-mono text-xs uppercase tracking-widest">{t("campaigns_delete_desc")}</AlertDialogDescription>
+            <AlertDialogTitle className="font-headline font-bold text-2xl text-foreground tracking-tight uppercase">{t("common_delete")} — {deleteTarget?.title}</AlertDialogTitle>
+            <AlertDialogDescription className="text-muted-foreground font-sans text-sm">{t("campaigns_delete_desc")}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="mt-8">
-            <AlertDialogCancel className="rounded-none border-zinc-800 bg-zinc-900 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-zinc-800 h-auto py-4 px-8">{t("common_cancel")}</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete} disabled={deleting} className="rounded-none bg-rose-600 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-rose-700 px-8 h-auto py-4">{deleting ? t("action_aborting") : t("action_confirm_abort")}
+            <AlertDialogCancel className="rounded-full border-primary/10 bg-background text-foreground font-bold text-[11px] tracking-wide uppercase hover:bg-primary/5 h-12 px-8">{t("common_cancel")}</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete} disabled={deleting} className="rounded-full bg-rose-600 text-white font-bold text-[11px] tracking-wide uppercase hover:bg-rose-700 px-8 h-12 shadow-lg shadow-rose-600/20">{deleting ? t("action_aborting") : t("action_confirm_abort")}
             </AlertDialogAction>
           </AlertDialogFooter>
-          <CornerMarks color="rose" />
         </AlertDialogContent>
       </AlertDialog>
     </div>
