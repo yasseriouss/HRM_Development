@@ -47,6 +47,28 @@ app.get("/", (_req, res) => {
   res.redirect("/skill-matrix");
 });
 
+// Serve main app from root dist
+const rootDist = path.resolve(process.cwd(), "dist");
+if (fs.existsSync(rootDist)) {
+  app.use(express.static(rootDist));
+  // Important: serve index.html for any /skill-matrix or other main app routes
+  app.get("/skill-matrix*", (_req, res) => {
+    res.sendFile(path.join(rootDist, "index.html"));
+  });
+  app.get("/job-evaluation*", (_req, res) => {
+    res.sendFile(path.join(rootDist, "index.html"));
+  });
+  app.get("/spreadsheet*", (_req, res) => {
+    res.sendFile(path.join(rootDist, "index.html"));
+  });
+  app.get("/my-profile*", (_req, res) => {
+    res.sendFile(path.join(rootDist, "index.html"));
+  });
+  app.get("/login", (_req, res) => {
+    res.sendFile(path.join(rootDist, "index.html"));
+  });
+}
+
 // ── Frontend Artifacts (Vite/Static) ─────────────────────────────────────────
 // This handles /hrm-skill-matrix, /hrm-dashboard, etc.
 try {
