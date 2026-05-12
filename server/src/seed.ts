@@ -527,11 +527,5 @@ async function seedCampaignsAndEvaluations() {
   }
 }
 
-if (import.meta.url.endsWith(process.argv[1]?.replace(/\\/g, '/')) || process.env.RUN_SEED === "true") {
-  seed().catch((err) => {
-    console.error("Seed failed:", err);
-    process.exit(1);
-  }).finally(async () => {
-    process.exit(0);
-  });
-}
+// To run the seed, call the seed() function explicitly from a script or route.
+

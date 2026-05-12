@@ -1,7 +1,7 @@
 import express, { Express } from "express";
 import fs from "fs";
 import path from "path";
-import { createServer as createViteServer } from "vite";
+// Removed top-level vite import to avoid bundling issues and runtime errors in production.
 import { fileURLToPath } from "url";
 import { logger } from "./logger";
 
@@ -35,6 +35,7 @@ export async function registerFrontend(app: Express) {
         continue;
       }
 
+      const { createServer: createViteServer } = await import("vite");
       const vite = await createViteServer({
         root: artifactPath,
         base: `${artifact.path}/`,
