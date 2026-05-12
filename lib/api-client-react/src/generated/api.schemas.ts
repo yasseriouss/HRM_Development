@@ -19,13 +19,14 @@ export interface LoginBody {
   password: string;
 }
 
-export type UserRole = (typeof UserRole)[keyof typeof UserRole];
+export type UserRole = typeof UserRole[keyof typeof UserRole];
+
 
 export const UserRole = {
-  super_admin: "super_admin",
-  dept_head: "dept_head",
-  hr_coordinator: "hr_coordinator",
-  employee: "employee",
+  super_admin: 'super_admin',
+  dept_head: 'dept_head',
+  hr_coordinator: 'hr_coordinator',
+  employee: 'employee',
 } as const;
 
 export interface User {
@@ -88,13 +89,13 @@ export interface DepartmentPerformance {
   average_percentage: number;
 }
 
-export type EmployeeCurrentClass =
-  (typeof EmployeeCurrentClass)[keyof typeof EmployeeCurrentClass];
+export type EmployeeCurrentClass = typeof EmployeeCurrentClass[keyof typeof EmployeeCurrentClass];
+
 
 export const EmployeeCurrentClass = {
-  A: "A",
-  B: "B",
-  C: "C",
+  A: 'A',
+  B: 'B',
+  C: 'C',
 } as const;
 
 export interface Employee {
@@ -133,13 +134,13 @@ export interface CreateEmployeeBody {
   notes?: string;
 }
 
-export type EvaluationSummaryClass =
-  (typeof EvaluationSummaryClass)[keyof typeof EvaluationSummaryClass];
+export type EvaluationSummaryClass = typeof EvaluationSummaryClass[keyof typeof EvaluationSummaryClass];
+
 
 export const EvaluationSummaryClass = {
-  A: "A",
-  B: "B",
-  C: "C",
+  A: 'A',
+  B: 'B',
+  C: 'C',
 } as const;
 
 export interface EvaluationSummary {
@@ -157,14 +158,14 @@ export interface EvaluationSummary {
   employee_code?: string | null;
 }
 
-export type SkillScoreCriticality =
-  (typeof SkillScoreCriticality)[keyof typeof SkillScoreCriticality];
+export type SkillScoreCriticality = typeof SkillScoreCriticality[keyof typeof SkillScoreCriticality];
+
 
 export const SkillScoreCriticality = {
-  Low: "Low",
-  Medium: "Medium",
-  High: "High",
-  Critical: "Critical",
+  Low: 'Low',
+  Medium: 'Medium',
+  High: 'High',
+  Critical: 'Critical',
 } as const;
 
 export interface SkillScore {
@@ -178,24 +179,24 @@ export interface SkillScore {
   score_label?: string | null;
 }
 
-export type TrainingRecommendationRecommendationType =
-  (typeof TrainingRecommendationRecommendationType)[keyof typeof TrainingRecommendationRecommendationType];
+export type TrainingRecommendationRecommendationType = typeof TrainingRecommendationRecommendationType[keyof typeof TrainingRecommendationRecommendationType];
+
 
 export const TrainingRecommendationRecommendationType = {
-  Immediate: "Immediate",
-  "Short-term": "Short-term",
-  "Long-term": "Long-term",
-  Promotion: "Promotion",
+  Immediate: 'Immediate',
+  'Short-term': 'Short-term',
+  'Long-term': 'Long-term',
+  Promotion: 'Promotion',
 } as const;
 
-export type TrainingRecommendationStatus =
-  (typeof TrainingRecommendationStatus)[keyof typeof TrainingRecommendationStatus];
+export type TrainingRecommendationStatus = typeof TrainingRecommendationStatus[keyof typeof TrainingRecommendationStatus];
+
 
 export const TrainingRecommendationStatus = {
-  Pending: "Pending",
-  In_Progress: "In Progress",
-  Completed: "Completed",
-  Cancelled: "Cancelled",
+  Pending: 'Pending',
+  In_Progress: 'In Progress',
+  Completed: 'Completed',
+  Cancelled: 'Cancelled',
 } as const;
 
 export interface TrainingRecommendation {
@@ -222,14 +223,14 @@ export interface EmployeeProfile {
   training_recommendations: TrainingRecommendation[];
 }
 
-export type SkillCriticality =
-  (typeof SkillCriticality)[keyof typeof SkillCriticality];
+export type SkillCriticality = typeof SkillCriticality[keyof typeof SkillCriticality];
+
 
 export const SkillCriticality = {
-  Low: "Low",
-  Medium: "Medium",
-  High: "High",
-  Critical: "Critical",
+  Low: 'Low',
+  Medium: 'Medium',
+  High: 'High',
+  Critical: 'Critical',
 } as const;
 
 export interface Skill {
@@ -246,14 +247,14 @@ export interface Skill {
   department: Department;
 }
 
-export type CreateSkillBodyCriticality =
-  (typeof CreateSkillBodyCriticality)[keyof typeof CreateSkillBodyCriticality];
+export type CreateSkillBodyCriticality = typeof CreateSkillBodyCriticality[keyof typeof CreateSkillBodyCriticality];
+
 
 export const CreateSkillBodyCriticality = {
-  Low: "Low",
-  Medium: "Medium",
-  High: "High",
-  Critical: "Critical",
+  Low: 'Low',
+  Medium: 'Medium',
+  High: 'High',
+  Critical: 'Critical',
 } as const;
 
 export interface CreateSkillBody {
@@ -270,23 +271,24 @@ export interface CreateSkillBody {
   description?: string;
 }
 
-export type CampaignType = (typeof CampaignType)[keyof typeof CampaignType];
+export type CampaignType = typeof CampaignType[keyof typeof CampaignType];
+
 
 export const CampaignType = {
-  Monthly: "Monthly",
-  Quarterly: "Quarterly",
-  "Bi-Annually": "Bi-Annually",
-  Custom: "Custom",
+  Monthly: 'Monthly',
+  Quarterly: 'Quarterly',
+  'Bi-Annually': 'Bi-Annually',
+  Custom: 'Custom',
 } as const;
 
-export type CampaignStatus =
-  (typeof CampaignStatus)[keyof typeof CampaignStatus];
+export type CampaignStatus = typeof CampaignStatus[keyof typeof CampaignStatus];
+
 
 export const CampaignStatus = {
-  Draft: "Draft",
-  Active: "Active",
-  Completed: "Completed",
-  Archived: "Archived",
+  Draft: 'Draft',
+  Active: 'Active',
+  Completed: 'Completed',
+  Archived: 'Archived',
 } as const;
 
 export interface Campaign {
@@ -304,14 +306,14 @@ export interface Campaign {
   total_employees: number;
 }
 
-export type CreateCampaignBodyType =
-  (typeof CreateCampaignBodyType)[keyof typeof CreateCampaignBodyType];
+export type CreateCampaignBodyType = typeof CreateCampaignBodyType[keyof typeof CreateCampaignBodyType];
+
 
 export const CreateCampaignBodyType = {
-  Monthly: "Monthly",
-  Quarterly: "Quarterly",
-  "Bi-Annually": "Bi-Annually",
-  Custom: "Custom",
+  Monthly: 'Monthly',
+  Quarterly: 'Quarterly',
+  'Bi-Annually': 'Bi-Annually',
+  Custom: 'Custom',
 } as const;
 
 export interface CreateCampaignBody {
@@ -323,14 +325,14 @@ export interface CreateCampaignBody {
   notes?: string;
 }
 
-export type UpdateCampaignBodyStatus =
-  (typeof UpdateCampaignBodyStatus)[keyof typeof UpdateCampaignBodyStatus];
+export type UpdateCampaignBodyStatus = typeof UpdateCampaignBodyStatus[keyof typeof UpdateCampaignBodyStatus];
+
 
 export const UpdateCampaignBodyStatus = {
-  Draft: "Draft",
-  Active: "Active",
-  Completed: "Completed",
-  Archived: "Archived",
+  Draft: 'Draft',
+  Active: 'Active',
+  Completed: 'Completed',
+  Archived: 'Archived',
 } as const;
 
 export interface UpdateCampaignBody {
@@ -391,17 +393,16 @@ export interface BulkEvaluationResponse {
   summary: EvaluationSummary;
 }
 
-export type MatrixRowClass =
-  | (typeof MatrixRowClass)[keyof typeof MatrixRowClass]
-  | null;
+export type MatrixRowClass = typeof MatrixRowClass[keyof typeof MatrixRowClass] | null;
+
 
 export const MatrixRowClass = {
-  A: "A",
-  B: "B",
-  C: "C",
+  A: 'A',
+  B: 'B',
+  C: 'C',
 } as const;
 
-export type MatrixRowScores = { [key: string]: number };
+export type MatrixRowScores = {[key: string]: number};
 
 export interface MatrixRow {
   employee: Employee;
@@ -418,14 +419,14 @@ export interface SkillMatrix {
   rows: MatrixRow[];
 }
 
-export type CreateTrainingBodyRecommendationType =
-  (typeof CreateTrainingBodyRecommendationType)[keyof typeof CreateTrainingBodyRecommendationType];
+export type CreateTrainingBodyRecommendationType = typeof CreateTrainingBodyRecommendationType[keyof typeof CreateTrainingBodyRecommendationType];
+
 
 export const CreateTrainingBodyRecommendationType = {
-  Immediate: "Immediate",
-  "Short-term": "Short-term",
-  "Long-term": "Long-term",
-  Promotion: "Promotion",
+  Immediate: 'Immediate',
+  'Short-term': 'Short-term',
+  'Long-term': 'Long-term',
+  Promotion: 'Promotion',
 } as const;
 
 export interface CreateTrainingBody {
@@ -438,14 +439,14 @@ export interface CreateTrainingBody {
   notes?: string;
 }
 
-export type UpdateTrainingBodyStatus =
-  (typeof UpdateTrainingBodyStatus)[keyof typeof UpdateTrainingBodyStatus];
+export type UpdateTrainingBodyStatus = typeof UpdateTrainingBodyStatus[keyof typeof UpdateTrainingBodyStatus];
+
 
 export const UpdateTrainingBodyStatus = {
-  Pending: "Pending",
-  In_Progress: "In Progress",
-  Completed: "Completed",
-  Cancelled: "Cancelled",
+  Pending: 'Pending',
+  In_Progress: 'In Progress',
+  Completed: 'Completed',
+  Cancelled: 'Cancelled',
 } as const;
 
 export interface UpdateTrainingBody {
@@ -472,14 +473,14 @@ export interface DashboardMetrics {
   pending_training: number;
 }
 
-export type ActivityItemType =
-  (typeof ActivityItemType)[keyof typeof ActivityItemType];
+export type ActivityItemType = typeof ActivityItemType[keyof typeof ActivityItemType];
+
 
 export const ActivityItemType = {
-  evaluation_submitted: "evaluation_submitted",
-  campaign_activated: "campaign_activated",
-  campaign_completed: "campaign_completed",
-  training_assigned: "training_assigned",
+  evaluation_submitted: 'evaluation_submitted',
+  campaign_activated: 'campaign_activated',
+  campaign_completed: 'campaign_completed',
+  training_assigned: 'training_assigned',
 } as const;
 
 export interface ActivityItem {
@@ -503,94 +504,113 @@ export interface ClassTrendPoint {
   total: number;
 }
 
+export type GetDashboardMetricsParams = {
+factory_id?: string;
+};
+
+export type GetDepartmentPerformanceParams = {
+factory_id?: string;
+};
+
 export type GetRecentActivityParams = {
-  limit?: number;
+factory_id?: string;
+limit?: number;
+};
+
+export type GetClassTrendsParams = {
+factory_id?: string;
+};
+
+export type ListDepartmentsParams = {
+factory_id?: string;
 };
 
 export type ListEmployeesParams = {
-  department_id?: string;
-  factory_id?: string;
-  current_class?: ListEmployeesCurrentClass;
-  is_active?: boolean;
-  search?: string;
-  page?: number;
-  page_size?: number;
+department_id?: string;
+factory_id?: string;
+current_class?: ListEmployeesCurrentClass;
+is_active?: boolean;
+search?: string;
+page?: number;
+page_size?: number;
 };
 
-export type ListEmployeesCurrentClass =
-  (typeof ListEmployeesCurrentClass)[keyof typeof ListEmployeesCurrentClass];
+export type ListEmployeesCurrentClass = typeof ListEmployeesCurrentClass[keyof typeof ListEmployeesCurrentClass];
+
 
 export const ListEmployeesCurrentClass = {
-  A: "A",
-  B: "B",
-  C: "C",
+  A: 'A',
+  B: 'B',
+  C: 'C',
 } as const;
 
 export type ListSkillsParams = {
-  department_id?: string;
-  factory_id?: string;
-  criticality?: ListSkillsCriticality;
-  is_active?: boolean;
+department_id?: string;
+factory_id?: string;
+criticality?: ListSkillsCriticality;
+is_active?: boolean;
 };
 
-export type ListSkillsCriticality =
-  (typeof ListSkillsCriticality)[keyof typeof ListSkillsCriticality];
+export type ListSkillsCriticality = typeof ListSkillsCriticality[keyof typeof ListSkillsCriticality];
+
 
 export const ListSkillsCriticality = {
-  Low: "Low",
-  Medium: "Medium",
-  High: "High",
-  Critical: "Critical",
+  Low: 'Low',
+  Medium: 'Medium',
+  High: 'High',
+  Critical: 'Critical',
 } as const;
 
 export type ListCampaignsParams = {
-  status?: ListCampaignsStatus;
-  department_id?: string;
-  factory_id?: string;
+status?: ListCampaignsStatus;
+department_id?: string;
+factory_id?: string;
 };
 
-export type ListCampaignsStatus =
-  (typeof ListCampaignsStatus)[keyof typeof ListCampaignsStatus];
+export type ListCampaignsStatus = typeof ListCampaignsStatus[keyof typeof ListCampaignsStatus];
+
 
 export const ListCampaignsStatus = {
-  Draft: "Draft",
-  Active: "Active",
-  Completed: "Completed",
-  Archived: "Archived",
+  Draft: 'Draft',
+  Active: 'Active',
+  Completed: 'Completed',
+  Archived: 'Archived',
 } as const;
 
 export type GetCampaignMatrixParams = {
-  department_id?: string;
+department_id?: string;
 };
 
 export type ListEvaluationsParams = {
-  campaign_id?: string;
-  employee_id?: string;
-  skill_id?: string;
+campaign_id?: string;
+employee_id?: string;
+skill_id?: string;
 };
 
 export type ListTrainingRecommendationsParams = {
-  employee_id?: string;
-  status?: ListTrainingRecommendationsStatus;
-  recommendation_type?: ListTrainingRecommendationsRecommendationType;
+employee_id?: string;
+factory_id?: string;
+status?: ListTrainingRecommendationsStatus;
+recommendation_type?: ListTrainingRecommendationsRecommendationType;
 };
 
-export type ListTrainingRecommendationsStatus =
-  (typeof ListTrainingRecommendationsStatus)[keyof typeof ListTrainingRecommendationsStatus];
+export type ListTrainingRecommendationsStatus = typeof ListTrainingRecommendationsStatus[keyof typeof ListTrainingRecommendationsStatus];
+
 
 export const ListTrainingRecommendationsStatus = {
-  Pending: "Pending",
-  In_Progress: "In Progress",
-  Completed: "Completed",
-  Cancelled: "Cancelled",
+  Pending: 'Pending',
+  In_Progress: 'In Progress',
+  Completed: 'Completed',
+  Cancelled: 'Cancelled',
 } as const;
 
-export type ListTrainingRecommendationsRecommendationType =
-  (typeof ListTrainingRecommendationsRecommendationType)[keyof typeof ListTrainingRecommendationsRecommendationType];
+export type ListTrainingRecommendationsRecommendationType = typeof ListTrainingRecommendationsRecommendationType[keyof typeof ListTrainingRecommendationsRecommendationType];
+
 
 export const ListTrainingRecommendationsRecommendationType = {
-  Immediate: "Immediate",
-  "Short-term": "Short-term",
-  "Long-term": "Long-term",
-  Promotion: "Promotion",
+  Immediate: 'Immediate',
+  'Short-term': 'Short-term',
+  'Long-term': 'Long-term',
+  Promotion: 'Promotion',
 } as const;
+

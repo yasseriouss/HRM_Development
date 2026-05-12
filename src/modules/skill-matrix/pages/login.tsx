@@ -160,7 +160,7 @@ export default function Login() {
             <CardFooter className="p-12 pt-0 flex flex-col gap-10">
               <Button
                 type="submit"
-                variant="industrial-metallic"
+                variant="default"
                 className="w-full h-18 text-xs tracking-[0.4em] shadow-[0_20px_40px_rgba(0,0,0,0.4)] group relative overflow-hidden transition-all duration-500 hover:shadow-primary/20"
                 disabled={loginMutation.isPending}
               >

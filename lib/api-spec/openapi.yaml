@@ -104,6 +104,10 @@ paths:
           required: true
           schema:
             type: string
+        - name: factory_id
+          in: query
+          schema:
+            type: string
       responses:
         "200":
           description: Dashboard metrics
@@ -121,6 +125,10 @@ paths:
         - name: x-user-token
           in: header
           required: true
+          schema:
+            type: string
+        - name: factory_id
+          in: query
           schema:
             type: string
       responses:
@@ -142,6 +150,10 @@ paths:
         - name: x-user-token
           in: header
           required: true
+          schema:
+            type: string
+        - name: factory_id
+          in: query
           schema:
             type: string
         - name: limit
@@ -170,6 +182,10 @@ paths:
           required: true
           schema:
             type: string
+        - name: factory_id
+          in: query
+          schema:
+            type: string
       responses:
         "200":
           description: Class trend data
@@ -190,6 +206,10 @@ paths:
         - name: x-user-token
           in: header
           required: true
+          schema:
+            type: string
+        - name: factory_id
+          in: query
           schema:
             type: string
       responses:
@@ -908,6 +928,10 @@ paths:
           schema:
             type: string
         - name: employee_id
+          in: query
+          schema:
+            type: string
+        - name: factory_id
           in: query
           schema:
             type: string

@@ -8,6 +8,8 @@ import {
 import type {
   TrainingRecommendation,
   ListTrainingRecommendationsStatus,
+  Employee,
+  Skill,
 } from "@hrm-development/api-client-react";
 import { getAuthHeaders, getAuthUser } from "@modules/skill-matrix/lib/auth";
 import { Card, CardContent } from "@shared/components/ui/card";
@@ -18,6 +20,7 @@ import { Input } from "@shared/components/ui/input";
 import { Label } from "@shared/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@shared/components/ui/select";
 import { motion } from "framer-motion";
+import { useFactory } from "@shared/contexts/FactoryContext";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@shared/components/ui/dialog";
@@ -102,6 +105,7 @@ export default function TrainingPage() {
   const headers = getAuthHeaders();
   const user = getAuthUser();
   const { toast } = useToast();
+  const { activeFactoryId } = useFactory();
   const queryClient = useQueryClient();
   const isAdmin = user?.role === "super_admin";
   const t = useT();
@@ -134,7 +138,7 @@ export default function TrainingPage() {
   const apiStatus = STATUS_OPTIONS.find((o) => o.value === statusFilter)?.apiValue;
 
   const { data: recommendations, isLoading, queryKey } = useListTrainingRecommendations(
-    { status: apiStatus },
+    { status: apiStatus, factory_id: activeFactoryId ?? undefined },
     { request: { headers } },
   );
 
@@ -391,7 +395,7 @@ export default function TrainingPage() {
                   </SelectTrigger>
                   <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">
                     <SelectItem value="none" className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{t("select_none")}</SelectItem>
-                    {(employeesData?.data ?? []).map((e) => (
+                    {(employeesData?.data ?? []).map((e: Employee) => (
                       <SelectItem key={e.id} value={e.id} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{e.full_name}</SelectItem>
                     ))}
                   </SelectContent>
@@ -416,7 +420,7 @@ export default function TrainingPage() {
                   </SelectTrigger>
                   <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">
                     <SelectItem value="none" className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{t("select_none")}</SelectItem>
-                    {(skills ?? []).map((s) => <SelectItem key={s.id} value={s.id} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{s.name}</SelectItem>)}
+                    {(skills ?? []).map((s: Skill) => <SelectItem key={s.id} value={s.id} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{s.name}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>

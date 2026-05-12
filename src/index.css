@@ -95,7 +95,7 @@
   }
 
   * {
-    @apply border-border outline-ring/50;
+    @apply border-[var(--border)] outline-ring/50;
   }
 
   body {

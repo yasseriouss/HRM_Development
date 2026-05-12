@@ -5,135 +5,129 @@
  * HRM Skill Matrix System API
  * OpenAPI spec version: 0.1.0
  */
-import * as zod from "zod";
+import * as zod from 'zod';
 
 /**
  * @summary Health check
  */
 export const HealthCheckResponse = zod.object({
-  status: zod.string(),
-});
+  "status": zod.string()
+})
+
 
 /**
  * @summary Login with demo credentials
  */
 export const LoginBody = zod.object({
-  email: zod.string(),
-  password: zod.string(),
-});
+  "email": zod.string(),
+  "password": zod.string()
+})
 
 export const LoginResponse = zod.object({
-  token: zod.string(),
-  user: zod
-    .object({
-      id: zod.string(),
-      email: zod.string(),
-      full_name: zod.string().nullish(),
-      role: zod.enum([
-        "super_admin",
-        "dept_head",
-        "hr_coordinator",
-        "employee",
-      ]),
-      department_id: zod.string().nullish(),
-      is_active: zod.boolean(),
-      created_at: zod.string(),
-    })
-    .and(
-      zod.object({
-        department: zod
-          .object({
-            id: zod.string(),
-            name: zod.string(),
-            code: zod.string().nullish(),
-            description: zod.string().nullish(),
-            manager_id: zod.string().nullish(),
-            manager_email: zod.string().nullish(),
-            employee_count: zod.number(),
-            created_at: zod.string(),
-          })
-          .optional(),
-      }),
-    ),
-});
+  "token": zod.string(),
+  "user": zod.object({
+  "id": zod.string(),
+  "email": zod.string(),
+  "full_name": zod.string().nullish(),
+  "role": zod.enum(['super_admin', 'dept_head', 'hr_coordinator', 'employee']),
+  "department_id": zod.string().nullish(),
+  "is_active": zod.boolean(),
+  "created_at": zod.string()
+}).and(zod.object({
+  "department": zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "code": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "manager_id": zod.string().nullish(),
+  "manager_email": zod.string().nullish(),
+  "employee_count": zod.number(),
+  "created_at": zod.string()
+}).optional()
+}))
+})
+
 
 /**
  * @summary Get current user from session token
  */
 export const GetMeHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
-export const GetMeResponse = zod
-  .object({
-    id: zod.string(),
-    email: zod.string(),
-    full_name: zod.string().nullish(),
-    role: zod.enum(["super_admin", "dept_head", "hr_coordinator", "employee"]),
-    department_id: zod.string().nullish(),
-    is_active: zod.boolean(),
-    created_at: zod.string(),
-  })
-  .and(
-    zod.object({
-      department: zod
-        .object({
-          id: zod.string(),
-          name: zod.string(),
-          code: zod.string().nullish(),
-          description: zod.string().nullish(),
-          manager_id: zod.string().nullish(),
-          manager_email: zod.string().nullish(),
-          employee_count: zod.number(),
-          created_at: zod.string(),
-        })
-        .optional(),
-    }),
-  );
+export const GetMeResponse = zod.object({
+  "id": zod.string(),
+  "email": zod.string(),
+  "full_name": zod.string().nullish(),
+  "role": zod.enum(['super_admin', 'dept_head', 'hr_coordinator', 'employee']),
+  "department_id": zod.string().nullish(),
+  "is_active": zod.boolean(),
+  "created_at": zod.string()
+}).and(zod.object({
+  "department": zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "code": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "manager_id": zod.string().nullish(),
+  "manager_email": zod.string().nullish(),
+  "employee_count": zod.number(),
+  "created_at": zod.string()
+}).optional()
+}))
+
 
 /**
  * @summary Get global dashboard KPIs
  */
+export const GetDashboardMetricsQueryParams = zod.object({
+  "factory_id": zod.coerce.string().optional()
+})
+
 export const GetDashboardMetricsHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const GetDashboardMetricsResponse = zod.object({
-  total_employees: zod.number(),
-  active_employees: zod.number(),
-  total_departments: zod.number(),
-  class_a_count: zod.number(),
-  class_b_count: zod.number(),
-  class_c_count: zod.number(),
-  class_a_percentage: zod.number(),
-  class_b_percentage: zod.number(),
-  class_c_percentage: zod.number(),
-  average_skill_percentage: zod.number(),
-  active_campaigns: zod.number(),
-  completed_campaigns: zod.number(),
-  total_skills: zod.number(),
-  pending_training: zod.number(),
-});
+  "total_employees": zod.number(),
+  "active_employees": zod.number(),
+  "total_departments": zod.number(),
+  "class_a_count": zod.number(),
+  "class_b_count": zod.number(),
+  "class_c_count": zod.number(),
+  "class_a_percentage": zod.number(),
+  "class_b_percentage": zod.number(),
+  "class_c_percentage": zod.number(),
+  "average_skill_percentage": zod.number(),
+  "active_campaigns": zod.number(),
+  "completed_campaigns": zod.number(),
+  "total_skills": zod.number(),
+  "pending_training": zod.number()
+})
+
 
 /**
  * @summary Class distribution per department
  */
+export const GetDepartmentPerformanceQueryParams = zod.object({
+  "factory_id": zod.coerce.string().optional()
+})
+
 export const GetDepartmentPerformanceHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const GetDepartmentPerformanceResponseItem = zod.object({
-  department_id: zod.string(),
-  department_name: zod.string(),
-  employee_count: zod.number(),
-  class_a_count: zod.number(),
-  class_b_count: zod.number(),
-  class_c_count: zod.number(),
-  average_percentage: zod.number(),
-});
-export const GetDepartmentPerformanceResponse = zod.array(
-  GetDepartmentPerformanceResponseItem,
-);
+  "department_id": zod.string(),
+  "department_name": zod.string(),
+  "employee_count": zod.number(),
+  "class_a_count": zod.number(),
+  "class_b_count": zod.number(),
+  "class_c_count": zod.number(),
+  "average_percentage": zod.number()
+})
+export const GetDepartmentPerformanceResponse = zod.array(GetDepartmentPerformanceResponseItem)
+
 
 /**
  * @summary Recent evaluation activity feed
@@ -141,157 +135,166 @@ export const GetDepartmentPerformanceResponse = zod.array(
 export const getRecentActivityQueryLimitDefault = 10;
 
 export const GetRecentActivityQueryParams = zod.object({
-  limit: zod.coerce.number().default(getRecentActivityQueryLimitDefault),
-});
+  "factory_id": zod.coerce.string().optional(),
+  "limit": zod.coerce.number().default(getRecentActivityQueryLimitDefault)
+})
 
 export const GetRecentActivityHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const GetRecentActivityResponseItem = zod.object({
-  id: zod.string(),
-  type: zod.enum([
-    "evaluation_submitted",
-    "campaign_activated",
-    "campaign_completed",
-    "training_assigned",
-  ]),
-  description: zod.string(),
-  employee_name: zod.string().nullish(),
-  department_name: zod.string().nullish(),
-  campaign_title: zod.string().nullish(),
-  timestamp: zod.string(),
-});
-export const GetRecentActivityResponse = zod.array(
-  GetRecentActivityResponseItem,
-);
+  "id": zod.string(),
+  "type": zod.enum(['evaluation_submitted', 'campaign_activated', 'campaign_completed', 'training_assigned']),
+  "description": zod.string(),
+  "employee_name": zod.string().nullish(),
+  "department_name": zod.string().nullish(),
+  "campaign_title": zod.string().nullish(),
+  "timestamp": zod.string()
+})
+export const GetRecentActivityResponse = zod.array(GetRecentActivityResponseItem)
+
 
 /**
  * @summary A/B/C class trends over campaigns
  */
+export const GetClassTrendsQueryParams = zod.object({
+  "factory_id": zod.coerce.string().optional()
+})
+
 export const GetClassTrendsHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const GetClassTrendsResponseItem = zod.object({
-  campaign_id: zod.string(),
-  campaign_title: zod.string(),
-  campaign_type: zod.string(),
-  end_date: zod.string(),
-  class_a_count: zod.number(),
-  class_b_count: zod.number(),
-  class_c_count: zod.number(),
-  total: zod.number(),
-});
-export const GetClassTrendsResponse = zod.array(GetClassTrendsResponseItem);
+  "campaign_id": zod.string(),
+  "campaign_title": zod.string(),
+  "campaign_type": zod.string(),
+  "end_date": zod.string(),
+  "class_a_count": zod.number(),
+  "class_b_count": zod.number(),
+  "class_c_count": zod.number(),
+  "total": zod.number()
+})
+export const GetClassTrendsResponse = zod.array(GetClassTrendsResponseItem)
+
 
 /**
  * @summary List all departments
  */
+export const ListDepartmentsQueryParams = zod.object({
+  "factory_id": zod.coerce.string().optional()
+})
+
 export const ListDepartmentsHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const ListDepartmentsResponseItem = zod.object({
-  id: zod.string(),
-  name: zod.string(),
-  code: zod.string().nullish(),
-  description: zod.string().nullish(),
-  manager_id: zod.string().nullish(),
-  manager_email: zod.string().nullish(),
-  employee_count: zod.number(),
-  created_at: zod.string(),
-});
-export const ListDepartmentsResponse = zod.array(ListDepartmentsResponseItem);
+  "id": zod.string(),
+  "name": zod.string(),
+  "code": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "manager_id": zod.string().nullish(),
+  "manager_email": zod.string().nullish(),
+  "employee_count": zod.number(),
+  "created_at": zod.string()
+})
+export const ListDepartmentsResponse = zod.array(ListDepartmentsResponseItem)
+
 
 /**
  * @summary Create a department
  */
 export const CreateDepartmentHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const CreateDepartmentBody = zod.object({
-  name: zod.string(),
-  code: zod.string().optional(),
-  description: zod.string().optional(),
-  manager_email: zod.string().optional(),
-});
+  "name": zod.string(),
+  "code": zod.string().optional(),
+  "description": zod.string().optional(),
+  "manager_email": zod.string().optional()
+})
+
 
 /**
  * @summary Get department by ID
  */
 export const GetDepartmentParams = zod.object({
-  id: zod.coerce.string(),
-});
+  "id": zod.coerce.string()
+})
 
 export const GetDepartmentHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const GetDepartmentResponse = zod.object({
-  id: zod.string(),
-  name: zod.string(),
-  code: zod.string().nullish(),
-  description: zod.string().nullish(),
-  manager_id: zod.string().nullish(),
-  manager_email: zod.string().nullish(),
-  employee_count: zod.number(),
-  created_at: zod.string(),
-});
+  "id": zod.string(),
+  "name": zod.string(),
+  "code": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "manager_id": zod.string().nullish(),
+  "manager_email": zod.string().nullish(),
+  "employee_count": zod.number(),
+  "created_at": zod.string()
+})
+
 
 /**
  * @summary Update department
  */
 export const UpdateDepartmentParams = zod.object({
-  id: zod.coerce.string(),
-});
+  "id": zod.coerce.string()
+})
 
 export const UpdateDepartmentHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const UpdateDepartmentBody = zod.object({
-  name: zod.string(),
-  code: zod.string().optional(),
-  description: zod.string().optional(),
-  manager_email: zod.string().optional(),
-});
+  "name": zod.string(),
+  "code": zod.string().optional(),
+  "description": zod.string().optional(),
+  "manager_email": zod.string().optional()
+})
 
 export const UpdateDepartmentResponse = zod.object({
-  id: zod.string(),
-  name: zod.string(),
-  code: zod.string().nullish(),
-  description: zod.string().nullish(),
-  manager_id: zod.string().nullish(),
-  manager_email: zod.string().nullish(),
-  employee_count: zod.number(),
-  created_at: zod.string(),
-});
+  "id": zod.string(),
+  "name": zod.string(),
+  "code": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "manager_id": zod.string().nullish(),
+  "manager_email": zod.string().nullish(),
+  "employee_count": zod.number(),
+  "created_at": zod.string()
+})
+
 
 /**
  * @summary Get department statistics
  */
 export const GetDepartmentStatsParams = zod.object({
-  id: zod.coerce.string(),
-});
+  "id": zod.coerce.string()
+})
 
 export const GetDepartmentStatsHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const GetDepartmentStatsResponse = zod.object({
-  department_id: zod.string(),
-  department_name: zod.string(),
-  employee_count: zod.number(),
-  class_a_count: zod.number(),
-  class_b_count: zod.number(),
-  class_c_count: zod.number(),
-  average_percentage: zod.number(),
-  skill_count: zod.number(),
-  active_campaigns: zod.number(),
-  pending_training: zod.number(),
-});
+  "department_id": zod.string(),
+  "department_name": zod.string(),
+  "employee_count": zod.number(),
+  "class_a_count": zod.number(),
+  "class_b_count": zod.number(),
+  "class_c_count": zod.number(),
+  "average_percentage": zod.number(),
+  "skill_count": zod.number(),
+  "active_campaigns": zod.number(),
+  "pending_training": zod.number()
+})
+
 
 /**
  * @summary List employees with optional filters
@@ -300,1011 +303,969 @@ export const listEmployeesQueryPageDefault = 1;
 export const listEmployeesQueryPageSizeDefault = 20;
 
 export const ListEmployeesQueryParams = zod.object({
-  department_id: zod.coerce.string().optional(),
-  factory_id: zod.coerce.string().optional(),
-  current_class: zod.enum(["A", "B", "C"]).optional(),
-  is_active: zod.coerce.boolean().optional(),
-  search: zod.coerce.string().optional(),
-  page: zod.coerce.number().default(listEmployeesQueryPageDefault),
-  page_size: zod.coerce.number().default(listEmployeesQueryPageSizeDefault),
-});
+  "department_id": zod.coerce.string().optional(),
+  "factory_id": zod.coerce.string().optional(),
+  "current_class": zod.enum(['A', 'B', 'C']).optional(),
+  "is_active": zod.coerce.boolean().optional(),
+  "search": zod.coerce.string().optional(),
+  "page": zod.coerce.number().default(listEmployeesQueryPageDefault),
+  "page_size": zod.coerce.number().default(listEmployeesQueryPageSizeDefault)
+})
 
 export const ListEmployeesHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const ListEmployeesResponse = zod.object({
-  data: zod.array(
-    zod.object({
-      id: zod.string(),
-      employee_code: zod.string().nullish(),
-      full_name: zod.string(),
-      department_id: zod.string(),
-      job_title: zod.string().nullish(),
-      joined_date: zod.string().nullish(),
-      birth_date: zod.string().nullish(),
-      current_class: zod.enum(["A", "B", "C"]),
-      email: zod.string().nullish(),
-      phone: zod.string().nullish(),
-      is_active: zod.boolean(),
-      notes: zod.string().nullish(),
-      created_at: zod.string(),
-      department: zod.object({
-        id: zod.string(),
-        name: zod.string(),
-        code: zod.string().nullish(),
-        description: zod.string().nullish(),
-        manager_id: zod.string().nullish(),
-        manager_email: zod.string().nullish(),
-        employee_count: zod.number(),
-        created_at: zod.string(),
-      }),
-    }),
-  ),
-  total: zod.number(),
-  page: zod.number(),
-  page_size: zod.number(),
-});
+  "data": zod.array(zod.object({
+  "id": zod.string(),
+  "employee_code": zod.string().nullish(),
+  "full_name": zod.string(),
+  "department_id": zod.string(),
+  "job_title": zod.string().nullish(),
+  "joined_date": zod.string().nullish(),
+  "birth_date": zod.string().nullish(),
+  "current_class": zod.enum(['A', 'B', 'C']),
+  "email": zod.string().nullish(),
+  "phone": zod.string().nullish(),
+  "is_active": zod.boolean(),
+  "notes": zod.string().nullish(),
+  "created_at": zod.string(),
+  "department": zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "code": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "manager_id": zod.string().nullish(),
+  "manager_email": zod.string().nullish(),
+  "employee_count": zod.number(),
+  "created_at": zod.string()
+})
+})),
+  "total": zod.number(),
+  "page": zod.number(),
+  "page_size": zod.number()
+})
+
 
 /**
  * @summary Create employee
  */
 export const CreateEmployeeHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const CreateEmployeeBody = zod.object({
-  employee_code: zod.string().optional(),
-  full_name: zod.string(),
-  department_id: zod.string(),
-  job_title: zod.string().optional(),
-  joined_date: zod.string().optional(),
-  birth_date: zod.string().optional(),
-  email: zod.string().optional(),
-  phone: zod.string().optional(),
-  notes: zod.string().optional(),
-});
+  "employee_code": zod.string().optional(),
+  "full_name": zod.string(),
+  "department_id": zod.string(),
+  "job_title": zod.string().optional(),
+  "joined_date": zod.string().optional(),
+  "birth_date": zod.string().optional(),
+  "email": zod.string().optional(),
+  "phone": zod.string().optional(),
+  "notes": zod.string().optional()
+})
+
 
 /**
  * @summary Get employee by ID
  */
 export const GetEmployeeParams = zod.object({
-  id: zod.coerce.string(),
-});
+  "id": zod.coerce.string()
+})
 
 export const GetEmployeeHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const GetEmployeeResponse = zod.object({
-  id: zod.string(),
-  employee_code: zod.string().nullish(),
-  full_name: zod.string(),
-  department_id: zod.string(),
-  job_title: zod.string().nullish(),
-  joined_date: zod.string().nullish(),
-  birth_date: zod.string().nullish(),
-  current_class: zod.enum(["A", "B", "C"]),
-  email: zod.string().nullish(),
-  phone: zod.string().nullish(),
-  is_active: zod.boolean(),
-  notes: zod.string().nullish(),
-  created_at: zod.string(),
-  department: zod.object({
-    id: zod.string(),
-    name: zod.string(),
-    code: zod.string().nullish(),
-    description: zod.string().nullish(),
-    manager_id: zod.string().nullish(),
-    manager_email: zod.string().nullish(),
-    employee_count: zod.number(),
-    created_at: zod.string(),
-  }),
-});
+  "id": zod.string(),
+  "employee_code": zod.string().nullish(),
+  "full_name": zod.string(),
+  "department_id": zod.string(),
+  "job_title": zod.string().nullish(),
+  "joined_date": zod.string().nullish(),
+  "birth_date": zod.string().nullish(),
+  "current_class": zod.enum(['A', 'B', 'C']),
+  "email": zod.string().nullish(),
+  "phone": zod.string().nullish(),
+  "is_active": zod.boolean(),
+  "notes": zod.string().nullish(),
+  "created_at": zod.string(),
+  "department": zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "code": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "manager_id": zod.string().nullish(),
+  "manager_email": zod.string().nullish(),
+  "employee_count": zod.number(),
+  "created_at": zod.string()
+})
+})
+
 
 /**
  * @summary Update employee
  */
 export const UpdateEmployeeParams = zod.object({
-  id: zod.coerce.string(),
-});
+  "id": zod.coerce.string()
+})
 
 export const UpdateEmployeeHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const UpdateEmployeeBody = zod.object({
-  employee_code: zod.string().optional(),
-  full_name: zod.string(),
-  department_id: zod.string(),
-  job_title: zod.string().optional(),
-  joined_date: zod.string().optional(),
-  birth_date: zod.string().optional(),
-  email: zod.string().optional(),
-  phone: zod.string().optional(),
-  notes: zod.string().optional(),
-});
+  "employee_code": zod.string().optional(),
+  "full_name": zod.string(),
+  "department_id": zod.string(),
+  "job_title": zod.string().optional(),
+  "joined_date": zod.string().optional(),
+  "birth_date": zod.string().optional(),
+  "email": zod.string().optional(),
+  "phone": zod.string().optional(),
+  "notes": zod.string().optional()
+})
 
 export const UpdateEmployeeResponse = zod.object({
-  id: zod.string(),
-  employee_code: zod.string().nullish(),
-  full_name: zod.string(),
-  department_id: zod.string(),
-  job_title: zod.string().nullish(),
-  joined_date: zod.string().nullish(),
-  birth_date: zod.string().nullish(),
-  current_class: zod.enum(["A", "B", "C"]),
-  email: zod.string().nullish(),
-  phone: zod.string().nullish(),
-  is_active: zod.boolean(),
-  notes: zod.string().nullish(),
-  created_at: zod.string(),
-  department: zod.object({
-    id: zod.string(),
-    name: zod.string(),
-    code: zod.string().nullish(),
-    description: zod.string().nullish(),
-    manager_id: zod.string().nullish(),
-    manager_email: zod.string().nullish(),
-    employee_count: zod.number(),
-    created_at: zod.string(),
-  }),
-});
+  "id": zod.string(),
+  "employee_code": zod.string().nullish(),
+  "full_name": zod.string(),
+  "department_id": zod.string(),
+  "job_title": zod.string().nullish(),
+  "joined_date": zod.string().nullish(),
+  "birth_date": zod.string().nullish(),
+  "current_class": zod.enum(['A', 'B', 'C']),
+  "email": zod.string().nullish(),
+  "phone": zod.string().nullish(),
+  "is_active": zod.boolean(),
+  "notes": zod.string().nullish(),
+  "created_at": zod.string(),
+  "department": zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "code": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "manager_id": zod.string().nullish(),
+  "manager_email": zod.string().nullish(),
+  "employee_count": zod.number(),
+  "created_at": zod.string()
+})
+})
+
 
 /**
  * @summary Deactivate employee
  */
 export const DeleteEmployeeParams = zod.object({
-  id: zod.coerce.string(),
-});
+  "id": zod.coerce.string()
+})
 
 export const DeleteEmployeeHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const DeleteEmployeeResponse = zod.object({
-  id: zod.string(),
-  employee_code: zod.string().nullish(),
-  full_name: zod.string(),
-  department_id: zod.string(),
-  job_title: zod.string().nullish(),
-  joined_date: zod.string().nullish(),
-  birth_date: zod.string().nullish(),
-  current_class: zod.enum(["A", "B", "C"]),
-  email: zod.string().nullish(),
-  phone: zod.string().nullish(),
-  is_active: zod.boolean(),
-  notes: zod.string().nullish(),
-  created_at: zod.string(),
-  department: zod.object({
-    id: zod.string(),
-    name: zod.string(),
-    code: zod.string().nullish(),
-    description: zod.string().nullish(),
-    manager_id: zod.string().nullish(),
-    manager_email: zod.string().nullish(),
-    employee_count: zod.number(),
-    created_at: zod.string(),
-  }),
-});
+  "id": zod.string(),
+  "employee_code": zod.string().nullish(),
+  "full_name": zod.string(),
+  "department_id": zod.string(),
+  "job_title": zod.string().nullish(),
+  "joined_date": zod.string().nullish(),
+  "birth_date": zod.string().nullish(),
+  "current_class": zod.enum(['A', 'B', 'C']),
+  "email": zod.string().nullish(),
+  "phone": zod.string().nullish(),
+  "is_active": zod.boolean(),
+  "notes": zod.string().nullish(),
+  "created_at": zod.string(),
+  "department": zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "code": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "manager_id": zod.string().nullish(),
+  "manager_email": zod.string().nullish(),
+  "employee_count": zod.number(),
+  "created_at": zod.string()
+})
+})
+
 
 /**
  * @summary Get full employee profile with evaluations and training
  */
 export const GetEmployeeProfileParams = zod.object({
-  id: zod.coerce.string(),
-});
+  "id": zod.coerce.string()
+})
 
 export const GetEmployeeProfileHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const GetEmployeeProfileResponse = zod.object({
-  employee: zod.object({
-    id: zod.string(),
-    employee_code: zod.string().nullish(),
-    full_name: zod.string(),
-    department_id: zod.string(),
-    job_title: zod.string().nullish(),
-    joined_date: zod.string().nullish(),
-    birth_date: zod.string().nullish(),
-    current_class: zod.enum(["A", "B", "C"]),
-    email: zod.string().nullish(),
-    phone: zod.string().nullish(),
-    is_active: zod.boolean(),
-    notes: zod.string().nullish(),
-    created_at: zod.string(),
-    department: zod.object({
-      id: zod.string(),
-      name: zod.string(),
-      code: zod.string().nullish(),
-      description: zod.string().nullish(),
-      manager_id: zod.string().nullish(),
-      manager_email: zod.string().nullish(),
-      employee_count: zod.number(),
-      created_at: zod.string(),
-    }),
-  }),
-  latest_summary: zod
-    .object({
-      id: zod.string(),
-      campaign_id: zod.string(),
-      employee_id: zod.string(),
-      total_score: zod.number(),
-      max_possible_score: zod.number(),
-      percentage: zod.number(),
-      class: zod.enum(["A", "B", "C"]),
-      evaluated_skills_count: zod.number(),
-      updated_at: zod.string(),
-      campaign_title: zod.string().nullish(),
-      employee_name: zod.string().nullish(),
-      employee_code: zod.string().nullish(),
-    })
-    .nullish(),
-  historical_summaries: zod.array(
-    zod.object({
-      id: zod.string(),
-      campaign_id: zod.string(),
-      employee_id: zod.string(),
-      total_score: zod.number(),
-      max_possible_score: zod.number(),
-      percentage: zod.number(),
-      class: zod.enum(["A", "B", "C"]),
-      evaluated_skills_count: zod.number(),
-      updated_at: zod.string(),
-      campaign_title: zod.string().nullish(),
-      employee_name: zod.string().nullish(),
-      employee_code: zod.string().nullish(),
-    }),
-  ),
-  skill_scores: zod.array(
-    zod.object({
-      skill_id: zod.string(),
-      skill_name: zod.string(),
-      skill_code: zod.string().nullish(),
-      category: zod.string().nullish(),
-      weight: zod.number(),
-      criticality: zod.enum(["Low", "Medium", "High", "Critical"]),
-      score: zod.number().nullish(),
-      score_label: zod.string().nullish(),
-    }),
-  ),
-  training_recommendations: zod.array(
-    zod.object({
-      id: zod.string(),
-      employee_id: zod.string(),
-      skill_id: zod.string().nullish(),
-      campaign_id: zod.string().nullish(),
-      score: zod.number().nullish(),
-      recommendation_type: zod.enum([
-        "Immediate",
-        "Short-term",
-        "Long-term",
-        "Promotion",
-      ]),
-      status: zod.enum(["Pending", "In Progress", "Completed", "Cancelled"]),
-      assigned_trainer_id: zod.string().nullish(),
-      target_date: zod.string().nullish(),
-      notes: zod.string().nullish(),
-      created_at: zod.string(),
-      employee_name: zod.string().nullish(),
-      skill_name: zod.string().nullish(),
-    }),
-  ),
-});
+  "employee": zod.object({
+  "id": zod.string(),
+  "employee_code": zod.string().nullish(),
+  "full_name": zod.string(),
+  "department_id": zod.string(),
+  "job_title": zod.string().nullish(),
+  "joined_date": zod.string().nullish(),
+  "birth_date": zod.string().nullish(),
+  "current_class": zod.enum(['A', 'B', 'C']),
+  "email": zod.string().nullish(),
+  "phone": zod.string().nullish(),
+  "is_active": zod.boolean(),
+  "notes": zod.string().nullish(),
+  "created_at": zod.string(),
+  "department": zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "code": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "manager_id": zod.string().nullish(),
+  "manager_email": zod.string().nullish(),
+  "employee_count": zod.number(),
+  "created_at": zod.string()
+})
+}),
+  "latest_summary": zod.object({
+  "id": zod.string(),
+  "campaign_id": zod.string(),
+  "employee_id": zod.string(),
+  "total_score": zod.number(),
+  "max_possible_score": zod.number(),
+  "percentage": zod.number(),
+  "class": zod.enum(['A', 'B', 'C']),
+  "evaluated_skills_count": zod.number(),
+  "updated_at": zod.string(),
+  "campaign_title": zod.string().nullish(),
+  "employee_name": zod.string().nullish(),
+  "employee_code": zod.string().nullish()
+}).nullish(),
+  "historical_summaries": zod.array(zod.object({
+  "id": zod.string(),
+  "campaign_id": zod.string(),
+  "employee_id": zod.string(),
+  "total_score": zod.number(),
+  "max_possible_score": zod.number(),
+  "percentage": zod.number(),
+  "class": zod.enum(['A', 'B', 'C']),
+  "evaluated_skills_count": zod.number(),
+  "updated_at": zod.string(),
+  "campaign_title": zod.string().nullish(),
+  "employee_name": zod.string().nullish(),
+  "employee_code": zod.string().nullish()
+})),
+  "skill_scores": zod.array(zod.object({
+  "skill_id": zod.string(),
+  "skill_name": zod.string(),
+  "skill_code": zod.string().nullish(),
+  "category": zod.string().nullish(),
+  "weight": zod.number(),
+  "criticality": zod.enum(['Low', 'Medium', 'High', 'Critical']),
+  "score": zod.number().nullish(),
+  "score_label": zod.string().nullish()
+})),
+  "training_recommendations": zod.array(zod.object({
+  "id": zod.string(),
+  "employee_id": zod.string(),
+  "skill_id": zod.string().nullish(),
+  "campaign_id": zod.string().nullish(),
+  "score": zod.number().nullish(),
+  "recommendation_type": zod.enum(['Immediate', 'Short-term', 'Long-term', 'Promotion']),
+  "status": zod.enum(['Pending', 'In Progress', 'Completed', 'Cancelled']),
+  "assigned_trainer_id": zod.string().nullish(),
+  "target_date": zod.string().nullish(),
+  "notes": zod.string().nullish(),
+  "created_at": zod.string(),
+  "employee_name": zod.string().nullish(),
+  "skill_name": zod.string().nullish()
+}))
+})
+
 
 /**
  * @summary Get the authenticated employee's own profile
  */
 export const GetMyProfileHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const GetMyProfileResponse = zod.object({
-  employee: zod.object({
-    id: zod.string(),
-    employee_code: zod.string().nullish(),
-    full_name: zod.string(),
-    department_id: zod.string(),
-    job_title: zod.string().nullish(),
-    joined_date: zod.string().nullish(),
-    birth_date: zod.string().nullish(),
-    current_class: zod.enum(["A", "B", "C"]),
-    email: zod.string().nullish(),
-    phone: zod.string().nullish(),
-    is_active: zod.boolean(),
-    notes: zod.string().nullish(),
-    created_at: zod.string(),
-    department: zod.object({
-      id: zod.string(),
-      name: zod.string(),
-      code: zod.string().nullish(),
-      description: zod.string().nullish(),
-      manager_id: zod.string().nullish(),
-      manager_email: zod.string().nullish(),
-      employee_count: zod.number(),
-      created_at: zod.string(),
-    }),
-  }),
-  latest_summary: zod
-    .object({
-      id: zod.string(),
-      campaign_id: zod.string(),
-      employee_id: zod.string(),
-      total_score: zod.number(),
-      max_possible_score: zod.number(),
-      percentage: zod.number(),
-      class: zod.enum(["A", "B", "C"]),
-      evaluated_skills_count: zod.number(),
-      updated_at: zod.string(),
-      campaign_title: zod.string().nullish(),
-      employee_name: zod.string().nullish(),
-      employee_code: zod.string().nullish(),
-    })
-    .nullish(),
-  historical_summaries: zod.array(
-    zod.object({
-      id: zod.string(),
-      campaign_id: zod.string(),
-      employee_id: zod.string(),
-      total_score: zod.number(),
-      max_possible_score: zod.number(),
-      percentage: zod.number(),
-      class: zod.enum(["A", "B", "C"]),
-      evaluated_skills_count: zod.number(),
-      updated_at: zod.string(),
-      campaign_title: zod.string().nullish(),
-      employee_name: zod.string().nullish(),
-      employee_code: zod.string().nullish(),
-    }),
-  ),
-  skill_scores: zod.array(
-    zod.object({
-      skill_id: zod.string(),
-      skill_name: zod.string(),
-      skill_code: zod.string().nullish(),
-      category: zod.string().nullish(),
-      weight: zod.number(),
-      criticality: zod.enum(["Low", "Medium", "High", "Critical"]),
-      score: zod.number().nullish(),
-      score_label: zod.string().nullish(),
-    }),
-  ),
-  training_recommendations: zod.array(
-    zod.object({
-      id: zod.string(),
-      employee_id: zod.string(),
-      skill_id: zod.string().nullish(),
-      campaign_id: zod.string().nullish(),
-      score: zod.number().nullish(),
-      recommendation_type: zod.enum([
-        "Immediate",
-        "Short-term",
-        "Long-term",
-        "Promotion",
-      ]),
-      status: zod.enum(["Pending", "In Progress", "Completed", "Cancelled"]),
-      assigned_trainer_id: zod.string().nullish(),
-      target_date: zod.string().nullish(),
-      notes: zod.string().nullish(),
-      created_at: zod.string(),
-      employee_name: zod.string().nullish(),
-      skill_name: zod.string().nullish(),
-    }),
-  ),
-});
+  "employee": zod.object({
+  "id": zod.string(),
+  "employee_code": zod.string().nullish(),
+  "full_name": zod.string(),
+  "department_id": zod.string(),
+  "job_title": zod.string().nullish(),
+  "joined_date": zod.string().nullish(),
+  "birth_date": zod.string().nullish(),
+  "current_class": zod.enum(['A', 'B', 'C']),
+  "email": zod.string().nullish(),
+  "phone": zod.string().nullish(),
+  "is_active": zod.boolean(),
+  "notes": zod.string().nullish(),
+  "created_at": zod.string(),
+  "department": zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "code": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "manager_id": zod.string().nullish(),
+  "manager_email": zod.string().nullish(),
+  "employee_count": zod.number(),
+  "created_at": zod.string()
+})
+}),
+  "latest_summary": zod.object({
+  "id": zod.string(),
+  "campaign_id": zod.string(),
+  "employee_id": zod.string(),
+  "total_score": zod.number(),
+  "max_possible_score": zod.number(),
+  "percentage": zod.number(),
+  "class": zod.enum(['A', 'B', 'C']),
+  "evaluated_skills_count": zod.number(),
+  "updated_at": zod.string(),
+  "campaign_title": zod.string().nullish(),
+  "employee_name": zod.string().nullish(),
+  "employee_code": zod.string().nullish()
+}).nullish(),
+  "historical_summaries": zod.array(zod.object({
+  "id": zod.string(),
+  "campaign_id": zod.string(),
+  "employee_id": zod.string(),
+  "total_score": zod.number(),
+  "max_possible_score": zod.number(),
+  "percentage": zod.number(),
+  "class": zod.enum(['A', 'B', 'C']),
+  "evaluated_skills_count": zod.number(),
+  "updated_at": zod.string(),
+  "campaign_title": zod.string().nullish(),
+  "employee_name": zod.string().nullish(),
+  "employee_code": zod.string().nullish()
+})),
+  "skill_scores": zod.array(zod.object({
+  "skill_id": zod.string(),
+  "skill_name": zod.string(),
+  "skill_code": zod.string().nullish(),
+  "category": zod.string().nullish(),
+  "weight": zod.number(),
+  "criticality": zod.enum(['Low', 'Medium', 'High', 'Critical']),
+  "score": zod.number().nullish(),
+  "score_label": zod.string().nullish()
+})),
+  "training_recommendations": zod.array(zod.object({
+  "id": zod.string(),
+  "employee_id": zod.string(),
+  "skill_id": zod.string().nullish(),
+  "campaign_id": zod.string().nullish(),
+  "score": zod.number().nullish(),
+  "recommendation_type": zod.enum(['Immediate', 'Short-term', 'Long-term', 'Promotion']),
+  "status": zod.enum(['Pending', 'In Progress', 'Completed', 'Cancelled']),
+  "assigned_trainer_id": zod.string().nullish(),
+  "target_date": zod.string().nullish(),
+  "notes": zod.string().nullish(),
+  "created_at": zod.string(),
+  "employee_name": zod.string().nullish(),
+  "skill_name": zod.string().nullish()
+}))
+})
+
 
 /**
  * @summary List skills with optional filters
  */
 export const ListSkillsQueryParams = zod.object({
-  department_id: zod.coerce.string().optional(),
-  factory_id: zod.coerce.string().optional(),
-  criticality: zod.enum(["Low", "Medium", "High", "Critical"]).optional(),
-  is_active: zod.coerce.boolean().optional(),
-});
+  "department_id": zod.coerce.string().optional(),
+  "factory_id": zod.coerce.string().optional(),
+  "criticality": zod.enum(['Low', 'Medium', 'High', 'Critical']).optional(),
+  "is_active": zod.coerce.boolean().optional()
+})
 
 export const ListSkillsHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const ListSkillsResponseItem = zod.object({
-  id: zod.string(),
-  code: zod.string().nullish(),
-  name: zod.string(),
-  department_id: zod.string(),
-  category: zod.string().nullish(),
-  weight: zod.number(),
-  criticality: zod.enum(["Low", "Medium", "High", "Critical"]),
-  description: zod.string().nullish(),
-  is_active: zod.boolean(),
-  created_at: zod.string(),
-  department: zod.object({
-    id: zod.string(),
-    name: zod.string(),
-    code: zod.string().nullish(),
-    description: zod.string().nullish(),
-    manager_id: zod.string().nullish(),
-    manager_email: zod.string().nullish(),
-    employee_count: zod.number(),
-    created_at: zod.string(),
-  }),
-});
-export const ListSkillsResponse = zod.array(ListSkillsResponseItem);
+  "id": zod.string(),
+  "code": zod.string().nullish(),
+  "name": zod.string(),
+  "department_id": zod.string(),
+  "category": zod.string().nullish(),
+  "weight": zod.number(),
+  "criticality": zod.enum(['Low', 'Medium', 'High', 'Critical']),
+  "description": zod.string().nullish(),
+  "is_active": zod.boolean(),
+  "created_at": zod.string(),
+  "department": zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "code": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "manager_id": zod.string().nullish(),
+  "manager_email": zod.string().nullish(),
+  "employee_count": zod.number(),
+  "created_at": zod.string()
+})
+})
+export const ListSkillsResponse = zod.array(ListSkillsResponseItem)
+
 
 /**
  * @summary Create skill
  */
 export const CreateSkillHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const createSkillBodyWeightMax = 5;
 
+
+
 export const CreateSkillBody = zod.object({
-  code: zod.string().optional(),
-  name: zod.string(),
-  department_id: zod.string(),
-  category: zod.string().optional(),
-  weight: zod.number().min(1).max(createSkillBodyWeightMax),
-  criticality: zod.enum(["Low", "Medium", "High", "Critical"]),
-  description: zod.string().optional(),
-});
+  "code": zod.string().optional(),
+  "name": zod.string(),
+  "department_id": zod.string(),
+  "category": zod.string().optional(),
+  "weight": zod.number().min(1).max(createSkillBodyWeightMax),
+  "criticality": zod.enum(['Low', 'Medium', 'High', 'Critical']),
+  "description": zod.string().optional()
+})
+
 
 /**
  * @summary Get skill by ID
  */
 export const GetSkillParams = zod.object({
-  id: zod.coerce.string(),
-});
+  "id": zod.coerce.string()
+})
 
 export const GetSkillHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const GetSkillResponse = zod.object({
-  id: zod.string(),
-  code: zod.string().nullish(),
-  name: zod.string(),
-  department_id: zod.string(),
-  category: zod.string().nullish(),
-  weight: zod.number(),
-  criticality: zod.enum(["Low", "Medium", "High", "Critical"]),
-  description: zod.string().nullish(),
-  is_active: zod.boolean(),
-  created_at: zod.string(),
-  department: zod.object({
-    id: zod.string(),
-    name: zod.string(),
-    code: zod.string().nullish(),
-    description: zod.string().nullish(),
-    manager_id: zod.string().nullish(),
-    manager_email: zod.string().nullish(),
-    employee_count: zod.number(),
-    created_at: zod.string(),
-  }),
-});
+  "id": zod.string(),
+  "code": zod.string().nullish(),
+  "name": zod.string(),
+  "department_id": zod.string(),
+  "category": zod.string().nullish(),
+  "weight": zod.number(),
+  "criticality": zod.enum(['Low', 'Medium', 'High', 'Critical']),
+  "description": zod.string().nullish(),
+  "is_active": zod.boolean(),
+  "created_at": zod.string(),
+  "department": zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "code": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "manager_id": zod.string().nullish(),
+  "manager_email": zod.string().nullish(),
+  "employee_count": zod.number(),
+  "created_at": zod.string()
+})
+})
+
 
 /**
  * @summary Update skill
  */
 export const UpdateSkillParams = zod.object({
-  id: zod.coerce.string(),
-});
+  "id": zod.coerce.string()
+})
 
 export const UpdateSkillHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const updateSkillBodyWeightMax = 5;
 
+
+
 export const UpdateSkillBody = zod.object({
-  code: zod.string().optional(),
-  name: zod.string(),
-  department_id: zod.string(),
-  category: zod.string().optional(),
-  weight: zod.number().min(1).max(updateSkillBodyWeightMax),
-  criticality: zod.enum(["Low", "Medium", "High", "Critical"]),
-  description: zod.string().optional(),
-});
+  "code": zod.string().optional(),
+  "name": zod.string(),
+  "department_id": zod.string(),
+  "category": zod.string().optional(),
+  "weight": zod.number().min(1).max(updateSkillBodyWeightMax),
+  "criticality": zod.enum(['Low', 'Medium', 'High', 'Critical']),
+  "description": zod.string().optional()
+})
 
 export const UpdateSkillResponse = zod.object({
-  id: zod.string(),
-  code: zod.string().nullish(),
-  name: zod.string(),
-  department_id: zod.string(),
-  category: zod.string().nullish(),
-  weight: zod.number(),
-  criticality: zod.enum(["Low", "Medium", "High", "Critical"]),
-  description: zod.string().nullish(),
-  is_active: zod.boolean(),
-  created_at: zod.string(),
-  department: zod.object({
-    id: zod.string(),
-    name: zod.string(),
-    code: zod.string().nullish(),
-    description: zod.string().nullish(),
-    manager_id: zod.string().nullish(),
-    manager_email: zod.string().nullish(),
-    employee_count: zod.number(),
-    created_at: zod.string(),
-  }),
-});
+  "id": zod.string(),
+  "code": zod.string().nullish(),
+  "name": zod.string(),
+  "department_id": zod.string(),
+  "category": zod.string().nullish(),
+  "weight": zod.number(),
+  "criticality": zod.enum(['Low', 'Medium', 'High', 'Critical']),
+  "description": zod.string().nullish(),
+  "is_active": zod.boolean(),
+  "created_at": zod.string(),
+  "department": zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "code": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "manager_id": zod.string().nullish(),
+  "manager_email": zod.string().nullish(),
+  "employee_count": zod.number(),
+  "created_at": zod.string()
+})
+})
+
 
 /**
  * @summary List evaluation campaigns
  */
 export const ListCampaignsQueryParams = zod.object({
-  status: zod.enum(["Draft", "Active", "Completed", "Archived"]).optional(),
-  department_id: zod.coerce.string().optional(),
-  factory_id: zod.coerce.string().optional(),
-});
+  "status": zod.enum(['Draft', 'Active', 'Completed', 'Archived']).optional(),
+  "department_id": zod.coerce.string().optional(),
+  "factory_id": zod.coerce.string().optional()
+})
 
 export const ListCampaignsHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const ListCampaignsResponseItem = zod.object({
-  id: zod.string(),
-  title: zod.string(),
-  type: zod.enum(["Monthly", "Quarterly", "Bi-Annually", "Custom"]),
-  department_id: zod.string().nullish(),
-  status: zod.enum(["Draft", "Active", "Completed", "Archived"]),
-  start_date: zod.string(),
-  end_date: zod.string(),
-  notes: zod.string().nullish(),
-  created_at: zod.string(),
-  department: zod
-    .object({
-      id: zod.string(),
-      name: zod.string(),
-      code: zod.string().nullish(),
-      description: zod.string().nullish(),
-      manager_id: zod.string().nullish(),
-      manager_email: zod.string().nullish(),
-      employee_count: zod.number(),
-      created_at: zod.string(),
-    })
-    .nullish(),
-  evaluated_count: zod.number(),
-  total_employees: zod.number(),
-});
-export const ListCampaignsResponse = zod.array(ListCampaignsResponseItem);
+  "id": zod.string(),
+  "title": zod.string(),
+  "type": zod.enum(['Monthly', 'Quarterly', 'Bi-Annually', 'Custom']),
+  "department_id": zod.string().nullish(),
+  "status": zod.enum(['Draft', 'Active', 'Completed', 'Archived']),
+  "start_date": zod.string(),
+  "end_date": zod.string(),
+  "notes": zod.string().nullish(),
+  "created_at": zod.string(),
+  "department": zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "code": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "manager_id": zod.string().nullish(),
+  "manager_email": zod.string().nullish(),
+  "employee_count": zod.number(),
+  "created_at": zod.string()
+}).nullish(),
+  "evaluated_count": zod.number(),
+  "total_employees": zod.number()
+})
+export const ListCampaignsResponse = zod.array(ListCampaignsResponseItem)
+
 
 /**
  * @summary Create evaluation campaign
  */
 export const CreateCampaignHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const CreateCampaignBody = zod.object({
-  title: zod.string(),
-  type: zod.enum(["Monthly", "Quarterly", "Bi-Annually", "Custom"]),
-  department_id: zod.string().optional(),
-  start_date: zod.string(),
-  end_date: zod.string(),
-  notes: zod.string().optional(),
-});
+  "title": zod.string(),
+  "type": zod.enum(['Monthly', 'Quarterly', 'Bi-Annually', 'Custom']),
+  "department_id": zod.string().optional(),
+  "start_date": zod.string(),
+  "end_date": zod.string(),
+  "notes": zod.string().optional()
+})
+
 
 /**
  * @summary Get campaign by ID
  */
 export const GetCampaignParams = zod.object({
-  id: zod.coerce.string(),
-});
+  "id": zod.coerce.string()
+})
 
 export const GetCampaignHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const GetCampaignResponse = zod.object({
-  id: zod.string(),
-  title: zod.string(),
-  type: zod.enum(["Monthly", "Quarterly", "Bi-Annually", "Custom"]),
-  department_id: zod.string().nullish(),
-  status: zod.enum(["Draft", "Active", "Completed", "Archived"]),
-  start_date: zod.string(),
-  end_date: zod.string(),
-  notes: zod.string().nullish(),
-  created_at: zod.string(),
-  department: zod
-    .object({
-      id: zod.string(),
-      name: zod.string(),
-      code: zod.string().nullish(),
-      description: zod.string().nullish(),
-      manager_id: zod.string().nullish(),
-      manager_email: zod.string().nullish(),
-      employee_count: zod.number(),
-      created_at: zod.string(),
-    })
-    .nullish(),
-  evaluated_count: zod.number(),
-  total_employees: zod.number(),
-});
+  "id": zod.string(),
+  "title": zod.string(),
+  "type": zod.enum(['Monthly', 'Quarterly', 'Bi-Annually', 'Custom']),
+  "department_id": zod.string().nullish(),
+  "status": zod.enum(['Draft', 'Active', 'Completed', 'Archived']),
+  "start_date": zod.string(),
+  "end_date": zod.string(),
+  "notes": zod.string().nullish(),
+  "created_at": zod.string(),
+  "department": zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "code": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "manager_id": zod.string().nullish(),
+  "manager_email": zod.string().nullish(),
+  "employee_count": zod.number(),
+  "created_at": zod.string()
+}).nullish(),
+  "evaluated_count": zod.number(),
+  "total_employees": zod.number()
+})
+
 
 /**
  * @summary Update campaign
  */
 export const UpdateCampaignParams = zod.object({
-  id: zod.coerce.string(),
-});
+  "id": zod.coerce.string()
+})
 
 export const UpdateCampaignHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const UpdateCampaignBody = zod.object({
-  title: zod.string().optional(),
-  status: zod.enum(["Draft", "Active", "Completed", "Archived"]).optional(),
-  notes: zod.string().optional(),
-  end_date: zod.string().optional(),
-});
+  "title": zod.string().optional(),
+  "status": zod.enum(['Draft', 'Active', 'Completed', 'Archived']).optional(),
+  "notes": zod.string().optional(),
+  "end_date": zod.string().optional()
+})
 
 export const UpdateCampaignResponse = zod.object({
-  id: zod.string(),
-  title: zod.string(),
-  type: zod.enum(["Monthly", "Quarterly", "Bi-Annually", "Custom"]),
-  department_id: zod.string().nullish(),
-  status: zod.enum(["Draft", "Active", "Completed", "Archived"]),
-  start_date: zod.string(),
-  end_date: zod.string(),
-  notes: zod.string().nullish(),
-  created_at: zod.string(),
-  department: zod
-    .object({
-      id: zod.string(),
-      name: zod.string(),
-      code: zod.string().nullish(),
-      description: zod.string().nullish(),
-      manager_id: zod.string().nullish(),
-      manager_email: zod.string().nullish(),
-      employee_count: zod.number(),
-      created_at: zod.string(),
-    })
-    .nullish(),
-  evaluated_count: zod.number(),
-  total_employees: zod.number(),
-});
+  "id": zod.string(),
+  "title": zod.string(),
+  "type": zod.enum(['Monthly', 'Quarterly', 'Bi-Annually', 'Custom']),
+  "department_id": zod.string().nullish(),
+  "status": zod.enum(['Draft', 'Active', 'Completed', 'Archived']),
+  "start_date": zod.string(),
+  "end_date": zod.string(),
+  "notes": zod.string().nullish(),
+  "created_at": zod.string(),
+  "department": zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "code": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "manager_id": zod.string().nullish(),
+  "manager_email": zod.string().nullish(),
+  "employee_count": zod.number(),
+  "created_at": zod.string()
+}).nullish(),
+  "evaluated_count": zod.number(),
+  "total_employees": zod.number()
+})
+
 
 /**
  * @summary Get all evaluation summaries for a campaign
  */
 export const GetCampaignSummariesParams = zod.object({
-  id: zod.coerce.string(),
-});
+  "id": zod.coerce.string()
+})
 
 export const GetCampaignSummariesHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const GetCampaignSummariesResponseItem = zod.object({
-  id: zod.string(),
-  campaign_id: zod.string(),
-  employee_id: zod.string(),
-  total_score: zod.number(),
-  max_possible_score: zod.number(),
-  percentage: zod.number(),
-  class: zod.enum(["A", "B", "C"]),
-  evaluated_skills_count: zod.number(),
-  updated_at: zod.string(),
-  campaign_title: zod.string().nullish(),
-  employee_name: zod.string().nullish(),
-  employee_code: zod.string().nullish(),
-});
-export const GetCampaignSummariesResponse = zod.array(
-  GetCampaignSummariesResponseItem,
-);
+  "id": zod.string(),
+  "campaign_id": zod.string(),
+  "employee_id": zod.string(),
+  "total_score": zod.number(),
+  "max_possible_score": zod.number(),
+  "percentage": zod.number(),
+  "class": zod.enum(['A', 'B', 'C']),
+  "evaluated_skills_count": zod.number(),
+  "updated_at": zod.string(),
+  "campaign_title": zod.string().nullish(),
+  "employee_name": zod.string().nullish(),
+  "employee_code": zod.string().nullish()
+})
+export const GetCampaignSummariesResponse = zod.array(GetCampaignSummariesResponseItem)
+
 
 /**
  * @summary Get full skill matrix for a campaign (employees x skills)
  */
 export const GetCampaignMatrixParams = zod.object({
-  id: zod.coerce.string(),
-});
+  "id": zod.coerce.string()
+})
 
 export const GetCampaignMatrixQueryParams = zod.object({
-  department_id: zod.coerce.string().optional(),
-});
+  "department_id": zod.coerce.string().optional()
+})
 
 export const GetCampaignMatrixHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const GetCampaignMatrixResponse = zod.object({
-  campaign: zod.object({
-    id: zod.string(),
-    title: zod.string(),
-    type: zod.enum(["Monthly", "Quarterly", "Bi-Annually", "Custom"]),
-    department_id: zod.string().nullish(),
-    status: zod.enum(["Draft", "Active", "Completed", "Archived"]),
-    start_date: zod.string(),
-    end_date: zod.string(),
-    notes: zod.string().nullish(),
-    created_at: zod.string(),
-    department: zod
-      .object({
-        id: zod.string(),
-        name: zod.string(),
-        code: zod.string().nullish(),
-        description: zod.string().nullish(),
-        manager_id: zod.string().nullish(),
-        manager_email: zod.string().nullish(),
-        employee_count: zod.number(),
-        created_at: zod.string(),
-      })
-      .nullish(),
-    evaluated_count: zod.number(),
-    total_employees: zod.number(),
-  }),
-  skills: zod.array(
-    zod.object({
-      id: zod.string(),
-      code: zod.string().nullish(),
-      name: zod.string(),
-      department_id: zod.string(),
-      category: zod.string().nullish(),
-      weight: zod.number(),
-      criticality: zod.enum(["Low", "Medium", "High", "Critical"]),
-      description: zod.string().nullish(),
-      is_active: zod.boolean(),
-      created_at: zod.string(),
-      department: zod.object({
-        id: zod.string(),
-        name: zod.string(),
-        code: zod.string().nullish(),
-        description: zod.string().nullish(),
-        manager_id: zod.string().nullish(),
-        manager_email: zod.string().nullish(),
-        employee_count: zod.number(),
-        created_at: zod.string(),
-      }),
-    }),
-  ),
-  rows: zod.array(
-    zod.object({
-      employee: zod.object({
-        id: zod.string(),
-        employee_code: zod.string().nullish(),
-        full_name: zod.string(),
-        department_id: zod.string(),
-        job_title: zod.string().nullish(),
-        joined_date: zod.string().nullish(),
-        birth_date: zod.string().nullish(),
-        current_class: zod.enum(["A", "B", "C"]),
-        email: zod.string().nullish(),
-        phone: zod.string().nullish(),
-        is_active: zod.boolean(),
-        notes: zod.string().nullish(),
-        created_at: zod.string(),
-        department: zod.object({
-          id: zod.string(),
-          name: zod.string(),
-          code: zod.string().nullish(),
-          description: zod.string().nullish(),
-          manager_id: zod.string().nullish(),
-          manager_email: zod.string().nullish(),
-          employee_count: zod.number(),
-          created_at: zod.string(),
-        }),
-      }),
-      scores: zod.record(zod.string(), zod.number()),
-      total_score: zod.number().nullish(),
-      max_score: zod.number().nullish(),
-      percentage: zod.number().nullish(),
-      class: zod.enum(["A", "B", "C"]).nullish(),
-    }),
-  ),
-});
+  "campaign": zod.object({
+  "id": zod.string(),
+  "title": zod.string(),
+  "type": zod.enum(['Monthly', 'Quarterly', 'Bi-Annually', 'Custom']),
+  "department_id": zod.string().nullish(),
+  "status": zod.enum(['Draft', 'Active', 'Completed', 'Archived']),
+  "start_date": zod.string(),
+  "end_date": zod.string(),
+  "notes": zod.string().nullish(),
+  "created_at": zod.string(),
+  "department": zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "code": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "manager_id": zod.string().nullish(),
+  "manager_email": zod.string().nullish(),
+  "employee_count": zod.number(),
+  "created_at": zod.string()
+}).nullish(),
+  "evaluated_count": zod.number(),
+  "total_employees": zod.number()
+}),
+  "skills": zod.array(zod.object({
+  "id": zod.string(),
+  "code": zod.string().nullish(),
+  "name": zod.string(),
+  "department_id": zod.string(),
+  "category": zod.string().nullish(),
+  "weight": zod.number(),
+  "criticality": zod.enum(['Low', 'Medium', 'High', 'Critical']),
+  "description": zod.string().nullish(),
+  "is_active": zod.boolean(),
+  "created_at": zod.string(),
+  "department": zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "code": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "manager_id": zod.string().nullish(),
+  "manager_email": zod.string().nullish(),
+  "employee_count": zod.number(),
+  "created_at": zod.string()
+})
+})),
+  "rows": zod.array(zod.object({
+  "employee": zod.object({
+  "id": zod.string(),
+  "employee_code": zod.string().nullish(),
+  "full_name": zod.string(),
+  "department_id": zod.string(),
+  "job_title": zod.string().nullish(),
+  "joined_date": zod.string().nullish(),
+  "birth_date": zod.string().nullish(),
+  "current_class": zod.enum(['A', 'B', 'C']),
+  "email": zod.string().nullish(),
+  "phone": zod.string().nullish(),
+  "is_active": zod.boolean(),
+  "notes": zod.string().nullish(),
+  "created_at": zod.string(),
+  "department": zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "code": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "manager_id": zod.string().nullish(),
+  "manager_email": zod.string().nullish(),
+  "employee_count": zod.number(),
+  "created_at": zod.string()
+})
+}),
+  "scores": zod.record(zod.string(), zod.number()),
+  "total_score": zod.number().nullish(),
+  "max_score": zod.number().nullish(),
+  "percentage": zod.number().nullish(),
+  "class": zod.enum(['A', 'B', 'C']).nullish()
+}))
+})
+
 
 /**
  * @summary List evaluations
  */
 export const ListEvaluationsQueryParams = zod.object({
-  campaign_id: zod.coerce.string().optional(),
-  employee_id: zod.coerce.string().optional(),
-  skill_id: zod.coerce.string().optional(),
-});
+  "campaign_id": zod.coerce.string().optional(),
+  "employee_id": zod.coerce.string().optional(),
+  "skill_id": zod.coerce.string().optional()
+})
 
 export const ListEvaluationsHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const listEvaluationsResponseScoreMin = 0;
 export const listEvaluationsResponseScoreMax = 4;
 
+
+
 export const ListEvaluationsResponseItem = zod.object({
-  id: zod.string(),
-  campaign_id: zod.string(),
-  employee_id: zod.string(),
-  skill_id: zod.string(),
-  score: zod
-    .number()
-    .min(listEvaluationsResponseScoreMin)
-    .max(listEvaluationsResponseScoreMax),
-  notes: zod.string().nullish(),
-  evaluated_by: zod.string().nullish(),
-  evaluation_date: zod.string(),
-  created_at: zod.string(),
-  employee_name: zod.string().nullish(),
-  skill_name: zod.string().nullish(),
-});
-export const ListEvaluationsResponse = zod.array(ListEvaluationsResponseItem);
+  "id": zod.string(),
+  "campaign_id": zod.string(),
+  "employee_id": zod.string(),
+  "skill_id": zod.string(),
+  "score": zod.number().min(listEvaluationsResponseScoreMin).max(listEvaluationsResponseScoreMax),
+  "notes": zod.string().nullish(),
+  "evaluated_by": zod.string().nullish(),
+  "evaluation_date": zod.string(),
+  "created_at": zod.string(),
+  "employee_name": zod.string().nullish(),
+  "skill_name": zod.string().nullish()
+})
+export const ListEvaluationsResponse = zod.array(ListEvaluationsResponseItem)
+
 
 /**
  * @summary Submit a single skill evaluation
  */
 export const SubmitEvaluationHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const submitEvaluationBodyScoreMin = 0;
 export const submitEvaluationBodyScoreMax = 4;
 
+
+
 export const SubmitEvaluationBody = zod.object({
-  campaign_id: zod.string(),
-  employee_id: zod.string(),
-  skill_id: zod.string(),
-  score: zod
-    .number()
-    .min(submitEvaluationBodyScoreMin)
-    .max(submitEvaluationBodyScoreMax),
-  notes: zod.string().optional(),
-});
+  "campaign_id": zod.string(),
+  "employee_id": zod.string(),
+  "skill_id": zod.string(),
+  "score": zod.number().min(submitEvaluationBodyScoreMin).max(submitEvaluationBodyScoreMax),
+  "notes": zod.string().optional()
+})
+
 
 /**
  * @summary Submit multiple evaluations at once
  */
 export const SubmitBulkEvaluationsHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const submitBulkEvaluationsBodySkillScoresItemScoreMin = 0;
 export const submitBulkEvaluationsBodySkillScoresItemScoreMax = 4;
 
+
+
 export const SubmitBulkEvaluationsBody = zod.object({
-  campaign_id: zod.string(),
-  employee_id: zod.string(),
-  skill_scores: zod.array(
-    zod.object({
-      skill_id: zod.string(),
-      score: zod
-        .number()
-        .min(submitBulkEvaluationsBodySkillScoresItemScoreMin)
-        .max(submitBulkEvaluationsBodySkillScoresItemScoreMax),
-      notes: zod.string().optional(),
-    }),
-  ),
-});
+  "campaign_id": zod.string(),
+  "employee_id": zod.string(),
+  "skill_scores": zod.array(zod.object({
+  "skill_id": zod.string(),
+  "score": zod.number().min(submitBulkEvaluationsBodySkillScoresItemScoreMin).max(submitBulkEvaluationsBodySkillScoresItemScoreMax),
+  "notes": zod.string().optional()
+}))
+})
+
 
 /**
  * @summary Get score summary for one employee in a campaign
  */
 export const GetEvaluationSummaryParams = zod.object({
-  campaign_id: zod.coerce.string(),
-  employee_id: zod.coerce.string(),
-});
+  "campaign_id": zod.coerce.string(),
+  "employee_id": zod.coerce.string()
+})
 
 export const GetEvaluationSummaryHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const GetEvaluationSummaryResponse = zod.object({
-  id: zod.string(),
-  campaign_id: zod.string(),
-  employee_id: zod.string(),
-  total_score: zod.number(),
-  max_possible_score: zod.number(),
-  percentage: zod.number(),
-  class: zod.enum(["A", "B", "C"]),
-  evaluated_skills_count: zod.number(),
-  updated_at: zod.string(),
-  campaign_title: zod.string().nullish(),
-  employee_name: zod.string().nullish(),
-  employee_code: zod.string().nullish(),
-});
+  "id": zod.string(),
+  "campaign_id": zod.string(),
+  "employee_id": zod.string(),
+  "total_score": zod.number(),
+  "max_possible_score": zod.number(),
+  "percentage": zod.number(),
+  "class": zod.enum(['A', 'B', 'C']),
+  "evaluated_skills_count": zod.number(),
+  "updated_at": zod.string(),
+  "campaign_title": zod.string().nullish(),
+  "employee_name": zod.string().nullish(),
+  "employee_code": zod.string().nullish()
+})
+
 
 /**
  * @summary List training recommendations
  */
 export const ListTrainingRecommendationsQueryParams = zod.object({
-  employee_id: zod.coerce.string().optional(),
-  status: zod
-    .enum(["Pending", "In Progress", "Completed", "Cancelled"])
-    .optional(),
-  recommendation_type: zod
-    .enum(["Immediate", "Short-term", "Long-term", "Promotion"])
-    .optional(),
-});
+  "employee_id": zod.coerce.string().optional(),
+  "factory_id": zod.coerce.string().optional(),
+  "status": zod.enum(['Pending', 'In Progress', 'Completed', 'Cancelled']).optional(),
+  "recommendation_type": zod.enum(['Immediate', 'Short-term', 'Long-term', 'Promotion']).optional()
+})
 
 export const ListTrainingRecommendationsHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const ListTrainingRecommendationsResponseItem = zod.object({
-  id: zod.string(),
-  employee_id: zod.string(),
-  skill_id: zod.string().nullish(),
-  campaign_id: zod.string().nullish(),
-  score: zod.number().nullish(),
-  recommendation_type: zod.enum([
-    "Immediate",
-    "Short-term",
-    "Long-term",
-    "Promotion",
-  ]),
-  status: zod.enum(["Pending", "In Progress", "Completed", "Cancelled"]),
-  assigned_trainer_id: zod.string().nullish(),
-  target_date: zod.string().nullish(),
-  notes: zod.string().nullish(),
-  created_at: zod.string(),
-  employee_name: zod.string().nullish(),
-  skill_name: zod.string().nullish(),
-});
-export const ListTrainingRecommendationsResponse = zod.array(
-  ListTrainingRecommendationsResponseItem,
-);
+  "id": zod.string(),
+  "employee_id": zod.string(),
+  "skill_id": zod.string().nullish(),
+  "campaign_id": zod.string().nullish(),
+  "score": zod.number().nullish(),
+  "recommendation_type": zod.enum(['Immediate', 'Short-term', 'Long-term', 'Promotion']),
+  "status": zod.enum(['Pending', 'In Progress', 'Completed', 'Cancelled']),
+  "assigned_trainer_id": zod.string().nullish(),
+  "target_date": zod.string().nullish(),
+  "notes": zod.string().nullish(),
+  "created_at": zod.string(),
+  "employee_name": zod.string().nullish(),
+  "skill_name": zod.string().nullish()
+})
+export const ListTrainingRecommendationsResponse = zod.array(ListTrainingRecommendationsResponseItem)
+
 
 /**
  * @summary Create training recommendation
  */
 export const CreateTrainingRecommendationHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const CreateTrainingRecommendationBody = zod.object({
-  employee_id: zod.string(),
-  skill_id: zod.string().optional(),
-  campaign_id: zod.string().optional(),
-  score: zod.number().optional(),
-  recommendation_type: zod.enum([
-    "Immediate",
-    "Short-term",
-    "Long-term",
-    "Promotion",
-  ]),
-  target_date: zod.string().optional(),
-  notes: zod.string().optional(),
-});
+  "employee_id": zod.string(),
+  "skill_id": zod.string().optional(),
+  "campaign_id": zod.string().optional(),
+  "score": zod.number().optional(),
+  "recommendation_type": zod.enum(['Immediate', 'Short-term', 'Long-term', 'Promotion']),
+  "target_date": zod.string().optional(),
+  "notes": zod.string().optional()
+})
+
 
 /**
  * @summary Update training recommendation status
  */
 export const UpdateTrainingRecommendationParams = zod.object({
-  id: zod.coerce.string(),
-});
+  "id": zod.coerce.string()
+})
 
 export const UpdateTrainingRecommendationHeader = zod.object({
-  "x-user-token": zod.string(),
-});
+  "x-user-token": zod.string()
+})
 
 export const UpdateTrainingRecommendationBody = zod.object({
-  status: zod
-    .enum(["Pending", "In Progress", "Completed", "Cancelled"])
-    .optional(),
-  assigned_trainer_id: zod.string().optional(),
-  target_date: zod.string().optional(),
-  notes: zod.string().optional(),
-});
+  "status": zod.enum(['Pending', 'In Progress', 'Completed', 'Cancelled']).optional(),
+  "assigned_trainer_id": zod.string().optional(),
+  "target_date": zod.string().optional(),
+  "notes": zod.string().optional()
+})
 
 export const UpdateTrainingRecommendationResponse = zod.object({
-  id: zod.string(),
-  employee_id: zod.string(),
-  skill_id: zod.string().nullish(),
-  campaign_id: zod.string().nullish(),
-  score: zod.number().nullish(),
-  recommendation_type: zod.enum([
-    "Immediate",
-    "Short-term",
-    "Long-term",
-    "Promotion",
-  ]),
-  status: zod.enum(["Pending", "In Progress", "Completed", "Cancelled"]),
-  assigned_trainer_id: zod.string().nullish(),
-  target_date: zod.string().nullish(),
-  notes: zod.string().nullish(),
-  created_at: zod.string(),
-  employee_name: zod.string().nullish(),
-  skill_name: zod.string().nullish(),
-});
+  "id": zod.string(),
+  "employee_id": zod.string(),
+  "skill_id": zod.string().nullish(),
+  "campaign_id": zod.string().nullish(),
+  "score": zod.number().nullish(),
+  "recommendation_type": zod.enum(['Immediate', 'Short-term', 'Long-term', 'Promotion']),
+  "status": zod.enum(['Pending', 'In Progress', 'Completed', 'Cancelled']),
+  "assigned_trainer_id": zod.string().nullish(),
+  "target_date": zod.string().nullish(),
+  "notes": zod.string().nullish(),
+  "created_at": zod.string(),
+  "employee_name": zod.string().nullish(),
+  "skill_name": zod.string().nullish()
+})
