@@ -4,8 +4,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@shared/components/ui/dialog";
 import { Button } from "@shared/components/ui/button";
-import { Upload, FileDown, AlertCircle, CheckCircle2, Loader2, FileSpreadsheet, X } from "lucide-react";
-import { useT } from "@modules/skill-matrix/i18n";
+import { Upload, FileDown, CheckCircle2, Loader2, FileSpreadsheet, X } from "lucide-react";
 import { useToast } from "@shared/hooks/use-toast";
 import { getAuthHeaders } from "@modules/skill-matrix/lib/auth";
 import { motion, AnimatePresence } from "framer-motion";
@@ -18,7 +17,6 @@ interface ImportDialogProps {
 }
 
 export function ImportDialog({ open, onOpenChange, onSuccess, type }: ImportDialogProps) {
-  const t = useT();
   const { toast } = useToast();
   const isAr = document.documentElement.dir === "rtl";
   
@@ -76,7 +74,7 @@ export function ImportDialog({ open, onOpenChange, onSuccess, type }: ImportDial
       });
       setPreview(rows);
     } catch (err) {
-      toast({ title: isAr ? "Ø®Ø·Ø£ ÙÙŠ Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„Ù…Ù„Ù" : "Error reading file", variant: "destructive" });
+      toast({ title: isAr ? "خطأ في قراءة الملف" : "Error reading file", variant: "destructive" });
     }
   };
 
@@ -146,9 +144,9 @@ export function ImportDialog({ open, onOpenChange, onSuccess, type }: ImportDial
       }
 
       toast({
-        title: isAr ? "Ø§ÙƒØªÙ…Ù„ Ø§Ù„Ø§Ø³ØªÙŠØ±Ø§Ø¯" : "Import Complete",
+        title: isAr ? "اكتمل الاستيراد" : "Import Complete",
         description: isAr 
-          ? `ØªÙ… Ø§Ø³ØªÙŠØ±Ø§Ø¯ ${successCount} Ù…Ù† ${preview.length} Ø¹Ù†ØµØ± Ø¨Ù†Ø¬Ø§Ø­.` 
+          ? `تم استيراد ${successCount} من ${preview.length} عنصر بنجاح.` 
           : `Successfully imported ${successCount} of ${preview.length} items.`,
         variant: successCount === preview.length ? "default" : "destructive",
       });
@@ -158,11 +156,15 @@ export function ImportDialog({ open, onOpenChange, onSuccess, type }: ImportDial
         onOpenChange(false);
       }
     } catch (err) {
-      toast({ title: isAr ? "ÙØ´Ù„ Ø§Ù„Ø§Ø³ØªÙŠØ±Ø§Ø¯" : "Import Failed", variant: "destructive" });
+      toast({ title: isAr ? "فشل الاستيراد" : "Import Failed", variant: "destructive" });
     } finally {
       setLoading(false);
     }
   };
+
+  const typeLabel = isAr 
+    ? (type === 'employees' ? 'الموظفين' : type === 'departments' ? 'الأقسام' : type === 'skills' ? 'المهارات' : 'الوظائف')
+    : type.charAt(0).toUpperCase() + type.slice(1);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -172,10 +174,10 @@ export function ImportDialog({ open, onOpenChange, onSuccess, type }: ImportDial
             <div className="p-3 rounded-2xl bg-primary/10 border border-primary/20">
               <FileSpreadsheet className="h-6 w-6 text-primary" />
             </div>
-            {isAr ? `Ø§Ø³ØªÙŠØ±Ø§Ø¯ ${type}` : `Import ${type.charAt(0).toUpperCase() + type.slice(1)}`}
+            {isAr ? `استيراد ${typeLabel}` : `Import ${typeLabel}`}
           </DialogTitle>
           <p className="text-xs text-muted-foreground mt-1">
-            {isAr ? "Ù‚Ù… Ø¨Ø±ÙØ¹ Ù…Ù„Ù Excel Ø§Ù„Ø®Ø§Øµ Ø¨Ùƒ Ù„Ø§Ø³ØªÙŠØ±Ø§Ø¯ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø¨Ø´ÙƒÙ„ Ø¬Ù…Ø§Ø¹ÙŠ." : "Upload your Excel file to bulk import records."}
+            {isAr ? "قم برفع ملف Excel الخاص بك لاستيراد البيانات بشكل جماعي." : "Upload your Excel file to bulk import records."}
           </p>
         </DialogHeader>
         
@@ -230,7 +232,7 @@ export function ImportDialog({ open, onOpenChange, onSuccess, type }: ImportDial
                     setPreview([]);
                   }}
                 >
-                  <X className="h-4 w-4 me-2" /> {isAr ? "Ø¥Ø²Ø§Ù„Ø© Ø§Ù„Ù…Ù„Ù" : "Remove File"}
+                  <X className="h-4 w-4 me-2" /> {isAr ? "إزالة الملف" : "Remove File"}
                 </Button>
               </div>
             ) : (
@@ -239,8 +241,8 @@ export function ImportDialog({ open, onOpenChange, onSuccess, type }: ImportDial
                   <Upload className="h-10 w-10" />
                 </div>
                 <div>
-                  <p className="text-lg font-bold">{isAr ? "Ø§Ø®ØªØ± Ù…Ù„Ù Excel" : "Select Excel File"}</p>
-                  <p className="text-xs text-muted-foreground mt-1 uppercase tracking-widest">{isAr ? "Ø£Ùˆ Ù‚Ù… Ø¨Ø³Ø­Ø¨ ÙˆØ¥ÙÙ„Ø§Øª Ø§Ù„Ù…Ù„Ù Ù‡Ù†Ø§" : "or drag and drop your file here"}</p>
+                  <p className="text-lg font-bold">{isAr ? "اختر ملف Excel" : "Select Excel File"}</p>
+                  <p className="text-xs text-muted-foreground mt-1 uppercase tracking-widest">{isAr ? "أو قم برفع الملف هنا" : "or drag and drop your file here"}</p>
                 </div>
               </div>
             )}
@@ -256,7 +258,7 @@ export function ImportDialog({ open, onOpenChange, onSuccess, type }: ImportDial
                 className="space-y-3"
               >
                 <div className="flex items-center justify-between px-2">
-                  <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">{isAr ? `Ù…Ø¹Ø§ÙŠÙ†Ø© (${preview.length} ØµÙ)` : `Data Preview (${preview.length} rows)`}</p>
+                  <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">{isAr ? `معاينة (${preview.length} صف)` : `Data Preview (${preview.length} rows)`}</p>
                   <div className="flex items-center gap-1.5 text-[10px] text-emerald-500 font-black">
                     <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
                     READY FOR IMPORT
