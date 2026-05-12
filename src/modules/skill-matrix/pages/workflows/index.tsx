@@ -459,7 +459,7 @@ export default function WorkflowsPage() {
                   </Select>
                 </div>
                 <div className="space-y-3">
-                  <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">ACTIVE CAMPAIGN</Label>
+                  <Label className="font-headline font-black text-[10px] text-zinc-500 tracking-[0.2em] uppercase">ACTIVE CAMPAIGN</Label>
                   <Select
                     value={form.campaign_id || "_none"}
                     onValueChange={(v) =>setForm({ ...form, campaign_id: v === "_none" ? "" : v })}
@@ -487,7 +487,7 @@ export default function WorkflowsPage() {
 
                 {/* Manager */}
                 <div className="space-y-3">
-                  <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase flex items-center gap-2">
+                  <Label className="font-headline font-black text-[10px] text-zinc-500 tracking-[0.2em] uppercase flex items-center gap-2">
                     <Shield className="h-3 w-3 text-amber-500" />PRODUCTION MANAGER
                   </Label>
                   <Select value={form.manager_id} onValueChange={(v) =>setForm({ ...form, manager_id: v })}>
@@ -508,7 +508,7 @@ export default function WorkflowsPage() {
 
                 {/* Engineers */}
                 <div className="space-y-4">
-                  <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase flex items-center gap-2">
+                  <Label className="font-headline font-black text-[10px] text-zinc-500 tracking-[0.2em] uppercase flex items-center gap-2">
                      <Cpu className="h-3 w-3 text-sky-500" />SYSTEM ENGINEERS
                   </Label>
                   <Select onValueChange={addEngineer} value="">
@@ -531,14 +531,14 @@ export default function WorkflowsPage() {
                             <ChevronRight className="h-4 w-4" />
                             <span>ENGINEER::{eng.fullName}</span>
                           </div>
-                          <button onClick={() => removeEngineer(eng.userId)} className="text-secondary/20 hover:text-rose-500 transition-colors">
+                          <button onClick={() => removeEngineer(eng.userId)} className="text-zinc-700 hover:text-rose-500 transition-colors">
                             <X className="h-4 w-4" />
                           </button>
                         </div>
 
                         {/* Supervisors under engineer */}
                         <div className="ps-6 space-y-4 border-l border-sky-500/20">
-                          <Label className="font-headline font-black text-[9px] text-secondary/30 tracking-[0.2em] uppercase">DIRECT SUPERVISORS</Label>
+                          <Label className="font-headline font-black text-[9px] text-zinc-600 tracking-[0.2em] uppercase">DIRECT SUPERVISORS</Label>
                           <Select onValueChange={(v) => addSupervisor(eng.userId, v)} value="">
                             <SelectTrigger className="h-10 bg-white/5 border-white/5 rounded-none font-headline font-black text-[9px] tracking-widest text-white uppercase">
                               <SelectValue placeholder="ADD SUPERVISOR..." />
@@ -559,7 +559,7 @@ export default function WorkflowsPage() {
                                     <ChevronRight className="h-3 w-3 inline me-2" />
                                     SUPERVISOR::{sup.fullName}
                                   </span>
-                                  <button onClick={() => removeSupervisor(eng.userId, sup.userId)} className="text-secondary/20 hover:text-rose-500 transition-colors">
+                                  <button onClick={() => removeSupervisor(eng.userId, sup.userId)} className="text-zinc-700 hover:text-rose-500 transition-colors">
                                     <X className="h-3 w-3" />
                                   </button>
                                 </div>
@@ -598,12 +598,12 @@ export default function WorkflowsPage() {
                                   
                                   <div className="grid grid-cols-2 gap-3">
                                     {sup.workers.map((w) => (
-                                      <div key={w.employeeId} className="flex items-center justify-between text-[10px] font-mono font-black text-secondary/40 border border-white/5 bg-black/20 p-3 uppercase tracking-tighter group/worker">
+                                      <div key={w.employeeId} className="flex items-center justify-between text-[10px] font-mono font-black text-zinc-500 border border-white/5 bg-black/20 p-3 uppercase tracking-tighter group/worker">
                                         <div className="flex items-center gap-2">
-                                          <Users className="h-3 w-3 text-secondary/20" />
+                                          <Users className="h-3 w-3 text-zinc-800" />
                                           <span className={`${w.role === "technician" ? "text-primary/60" : "text-amber-500/60"}`}>{w.role.substring(0, 4)}:</span> {w.fullName}
                                         </div>
-                                        <button onClick={() => removeWorker(eng.userId, sup.userId, w.employeeId)} className="text-secondary/10 hover:text-rose-500 opacity-0 group-hover/worker:opacity-100 transition-opacity">
+                                        <button onClick={() => removeWorker(eng.userId, sup.userId, w.employeeId)} className="text-zinc-800 hover:text-rose-500 opacity-0 group-hover/worker:opacity-100 transition-opacity">
                                           <X className="h-3 w-3" />
                                         </button>
                                       </div>
@@ -622,7 +622,7 @@ export default function WorkflowsPage() {
               </div>
 
               <div className="space-y-3">
-                <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">SYSTEM NOTES</Label>
+                <Label className="font-headline font-black text-[10px] text-zinc-500 tracking-[0.2em] uppercase">SYSTEM NOTES</Label>
                 <textarea
                   placeholder="SPECIFY OPERATIONAL PARAMETERS..."
                   value={form.notes}
@@ -650,7 +650,7 @@ export default function WorkflowsPage() {
         <AlertDialogContent className="bg-[#0A0A0A] border-2 border-rose-500/30 rounded-none text-white">
           <AlertDialogHeader>
             <AlertDialogTitle className="font-headline font-black text-2xl text-white uppercase tracking-tighter">{t("action_confirm_delete")}</AlertDialogTitle>
-            <AlertDialogDescription className="text-secondary/40 font-mono text-xs uppercase tracking-widest">{t("workflows_delete_desc", { name: deleteTarget?.title || "" })}
+            <AlertDialogDescription className="text-zinc-500 font-mono text-xs uppercase tracking-widest">{t("workflows_delete_desc", { name: deleteTarget?.title || "" })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="mt-8">

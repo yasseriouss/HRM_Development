@@ -65,7 +65,7 @@ export default function JobEvaluationManualPage() {
              </div>
              <h1 className="text-5xl md:text-7xl font-headline font-black tracking-tighter text-white uppercase leading-none text-shimmer">{t("je_manual_title")}
              </h1>
-             <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4 text-lg max-w-2xl mx-auto md:mx-0">
+             <p className="text-zinc-500 font-medium border-s-2 border-primary/20 ps-4 text-lg max-w-2xl mx-auto md:mx-0">
                {isAr 
                  ? "Ø¯Ù„ÙŠÙ„ Ø´Ø§Ù…Ù„ Ù„ÙÙ‡Ù… ÙƒÙŠÙÙŠØ© ØªÙ‚ÙŠÙŠÙ… Ø§Ù„ÙˆØ¸Ø§Ø¦Ù ÙˆØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ø¯Ø±Ø¬Ø§Øª Ø§Ù„ÙˆØ¸ÙŠÙÙŠØ© Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„Ù…Ø¹Ø§ÙŠÙŠØ± Ø§Ù„Ø¹Ù„Ù…ÙŠØ©." 
                  : "Recursive structural guide for comprehensive job valuation and hierarchical grade calibration using scientific compensable vectors."}
