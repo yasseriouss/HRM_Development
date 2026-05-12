@@ -176,7 +176,7 @@ export default function DepartmentsPage() {
 
       {/* Search / Filter Control Panel */}
       <div className="max-w-7xl mx-auto px-4">
-        <Card className="bg-surface border-primary/10 rounded-2xl shadow-sm overflow-hidden border">
+        <Card className="bg-surface border-primary/10 rounded-3xl shadow-sm overflow-hidden border">
           <CardContent className="p-4">
             <div className="flex flex-col sm:flex-row items-center gap-4">
               <div className="flex-1 w-full relative">
@@ -206,11 +206,11 @@ export default function DepartmentsPage() {
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {Array.from({ length: 6 }).map((_, i) => (
-              <Skeleton key={i} className="h-48 w-full bg-muted/50 rounded-2xl" />
+              <Skeleton key={i} className="h-48 w-full bg-muted/50 rounded-3xl" />
             ))}
           </div>
         ) : !filteredDepts.length ? (
-          <Card className="bg-surface border-primary/10 rounded-2xl border">
+          <Card className="bg-surface border-primary/10 rounded-3xl border">
             <CardContent className="py-20 text-center space-y-4">
               <div className="h-16 w-16 bg-muted/50 rounded-full flex items-center justify-center mx-auto">
                 <Terminal className="h-8 w-8 text-muted-foreground opacity-20" />
@@ -230,7 +230,7 @@ export default function DepartmentsPage() {
                 whileHover={{ y: -4 }}
                 transition={{ duration: 0.3 }}
               >
-                <Card className="bg-surface border-primary/10 rounded-2xl group h-full overflow-hidden transition-all duration-300 border hover:shadow-xl hover:shadow-primary/5">
+                <Card className="bg-surface border-primary/10 rounded-3xl group h-full overflow-hidden transition-all duration-300 border hover:shadow-xl hover:shadow-primary/5">
                   <CardContent className="p-8 space-y-8">
                     <div className="flex justify-between items-start">
                       <div className="space-y-3">
@@ -282,7 +282,7 @@ export default function DepartmentsPage() {
 
       {/* Forms & Dialogs */}
       <Dialog open={showCreate || !!editTarget} onOpenChange={(open) => { if (!open) { setShowCreate(false); setEditTarget(null); } }}>
-        <DialogContent className="max-w-md bg-surface border-primary/20 rounded-3xl p-0 overflow-hidden shadow-2xl">
+        <DialogContent className="max-w-md bg-surface border-primary/20 rounded-4xl p-0 overflow-hidden shadow-2xl">
           <div className="relative z-10">
             <div className="p-8 border-b border-primary/5 bg-background/50 backdrop-blur-sm">
               <h2 className="font-headline font-bold text-3xl text-foreground tracking-tight uppercase">{editTarget ? t("action_reconfigure") : t("action_init_unit")}</h2>
@@ -318,7 +318,7 @@ export default function DepartmentsPage() {
       </Dialog>
 
       <AlertDialog open={!!deleteTarget} onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}>
-        <AlertDialogContent className="bg-surface border-primary/20 rounded-3xl shadow-2xl">
+        <AlertDialogContent className="bg-surface border-primary/20 rounded-4xl shadow-2xl">
           <AlertDialogHeader>
             <AlertDialogTitle className="font-headline font-bold text-2xl text-foreground tracking-tight uppercase">{t("common_delete")} — {deleteTarget?.name}</AlertDialogTitle>
             <AlertDialogDescription className="text-muted-foreground font-sans text-sm">{t("departments_delete_desc")}</AlertDialogDescription>

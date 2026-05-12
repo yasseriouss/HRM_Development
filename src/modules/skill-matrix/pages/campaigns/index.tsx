@@ -202,7 +202,7 @@ export default function CampaignsPage() {
       {/* Search + Status Filter Control Panel */}
       {/* Control Panel */}
       <div className="max-w-7xl mx-auto px-4">
-        <Card className="bg-surface border-primary/10 rounded-2xl shadow-sm overflow-hidden border">
+        <Card className="bg-surface border-primary/10 rounded-3xl shadow-sm overflow-hidden border">
           <CardContent className="p-4">
             <div className="flex flex-col sm:flex-row items-center gap-4">
               <div className="flex-1 w-full relative">
@@ -248,7 +248,7 @@ export default function CampaignsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
           {isLoading ? (
             Array.from({ length: 6 }).map((_, i) => (
-              <Card key={i} className="bg-surface border-primary/10 rounded-2xl h-64 shadow-sm overflow-hidden">
+              <Card key={i} className="bg-surface border-primary/10 rounded-3xl h-64 shadow-sm overflow-hidden">
                 <CardContent className="p-8 space-y-4">
                   <Skeleton className="h-6 w-2/3 bg-muted/50 rounded-lg" />
                   <Skeleton className="h-4 w-1/2 bg-muted/50 rounded-lg" />
@@ -258,7 +258,7 @@ export default function CampaignsPage() {
               </Card>
             ))
           ) : !filteredCampaigns.length ? (
-            <div className="col-span-full p-20 text-center border border-primary/10 bg-surface rounded-2xl shadow-sm space-y-4">
+            <div className="col-span-full p-20 text-center border border-primary/10 bg-surface rounded-3xl shadow-sm space-y-4">
               <div className="h-16 w-16 bg-muted/50 rounded-full flex items-center justify-center mx-auto">
                 <Target className="h-8 w-8 text-muted-foreground opacity-20" />
               </div>
@@ -270,7 +270,7 @@ export default function CampaignsPage() {
               const total = c.total_employees;
               const progress = total > 0 ? Math.round((evaluated / total) * 100) : 0;
               return (
-                <Card key={c.id} className="bg-surface border-primary/10 rounded-2xl relative overflow-hidden group hover:border-primary/30 transition-all duration-500 shadow-sm hover:shadow-md flex flex-col">
+                <Card key={c.id} className="bg-surface border-primary/10 rounded-3xl relative overflow-hidden group hover:border-primary/30 transition-all duration-500 shadow-sm hover:shadow-md flex flex-col">
                   <CardHeader className="p-8 pb-4">
                     <div className="flex justify-between items-start mb-4">
                       <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-60">
@@ -334,7 +334,7 @@ export default function CampaignsPage() {
 
       {/* Forms & Dialogs */}
       <Dialog open={showCreate || !!editTarget} onOpenChange={(open) => { if (!open) { setShowCreate(false); setEditTarget(null); } }}>
-        <DialogContent className="max-w-xl bg-surface border-primary/20 rounded-3xl p-0 overflow-hidden shadow-2xl">
+        <DialogContent className="max-w-xl bg-surface border-primary/20 rounded-4xl p-0 overflow-hidden shadow-2xl">
           <div className="relative z-10">
             <div className="p-8 border-b border-primary/5 bg-background/50 backdrop-blur-sm">
               <h2 className="font-headline font-bold text-3xl text-foreground tracking-tight uppercase">{editTarget ? t("action_reconfigure") : t("action_init_campaign")}</h2>
@@ -406,7 +406,7 @@ export default function CampaignsPage() {
       </Dialog>
 
       <AlertDialog open={!!deleteTarget} onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}>
-        <AlertDialogContent className="bg-surface border-primary/20 rounded-3xl shadow-2xl">
+        <AlertDialogContent className="bg-surface border-primary/20 rounded-4xl shadow-2xl">
           <AlertDialogHeader>
             <AlertDialogTitle className="font-headline font-bold text-2xl text-foreground tracking-tight uppercase">{t("common_delete")} — {deleteTarget?.title}</AlertDialogTitle>
             <AlertDialogDescription className="text-muted-foreground font-sans text-sm">{t("campaigns_delete_desc")}</AlertDialogDescription>
