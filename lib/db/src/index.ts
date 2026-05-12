@@ -1,6 +1,8 @@
 import { drizzle } from "drizzle-orm/neon-http";
 import { neon } from "@neondatabase/serverless";
-import * as schema from "./schema";
+import * as schema from "./schema/index.js";
+// ... (rest of the file)
+export * from "./schema/index.js";
 
 // Resolve DATABASE_URL: Vercel's Neon integration prefixes vars with the
 // project name (e.g. hrmdev_DATABASE_URL). Fall back gracefully so the module
