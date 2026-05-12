@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Link } from "wouter";
 import { useListEmployees, useListDepartments } from "@hrm-development/api-client-react";
 import type { Employee, ListEmployeesCurrentClass } from "@hrm-development/api-client-react";
@@ -10,7 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@shared/components/ui/badge";
 import { Skeleton } from "@shared/components/ui/skeleton";
 import { Button } from "@shared/components/ui/button";
-import { motion } from "framer-motion";
+import { Checkbox } from "@shared/components/ui/checkbox";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@shared/components/ui/dialog";
@@ -18,7 +19,7 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@shared/components/ui/alert-dialog";
-import { ChevronLeft, ChevronRight, Plus, Pencil, Trash2, ExternalLink, Download, Upload, Users, Shield, Search, Filter, HardDrive } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus, Pencil, Trash2, ExternalLink, Download, Upload, Users, Shield, Search, Filter, HardDrive, CheckSquare, X } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@shared/hooks/use-toast";
 import { useT } from "@modules/skill-matrix/i18n";
@@ -69,6 +70,8 @@ export default function EmployeesPage() {
   const [form, setForm] = useState<EmpForm>(emptyForm());
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [showBulkDelete, setShowBulkDelete] = useState(false);
   const [showImport, setShowImport] = useState(false);
 
   const { data: departments } = useListDepartments(
@@ -148,6 +151,41 @@ export default function EmployeesPage() {
     }
   };
 
+  const handleBulkDelete = async () => {
+    setDeleting(true);
+    try {
+      const ids = Array.from(selectedIds);
+      const res = await fetch("/api/employees/bulk-delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", ...headers },
+        body: JSON.stringify({ ids }),
+      });
+      if (res.ok) {
+        toast({ title: t("msg_bulk_delete_success") });
+        setSelectedIds(new Set());
+        setShowBulkDelete(false);
+        await queryClient.invalidateQueries({ queryKey });
+      } else {
+        toast({ title: t("common_failed"), variant: "destructive" });
+      }
+    } catch {
+      toast({ title: t("msg_bulk_delete_error"), variant: "destructive" });
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const toggleSelect = (id: string) => {
+    const next = new Set(selectedIds);
+    if (next.has(id)) next.delete(id); else next.add(id);
+    setSelectedIds(next);
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedIds.size === employees.length) setSelectedIds(new Set());
+    else setSelectedIds(new Set(employees.map(e => e.id)));
+  };
+
   const handleDelete = async () => {
     if (!deleteTarget) return;
     setDeleting(true);
@@ -187,6 +225,11 @@ export default function EmployeesPage() {
             </div>
             
             <div className="flex flex-wrap items-center gap-3">
+              {selectedIds.size > 0 && (
+                <Button variant="destructive" className="rounded-full font-bold text-[11px] tracking-wide uppercase px-6 h-12" onClick={() => setShowBulkDelete(true)}>
+                  <Trash2 className="h-4 w-4 me-2" /> {t("action_delete_selected", { count: selectedIds.size })}
+                </Button>
+              )}
               <Button variant="outline" className="rounded-full border-primary/10 bg-surface/50 hover:bg-surface text-foreground font-bold text-[11px] tracking-wide uppercase px-6 h-12" onClick={() => exportToPDF({
                 title: t("employees_title"),
                 filename: "Employees_List",
@@ -282,18 +325,30 @@ export default function EmployeesPage() {
               <div className="overflow-x-auto">
                 <table className="w-full text-start border-collapse text-sm">
                   <thead>
-                    <tr className="bg-muted/10 border-b border-primary/5">
-                      <th className="px-6 py-5 font-bold text-[10px] tracking-wider text-muted-foreground uppercase whitespace-nowrap">{t("employees_col_name")}</th>
-                      <th className="px-6 py-5 font-bold text-[10px] tracking-wider text-muted-foreground uppercase whitespace-nowrap">{t("employees_col_code")}</th>
-                      <th className="px-6 py-5 font-bold text-[10px] tracking-wider text-muted-foreground uppercase whitespace-nowrap">{t("employees_col_department")}</th>
-                      <th className="px-6 py-5 font-bold text-[10px] tracking-wider text-muted-foreground uppercase whitespace-nowrap">{t("employees_col_job_title")}</th>
-                      <th className="px-6 py-5 font-bold text-[10px] tracking-wider text-muted-foreground uppercase whitespace-nowrap">{t("employees_col_class")}</th>
+                    <tr className="bg-muted/10 border-b border-primary/5 text-start">
+                      <th className="px-6 py-5 w-10">
+                        <Checkbox 
+                          checked={selectedIds.size === employees.length && employees.length > 0}
+                          onCheckedChange={toggleSelectAll}
+                        />
+                      </th>
+                      <th className="px-6 py-5 font-bold text-[10px] tracking-wider text-muted-foreground uppercase whitespace-nowrap text-start">{t("employees_col_name")}</th>
+                      <th className="px-6 py-5 font-bold text-[10px] tracking-wider text-muted-foreground uppercase whitespace-nowrap text-start">{t("employees_col_code")}</th>
+                      <th className="px-6 py-5 font-bold text-[10px] tracking-wider text-muted-foreground uppercase whitespace-nowrap text-start">{t("employees_col_department")}</th>
+                      <th className="px-6 py-5 font-bold text-[10px] tracking-wider text-muted-foreground uppercase whitespace-nowrap text-start">{t("employees_col_job_title")}</th>
+                      <th className="px-6 py-5 font-bold text-[10px] tracking-wider text-muted-foreground uppercase whitespace-nowrap text-start">{t("employees_col_class")}</th>
                       <th className="px-6 py-5 font-bold text-[10px] tracking-wider text-muted-foreground uppercase whitespace-nowrap text-end">{t("common_actions")}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-primary/5">
                     {employees.map((emp) => (
-                      <tr key={emp.id} className="group hover:bg-primary/3 transition-colors">
+                      <tr key={emp.id} className={`group hover:bg-primary/3 transition-colors ${selectedIds.has(emp.id) ? 'bg-primary/5' : ''}`}>
+                        <td className="px-6 py-6 whitespace-nowrap">
+                          <Checkbox 
+                            checked={selectedIds.has(emp.id)}
+                            onCheckedChange={() => toggleSelect(emp.id)}
+                          />
+                        </td>
                         <td className="px-6 py-6 whitespace-nowrap">
                           <Link href={`/employees/${emp.id}`} className="group/link">
                             <p className="font-bold text-foreground text-sm tracking-tight group-hover/link:text-primary transition-colors uppercase">{emp.full_name}</p>
@@ -403,6 +458,25 @@ export default function EmployeesPage() {
         </DialogContent>
       </Dialog>
 
+      <AlertDialog open={showBulkDelete} onOpenChange={setShowBulkDelete}>
+        <AlertDialogContent className="bg-surface border-primary/20 rounded-4xl shadow-2xl p-8">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="font-headline font-bold text-3xl text-foreground tracking-tight uppercase">
+              {t("action_confirm_bulk_deactivate", { count: selectedIds.size })}
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-muted-foreground font-sans text-base mt-2">
+              {t("employees_bulk_deactivate_desc", { count: selectedIds.size })}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="mt-10 gap-4">
+            <AlertDialogCancel className="rounded-full border-primary/10 bg-background text-foreground font-bold text-[11px] tracking-wide uppercase hover:bg-primary/5 h-12 px-10">{t("common_cancel")}</AlertDialogCancel>
+            <AlertDialogAction onClick={handleBulkDelete} disabled={deleting} className="rounded-full bg-rose-600 text-white font-bold text-[11px] tracking-wide uppercase hover:bg-rose-700 px-10 h-12 shadow-lg shadow-rose-600/20">
+              {deleting ? t("action_purging") : t("action_confirm_deactivate")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       <AlertDialog open={!!deleteTarget} onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}>
         <AlertDialogContent className="bg-surface border-primary/20 rounded-4xl shadow-2xl p-8">
           <AlertDialogHeader>
@@ -423,6 +497,22 @@ export default function EmployeesPage() {
         onSuccess={() => queryClient.invalidateQueries({ queryKey })}
         type="employees"
       />
+      <AlertDialog open={showBulkDelete} onOpenChange={setShowBulkDelete}>
+        <AlertDialogContent className="bg-surface border-primary/20 rounded-3xl">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-xl font-bold uppercase tracking-tight">{t("confirm_bulk_delete")}</AlertDialogTitle>
+            <AlertDialogDescription className="text-muted-foreground">
+              {t("desc_bulk_delete_employees", { count: selectedIds.size })}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="rounded-full uppercase text-[10px] font-bold tracking-widest">{t("action_cancel")}</AlertDialogCancel>
+            <AlertDialogAction onClick={handleBulkDelete} className="rounded-full bg-destructive text-destructive-foreground hover:bg-destructive/90 uppercase text-[10px] font-bold tracking-widest">
+              {deleting ? t("action_deleting") : t("action_delete")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

@@ -121,27 +121,35 @@ export default function SpreadsheetPage() {
   };
 
   return (
-    <div className="flex flex-col h-full bg-[#0A0A0A]">
-      <div className="overflow-x-auto border-b border-white/10 bg-black/40 backdrop-blur-md sticky top-0 z-10">
-        <div className="flex min-w-max px-4">
+    <div className="flex flex-col h-full bg-[#0A0A0A] font-sans selection:bg-primary/20 selection:text-primary">
+      {/* Premium Tab Bar */}
+      <div className="overflow-x-auto border-b border-white/5 bg-black/40 backdrop-blur-xl sticky top-0 z-50">
+        <div className="flex min-w-max px-6 py-2">
           {TABS.map(tab => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-3 text-xs font-bold transition-all border-b-2 ${
+              className={`flex items-center gap-3 px-6 py-4 text-[10px] font-headline font-black transition-all border-b-2 uppercase tracking-[0.2em] relative group ${
                 activeTab === tab.id
-                  ? 'border-amber-500 text-amber-500 bg-amber-500/5'
-                  : 'border-transparent text-white/40 hover:text-white/80 hover:bg-white/5'
+                  ? 'border-primary text-primary bg-primary/5 shadow-[0_4px_20px_-10px_rgba(212,175,55,0.3)]'
+                  : 'border-transparent text-zinc-500 hover:text-zinc-300 hover:bg-white/5'
               }`}
             >
-              <span className="text-sm">{tab.icon}</span>
+              <span className={`text-sm transition-transform duration-500 ${activeTab === tab.id ? 'scale-110' : 'group-hover:scale-110 grayscale group-hover:grayscale-0 opacity-50 group-hover:opacity-100'}`}>{tab.icon}</span>
               <span>{t(tab.key_label as any)}</span>
+              {activeTab === tab.id && (
+                <div className="absolute -bottom-[2px] left-0 w-full h-[2px] bg-primary animate-pulse" />
+              )}
             </button>
           ))}
         </div>
       </div>
-      <div className="flex-1 overflow-auto p-6">
-        {renderContent()}
+
+      {/* Hero-like sub-header for the active sheet */}
+      <div className="flex-1 overflow-auto bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] bg-fixed opacity-95">
+        <div className="p-8 max-w-[1600px] mx-auto">
+          {renderContent()}
+        </div>
       </div>
     </div>
   );

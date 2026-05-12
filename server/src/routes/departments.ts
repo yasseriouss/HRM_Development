@@ -54,12 +54,12 @@ router.get("/", requireAuth, requireRole("super_admin", "hr_coordinator", "dept_
 // POST /departments — super_admin only
 router.post("/", requireAuth, requireRole("super_admin"), async (req, res) => {
   try {
-    const { name, code, description, manager_email, factory_id } = req.body;
-    if (!name) {
-      res.status(400).json({ error: "Bad Request", message: "name is required" });
+    const { name, name_ar, code, description, manager_email, factory_id } = req.body;
+    if (!name || !name_ar || !factory_id) {
+      res.status(400).json({ error: "Bad Request", message: "name, name_ar, and factory_id are required" });
       return;
     }
-    const [dept] = await db.insert(departmentsTable).values({ name, code, description, manager_email, factory_id }).returning();
+    const [dept] = await db.insert(departmentsTable).values({ name, name_ar, code, description, manager_email, factory_id }).returning();
     res.status(201).json(await formatDepartment(dept));
   } catch (err) {
     console.error("Create department error:", err);
@@ -91,9 +91,13 @@ router.get("/:id", requireAuth, requireRole("super_admin", "hr_coordinator", "de
 // PUT /departments/:id — super_admin only
 router.put("/:id", requireAuth, requireRole("super_admin"), async (req, res) => {
   try {
-    const { name, code, description, manager_email, factory_id } = req.body;
+    const { name, name_ar, code, description, manager_email, factory_id } = req.body;
+    if (!name || !name_ar || !factory_id) {
+      res.status(400).json({ error: "Bad Request", message: "name, name_ar, and factory_id are required" });
+      return;
+    }
     const [dept] = await db.update(departmentsTable)
-      .set({ name, code, description, manager_email, factory_id, updated_at: new Date() })
+      .set({ name, name_ar, code, description, manager_email, factory_id, updated_at: new Date() })
       .where(eq(departmentsTable.id, String(req.params.id)))
       .returning();
     if (!dept) {
@@ -122,6 +126,41 @@ router.delete("/:id", requireAuth, requireRole("super_admin"), async (req, res) 
     res.json({ success: true });
   } catch (err) {
     console.error("Delete department error:", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// POST /departments/bulk-delete — super_admin only
+router.post("/bulk-delete", requireAuth, requireRole("super_admin"), async (req, res) => {
+  try {
+    const { ids } = req.body;
+    if (!Array.isArray(ids) || ids.length === 0) {
+      res.status(400).json({ error: "Bad Request", message: "ids array is required" });
+      return;
+    }
+
+    const { inArray } = await import("drizzle-orm");
+
+    // Filter out departments with active employees
+    const deptsWithEmployees = await db.select({ id: employeesTable.department_id })
+      .from(employeesTable)
+      .where(and(inArray(employeesTable.department_id, ids), eq(employeesTable.is_active, true)));
+    
+    const blockIds = new Set(deptsWithEmployees.map(e => e.id));
+    const deleteIds = ids.filter(id => !blockIds.has(id));
+
+    if (deleteIds.length > 0) {
+      await db.delete(departmentsTable).where(inArray(departmentsTable.id, deleteIds));
+    }
+
+    res.json({ 
+      success: true, 
+      count: deleteIds.length,
+      blocked: blockIds.size,
+      blocked_ids: Array.from(blockIds)
+    });
+  } catch (err) {
+    console.error("Bulk delete departments error:", err);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });

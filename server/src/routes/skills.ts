@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { db } from "@hrm-development/db";
 import { skillsTable, departmentsTable, employeesTable } from "@hrm-development/db/schema";
-import { eq, and, count } from "drizzle-orm";
+import { eq, and, count, sql } from "drizzle-orm";
 import { requireAuth, requireRole } from "../lib/auth";
 
 const router = Router();
@@ -68,13 +68,13 @@ router.get("/", requireAuth, requireRole("super_admin", "hr_coordinator", "dept_
 // POST /skills — super_admin only
 router.post("/", requireAuth, requireRole("super_admin"), async (req, res) => {
   try {
-    const { code, name, department_id, category, weight, criticality, description } = req.body;
-    if (!name || !department_id || !weight || !criticality) {
-      res.status(400).json({ error: "Bad Request", message: "name, department_id, weight, criticality are required" });
+    const { code, name, name_ar, department_id, category, weight, criticality, description } = req.body;
+    if (!name || !name_ar || !department_id || !weight || !criticality) {
+      res.status(400).json({ error: "Bad Request", message: "name, name_ar, department_id, weight, criticality are required" });
       return;
     }
     const [skill] = await db.insert(skillsTable).values({
-      code, name, department_id, category, weight: Number(weight), criticality, description,
+      code, name, name_ar, department_id, category, weight: Number(weight), criticality, description,
     }).returning();
     res.status(201).json(await withDepartment(skill));
   } catch (err) {
@@ -107,9 +107,9 @@ router.get("/:id", requireAuth, requireRole("super_admin", "hr_coordinator", "de
 // PUT /skills/:id — super_admin only
 router.put("/:id", requireAuth, requireRole("super_admin"), async (req, res) => {
   try {
-    const { code, name, department_id, category, weight, criticality, description } = req.body;
+    const { code, name, name_ar, department_id, category, weight, criticality, description } = req.body;
     const [skill] = await db.update(skillsTable).set({
-      code, name, department_id, category, weight: weight ? Number(weight) : undefined, criticality, description,
+      code, name, name_ar, department_id, category, weight: weight ? Number(weight) : undefined, criticality, description,
       updated_at: new Date(),
     }).where(eq(skillsTable.id, String(req.params.id))).returning();
     if (!skill) {
@@ -134,6 +134,24 @@ router.delete("/:id", requireAuth, requireRole("super_admin"), async (req, res) 
     res.json({ success: true });
   } catch (err) {
     console.error("Delete skill error:", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// POST /skills/bulk-delete — super_admin only
+router.post("/bulk-delete", requireAuth, requireRole("super_admin"), async (req, res) => {
+  try {
+    const { ids } = req.body;
+    if (!Array.isArray(ids) || ids.length === 0) {
+      res.status(400).json({ error: "Bad Request", message: "ids array is required" });
+      return;
+    }
+    await db.update(skillsTable)
+      .set({ is_active: false, updated_at: new Date() })
+      .where(sql`${skillsTable.id} IN (${sql.join(ids, sql`, `)})`);
+    res.json({ success: true, count: ids.length });
+  } catch (err) {
+    console.error("Bulk delete skills error:", err);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });

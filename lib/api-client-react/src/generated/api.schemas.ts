@@ -46,6 +46,8 @@ export interface Department {
   description?: string | null;
   manager_id?: string | null;
   manager_email?: string | null;
+  name_ar?: string | null;
+  factory_id?: string | null;
   employee_count: number;
   created_at: string;
 }
@@ -64,6 +66,8 @@ export interface CreateDepartmentBody {
   code?: string;
   description?: string;
   manager_email?: string;
+  name_ar: string;
+  factory_id: string;
 }
 
 export interface DepartmentStats {
@@ -237,6 +241,7 @@ export interface Skill {
   id: string;
   code?: string | null;
   name: string;
+  name_ar?: string | null;
   department_id: string;
   category?: string | null;
   weight: number;
@@ -260,6 +265,7 @@ export const CreateSkillBodyCriticality = {
 export interface CreateSkillBody {
   code?: string;
   name: string;
+  name_ar: string;
   department_id: string;
   category?: string;
   /**

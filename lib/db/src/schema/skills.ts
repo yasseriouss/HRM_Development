@@ -8,6 +8,7 @@ export const skillsTable = pgTable("skills", {
   id: uuid("id").primaryKey().defaultRandom(),
   code: varchar("code", { length: 20 }),
   name: varchar("name", { length: 255 }).notNull(),
+  name_ar: varchar("name_ar", { length: 255 }),
   department_id: uuid("department_id").notNull(),
   category: varchar("category", { length: 100 }),
   weight: integer("weight").notNull().default(3),

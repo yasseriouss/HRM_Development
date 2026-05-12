@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useListSkills, useListDepartments } from "@hrm-development/api-client-react";
 import { getAuthHeaders, getAuthUser } from "@modules/skill-matrix/lib/auth";
 import { Card, CardContent } from "@shared/components/ui/card";
@@ -7,6 +7,7 @@ import { Skeleton } from "@shared/components/ui/skeleton";
 import { Button } from "@shared/components/ui/button";
 import { Input } from "@shared/components/ui/input";
 import { Label } from "@shared/components/ui/label";
+import { Checkbox } from "@shared/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@shared/components/ui/select";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -16,7 +17,7 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@shared/components/ui/alert-dialog";
-import { Plus, Pencil, Trash2, Download, Search, Filter, Shield, Activity, HardDrive, Cpu } from "lucide-react";
+import { Plus, Pencil, Trash2, Download, Search, Filter, Shield, Activity, HardDrive, Cpu, X, CheckSquare } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@shared/hooks/use-toast";
 import { useT } from "@modules/skill-matrix/i18n";
@@ -24,6 +25,7 @@ import { exportToPDF, exportToExcel } from "@modules/skill-matrix/lib/export-uti
 import { ImportDialog } from "@modules/skill-matrix/components/import-dialog";
 import { Upload } from "lucide-react";
 import { useFactory } from "@shared/contexts/FactoryContext";
+import { useLang } from "@shared/contexts/LangContext";
 
 const CRITICALITIES = ["Low", "Medium", "High", "Critical"] as const;
 type Criticality = (typeof CRITICALITIES)[number];
@@ -54,6 +56,7 @@ function critBadge(crit: string, t: (k: any) => string) {
 
 interface SkillForm {
   name: string;
+  name_ar: string;
   code: string;
   department_id: string;
   category: string;
@@ -71,11 +74,12 @@ type SkillItem = {
   weight?: number | null;
   criticality: string;
   description?: string | null;
+  name_ar?: string | null;
   department?: { name: string } | null;
 };
 
 const emptyForm = (): SkillForm => ({
-  name: "", code: "", department_id: "", category: "", weight: "1",
+  name: "", name_ar: "", code: "", department_id: "", category: "", weight: "1",
   criticality: "Medium", description: "",
 });
 
@@ -86,6 +90,8 @@ export default function SkillsPage() {
   const queryClient = useQueryClient();
   const isAdmin = user?.role === "super_admin";
   const t = useT();
+  const { lang } = useLang();
+  const isRtl = lang === "ar";
   const { activeFactoryId } = useFactory();
 
   const [deptFilter, setDeptFilter] = useState("all");
@@ -96,6 +102,8 @@ export default function SkillsPage() {
   const [form, setForm] = useState<SkillForm>(emptyForm());
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [showBulkDelete, setShowBulkDelete] = useState(false);
   const [showImport, setShowImport] = useState(false);
 
   const { data: departments } = useListDepartments(
@@ -114,16 +122,17 @@ export default function SkillsPage() {
     sk.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
     sk.code?.toLowerCase().includes(searchQuery.toLowerCase()) ||
     sk.category?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  ) ?? [];
 
   const openCreate = () => { setForm(emptyForm()); setShowCreate(true); };
   const openEdit = (sk: SkillItem) => {
     setForm({
       name: sk.name,
+      name_ar: sk.name_ar ?? "",
       code: sk.code ?? "",
       department_id: sk.department_id ?? "",
       category: sk.category ?? "",
-      weight: String(sk.weight ?? 1),
+      weight: String(sk.weight ?? 3),
       criticality: (sk.criticality as Criticality) ?? "Medium",
       description: sk.description ?? "",
     });
@@ -131,7 +140,10 @@ export default function SkillsPage() {
   };
 
   const handleSave = async () => {
-    if (!form.name.trim() || !form.department_id || !form.weight || !form.criticality) {
+    if (!form.name.trim()) { toast({ title: t("skills_name_required"), variant: "destructive" }); return; }
+    if (!form.name_ar.trim()) { toast({ title: t("skills_name_ar_required"), variant: "destructive" }); return; }
+    if (!form.department_id) { toast({ title: t("skills_dept_required"), variant: "destructive" }); return; }
+    if (!form.weight || !form.criticality) {
       toast({ title: t("skills_required"), variant: "destructive" });
       return;
     }
@@ -144,6 +156,7 @@ export default function SkillsPage() {
         headers: { "Content-Type": "application/json", ...headers },
         body: JSON.stringify({
           name: form.name,
+          name_ar: form.name_ar,
           code: form.code || undefined,
           department_id: form.department_id,
           category: form.category || undefined,
@@ -166,6 +179,40 @@ export default function SkillsPage() {
     } finally {
       setSaving(false);
     }
+  };
+
+  const handleBulkDelete = async () => {
+    setDeleting(true);
+    try {
+      const res = await fetch("/api/skills/bulk-delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", ...headers },
+        body: JSON.stringify({ ids: Array.from(selectedIds) }),
+      });
+      if (res.ok) {
+        toast({ title: t("msg_bulk_delete_success") });
+        queryClient.invalidateQueries({ queryKey });
+        setSelectedIds(new Set());
+        setShowBulkDelete(false);
+      } else {
+        toast({ title: t("common_failed"), variant: "destructive" });
+      }
+    } catch {
+      toast({ title: t("msg_bulk_delete_error"), variant: "destructive" });
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedIds.size === filteredSkills.length) setSelectedIds(new Set());
+    else setSelectedIds(new Set(filteredSkills.map(s => s.id)));
+  };
+
+  const toggleSelect = (id: string) => {
+    const next = new Set(selectedIds);
+    if (next.has(id)) next.delete(id); else next.add(id);
+    setSelectedIds(next);
   };
 
   const handleDelete = async () => {
@@ -191,7 +238,6 @@ export default function SkillsPage() {
 
   return (
     <div className="space-y-10 pb-20 font-sans selection:bg-primary/20 selection:text-primary">
-      {/* Header - Editorial Style */}
       <div className="relative pt-12 pb-6 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
@@ -207,6 +253,11 @@ export default function SkillsPage() {
             </div>
             
             <div className="flex flex-wrap items-center gap-3">
+              {selectedIds.size > 0 && (
+                <Button variant="destructive" className="rounded-full font-bold text-[11px] tracking-wide uppercase px-6 h-12" onClick={() => setShowBulkDelete(true)}>
+                  <Trash2 className="h-4 w-4 me-2" /> {t("action_delete_selected", { count: selectedIds.size })}
+                </Button>
+              )}
               <Button variant="outline" className="rounded-full border-primary/10 bg-surface/50 hover:bg-surface text-foreground font-bold text-[11px] tracking-wide uppercase px-6 h-12" onClick={() => exportToPDF({
                 title: t("skills_title"),
                 filename: "Skills_Library",
@@ -238,7 +289,6 @@ export default function SkillsPage() {
         </div>
       </div>
 
-      {/* Control Panel */}
       <div className="max-w-7xl mx-auto px-4">
         <Card className="bg-surface border-primary/10 rounded-2xl shadow-sm overflow-hidden border">
           <CardContent className="p-4">
@@ -271,7 +321,8 @@ export default function SkillsPage() {
             </div>
           </CardContent>
         </Card>
-          {/* Data Table */}
+      </div>
+      
       <div className="max-w-7xl mx-auto px-4">
         <div className="bg-surface border border-primary/10 rounded-2xl shadow-sm overflow-hidden">
           {isLoading ? (
@@ -291,24 +342,38 @@ export default function SkillsPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-start border-collapse">
                 <thead>
-                  <tr className="bg-muted/30 border-b border-primary/5">
-                    <th className="px-6 py-4 font-bold text-[10px] tracking-wider text-muted-foreground uppercase whitespace-nowrap">{t("field_name")}</th>
-                    <th className="px-6 py-4 font-bold text-[10px] tracking-wider text-muted-foreground uppercase whitespace-nowrap">{t("field_code")}</th>
-                    <th className="px-6 py-4 font-bold text-[10px] tracking-wider text-muted-foreground uppercase whitespace-nowrap">{t("skills_col_category")}</th>
-                    <th className="px-6 py-4 font-bold text-[10px] tracking-wider text-muted-foreground uppercase whitespace-nowrap">{t("field_department")}</th>
+                  <tr className="bg-muted/30 border-b border-primary/5 text-start">
+                    <th className="px-6 py-4 w-10">
+                      <Checkbox 
+                        checked={selectedIds.size === filteredSkills.length && filteredSkills.length > 0}
+                        onCheckedChange={toggleSelectAll}
+                      />
+                    </th>
+                    <th className="px-6 py-4 font-bold text-[10px] tracking-wider text-muted-foreground uppercase whitespace-nowrap text-start">{t("field_name")}</th>
+                    <th className="px-6 py-4 font-bold text-[10px] tracking-wider text-muted-foreground uppercase whitespace-nowrap text-start">{t("field_code")}</th>
+                    <th className="px-6 py-4 font-bold text-[10px] tracking-wider text-muted-foreground uppercase whitespace-nowrap text-start">{t("skills_col_category")}</th>
+                    <th className="px-6 py-4 font-bold text-[10px] tracking-wider text-muted-foreground uppercase whitespace-nowrap text-start">{t("field_department")}</th>
                     <th className="px-6 py-4 font-bold text-[10px] tracking-wider text-muted-foreground uppercase whitespace-nowrap text-center">{t("skills_col_weight")}</th>
-                    <th className="px-6 py-4 font-bold text-[10px] tracking-wider text-muted-foreground uppercase whitespace-nowrap">{t("skills_col_criticality")}</th>
+                    <th className="px-6 py-4 font-bold text-[10px] tracking-wider text-muted-foreground uppercase whitespace-nowrap text-start">{t("skills_col_criticality")}</th>
                     <th className="px-6 py-4 font-bold text-[10px] tracking-wider text-muted-foreground uppercase whitespace-nowrap text-end">{t("common_actions")}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-primary/5">
                   {filteredSkills.map((sk) => (
-                    <tr key={sk.id} className="group hover:bg-primary/[0.02] transition-colors">
+                    <tr key={sk.id} className={`group hover:bg-primary/[0.02] transition-colors ${selectedIds.has(sk.id) ? 'bg-primary/5' : ''}`}>
+                      <td className="px-6 py-5 whitespace-nowrap">
+                        <Checkbox 
+                          checked={selectedIds.has(sk.id)}
+                          onCheckedChange={() => toggleSelect(sk.id)}
+                        />
+                      </td>
                       <td className="px-6 py-5 whitespace-nowrap">
                         <div className="flex items-center gap-3">
                           <div className="h-2 w-2 rounded-full bg-primary/20 group-hover:bg-primary transition-colors" />
                           <div>
-                            <p className="font-bold text-foreground text-sm tracking-tight group-hover:text-primary transition-colors uppercase">{sk.name}</p>
+                            <p className="font-bold text-foreground text-sm tracking-tight group-hover:text-primary transition-colors uppercase">
+                              {isRtl ? (sk.name_ar || sk.name) : sk.name}
+                            </p>
                             {sk.description && (
                               <p className="text-[10px] font-medium text-muted-foreground mt-0.5 max-w-xs truncate">{sk.description}</p>
                             )}
@@ -348,9 +413,7 @@ export default function SkillsPage() {
           )}
         </div>
       </div>
-    </div>
 
-      {/* Forms & Dialogs */}
       <Dialog open={showCreate || !!editTarget} onOpenChange={(open) => { if (!open) { setShowCreate(false); setEditTarget(null); } }}>
         <DialogContent className="max-w-2xl bg-surface border-primary/20 rounded-3xl p-0 overflow-hidden shadow-2xl">
           <div className="relative z-10">
@@ -360,9 +423,13 @@ export default function SkillsPage() {
             </div>
             
             <div className="p-10 grid grid-cols-2 gap-8">
-              <div className="col-span-2 space-y-3">
-                <Label className="font-bold text-[10px] text-muted-foreground tracking-widest uppercase">{t("field_name")} *</Label>
-                <Input placeholder="ASSET IDENTIFIER" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="h-14 bg-background border-primary/5 rounded-xl font-sans text-sm font-bold text-foreground focus-visible:ring-primary/20" />
+              <div className="space-y-2">
+                <Label className="font-bold text-[10px] text-muted-foreground tracking-widest uppercase">{t("field_name")} (EN) *</Label>
+                <Input placeholder="English Name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="h-14 bg-background border-primary/5 rounded-xl font-sans text-sm font-bold text-foreground focus-visible:ring-primary/20" />
+              </div>
+              <div className="space-y-2">
+                <Label className="font-bold text-[10px] text-muted-foreground tracking-widest uppercase">{t("field_name_ar")} *</Label>
+                <Input dir="rtl" placeholder="الاسم بالعربي" value={form.name_ar} onChange={(e) => setForm({ ...form, name_ar: e.target.value })} className="h-14 bg-background border-primary/5 rounded-xl font-sans text-sm font-bold text-foreground focus-visible:ring-primary/20" />
               </div>
               <div className="space-y-3">
                 <Label className="font-bold text-[10px] text-muted-foreground tracking-widest uppercase">{t("field_code")}</Label>
@@ -413,6 +480,25 @@ export default function SkillsPage() {
           </div>
         </DialogContent>
       </Dialog>
+
+      <AlertDialog open={showBulkDelete} onOpenChange={setShowBulkDelete}>
+        <AlertDialogContent className="bg-surface border-primary/20 rounded-3xl shadow-2xl p-8">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="font-headline font-bold text-2xl text-foreground tracking-tight uppercase">
+              {t("action_confirm_bulk_deactivate", { count: selectedIds.size })}
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-muted-foreground font-sans text-sm">
+              {t("skills_bulk_deactivate_desc", { count: selectedIds.size })}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="mt-8 gap-3">
+            <AlertDialogCancel className="rounded-full border-primary/10 bg-background text-foreground font-bold text-[11px] tracking-wide uppercase hover:bg-primary/5 h-12 px-8">{t("common_cancel")}</AlertDialogCancel>
+            <AlertDialogAction onClick={handleBulkDelete} disabled={deleting} className="rounded-full bg-rose-600 text-white font-bold text-[11px] tracking-wide uppercase hover:bg-rose-700 px-8 h-12 shadow-lg shadow-rose-600/20">
+              {deleting ? t("action_purging") : t("action_confirm_deactivate")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <AlertDialog open={!!deleteTarget} onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}>
         <AlertDialogContent className="bg-surface border-primary/20 rounded-3xl shadow-2xl">

@@ -182,6 +182,24 @@ router.delete("/:id", requireAuth, requireRole("super_admin"), async (req, res) 
   }
 });
 
+// POST /employees/bulk-delete — only super_admin
+router.post("/bulk-delete", requireAuth, requireRole("super_admin"), async (req, res) => {
+  try {
+    const { ids } = req.body;
+    if (!Array.isArray(ids) || ids.length === 0) {
+      res.status(400).json({ error: "Bad Request", message: "ids array is required" });
+      return;
+    }
+    await db.update(employeesTable)
+      .set({ is_active: false, updated_at: new Date() })
+      .where(sql`${employeesTable.id} IN (${sql.join(ids, sql`, `)})`);
+    res.json({ success: true, count: ids.length });
+  } catch (err) {
+    console.error("Bulk delete employees error:", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 // Shared profile builder — used by both /me/profile and /:id/profile
 async function buildEmployeeProfile(emp: typeof employeesTable.$inferSelect) {
   const employee = await withDepartment(emp);
@@ -230,7 +248,7 @@ async function buildEmployeeProfile(emp: typeof employeesTable.$inferSelect) {
       skill_id: sk.id, skill_name: sk.name, skill_code: sk.code,
       category: sk.category, weight: sk.weight, criticality: sk.criticality,
       score: evalMap.has(sk.id) ? (evalMap.get(sk.id) ?? null) : null,
-      score_label: evalMap.has(sk.id) ? (SCORE_LABELS[evalMap.get(sk.id)!] ?? null) : null,
+      score_label: evalMap.has(sk.id) ? (SCORE_LABELS[evalMap.get(sk.id) as number] ?? null) : null,
     }));
   } else {
     skillScores = skills.map((sk) => ({

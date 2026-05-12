@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { Link } from "wouter";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useListDepartments } from "@hrm-development/api-client-react";
 import { getAuthHeaders, getAuthUser } from "@modules/skill-matrix/lib/auth";
 import { Card, CardContent } from "@shared/components/ui/card";
@@ -8,6 +8,7 @@ import { Button } from "@shared/components/ui/button";
 import { Input } from "@shared/components/ui/input";
 import { Label } from "@shared/components/ui/label";
 import { Skeleton } from "@shared/components/ui/skeleton";
+import { Checkbox } from "@shared/components/ui/checkbox";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@shared/components/ui/dialog";
@@ -15,12 +16,12 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@shared/components/ui/alert-dialog";
-import { Plus, Pencil, Trash2, Users, ExternalLink, Download, Building2, Terminal, Search } from "lucide-react";
+import { Plus, Pencil, Trash2, Users, ExternalLink, Download, Terminal, Search, CheckSquare, X } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@shared/hooks/use-toast";
 import { useT } from "@modules/skill-matrix/i18n";
-import { exportToPDF, exportToExcel } from "@modules/skill-matrix/lib/export-utils";
-import { Badge } from "@shared/components/ui/badge";
+import { useLang } from "@shared/contexts/LangContext";
+import { exportToPDF } from "@modules/skill-matrix/lib/export-utils";
 import { useFactory } from "@shared/contexts/FactoryContext";
 
 const CornerMarks = ({ color = "primary" }: { color?: string }) => (
@@ -33,12 +34,26 @@ const CornerMarks = ({ color = "primary" }: { color?: string }) => (
 
 interface DeptForm {
   name: string;
+  name_ar: string;
   code: string;
   description: string;
   manager_email: string;
+  factory_id: string;
 }
 
-const emptyForm = (): DeptForm => ({ name: "", code: "", description: "", manager_email: "" });
+interface Factory {
+  id: string;
+  name: string;
+}
+
+const emptyForm = (factoryId?: string): DeptForm => ({ 
+  name: "", 
+  name_ar: "", 
+  code: "", 
+  description: "", 
+  manager_email: "",
+  factory_id: factoryId ?? ""
+});
 
 export default function DepartmentsPage() {
   const headers = getAuthHeaders();
@@ -47,6 +62,8 @@ export default function DepartmentsPage() {
   const queryClient = useQueryClient();
   const isAdmin = user?.role === "super_admin";
   const t = useT();
+  const { lang } = useLang();
+  const isRtl = lang === "ar";
   const { activeFactoryId } = useFactory();
 
   const { data: departments, isLoading, queryKey } = useListDepartments(
@@ -57,12 +74,19 @@ export default function DepartmentsPage() {
   const [showCreate, setShowCreate] = useState(false);
   const [editTarget, setEditTarget] = useState<(typeof departments extends (infer T)[] | undefined ? T : never) | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
-  const [form, setForm] = useState<DeptForm>(emptyForm());
+  const [form, setForm] = useState<DeptForm>(emptyForm(activeFactoryId ?? ""));
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [showBulkDelete, setShowBulkDelete] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [factories, setFactories] = useState<Factory[]>([]);
 
-  // Client-side filter
+  // Fetch factories manually since hook is missing
+  useMemo(() => {
+    fetch("/api/factories", { headers }).then(res => res.json()).then(setFactories);
+  }, []);
+
   const filteredDepts = useMemo(() => {
     if (!departments) return [];
     const q = searchQuery.toLowerCase().trim();
@@ -75,15 +99,73 @@ export default function DepartmentsPage() {
     );
   }, [departments, searchQuery]);
 
-  const openCreate = () => { setForm(emptyForm()); setShowCreate(true); };
-  const openEdit = (dept: NonNullable<typeof departments>[number]) => {
-    setForm({ name: dept.name, code: dept.code ?? "", description: dept.description ?? "", manager_email: dept.manager_email ?? "" });
+  const handleBulkDelete = async () => {
+    setDeleting(true);
+    try {
+      const res = await fetch("/api/departments/bulk-delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", ...headers },
+        body: JSON.stringify({ ids: Array.from(selectedIds) }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        if (data.blocked > 0) {
+          toast({ 
+            title: t("msg_bulk_delete_partial"), 
+            description: t("msg_blocked_depts", { count: data.blocked })
+          });
+        } else {
+          toast({ title: t("msg_bulk_delete_success") });
+        }
+        queryClient.invalidateQueries({ queryKey });
+        setSelectedIds(new Set());
+        setShowBulkDelete(false);
+      }
+    } catch (err) {
+      toast({ title: t("msg_bulk_delete_error"), variant: "destructive" });
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const toggleSelect = (id: string) => {
+    const next = new Set(selectedIds);
+    if (next.has(id)) next.delete(id); else next.add(id);
+    setSelectedIds(next);
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedIds.size === filteredDepts.length) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(filteredDepts.map(d => d.id)));
+    }
+  };
+
+  const openCreate = () => { setForm(emptyForm(activeFactoryId ?? "")); setShowCreate(true); };
+  const openEdit = (dept: any) => {
+    setForm({ 
+      name: dept.name, 
+      name_ar: dept.name_ar ?? "",
+      code: dept.code ?? "", 
+      description: dept.description ?? "", 
+      manager_email: dept.manager_email ?? "",
+      factory_id: dept.factory_id ?? activeFactoryId ?? ""
+    });
     setEditTarget(dept);
   };
 
   const handleSave = async () => {
     if (!form.name.trim()) {
       toast({ title: t("departments_name_required"), variant: "destructive" });
+      return;
+    }
+    if (!form.name_ar.trim()) {
+      toast({ title: t("departments_name_ar_required"), variant: "destructive" });
+      return;
+    }
+    if (!form.factory_id) {
+      toast({ title: t("departments_factory_required"), variant: "destructive" });
       return;
     }
     setSaving(true);
@@ -95,10 +177,11 @@ export default function DepartmentsPage() {
         headers: { "Content-Type": "application/json", ...headers },
         body: JSON.stringify({
           name: form.name,
+          name_ar: form.name_ar,
           code: form.code || undefined,
           description: form.description || undefined,
           manager_email: form.manager_email || undefined,
-          factory_id: activeFactoryId ?? undefined,
+          factory_id: form.factory_id,
         }),
       });
       if (res.ok) {
@@ -140,7 +223,6 @@ export default function DepartmentsPage() {
 
   return (
     <div className="space-y-10 pb-20 font-sans selection:bg-primary/20 selection:text-primary">
-      {/* Header - Editorial Style */}
       <div className="relative pt-12 pb-6 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
@@ -152,10 +234,14 @@ export default function DepartmentsPage() {
               <h1 className="text-6xl font-headline font-bold tracking-tight text-foreground leading-none">
                 {t("departments_title")}
               </h1>
-              <p className="text-muted-foreground font-medium text-lg max-w-2xl">{t("departments_subtitle")}</p>
             </div>
             
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
+              {selectedIds.size > 0 && (
+                <Button variant="destructive" className="rounded-full font-bold text-[11px] tracking-wide uppercase px-6 h-12" onClick={() => setShowBulkDelete(true)}>
+                  <Trash2 className="h-4 w-4 me-2" /> {t("action_delete_selected", { count: selectedIds.size })}
+                </Button>
+              )}
               <Button variant="outline" className="rounded-full border-primary/10 bg-surface/50 hover:bg-surface text-foreground font-bold text-[11px] tracking-wide uppercase px-6 h-12" onClick={() => exportToPDF({
                 title: t("departments_title"),
                 filename: "Departments_List",
@@ -174,33 +260,40 @@ export default function DepartmentsPage() {
         </div>
       </div>
 
-      {/* Search / Filter Control Panel */}
       <div className="max-w-7xl mx-auto px-4">
         <Card className="bg-surface border-primary/10 rounded-3xl shadow-sm overflow-hidden border">
-          <CardContent className="p-4">
-            <div className="flex flex-col sm:flex-row items-center gap-4">
-              <div className="flex-1 w-full relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground opacity-50" />
-                <Input
-                  placeholder={t("search_departments")}
-                  className="ps-10 h-12 bg-background border-primary/5 rounded-xl text-sm text-foreground placeholder:text-muted-foreground/50 focus-visible:ring-primary/20"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-              {searchQuery && (
-                <Button
-                  variant="ghost"
-                  className="h-12 px-6 rounded-full text-muted-foreground hover:text-primary hover:bg-primary/5 font-bold text-[11px] tracking-wide uppercase transition-all"
-                  onClick={() => setSearchQuery("")}
-                >
-                  {t("filter_reset")}
-                </Button>
-              )}
+          <CardContent className="p-4 flex items-center gap-4">
+            <div className="flex-1 w-full relative">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground opacity-50" />
+              <Input
+                placeholder={t("search_departments")}
+                className="ps-10 h-12 bg-background border-primary/5 rounded-xl text-sm text-foreground placeholder:text-muted-foreground/50 focus-visible:ring-primary/20"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
             </div>
+            <Button variant="outline" className="h-12 px-6 rounded-xl border-primary/10" onClick={toggleSelectAll}>
+              <CheckSquare className="h-4 w-4 me-2" /> {selectedIds.size > 0 ? t("action_deselect_all") : t("action_select_all")}
+            </Button>
           </CardContent>
         </Card>
       </div>
+
+      <AnimatePresence>
+        {selectedIds.size > 0 && (
+          <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 50 }} className="fixed bottom-8 left-0 right-0 z-50 flex justify-center px-4">
+            <div className="bg-foreground text-background rounded-full shadow-2xl px-6 py-3 flex items-center gap-4 border border-primary/20 backdrop-blur-xl">
+              <span className="font-bold text-sm uppercase">{selectedIds.size} Selected</span>
+              <Button variant="ghost" className="text-rose-400 hover:text-rose-300" onClick={() => setShowBulkDelete(true)}>
+                <Trash2 className="h-4 w-4 me-2" /> Delete
+              </Button>
+              <Button variant="ghost" onClick={() => setSelectedIds(new Set())}>
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <div className="max-w-7xl mx-auto px-4">
         {isLoading ? (
@@ -212,9 +305,7 @@ export default function DepartmentsPage() {
         ) : !filteredDepts.length ? (
           <Card className="bg-surface border-primary/10 rounded-3xl border">
             <CardContent className="py-20 text-center space-y-4">
-              <div className="h-16 w-16 bg-muted/50 rounded-full flex items-center justify-center mx-auto">
-                <Terminal className="h-8 w-8 text-muted-foreground opacity-20" />
-              </div>
+              <Terminal className="h-8 w-8 text-muted-foreground opacity-20 mx-auto" />
               <p className="font-sans text-sm text-muted-foreground uppercase tracking-widest font-bold opacity-50">
                 {searchQuery ? t("label_no_records") : t("departments_no_data")}
               </p>
@@ -223,24 +314,18 @@ export default function DepartmentsPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredDepts.map((dept) => (
-              <motion.div
-                key={dept.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                whileHover={{ y: -4 }}
-                transition={{ duration: 0.3 }}
-              >
-                <Card className="bg-surface border-primary/10 rounded-3xl group h-full overflow-hidden transition-all duration-300 border hover:shadow-xl hover:shadow-primary/5">
+              <motion.div key={dept.id} layout initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}>
+                <Card className={`bg-surface border-primary/10 rounded-3xl group h-full overflow-hidden transition-all duration-300 border ${selectedIds.has(dept.id) ? 'border-primary/40 bg-primary/5' : ''}`}>
                   <CardContent className="p-8 space-y-8">
                     <div className="flex justify-between items-start">
-                      <div className="space-y-3">
-                        <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-3">
+                        <Checkbox checked={selectedIds.has(dept.id)} onCheckedChange={() => toggleSelect(dept.id)} />
+                        <div className="space-y-1">
                           <span className="font-sans text-[10px] text-primary/60 font-bold tracking-widest uppercase">{dept.code ?? t("label_unit_code")}</span>
-                          <div className="h-px w-6 bg-primary/10" />
+                          <h3 className="font-headline font-bold text-3xl text-foreground uppercase tracking-tight">
+                            {isRtl ? ((dept as any).name_ar || dept.name) : dept.name}
+                          </h3>
                         </div>
-                        <h3 className="font-headline font-bold text-3xl text-foreground uppercase tracking-tight group-hover:text-primary transition-colors">
-                          {dept.name}
-                        </h3>
                       </div>
                       {isAdmin && (
                         <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -291,8 +376,25 @@ export default function DepartmentsPage() {
 
             <div className="p-8 space-y-6">
               <div className="space-y-2">
-                <Label className="font-bold text-[10px] text-muted-foreground tracking-widest uppercase">{t("field_name")} *</Label>
-                <Input placeholder={t("field_name")} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="h-14 bg-background border-primary/5 rounded-xl font-sans text-sm font-bold text-foreground focus-visible:ring-primary/20" />
+                <Label className="font-bold text-[10px] text-muted-foreground tracking-widest uppercase">{t("field_name")} (EN) *</Label>
+                <Input placeholder="English Name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="h-14 bg-background border-primary/5 rounded-xl font-sans text-sm font-bold text-foreground focus-visible:ring-primary/20" />
+              </div>
+              <div className="space-y-2">
+                <Label className="font-bold text-[10px] text-muted-foreground tracking-widest uppercase">{t("field_name_ar")} *</Label>
+                <Input dir="rtl" placeholder="الاسم بالعربي" value={form.name_ar} onChange={(e) => setForm({ ...form, name_ar: e.target.value })} className="h-14 bg-background border-primary/5 rounded-xl font-sans text-sm font-bold text-foreground focus-visible:ring-primary/20" />
+              </div>
+              <div className="space-y-2">
+                <Label className="font-bold text-[10px] text-muted-foreground tracking-widest uppercase">{t("field_factory")} *</Label>
+                <select 
+                  value={form.factory_id} 
+                  onChange={(e) => setForm({ ...form, factory_id: e.target.value })}
+                  className="w-full h-14 bg-background border-primary/5 rounded-xl px-4 font-sans text-sm font-bold text-foreground outline-none focus:ring-2 focus:ring-primary/20 appearance-none"
+                >
+                  <option value="">Select Factory</option>
+                  {factories.map(f => (
+                    <option key={f.id} value={f.id}>{f.name}</option>
+                  ))}
+                </select>
               </div>
               <div className="space-y-2">
                 <Label className="font-bold text-[10px] text-muted-foreground tracking-widest uppercase">{t("field_code")}</Label>
@@ -317,6 +419,25 @@ export default function DepartmentsPage() {
         </DialogContent>
       </Dialog>
 
+      <AlertDialog open={showBulkDelete} onOpenChange={setShowBulkDelete}>
+        <AlertDialogContent className="bg-surface border-primary/20 rounded-4xl shadow-2xl p-8">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="font-headline font-bold text-3xl text-foreground tracking-tight uppercase">
+              {t("action_confirm_bulk_purge", { count: selectedIds.size })}
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-muted-foreground font-sans text-base mt-2">
+              {t("desc_bulk_delete_depts", { count: selectedIds.size })}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="mt-10 gap-4">
+            <AlertDialogCancel className="rounded-full border-primary/10 bg-background text-foreground font-bold text-[11px] tracking-wide uppercase hover:bg-primary/5 h-12 px-10">{t("common_cancel")}</AlertDialogCancel>
+            <AlertDialogAction onClick={handleBulkDelete} disabled={deleting} className="rounded-full bg-rose-600 text-white font-bold text-[11px] tracking-wide uppercase hover:bg-rose-700 px-10 h-12 shadow-lg shadow-rose-600/20">
+              {deleting ? t("action_purging") : t("action_confirm_purge")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       <AlertDialog open={!!deleteTarget} onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}>
         <AlertDialogContent className="bg-surface border-primary/20 rounded-4xl shadow-2xl">
           <AlertDialogHeader>
@@ -326,6 +447,22 @@ export default function DepartmentsPage() {
           <AlertDialogFooter className="mt-8">
             <AlertDialogCancel className="rounded-full border-primary/10 bg-background text-foreground font-bold text-[11px] tracking-wide uppercase hover:bg-primary/5 h-12 px-8">{t("common_cancel")}</AlertDialogCancel>
             <AlertDialogAction onClick={handleDelete} disabled={deleting} className="rounded-full bg-rose-600 text-white font-bold text-[11px] tracking-wide uppercase hover:bg-rose-700 px-8 h-12 shadow-lg shadow-rose-600/20">{deleting ? t("action_purging") : t("action_confirm_delete")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      <AlertDialog open={showBulkDelete} onOpenChange={setShowBulkDelete}>
+        <AlertDialogContent className="bg-surface border-primary/20 rounded-3xl">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-xl font-bold uppercase tracking-tight">{t("confirm_bulk_delete")}</AlertDialogTitle>
+            <AlertDialogDescription className="text-muted-foreground">
+              {t("desc_bulk_delete_depts", { count: selectedIds.size })}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="rounded-full uppercase text-[10px] font-bold tracking-widest">{t("common_cancel")}</AlertDialogCancel>
+            <AlertDialogAction onClick={handleBulkDelete} className="rounded-full bg-destructive text-destructive-foreground hover:bg-destructive/90 uppercase text-[10px] font-bold tracking-widest">
+              {deleting ? t("action_purging") : t("action_confirm_delete")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
