@@ -323,7 +323,7 @@ export default function WorkflowsPage() {
             </div>
             <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">{t("workflows_title")}
             </h2>
-            <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4">{t("workflows_subtitle")}</p>
+            <p className="text-zinc-500 font-medium border-s-2 border-primary/20 ps-4">{t("workflows_subtitle")}</p>
           </div>
           
           {isManager && (
@@ -343,8 +343,8 @@ export default function WorkflowsPage() {
       ) : !workflows?.length ? (
         <Card className="bg-[#121212] border-white/10 rounded-none relative">
           <CardContent className="py-24 text-center space-y-4">
-             <Terminal className="h-12 w-12 text-secondary/10 mx-auto" />
-             <p className="font-mono text-xs text-secondary/30 uppercase tracking-[0.3em]">{t("label_no_records")}
+             <Terminal className="h-12 w-12 text-zinc-800 mx-auto" />
+             <p className="font-mono text-xs text-zinc-600 uppercase tracking-[0.3em]">{t("label_no_records")}
              </p>
           </CardContent>
           <CornerMarks />
@@ -369,7 +369,7 @@ export default function WorkflowsPage() {
                         <h3 className="font-headline font-black text-xl text-white uppercase tracking-tight group-hover:text-primary transition-colors truncate">
                           {wf.title}
                         </h3>
-                        <p className="text-[10px] font-mono text-secondary/40 uppercase tracking-widest">{t("workflows_unit")}::{wf.department?.name ?? t("workflows_general")}
+                        <p className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">{t("workflows_unit")}::{wf.department?.name ?? t("workflows_general")}
                         </p>
                       </div>
                       {statusBadge(wf.status, t)}
@@ -379,12 +379,12 @@ export default function WorkflowsPage() {
                     {wf.campaign && (
                       <div className="flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 w-fit">
                          <Activity className="h-3 w-3 text-primary" />
-                         <span className="text-[9px] font-mono font-black text-secondary/40 uppercase tracking-widest">{t("campaigns_col_type")}::{wf.campaign.title}</span>
+                         <span className="text-[9px] font-mono font-black text-zinc-500 uppercase tracking-widest">{t("campaigns_col_type")}::{wf.campaign.title}</span>
                       </div>
                     )}
 
                     <div className="space-y-2">
-                      <div className="flex items-center justify-between font-mono text-[9px] text-secondary/40 uppercase tracking-widest">
+                      <div className="flex items-center justify-between font-mono text-[9px] text-zinc-500 uppercase tracking-widest">
                         <span>{t("workflows_progress")}</span>
                         <span className="text-white">{progress}%</span>
                       </div>
@@ -399,11 +399,11 @@ export default function WorkflowsPage() {
                     </div>
 
                     <div className="pt-6 border-t border-white/5 flex items-center justify-between">
-                      <span className="font-mono text-[9px] text-secondary/20 uppercase">{t("workflows_init_date")}::{new Date(wf.created_at).toLocaleDateString()}
+                      <span className="font-mono text-[9px] text-zinc-700 uppercase">{t("workflows_init_date")}::{new Date(wf.created_at).toLocaleDateString()}
                       </span>
                       <div className="flex items-center gap-2">
                         {isManager && wf.status !== "Finalized" && (
-                          <Button size="icon" variant="ghost" className="h-8 w-8 rounded-none border border-white/10 hover:border-rose-500/30 hover:bg-rose-500/5 text-secondary/30 hover:text-rose-500"
+                          <Button size="icon" variant="ghost" className="h-8 w-8 rounded-none border border-white/10 hover:border-rose-500/30 hover:bg-rose-500/5 text-zinc-600 hover:text-rose-500"
                             onClick={() => setDeleteTarget({ id: wf.id, title: wf.title })}>
                             <Trash2 className="h-3.5 w-3.5" />
                           </Button>
@@ -437,7 +437,7 @@ export default function WorkflowsPage() {
             <div className="p-10 space-y-10 overflow-y-auto">
               <div className="grid grid-cols-2 gap-8">
                 <div className="col-span-2 space-y-3">
-                  <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">PROTOCOL TITLE *</Label>
+                  <Label className="font-headline font-black text-[10px] text-zinc-500 tracking-[0.2em] uppercase">PROTOCOL TITLE *</Label>
                   <Input
                     placeholder="e.g. Q2 PROD EVALUATION"
                     value={form.title}
@@ -446,7 +446,7 @@ export default function WorkflowsPage() {
                   />
                 </div>
                 <div className="space-y-3">
-                  <Label className="font-headline font-black text-[10px] text-secondary/40 tracking-[0.2em] uppercase">TARGET UNIT *</Label>
+                  <Label className="font-headline font-black text-[10px] text-zinc-500 tracking-[0.2em] uppercase">TARGET UNIT *</Label>
                   <Select value={form.department_id} onValueChange={(v) =>setForm({ ...form, department_id: v })}>
                     <SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
                       <SelectValue placeholder="SELECT DEPLOYMENT UNIT" />
