@@ -1,0 +1,347 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;800;900&display=swap');
+@import "tailwindcss";
+@import "tw-animate-css";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-card-border: hsl(var(--card-border));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-popover-border: hsl(var(--popover-border));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary-border: var(--primary-border);
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-secondary-border: var(--secondary-border);
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-muted-border: var(--muted-border);
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-accent-border: var(--accent-border);
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-destructive-border: var(--destructive-border);
+
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+
+  --color-sidebar: hsl(var(--sidebar));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-primary-border: var(--sidebar-primary-border);
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-accent-border: var(--sidebar-accent-border);
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  --font-sans: var(--app-font-sans);
+  --font-serif: var(--app-font-serif);
+  --font-mono: var(--app-font-mono);
+  --font-headline: 'Comfortaa', sans-serif;
+  --font-tajawal: 'Tajawal', sans-serif;
+
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+}
+
+/* ─── Atelier Zero Theme (Main) ─────────────────────────── */
+:root {
+  --paper: 44 38% 88%; /* #efe7d2 */
+  --paper-warm: 44 35% 86%; /* #ece4cf */
+  --paper-dark: 43 28% 79%; /* #ddd2b6 */
+  --ink: 48 19% 7%; /* #15140f */
+  --ink-soft: 36 14% 15%; /* #2a2620 */
+  --ink-mute: 40 11% 32%; /* #5a5448 */
+  --ink-faint: 45 8% 50%; /* #8b8676 */
+  --coral: 7 81% 65%; /* #ed6f5c */
+  --mustard: 42 79% 60%; /* #e9b94a */
+  --bone: 46 59% 92%; /* #f7f1de */
+  
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --border: 45 15% 15% / 0.16; /* var(--line) */
+  
+  --card: var(--bone);
+  --card-foreground: var(--ink);
+  --card-border: 45 15% 15% / 0.08; /* var(--line-soft) */
+  
+  --popover: var(--paper-warm);
+  --popover-foreground: var(--ink);
+  --popover-border: 45 15% 15% / 0.12;
+  
+  --primary: var(--coral);
+  --primary-foreground: 0 0% 100%;
+  
+  --secondary: var(--mustard);
+  --secondary-foreground: var(--ink);
+  
+  --muted: 45 15% 15% / 0.05;
+  --muted-foreground: var(--ink-mute);
+  
+  --accent: var(--coral);
+  --accent-foreground: 0 0% 100%;
+  
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  
+  --input: 45 15% 15% / 0.08;
+  --ring: var(--coral);
+  
+  --chart-1: var(--coral);
+  --chart-2: var(--mustard);
+  --chart-3: 40 11% 32%;
+  --chart-4: 45 8% 50%;
+  --chart-5: 36 14% 15%;
+  
+  --sidebar: var(--paper-warm);
+  --sidebar-foreground: var(--ink-soft);
+  --sidebar-border: 45 15% 15% / 0.12;
+  --sidebar-primary: var(--coral);
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: var(--paper-dark);
+  --sidebar-accent-foreground: var(--ink);
+  --sidebar-ring: var(--coral);
+  
+  --app-font-sans: 'Comfortaa', sans-serif;
+  --app-font-serif: 'Playfair Display', serif;
+  --app-font-mono: 'JetBrains Mono', monospace;
+  --radius: 0px;
+  --shadow: 0 30px 60px -30px rgba(21, 20, 15, 0.18);
+  
+  color-scheme: light;
+}
+
+/* ─── Dark Mode (Inverted Atelier) ─────────────────────── */
+.dark {
+  --background: 48 19% 7%; /* #15140f */
+  --foreground: 44 38% 88%; /* #efe7d2 */
+  --border: 44 38% 88% / 0.16;
+  
+  --card: 48 19% 10%;
+  --card-foreground: 44 38% 88%;
+  --card-border: 44 38% 88% / 0.08;
+  
+  --popover: 48 19% 12%;
+  --popover-foreground: 44 38% 88%;
+  --popover-border: 44 38% 88% / 0.12;
+  
+  --primary: var(--coral);
+  --primary-foreground: 0 0% 100%;
+  
+  --secondary: var(--mustard);
+  --secondary-foreground: 48 19% 7%;
+  
+  --muted: 44 38% 88% / 0.05;
+  --muted-foreground: 45 8% 70%;
+  
+  --accent: var(--coral);
+  --accent-foreground: 0 0% 100%;
+  
+  --sidebar: 48 19% 5%;
+  --sidebar-foreground: 44 38% 88%;
+  --sidebar-border: 44 38% 88% / 0.12;
+  --sidebar-primary: var(--coral);
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 48 19% 15%;
+  --sidebar-accent-foreground: 44 38% 88%;
+  --sidebar-ring: var(--coral);
+  
+  color-scheme: dark;
+}
+
+/* ─── Arabic font override ──────────────────────────────── */
+html[dir="rtl"], [dir="rtl"], [lang="ar"] {
+  --app-font-sans: 'Tajawal', sans-serif !important;
+  --font-sans: 'Tajawal', sans-serif !important;
+  --font-headline: 'Tajawal', sans-serif !important;
+  --font-mono: 'Tajawal', sans-serif !important;
+}
+
+html[dir="rtl"] *, [dir="rtl"] *, [lang="ar"] * {
+  font-family: 'Tajawal', sans-serif !important;
+}
+
+/* ─── English font override (LTR) ───────────────────────── */
+html:not([dir="rtl"]):not([lang="ar"]) body {
+  font-family: 'Comfortaa', sans-serif;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  /* ─── Industrial Scanline Effect ─── */
+  .scanline {
+    width: 100%;
+    height: 100px;
+    z-index: 9999;
+    background: linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(212, 175, 55, 0.02) 50%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    opacity: 0.1;
+    position: absolute;
+    bottom: 100%;
+    animation: scanline 10s linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes scanline {
+    0% {
+      bottom: 100%;
+    }
+    100% {
+      bottom: 0%;
+    }
+  }
+
+  @keyframes pulse-soft {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+
+  .animate-pulse-soft {
+    animation: pulse-soft 3s ease-in-out infinite;
+  }
+
+  .light .industrial-card {
+    box-shadow: 0 4px 20px -4px rgba(180, 140, 60, 0.1);
+  }
+
+  .light .industrial-card:hover {
+    box-shadow: 0 12px 40px -12px rgba(180, 140, 60, 0.2);
+    transform: translateY(-2px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* ─── Metallic Button Gradient ─── */
+  .btn-metallic {
+    background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%);
+    box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.05);
+  }
+
+  /* ─── Industrial Button (Galaxy UI) ─── */
+  .btn-industrial {
+    --border-color: linear-gradient(-45deg, hsl(var(--primary)), hsl(var(--secondary)), hsl(var(--primary)));
+    --border-width: 0.125em;
+    --curve-size: 0.5em;
+    --bg: hsl(var(--background));
+    --color: hsl(var(--primary));
+    color: var(--color);
+    position: relative;
+    isolation: isolate;
+    display: inline-grid;
+    place-content: center;
+    clip-path: polygon(
+      0% var(--curve-size),
+      var(--curve-size) 0,
+      100% 0,
+      100% calc(100% - var(--curve-size)),
+      calc(100% - var(--curve-size)) 100%,
+      0 100%
+    );
+    transition: color 250ms;
+  }
+
+  .btn-industrial::after,
+  .btn-industrial::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .btn-industrial::before {
+    background: var(--border-color);
+    background-size: 300% 300%;
+    animation: move-bg7234 5s ease infinite;
+    z-index: -2;
+  }
+
+  @keyframes move-bg7234 {
+    0% { background-position: 31% 0%; }
+    50% { background-position: 70% 100%; }
+    100% { background-position: 31% 0%; }
+  }
+
+  .btn-industrial::after {
+    background: var(--bg);
+    z-index: -1;
+    clip-path: polygon(
+      var(--border-width) calc(var(--curve-size) + var(--border-width) * 0.5),
+      calc(var(--curve-size) + var(--border-width) * 0.5) var(--border-width),
+      calc(100% - var(--border-width)) var(--border-width),
+      calc(100% - var(--border-width)) calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5)),
+      calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5)) calc(100% - var(--border-width)),
+      var(--border-width) calc(100% - var(--border-width))
+    );
+    transition: clip-path 500ms;
+  }
+
+  .btn-industrial:where(:hover, :focus)::after {
+    clip-path: polygon(
+      calc(100% - var(--border-width)) calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5)),
+      calc(100% - var(--border-width)) var(--border-width),
+      calc(100% - var(--border-width)) var(--border-width),
+      calc(100% - var(--border-width)) calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5)),
+      calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5)) calc(100% - var(--border-width)),
+      calc(100% - calc(var(--curve-size) + var(--border-width) * 0.5)) calc(100% - var(--border-width))
+    );
+    transition: 200ms;
+  }
+
+  .btn-industrial:where(:hover, :focus) {
+    color: hsl(var(--primary-foreground));
+  }
+}
+
+.score-0 { background-color: #DC2626 !important; color: white !important; }
+.score-1 { background-color: #EA580C !important; color: white !important; }
+.score-2 { background-color: #D97706 !important; color: white !important; }
+.score-3 { background-color: #65A30D !important; color: white !important; }
+.score-4 { background-color: #16A34A !important; color: white !important; }
+
+.class-a { background-color: #16A34A; color: white; }
+.class-b { background-color: #CA8A04; color: white; }
+.class-c { background-color: #DC2626; color: white; }
+
+@media print {
+  header, footer, .no-print { display: none !important; }
+  body, html { background: #fff !important; color: #111 !important; font-size: 11pt; }
+  main { overflow: visible !important; }
+  .print-area { background: #fff !important; border: none !important; color: #111 !important; }
+  .print-area table { border-collapse: collapse; width: 100%; }
+  .print-area th, .print-area td { border: 0.5pt solid #ddd !important; padding: 4pt 6pt !important; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+}
