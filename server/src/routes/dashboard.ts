@@ -61,7 +61,7 @@ router.get("/metrics", requireAuth, requireRole("super_admin", "hr_coordinator",
       const deptEmpIds = await db.select({ id: employeesTable.id })
         .from(employeesTable)
         .where(and(eq(employeesTable.department_id, userDeptId), eq(employeesTable.is_active, true)));
-      const ids = deptEmpIds.map((e) => e.id);
+      const ids = deptEmpIds.map((e: any) => e.id);
       if (ids.length > 0) {
         const { inArray } = await import("drizzle-orm");
         const [pt] = await db.select({ total: count() }).from(trainingRecommendationsTable)

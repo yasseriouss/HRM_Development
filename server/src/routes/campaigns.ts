@@ -203,7 +203,7 @@ router.get("/:id/summaries", requireAuth, requireRole("super_admin", "hr_coordin
       .where(and(...summaryConditions))
       .orderBy(evaluationSummariesTable.percentage);
 
-    const result = rows.map((r) => ({
+    const result = rows.map((r: any) => ({
       ...r.summary,
       total_score: Number(r.summary.total_score),
       max_possible_score: Number(r.summary.max_possible_score),
@@ -247,7 +247,7 @@ router.get("/:id/matrix", requireAuth, requireRole("super_admin", "hr_coordinato
     const skillConditions = [eq(skillsTable.is_active, true)];
     if (effectiveDeptId) skillConditions.push(eq(skillsTable.department_id, effectiveDeptId));
     const skills = await db.select().from(skillsTable).where(and(...skillConditions));
-    const skillsWithDept = skills.map((s) => ({
+    const skillsWithDept = skills.map((s: any) => ({
       ...s,
       department: campaignFormatted.department || null,
     }));
@@ -273,7 +273,7 @@ router.get("/:id/matrix", requireAuth, requireRole("super_admin", "hr_coordinato
       .where(eq(evaluationSummariesTable.campaign_id, String(req.params.id)));
     const summaryMap = new Map(summaries.map((s) => [s.employee_id, s]));
 
-    const rows = await Promise.all(employees.map(async (emp) => {
+    const rows = await Promise.all(employees.map(async (emp: any) => {
       const [dept] = await db.select().from(departmentsTable).where(eq(departmentsTable.id, emp.department_id)).limit(1);
       const [cnt] = await db.select({ total: count() }).from(employeesTable)
         .where(and(eq(employeesTable.department_id, emp.department_id), eq(employeesTable.is_active, true)));
@@ -287,10 +287,10 @@ router.get("/:id/matrix", requireAuth, requireRole("super_admin", "hr_coordinato
       return {
         employee: empWithDept,
         scores: scoresObj,
-        total_score: summary ? Number(summary.total_score) : null,
-        max_score: summary ? Number(summary.max_possible_score) : null,
-        percentage: summary ? Number(summary.percentage) : null,
-        class: summary?.class || null,
+        total_score: summary ? Number((summary as any).total_score) : null,
+        max_score: summary ? Number((summary as any).max_possible_score) : null,
+        percentage: summary ? Number((summary as any).percentage) : null,
+        class: (summary as any)?.class || null,
       };
     }));
 

@@ -40,49 +40,49 @@ export default function Hub() {
     {
       title: t("nav_dashboard"),
       icon: <LayoutDashboard className="h-10 w-10 mb-4 text-primary" />,
-      path: "/dashboard",
+      path: "/",
       show: isAdminOrHR || isDeptHead,
     },
     {
       title: t("nav_my_profile"),
       icon: <UserCircle className="h-10 w-10 mb-4 text-primary" />,
       path: "/my-profile",
-      show: true, // Everyone has a profile
+      show: true,
     },
     {
       title: t("nav_campaigns"),
       icon: <Target className="h-10 w-10 mb-4 text-primary" />,
-      path: "/campaigns",
+      path: "/skill-matrix/campaigns",
       show: isAdminOrHR || isDeptHead,
     },
     {
       title: t("nav_departments"),
       icon: <Building2 className="h-10 w-10 mb-4 text-primary" />,
-      path: "/departments",
+      path: "/skill-matrix/departments",
       show: isAdminOrHR || isDeptHead,
     },
     {
       title: t("nav_employees"),
       icon: <Users className="h-10 w-10 mb-4 text-primary" />,
-      path: "/employees",
+      path: "/skill-matrix/employees",
       show: isAdminOrHR || isDeptHead,
     },
     {
       title: t("nav_evaluations"),
       icon: <GraduationCap className="h-10 w-10 mb-4 text-primary" />,
-      path: "/evaluations",
+      path: "/skill-matrix/evaluations",
       show: isAdminOrHR || isDeptHead,
     },
     {
       title: t("nav_workflows"),
       icon: <Workflow className="h-10 w-10 mb-4 text-primary" />,
-      path: "/workflows",
+      path: "/skill-matrix/workflows",
       show: true,
     },
     {
       title: t("nav_settings"),
       icon: <Settings className="h-10 w-10 mb-4 text-primary" />,
-      path: "/settings",
+      path: "/skill-matrix/settings",
       show: true,
     },
   ];
