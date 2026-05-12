@@ -91,8 +91,10 @@ export async function registerFrontend(app: Express) {
     }
   }
 
-  // Redirect root to main app
+  // Redirect root to main app - DISABLED to allow SPA to handle root.
+  /*
   app.get("/", (_req, res) => {
-    res.redirect("/hrm-skill-matrix");
+    res.redirect("/skill-matrix");
   });
+  */
 }

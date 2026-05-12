@@ -126,9 +126,11 @@ function AppRoutes() {
               <Route path="/spreadsheet" component={() => <ProtectedRoute component={SpreadsheetPage} roles={ADMIN_HR_DEPT} />} />
 
               {/* Docs */}
+              <Route path="/docs" component={() => <ProtectedRoute component={DocsApp} roles={ALL_ROLES} />} />
               <Route path="/docs/:rest*" component={() => <ProtectedRoute component={DocsApp} roles={ALL_ROLES} />} />
-
+              
               {/* Interactive Presentation */}
+              <Route path="/interactive-presentation" component={() => <ProtectedRoute component={InteractivePresentationApp} roles={ALL_ROLES} />} />
               <Route path="/interactive-presentation/:rest*" component={() => <ProtectedRoute component={InteractivePresentationApp} roles={ALL_ROLES} />} />
 
               <Route path="/my-profile" component={() => <ProtectedRoute component={MyProfilePage} roles={ALL_ROLES} />} />
