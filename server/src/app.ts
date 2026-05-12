@@ -62,9 +62,10 @@ const possibleDistPaths = [
 
 let rootDist = possibleDistPaths[0];
 for (const p of possibleDistPaths) {
-  if (fs.existsSync(p)) {
+  const indexPath = path.join(p, "index.html");
+  if (fs.existsSync(indexPath)) {
     rootDist = p;
-    logger.info({ path: p }, "Found root dist directory");
+    logger.info({ path: p }, "Found root dist directory with index.html");
     break;
   }
 }
