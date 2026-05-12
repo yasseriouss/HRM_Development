@@ -144,7 +144,7 @@ function AppRoutes() {
 
 export default function App() {
   return (
-    <ThemeProvider attribute="class" defaultTheme="dark" themes={["dark", "light"]} disableTransitionOnChange>
+    <ThemeProvider attribute="class" defaultTheme="light" themes={["dark", "light"]} disableTransitionOnChange>
       <LangProvider>
         <QueryClientProvider client={queryClient}>
           <FactoryProvider>

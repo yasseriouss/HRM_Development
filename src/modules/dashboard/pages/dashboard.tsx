@@ -24,28 +24,23 @@ import { logout } from "@shared/lib/auth";
 
 const COLORS = { A: "oklch(64% 0.13 28)", B: "oklch(58% 0.16 145)", C: "oklch(70% 0.15 15)" };
 
-const CornerMarks = ({ color = "primary" }: { color?: string }) => (
-  <div className={`absolute top-4 right-4 w-1 h-1 rounded-full bg-${color}/40 transition-all duration-500 group-hover:scale-150 shadow-[0_0_8px_rgba(var(--${color}),0.4)]`} />
-);
-
-function StatCard({ label, value, sub, icon: Icon, colorClass = "primary" }: { label: string; value: string | number; sub?: string; icon: any; colorClass?: string }) {
+function StatCard({ label, value, sub, icon: Icon, colorClass = "primary", featured = false }: { label: string; value: string | number; sub?: string; icon: any; colorClass?: string; featured?: boolean }) {
   return (
-    <Card className="bg-surface/40 border border-muted/10 rounded-2xl relative group hover:border-primary/20 hover:bg-surface/60 transition-all duration-500 soft-shadow backdrop-blur-md">
-      <CardContent className="p-6 md:p-8">
+    <Card className={`bg-surface border border-muted/10 transition-all duration-500 soft-shadow ${featured ? 'rounded-3xl p-2 md:p-4' : 'rounded-2xl'}`}>
+      <CardContent className={`p-6 md:p-8 ${featured ? 'bg-background/40 rounded-2xl border border-muted/5' : ''}`}>
         <div className="flex items-start justify-between mb-8">
-          <div className={`p-3 bg-${colorClass}/5 border border-${colorClass}/10 group-hover:border-${colorClass}/30 transition-colors rounded-xl`}>
+          <div className={`p-3 bg-${colorClass}/5 border border-${colorClass}/10 rounded-xl`}>
             <Icon className={`h-5 w-5 text-${colorClass}`} />
           </div>
-          <CornerMarks color={colorClass} />
         </div>
         <div>
           <p className="text-[10px] font-bold tracking-[0.15em] text-muted uppercase mb-2">{label}</p>
           <div className="flex items-baseline gap-2">
-            <h3 className="text-3xl md:text-4xl font-headline font-bold text-foreground tracking-tight">{value}</h3>
+            <h3 className={`${featured ? 'text-4xl md:text-6xl' : 'text-3xl md:text-4xl'} font-headline font-bold text-foreground tracking-tight tabular-nums`}>{value}</h3>
           </div>
           {sub && (
             <div className="flex items-center gap-2 mt-4 text-[9px] font-bold text-muted/60 uppercase tracking-widest">
-              <Activity className="h-3 w-3" />{sub}
+              <span className="w-1 h-1 bg-primary rounded-full animate-pulse" /> {sub}
             </div>
           )}
         </div>
@@ -122,12 +117,11 @@ export default function Dashboard() {
   if (error) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-6">
-        <Card className="bg-surface/50 border border-destructive/20 rounded-xl p-12 text-center max-w-md relative backdrop-blur-sm">
+        <Card className="bg-surface/50 border border-destructive/20 rounded-2xl p-12 text-center max-w-md relative backdrop-blur-sm">
           <ShieldAlert className="h-12 w-12 text-destructive mx-auto mb-6" />
           <p className="text-destructive font-headline font-bold uppercase tracking-widest mb-2">{t('dash_error_loading')}</p>
           <p className="text-xs text-muted font-body-default mb-8 uppercase leading-relaxed">{error}</p>
-          <Button onClick={logout} variant="outline" className="rounded-lg border-destructive/30 text-destructive hover:bg-destructive/10 uppercase font-bold text-[10px] tracking-widest">{t('dash_error_sign_out')}</Button>
-          <CornerMarks color="destructive" />
+          <Button onClick={logout} variant="outline" className="rounded-xl border-destructive/30 text-destructive hover:bg-destructive/10 uppercase font-bold text-[10px] tracking-widest">{t('dash_error_sign_out')}</Button>
         </Card>
       </div>
     );
@@ -142,23 +136,26 @@ export default function Dashboard() {
           className="space-y-4 text-center md:text-left"
         >
           <div className="flex flex-col md:flex-row md:items-center gap-4">
-             <div className="h-10 w-1 bg-primary rounded-full hidden md:block" />
+             <div className="h-12 w-1.5 bg-primary rounded-full hidden md:block" />
              <div>
-                <h2 className="text-3xl md:text-5xl font-headline font-bold text-foreground tracking-tight">{t('dash_workforce_overview')}</h2>
-                <p className="text-xs text-muted font-body-default font-bold uppercase tracking-[0.2em] mt-2">{t('dash_workforce_subtitle')}</p>
+                <h2 className="text-4xl md:text-6xl font-headline font-bold text-foreground tracking-tight">{t('dash_workforce_overview')}</h2>
+                <p className="text-[10px] text-muted font-body-default font-bold uppercase tracking-[0.3em] mt-3 opacity-60">{t('dash_workforce_subtitle')}</p>
              </div>
           </div>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
-          <StatCard label={t('dash_kpi_total_employees')} value={metrics?.total_employees ?? 0} sub={`${metrics?.active_employees ?? 0} ${t('dash_dashboard_active')}`} icon={Users} />
-          <StatCard label="Active Campaigns" value={metrics?.active_campaigns ?? 0} sub={`${metrics?.completed_campaigns ?? 0} ${t('dash_completed')}`} icon={Zap} colorClass="primary" />
-          <StatCard label={t('dash_kpi_skills_tracked')} value={metrics?.total_skills ?? 0} sub="competency nodes" icon={Target} colorClass="primary" />
-          <StatCard label={t('dash_kpi_avg_score')} value={metrics?.average_skill_percentage != null ? `${metrics.average_skill_percentage}%` : "—"} sub="global baseline" icon={Activity} colorClass="primary" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
+          <div className="md:col-span-2">
+            <StatCard label={t('dash_kpi_total_employees')} value={metrics?.total_employees ?? 0} sub={`${metrics?.active_employees ?? 0} ${t('dash_dashboard_active')}`} icon={Users} featured />
+          </div>
+          <div className="space-y-6 md:space-y-10">
+            <StatCard label="Active Campaigns" value={metrics?.active_campaigns ?? 0} sub={`${metrics?.completed_campaigns ?? 0} ${t('dash_completed')}`} icon={Zap} colorClass="primary" />
+            <StatCard label={t('dash_kpi_skills_tracked')} value={metrics?.total_skills ?? 0} sub="competency nodes" icon={Target} colorClass="primary" />
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
-          <Card className="bg-surface/30 border border-muted/10 rounded-2xl relative overflow-hidden group backdrop-blur-md soft-shadow">
+          <Card className="bg-surface/30 border border-muted/10 rounded-3xl relative overflow-hidden group backdrop-blur-md soft-shadow">
             <CardHeader className="p-6 md:p-8 border-b border-muted/5">
               <CardTitle className="font-headline font-bold text-[10px] uppercase tracking-[0.2em] text-muted flex items-center gap-3">
                 <BarChart3 className="h-4 w-4 text-primary" /> {t('dash_perf_dist')}
@@ -174,22 +171,21 @@ export default function Dashboard() {
                       ))}
                     </Pie>
                     <Tooltip
-                      contentStyle={{ background: "var(--background)", border: "1px solid var(--muted)", borderRadius: "12px", color: "var(--foreground)", fontSize: "10px", textTransform: "uppercase", fontWeight: "700" }}
+                      contentStyle={{ background: "var(--background)", border: "1px solid var(--border)", borderRadius: "16px", color: "var(--foreground)", fontSize: "10px", textTransform: "uppercase", fontWeight: "700" }}
                     />
                     <Legend iconType="circle" formatter={(v) => <span className="text-[10px] font-bold text-muted uppercase tracking-widest ml-2">{v}</span>} />
                   </PieChart>
                 </ResponsiveContainer>
               ) : (
-                <div className="h-[260px] flex flex-col items-center justify-center text-center p-12 border border-dashed border-muted/20 rounded-xl">
+                <div className="h-[260px] flex flex-col items-center justify-center text-center p-12 border border-dashed border-muted/20 rounded-2xl">
                   <Sparkles className="h-10 w-10 text-muted/30 mb-4" />
                   <p className="text-muted font-body-default text-[10px] uppercase tracking-widest">{t('dash_no_eval_data')}</p>
                 </div>
               )}
             </CardContent>
-            <CornerMarks />
           </Card>
 
-          <Card className="bg-surface/30 border border-muted/10 rounded-2xl relative overflow-hidden group backdrop-blur-md soft-shadow">
+          <Card className="bg-surface/30 border border-muted/10 rounded-3xl relative overflow-hidden group backdrop-blur-md soft-shadow">
             <CardHeader className="p-6 md:p-8 border-b border-muted/5">
               <CardTitle className="font-headline font-bold text-[10px] uppercase tracking-[0.2em] text-muted flex items-center gap-3">
                 <Brain className="h-4 w-4 text-primary" /> {t('dash_class_summary')}
@@ -206,7 +202,7 @@ export default function Dashboard() {
                     <span className="text-[10px] font-bold text-muted uppercase tracking-widest group-hover/item:text-foreground transition-colors">{item.label}</span>
                     <span className="text-2xl font-headline font-bold text-foreground">{item.pct}%</span>
                   </div>
-                  <div className="w-full h-1.5 bg-muted/10 rounded-full overflow-hidden">
+                  <div className="w-full h-2 bg-muted/10 rounded-full overflow-hidden">
                     <motion.div 
                       initial={{ width: 0 }}
                       animate={{ width: `${item.pct}%` }}
@@ -218,7 +214,7 @@ export default function Dashboard() {
               ))}
               <div className="pt-6 border-t border-muted/5 flex justify-between items-center">
                   <span className="text-[9px] font-bold text-muted uppercase tracking-widest">{t('dash_pending_training')}</span>
-                  <Badge className="bg-primary/5 text-primary border-primary/10 rounded-lg px-3 font-body-default text-[10px] font-bold uppercase tracking-widest">
+                  <Badge className="bg-primary/5 text-primary border-primary/10 rounded-xl px-4 py-1 font-body-default text-[10px] font-bold uppercase tracking-widest">
                     {metrics?.pending_training ?? 0} NODES
                   </Badge>
               </div>

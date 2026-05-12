@@ -14,7 +14,7 @@ import {
   UserCircle 
 } from "lucide-react";
 import { Card } from "@shared/components/ui/card";
-import { IndustrialCard } from "@shared/components/ui/industrial-card";
+import { SoftCard } from "@shared/components/ui/soft-card";
 import { Loader } from "@shared/components/ui/loader";
 
 export default function Hub() {
@@ -24,10 +24,10 @@ export default function Hub() {
   const t = useT();
 
   useEffect(() =>{
-    // Show splash for 2.5 seconds
+    // Show splash for 2 seconds
     const timer = setTimeout(() => {
       setShowSplash(false);
-    }, 2500);
+    }, 2000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -39,49 +39,49 @@ export default function Hub() {
   const navigationCards = [
     {
       title: t("nav_dashboard"),
-      icon: <LayoutDashboard className="h-12 w-12 mb-4 text-primary" />,
+      icon: <LayoutDashboard className="h-10 w-10 mb-4 text-primary" />,
       path: "/dashboard",
       show: isAdminOrHR || isDeptHead,
     },
     {
       title: t("nav_my_profile"),
-      icon: <UserCircle className="h-12 w-12 mb-4 text-primary" />,
+      icon: <UserCircle className="h-10 w-10 mb-4 text-primary" />,
       path: "/my-profile",
       show: true, // Everyone has a profile
     },
     {
       title: t("nav_campaigns"),
-      icon: <Target className="h-12 w-12 mb-4 text-primary" />,
+      icon: <Target className="h-10 w-10 mb-4 text-primary" />,
       path: "/campaigns",
       show: isAdminOrHR || isDeptHead,
     },
     {
       title: t("nav_departments"),
-      icon: <Building2 className="h-12 w-12 mb-4 text-primary" />,
+      icon: <Building2 className="h-10 w-10 mb-4 text-primary" />,
       path: "/departments",
       show: isAdminOrHR || isDeptHead,
     },
     {
       title: t("nav_employees"),
-      icon: <Users className="h-12 w-12 mb-4 text-primary" />,
+      icon: <Users className="h-10 w-10 mb-4 text-primary" />,
       path: "/employees",
       show: isAdminOrHR || isDeptHead,
     },
     {
       title: t("nav_evaluations"),
-      icon: <GraduationCap className="h-12 w-12 mb-4 text-primary" />,
+      icon: <GraduationCap className="h-10 w-10 mb-4 text-primary" />,
       path: "/evaluations",
       show: isAdminOrHR || isDeptHead,
     },
     {
       title: t("nav_workflows"),
-      icon: <Workflow className="h-12 w-12 mb-4 text-primary" />,
+      icon: <Workflow className="h-10 w-10 mb-4 text-primary" />,
       path: "/workflows",
       show: true,
     },
     {
       title: t("nav_settings"),
-      icon: <Settings className="h-12 w-12 mb-4 text-primary" />,
+      icon: <Settings className="h-10 w-10 mb-4 text-primary" />,
       path: "/settings",
       show: true,
     },
@@ -95,26 +95,26 @@ export default function Hub() {
             key="splash"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
+            exit={{ opacity: 0, scale: 0.98 }}
             transition={{ duration: 0.5 }}
-            className="absolute inset-0 flex flex-col items-center justify-center z-50 bg-[#121212]"
+            className="absolute inset-0 flex flex-col items-center justify-center z-50 bg-background"
           >
-            <div className="scanline"></div>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.8 }}
-              className="flex flex-col items-center screen-flicker"
+              className="flex flex-col items-center"
             >
               <img 
                 src={`${import.meta.env.BASE_URL}logo.png`}
-                alt="Grand Line ERP Logo" 
-                className="w-48 h-48 object-contain mb-8 filter drop-shadow-[0 0 15px_rgba(212,175,55,0.5)]" 
+                alt="Logo" 
+                className="w-40 h-40 object-contain mb-8 filter grayscale opacity-20" 
               />
-              <h1 className="text-3xl tracking-[0.3em] font-headline text-primary uppercase">
-                GRAND LINE ERP
+              <h1 className="text-4xl font-headline font-bold text-foreground tracking-tight uppercase leading-none">
+                HRM UNIFIED
               </h1>
-              <div className="mt-8">
+              <p className="text-[10px] font-bold text-muted uppercase tracking-[0.3em] mt-4 opacity-60">Management Suite</p>
+              <div className="mt-12">
                 <Loader text={t("label_initializing_systems")} />
               </div>
             </motion.div>
@@ -122,20 +122,20 @@ export default function Hub() {
         ) : (
           <motion.div
             key="hub"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="w-full h-full p-8 overflow-y-auto"
+            className="w-full h-full p-8 md:p-16 overflow-y-auto"
           >
             <div className="max-w-7xl mx-auto">
-              <header className="mb-12 text-center">
-                <h1 className="text-4xl font-headline tracking-widest uppercase mb-4 text-primary">{t("label_main_directory")}
-                </h1>
-                <p className="text-muted-foreground uppercase tracking-widest font-mono">{t("label_select_destination")}
-                </p>
+              <header className="mb-20 text-center md:text-left md:flex md:items-end md:justify-between border-b border-muted/5 pb-12">
+                <div>
+                   <h1 className="text-4xl md:text-6xl font-headline font-bold tracking-tight uppercase mb-4 text-foreground leading-none">{t("label_main_directory")}</h1>
+                   <p className="text-[10px] text-muted uppercase tracking-[0.3em] font-bold opacity-60">{t("label_select_destination")}</p>
+                </div>
               </header>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-10">
                 {navigationCards
                   .filter((card) => card.show)
                   .map((card, index) => (
@@ -143,23 +143,21 @@ export default function Hub() {
                       key={card.title}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
+                      transition={{ delay: index * 0.05 }}
                       className="cursor-pointer"
                       onClick={() => setLocation(card.path)}
                     >
-                      <IndustrialCard 
+                      <SoftCard 
                         title={card.title}
                         footerText={t("label_sys_module_ready")}
-                        className="h-48 flex flex-col items-center justify-center border-border/50 hover:border-primary/50 transition-colors group cursor-pointer"
+                        className="h-64 flex flex-col justify-between"
                       >
-                        <div className="absolute inset-0 flex flex-col items-center justify-center">
-                          <div className="group-hover:scale-110 transition-transform duration-300 text-primary/80 group-hover:text-primary filter drop-shadow-[0_0_8px_rgba(212,175,55,0.5)]">
+                        <div className="flex-1 flex items-center justify-center">
+                          <div className="p-5 bg-primary/5 rounded-2xl border border-primary/10 group-hover:scale-110 transition-transform duration-500">
                             {card.icon}
                           </div>
                         </div>
-                      </IndustrialCard>
+                      </SoftCard>
                     </motion.div>
                   ))}
               </div>
