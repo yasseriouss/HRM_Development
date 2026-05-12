@@ -44,7 +44,11 @@ app.use("/api", router);
 
 // ── Frontend Artifacts (Vite/Static) ─────────────────────────────────────────
 // This handles /hrm-skill-matrix, /hrm-dashboard, etc.
-await registerFrontend(app);
+try {
+  await registerFrontend(app);
+} catch (err) {
+  logger.error({ err }, "Failed to register frontend artifacts");
+}
 
 // ── Legacy / Manual Routes ───────────────────────────────────────────────────
 

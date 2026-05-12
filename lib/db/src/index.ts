@@ -11,12 +11,20 @@ const databaseUrl =
   process.env.HRMDEV_DATABASE_URL;
 
 if (!databaseUrl) {
-  throw new Error(
-    "DATABASE_URL must be set. Add it to your Vercel project environment variables.",
+  console.warn(
+    "⚠️ DATABASE_URL is not set. Database features will fail. Add it to your Vercel project environment variables.",
   );
 }
 
-export const sql = neon(databaseUrl);
-export const db = drizzle(sql, { schema });
+// Initialize with a fallback or dummy to prevent immediate crash on module load
+export const sql = databaseUrl ? neon(databaseUrl) : ((() => {
+  throw new Error("Database not initialized. Missing DATABASE_URL.");
+}) as any);
+
+export const db = databaseUrl ? drizzle(sql, { schema }) : (new Proxy({}, {
+  get: () => {
+    throw new Error("Database access attempted but DATABASE_URL is missing.");
+  }
+}) as any);
 
 export * from "./schema";
