@@ -1,7 +1,11 @@
 import { useT } from "@/i18n";
+import { useLang } from "@/shared/contexts/LangContext";
 
 export default function Slide03_Solution() {
   const t = useT();
+  const { lang } = useLang();
+  const isAr = lang === 'ar';
+
   return (
     <div
       className="relative w-screen h-screen overflow-hidden"
@@ -11,7 +15,7 @@ export default function Slide03_Solution() {
         className="absolute"
         style={{
           top: "-10vh",
-          right: "-10vw",
+          [isAr ? 'left' : 'right']: "-10vw",
           width: "50vw",
           height: "50vw",
           borderRadius: "50%",
@@ -19,7 +23,7 @@ export default function Slide03_Solution() {
         }}
       />
 
-      <div className="absolute top-[10vh] left-[8vw]">
+      <div className={`absolute top-[10vh] ${isAr ? 'right-[8vw]' : 'left-[8vw]'}`} style={{ textAlign: isAr ? 'right' : 'left' }}>
         <div className="font-body font-semibold mb-[1.5vh]" style={{ fontSize: "1.2vw", color: "var(--slide-primary)", letterSpacing: "0.2em" }}>
           {t("s3_title")}
         </div>
@@ -27,9 +31,13 @@ export default function Slide03_Solution() {
           className="font-display font-bold tracking-tight"
           style={{ fontSize: "5.5vw", lineHeight: 1, color: "var(--slide-text)" }}
         >
-          {t("s3_subtitle").split(" ").slice(0, 2).join(" ")}
-          <br />
-          <span style={{ color: "var(--slide-primary)" }}>{t("s3_subtitle").split(" ").slice(2).join(" ")}</span>
+          {isAr ? t("s3_subtitle") : (
+            <>
+              {t("s3_subtitle").split(" ").slice(0, 2).join(" ")}
+              <br />
+              <span style={{ color: "var(--slide-primary)" }}>{t("s3_subtitle").split(" ").slice(2).join(" ")}</span>
+            </>
+          )}
         </h2>
         <p
           className="font-body mt-[2.5vh]"
@@ -40,15 +48,16 @@ export default function Slide03_Solution() {
       </div>
 
       <div
-        className="absolute right-[6vw] top-[8vh]"
-        style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2vh 2vw", width: "46vw" }}
+        className={`absolute top-[8vh] ${isAr ? 'left-[6vw]' : 'right-[6vw]'}`}
+        style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2vh 2vw", width: "46vw", direction: isAr ? 'rtl' : 'ltr' }}
       >
         <div
           style={{
             background: "rgba(212,150,10,0.08)",
             border: "0.15vw solid rgba(212,150,10,0.25)",
             borderRadius: "0.8vw",
-            padding: "3vh 2.5vw"
+            padding: "3vh 2.5vw",
+            textAlign: isAr ? 'right' : 'left'
           }}
         >
           <div className="font-display font-bold" style={{ fontSize: "3vw", color: "var(--slide-primary)", marginBottom: "1vh" }}>01</div>
@@ -65,7 +74,8 @@ export default function Slide03_Solution() {
             background: "rgba(36,40,48,0.8)",
             border: "0.15vw solid var(--slide-muted)",
             borderRadius: "0.8vw",
-            padding: "3vh 2.5vw"
+            padding: "3vh 2.5vw",
+            textAlign: isAr ? 'right' : 'left'
           }}
         >
           <div className="font-display font-bold" style={{ fontSize: "3vw", color: "var(--slide-primary)", marginBottom: "1vh" }}>02</div>
@@ -82,7 +92,8 @@ export default function Slide03_Solution() {
             background: "rgba(36,40,48,0.8)",
             border: "0.15vw solid var(--slide-muted)",
             borderRadius: "0.8vw",
-            padding: "3vh 2.5vw"
+            padding: "3vh 2.5vw",
+            textAlign: isAr ? 'right' : 'left'
           }}
         >
           <div className="font-display font-bold" style={{ fontSize: "3vw", color: "var(--slide-primary)", marginBottom: "1vh" }}>03</div>
@@ -99,7 +110,8 @@ export default function Slide03_Solution() {
             background: "rgba(36,40,48,0.8)",
             border: "0.15vw solid var(--slide-muted)",
             borderRadius: "0.8vw",
-            padding: "3vh 2.5vw"
+            padding: "3vh 2.5vw",
+            textAlign: isAr ? 'right' : 'left'
           }}
         >
           <div className="font-display font-bold" style={{ fontSize: "3vw", color: "var(--slide-primary)", marginBottom: "1vh" }}>04</div>
@@ -112,7 +124,7 @@ export default function Slide03_Solution() {
         </div>
       </div>
 
-      <div className="absolute bottom-[5vh] right-[6vw]">
+      <div className={`absolute bottom-[5vh] ${isAr ? 'left-[6vw]' : 'right-[6vw]'}`}>
         <div className="font-body" style={{ fontSize: "1.1vw", color: "var(--slide-muted)" }}>{t("s1_created_by")} <span style={{ color: "var(--slide-primary)" }}>yasserious.com</span></div>
       </div>
     </div>
