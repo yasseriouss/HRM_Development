@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "wouter";
 import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
 import { useT } from "@modules/dashboard/i18n";
 import { useLang } from "@shared/contexts/LangContext";
@@ -121,13 +122,13 @@ export default function WorkflowSummaryWidget() {
           <h3 className="text-xl font-bold text-zinc-900 font-comfortaa">{t('dash_widget_workflows_title')}</h3>
           <p className="text-sm text-zinc-500 mt-1">{t('dash_widget_workflows_desc')}</p>
         </div>
-        <a
+        <Link
           href={MAIN_APP_TASKS_URL}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-zinc-900 text-white text-xs font-bold uppercase tracking-widest hover:bg-zinc-800 transition-all active:scale-95 shadow-lg shadow-zinc-200"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-primary text-primary-foreground text-xs font-bold uppercase tracking-widest hover:opacity-90 transition-all active:scale-95 shadow-lg shadow-primary/20"
         >
           {t('dash_widget_view_tasks')}
           <ArrowRight className="w-4 h-4" />
-        </a>
+        </Link>
       </div>
 
       {loading ? (

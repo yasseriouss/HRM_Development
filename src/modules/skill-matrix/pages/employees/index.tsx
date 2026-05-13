@@ -27,6 +27,17 @@ import { exportToPDF, exportToExcel } from "@modules/skill-matrix/lib/export-uti
 import { ImportDialog } from "@modules/skill-matrix/components/import-dialog";
 import { useFactory } from "@shared/contexts/FactoryContext";
 import { cn } from "@shared/utils/cn";
+import {
+  dataTableShell,
+  dataTableScroll,
+  dataTableBase,
+  dataTableHeadRow,
+  dataTableBody,
+  dataTableRow,
+  dataTableRowSelected,
+  dataTableThSpacious,
+  dataTableTdSpacious,
+} from "@shared/components/data/data-table-styles";
 
 function classBadge(cls: string | null | undefined, t: any) {
   const map: Record<string, string> = {
@@ -342,75 +353,82 @@ export default function EmployeesPage() {
         )}
       </AnimatePresence>
 
-      {/* Table Section */}
-      <div className="bg-white border border-zinc-100 rounded-4xl shadow-sm overflow-hidden">
+      {/* Table Section — unified shell + tokens (see @shared/components/data) */}
+      <div className={dataTableShell} data-testid="employees-data-table">
         {isLoading ? (
           <div className="p-12 space-y-6">
             {Array.from({ length: 10 }).map((_, i) => (
-              <Skeleton key={i} className="h-20 w-full bg-zinc-50 rounded-3xl" />
+              <Skeleton key={i} className="h-20 w-full bg-muted/30 rounded-3xl" />
             ))}
           </div>
         ) : !employees.length ? (
           <div className="p-32 text-center space-y-6">
-            <div className="h-24 w-24 bg-zinc-50 rounded-4xl flex items-center justify-center mx-auto text-zinc-200">
+            <div className="h-24 w-24 bg-muted/40 rounded-4xl flex items-center justify-center mx-auto text-muted-foreground/30">
               <Users className="h-12 w-12" />
             </div>
-            <p className="text-lg font-bold font-comfortaa text-zinc-300 uppercase tracking-widest">{t("label_no_records")}</p>
+            <p className="text-lg font-bold font-headline text-muted-foreground uppercase tracking-widest">{t("label_no_records")}</p>
           </div>
         ) : (
           <>
-            <div className="overflow-x-auto">
-              <table className="w-full text-start border-collapse text-sm">
+            <div className={dataTableScroll}>
+              <table className={dataTableBase}>
                 <thead>
-                  <tr className="bg-zinc-50/50 border-b border-zinc-50">
-                    <th className="px-10 py-8 w-10">
+                  <tr className={dataTableHeadRow}>
+                    <th className={cn(dataTableThSpacious, "w-10")}>
                       <Checkbox 
                         checked={selectedIds.size === employees.length && employees.length > 0}
                         onCheckedChange={toggleSelectAll}
-                        className="rounded-lg border-zinc-200 data-[state=checked]:bg-zinc-900 data-[state=checked]:border-zinc-900"
+                        className="rounded-lg border-border data-[state=checked]:bg-primary data-[state=checked]:border-primary"
                       />
                     </th>
-                    <th className="px-10 py-8 font-bold text-[10px] tracking-widest text-zinc-400 uppercase whitespace-nowrap text-start">{t("employees_col_name")}</th>
-                    <th className="px-10 py-8 font-bold text-[10px] tracking-widest text-zinc-400 uppercase whitespace-nowrap text-start">{t("employees_col_code")}</th>
-                    <th className="px-10 py-8 font-bold text-[10px] tracking-widest text-zinc-400 uppercase whitespace-nowrap text-start">{t("employees_col_department")}</th>
-                    <th className="px-10 py-8 font-bold text-[10px] tracking-widest text-zinc-400 uppercase whitespace-nowrap text-start">{t("employees_col_job_title")}</th>
-                    <th className="px-10 py-8 font-bold text-[10px] tracking-widest text-zinc-400 uppercase whitespace-nowrap text-start">{t("employees_col_class")}</th>
-                    <th className="px-10 py-8 font-bold text-[10px] tracking-widest text-zinc-400 uppercase whitespace-nowrap text-end">{t("common_actions")}</th>
+                    <th className={cn(dataTableThSpacious, "text-start")}>{t("employees_col_name")}</th>
+                    <th className={cn(dataTableThSpacious, "text-start")}>{t("employees_col_code")}</th>
+                    <th className={cn(dataTableThSpacious, "text-start")}>{t("employees_col_department")}</th>
+                    <th className={cn(dataTableThSpacious, "text-start")}>{t("employees_col_job_title")}</th>
+                    <th className={cn(dataTableThSpacious, "text-start")}>{t("employees_col_class")}</th>
+                    <th className={cn(dataTableThSpacious, "text-end")}>{t("common_actions")}</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-zinc-50">
+                <tbody className={dataTableBody}>
                   {employees.map((emp) => (
-                    <tr key={emp.id} className={cn("group transition-all hover:bg-zinc-50/50", selectedIds.has(emp.id) ? "bg-zinc-50" : "")}>
-                      <td className="px-10 py-10 whitespace-nowrap">
+                    <tr
+                      key={emp.id}
+                      className={cn(
+                        dataTableRow,
+                        "group",
+                        selectedIds.has(emp.id) ? dataTableRowSelected : "",
+                      )}
+                    >
+                      <td className={cn(dataTableTdSpacious, "whitespace-nowrap")}>
                         <Checkbox 
                           checked={selectedIds.has(emp.id)}
                           onCheckedChange={() => toggleSelect(emp.id)}
-                          className="rounded-lg border-zinc-200 data-[state=checked]:bg-zinc-900 data-[state=checked]:border-zinc-900"
+                          className="rounded-lg border-border data-[state=checked]:bg-primary data-[state=checked]:border-primary"
                         />
                       </td>
-                      <td className="px-10 py-10 whitespace-nowrap">
+                      <td className={cn(dataTableTdSpacious, "whitespace-nowrap")}>
                         <Link href={`/skill-matrix/employees/${emp.id}`} className="block">
-                          <p className="font-bold text-zinc-900 text-lg tracking-tight group-hover:translate-x-1 transition-transform font-comfortaa">{emp.full_name}</p>
-                          <div className="flex items-center gap-2 text-[9px] font-bold text-zinc-300 mt-2 uppercase tracking-widest">
+                          <p className="font-bold text-foreground text-lg tracking-tight group-hover:translate-x-1 transition-transform font-headline">{emp.full_name}</p>
+                          <div className="flex items-center gap-2 text-[9px] font-bold text-muted-foreground mt-2 uppercase tracking-widest">
                             <ExternalLink className="h-3 w-3" /> {t("label_node_profile")}
                           </div>
                         </Link>
                       </td>
-                      <td className="px-10 py-10 font-bold text-[11px] text-zinc-400 tracking-widest whitespace-nowrap">{emp.employee_code ?? "—"}</td>
-                      <td className="px-10 py-10 whitespace-nowrap">
-                        <Badge variant="outline" className="rounded-full border-zinc-100 bg-white text-[10px] font-bold text-zinc-500 py-1.5 px-4 uppercase tracking-tight shadow-xs">
+                      <td className={cn(dataTableTdSpacious, "font-bold text-[11px] text-muted-foreground tracking-widest whitespace-nowrap tabular-nums")}>{emp.employee_code ?? "—"}</td>
+                      <td className={cn(dataTableTdSpacious, "whitespace-nowrap")}>
+                        <Badge variant="outline" className="rounded-full border-border bg-background text-[10px] font-bold text-muted-foreground py-1.5 px-4 uppercase tracking-tight shadow-xs">
                           {emp.department?.name ?? "UNASSIGNED"}
                         </Badge>
                       </td>
-                      <td className="px-10 py-10 font-bold text-[10px] text-zinc-400 tracking-widest uppercase whitespace-nowrap">{emp.job_title ?? "OPERATIVE"}</td>
-                      <td className="px-10 py-10 whitespace-nowrap">{classBadge(emp.current_class, t)}</td>
-                      <td className="px-10 py-10 text-end whitespace-nowrap">
+                      <td className={cn(dataTableTdSpacious, "font-bold text-[10px] text-muted-foreground tracking-widest uppercase whitespace-nowrap")}>{emp.job_title ?? "OPERATIVE"}</td>
+                      <td className={cn(dataTableTdSpacious, "whitespace-nowrap")}>{classBadge(emp.current_class, t)}</td>
+                      <td className={cn(dataTableTdSpacious, "text-end whitespace-nowrap")}>
                         {isAdmin && (
                           <div className="flex items-center justify-end gap-3 opacity-0 group-hover:opacity-100 transition-all">
-                            <Button size="icon" variant="ghost" className="h-12 w-12 rounded-2xl text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100" onClick={() => openEdit(emp)}>
+                            <Button size="icon" variant="ghost" className="h-12 w-12 rounded-2xl text-muted-foreground hover:text-foreground hover:bg-muted/50" onClick={() => openEdit(emp)}>
                               <Pencil className="h-5 w-5" />
                             </Button>
-                            <Button size="icon" variant="ghost" className="h-12 w-12 rounded-2xl text-zinc-400 hover:text-red-600 hover:bg-red-50" onClick={() =>setDeleteTarget({ id: emp.id, name: emp.full_name ?? "" })}>
+                            <Button size="icon" variant="ghost" className="h-12 w-12 rounded-2xl text-muted-foreground hover:text-destructive hover:bg-destructive/10" onClick={() =>setDeleteTarget({ id: emp.id, name: emp.full_name ?? "" })}>
                               <Trash2 className="h-5 w-5" />
                             </Button>
                           </div>
@@ -423,13 +441,13 @@ export default function EmployeesPage() {
             </div>
 
             {totalPages > 1 && (
-              <div className="px-10 py-10 border-t border-zinc-50 flex items-center justify-between bg-zinc-50/30">
-                <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">{t("employees_page_info", { page: data?.page ?? page, total: totalPages, count: data?.total ?? 0 })}</p>
+              <div className="px-10 py-10 border-t border-border flex items-center justify-between bg-muted/20">
+                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest tabular-nums">{t("employees_page_info", { page: data?.page ?? page, total: totalPages, count: data?.total ?? 0 })}</p>
                 <div className="flex gap-4">
-                  <Button variant="ghost" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1} className="rounded-2xl h-12 w-12 p-0 hover:bg-white hover:shadow-lg transition-all disabled:opacity-30">
+                  <Button variant="ghost" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1} className="rounded-2xl h-12 w-12 p-0 hover:bg-background hover:shadow-md transition-all disabled:opacity-30 border border-transparent hover:border-border">
                     <ChevronLeft className="h-6 w-6" />
                   </Button>
-                  <Button variant="ghost" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={page === totalPages} className="rounded-2xl h-12 w-12 p-0 hover:bg-white hover:shadow-lg transition-all disabled:opacity-30">
+                  <Button variant="ghost" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={page === totalPages} className="rounded-2xl h-12 w-12 p-0 hover:bg-background hover:shadow-md transition-all disabled:opacity-30 border border-transparent hover:border-border">
                     <ChevronRight className="h-6 w-6" />
                   </Button>
                 </div>
