@@ -73,7 +73,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const { theme, setTheme } = useTheme();
   const { lang, setLang, t } = useLang();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const isAr = lang === "ar";
 
   useEffect(() => {
@@ -123,17 +122,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 md:hidden"
+              className="fixed inset-0 bg-black/60 backdrop-blur-md z-40"
             />
             <motion.div 
               initial={{ x: isAr ? '100%' : '-100%' }}
               animate={{ x: 0 }}
               exit={{ x: isAr ? '100%' : '-100%' }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed inset-y-0 z-50 md:hidden h-full"
+              className="fixed inset-y-0 z-50 h-full"
               style={{ [isAr ? 'right' : 'left']: 0, width: '280px' }}
             >
-              <Sidebar collapsed={false} setCollapsed={() => setIsMobileMenuOpen(false)} />
+              <Sidebar setCollapsed={() => setIsMobileMenuOpen(false)} />
             </motion.div>
           </>
         )}
@@ -231,13 +230,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </header>
 
-        <main className="flex-1 overflow-auto relative custom-scrollbar bg-muted/5">
-          <div className={`relative z-10 h-full ${
-            location.startsWith("/docs") || location.startsWith("/interactive-presentation") || location.startsWith("/spreadsheet")
-              ? "w-full"
-              : "p-4 md:p-8 lg:p-12"
-          }`}>
-            {children}
+        <main className="flex-1 min-w-0 relative">
+          <div className="h-full w-full overflow-y-auto custom-scrollbar">
+            <div className={`relative z-10 h-full ${
+              location.startsWith("/docs") || location.startsWith("/interactive-presentation") || location.startsWith("/spreadsheet")
+                ? "w-full"
+                : "p-4 md:p-8 lg:p-12"
+            }`}>
+              {children}
+            </div>
           </div>
         </main>
 

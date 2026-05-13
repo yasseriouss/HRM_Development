@@ -8,7 +8,7 @@ export default function Slide02_Challenge() {
         className="absolute top-0 left-0 h-full"
         style={{
           width: "42vw",
-          background: "linear-gradient(135deg, var(--slide-accent) 0%, #1E2028 100%)"
+          background: "linear-gradient(135deg, var(--slide-accent) 0%, var(--slide-grad-end) 100%)"
         }}
       />
       <div

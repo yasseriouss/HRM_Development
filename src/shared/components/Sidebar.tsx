@@ -73,7 +73,12 @@ export function Sidebar({ setCollapsed }: { setCollapsed?: (v: boolean) => void 
           </div>
         </div>
         {setCollapsed && (
-          <Button variant="ghost" size="icon" onClick={() => setCollapsed(false)} className="md:hidden">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={() => setCollapsed(false)} 
+            className="h-10 w-10 border border-muted/10 bg-muted/5 hover:bg-primary/10 text-muted hover:text-primary rounded-2xl transition-all"
+          >
             <X className="h-5 w-5" />
           </Button>
         )}
