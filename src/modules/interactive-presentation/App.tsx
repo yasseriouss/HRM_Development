@@ -129,16 +129,17 @@ function SlideEditor() {
     };
   }, [currentIndex, navigate]);
 
+  const activeSlide = currentIndex >= 0 ? slides[currentIndex] : null;
+
   return (
     <div className="select-none relative">
-      {slides.map((slide, index) => (
-        <div
-          key={slide.id}
-          style={{ display: index === currentIndex ? "block" : "none" }}
-        >
-          <slide.Component />
+      {activeSlide && (
+        // Keyed on slide id so navigating triggers a clean remount and
+        // re-plays each slide's entrance animations.
+        <div key={activeSlide.id} className="slide-stage">
+          <activeSlide.Component />
         </div>
-      ))}
+      )}
     </div>
   );
 }

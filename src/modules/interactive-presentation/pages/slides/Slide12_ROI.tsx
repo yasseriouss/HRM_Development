@@ -10,10 +10,10 @@ export default function Slide12_ROI() {
   const isAr = lang === 'ar';
 
   const roiData = [
-    { name: t("s12_label_cost"), value: -11, label: "$11K" },
-    { name: t("s12_label_y1"), value: 24, label: "$24K" },
-    { name: t("s12_label_y2"), value: 26, label: "$26K" },
-    { name: t("s12_label_y3"), value: 26, label: "$26K" },
+    { name: t("s12_label_cost"), value: -11, label: "EGP 11K" },
+    { name: t("s12_label_y1"), value: 24, label: "EGP 24K" },
+    { name: t("s12_label_y2"), value: 26, label: "EGP 26K" },
+    { name: t("s12_label_y3"), value: 26, label: "EGP 26K" },
   ];
 
   return (
@@ -49,11 +49,11 @@ export default function Slide12_ROI() {
       <div className={`absolute top-[7vh] ${isAr ? 'left-[6vw]' : 'right-[6vw]'} roi-kpis`} style={{ display: "flex", flexDirection: "column", gap: "2vh", direction: isAr ? 'rtl' : 'ltr' }}>
         <div style={{ display: "flex", gap: "2vw" }}>
           <div style={{ background: "rgba(212,150,10,0.08)", border: "0.15vw solid rgba(212,150,10,0.25)", borderRadius: "0.8vw", padding: "2vh 3vw", textAlign: "center" }}>
-            <div className="font-display font-bold" style={{ fontSize: "3.5vw", color: "var(--slide-primary)" }}>$11K</div>
+            <div className="font-display font-bold tabular-num" style={{ fontSize: "3.5vw", color: "var(--slide-primary)" }}>EGP&nbsp;11K</div>
             <div className="font-body" style={{ fontSize: "1.2vw", color: "var(--slide-muted)" }}>{t("s12_metric_inv")}</div>
           </div>
           <div style={{ background: "rgba(16,185,129,0.08)", border: "0.15vw solid rgba(16,185,129,0.25)", borderRadius: "0.8vw", padding: "2vh 3vw", textAlign: "center" }}>
-            <div className="font-display font-bold" style={{ fontSize: "3.5vw", color: "#10B981" }}>$72K+</div>
+            <div className="font-display font-bold tabular-num" style={{ fontSize: "3.5vw", color: "#10B981" }}>EGP&nbsp;72K+</div>
             <div className="font-body" style={{ fontSize: "1.2vw", color: "var(--slide-muted)" }}>{t("s12_metric_ret")}</div>
           </div>
         </div>

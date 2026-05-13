@@ -71,7 +71,7 @@ export default function Slide16_Credits() {
           </div>
           <div style={{ width: "0.15vw", background: "var(--slide-muted)" }} />
           <div style={{ textAlign: "center" }}>
-            <div className="font-display font-bold" style={{ fontSize: "3.5vw", color: "var(--slide-primary)" }}>$72K+</div>
+            <div className="font-display font-bold tabular-num" style={{ fontSize: "3.5vw", color: "var(--slide-primary)" }}>EGP&nbsp;72K+</div>
             <div className="font-body" style={{ fontSize: "1.2vw", color: "var(--slide-muted)" }}>{t("s16_value")}</div>
           </div>
         </div>

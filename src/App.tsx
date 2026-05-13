@@ -2,6 +2,7 @@ import { Switch, Route, Router as WouterRouter, Redirect, useLocation } from "wo
 import { motion, AnimatePresence } from "framer-motion";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "next-themes";
+import { useEffect } from "react";
 import { Toaster } from "@shared/components/ui/toaster";
 import { TooltipProvider } from "@shared/components/ui/tooltip";
 import { LangProvider } from "@shared/contexts/LangContext";
@@ -80,6 +81,16 @@ const ALL_ROLES = ["super_admin", "hr_coordinator", "dept_head", "employee"];
 function AppRoutes() {
   const [location] = useLocation();
 
+  // Tag the document body when a slide route is active so the global
+  // paper-texture overlay is hidden (slides have their own dark background).
+  useEffect(() => {
+    const inSlides = location.startsWith("/interactive-presentation");
+    document.body.classList.toggle("slides-active", inSlides);
+    return () => {
+      document.body.classList.remove("slides-active");
+    };
+  }, [location]);
+
   if (location === "/login") {
     return <DashboardLogin onLogin={() => window.location.href = "/"} />;
   }
@@ -90,10 +101,10 @@ function AppRoutes() {
         <AnimatePresence mode="wait">
           <motion.div
             key={location.split('/')[1]} // Animate only on major module change
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             className="h-full"
           >
             <Switch>
@@ -150,7 +161,7 @@ function AppRoutes() {
 
 export default function App() {
   return (
-    <ThemeProvider attribute="class" defaultTheme="light" themes={["dark", "light"]} disableTransitionOnChange>
+    <ThemeProvider attribute="class" defaultTheme="light" themes={["dark", "light"]} enableSystem={false}>
       <LangProvider>
         <QueryClientProvider client={queryClient}>
           <FactoryProvider>

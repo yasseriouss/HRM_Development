@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&family=Tajawal:wght@300;400;500;700;800;900&display=swap");
 
 @import "tailwindcss";
 
@@ -27,6 +27,7 @@
   --color-ring: var(--ring);
 
   --font-headline: var(--font-headline);
+  --font-display: var(--font-display);
   --font-body: var(--font-body-default);
   --font-tajawal: var(--font-tajawal);
 
@@ -56,20 +57,25 @@
     --surface: oklch(99% 0.008 70);
     --ring: oklch(64% 0.13 28);
 
-    --font-headline: "Comfortaa", cursive;
-    --font-body-default: "Comfortaa", cursive;
+    --font-headline: "Comfortaa", "Tajawal", system-ui, sans-serif;
+    --font-display: "Oswald", "Tajawal", system-ui, sans-serif;
+    --font-body-default: "Comfortaa", "Tajawal", system-ui, sans-serif;
     --font-tajawal: "Tajawal", sans-serif;
 
     --radius: 0.75rem;
 
-    /* Slide Variables (Mapped to Theme) */
-    --slide-bg: var(--background);
-    --slide-text: var(--foreground);
-    --slide-primary: var(--primary);
-    --slide-muted: var(--muted-foreground);
-    --slide-accent: var(--accent);
-    --slide-surface: var(--surface);
-    --slide-grad-end: oklch(92% 0.02 70);
+    /* Slide Variables — Fixed Dark Editorial Pitch Deck Palette
+       (Independent of light/dark theme to preserve presentation identity) */
+    --slide-bg: #1A1C22;
+    --slide-text: #F5F0E8;
+    --slide-primary: #D4960A;
+    --slide-muted: #8B909A;
+    --slide-accent: #242830;
+    --slide-surface: #1F2128;
+    --slide-grad-end: #0F1116;
+    --slide-success: #10B981;
+    --slide-warning: #EAB308;
+    --slide-danger: #EF4444;
   }
 
   .dark {
@@ -91,28 +97,55 @@
     --surface: oklch(20% 0.008 70);
     --ring: oklch(64% 0.13 28);
 
-    /* Slide Variables (Dark) */
-    --slide-bg: var(--background);
-    --slide-text: var(--foreground);
-    --slide-primary: var(--primary);
-    --slide-muted: var(--muted-foreground);
-    --slide-accent: var(--accent);
-    --slide-surface: var(--surface);
-    --slide-grad-end: oklch(12% 0.02 50);
+    /* Slides stay locked to the editorial dark palette in dark mode too */
+    --slide-bg: #1A1C22;
+    --slide-text: #F5F0E8;
+    --slide-primary: #D4960A;
+    --slide-muted: #8B909A;
+    --slide-accent: #242830;
+    --slide-surface: #1F2128;
+    --slide-grad-end: #0F1116;
+    --slide-success: #10B981;
+    --slide-warning: #EAB308;
+    --slide-danger: #EF4444;
   }
 
   * {
     @apply border-(--border) outline-ring/50;
   }
 
+  html {
+    font-family: "Comfortaa", "Tajawal", system-ui, sans-serif;
+  }
+
   body {
     @apply bg-background text-foreground antialiased selection:bg-primary/30;
-    font-family: "Comfortaa", cursive;
+    font-family: "Comfortaa", "Tajawal", system-ui, sans-serif;
     overflow-x: hidden;
   }
 
-  [dir="rtl"] body {
-    font-family: "Tajawal", sans-serif !important;
+  /* Arabic typography */
+  [dir="rtl"] body,
+  [dir="rtl"] html {
+    font-family: "Tajawal", "Comfortaa", sans-serif !important;
+  }
+
+  /* Force font-display utility (Oswald) on slide titles, etc. */
+  .font-display {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+
+  [dir="rtl"] .font-display {
+    font-family: "Tajawal", "Oswald", sans-serif !important;
+  }
+
+  .font-headline {
+    font-family: var(--font-headline);
+  }
+
+  .font-body {
+    font-family: var(--font-body-default);
   }
 }
 
@@ -138,9 +171,46 @@
   100% { background-position: 0% 50%; }
 }
 
+/* Global smooth-transition helpers */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -151,8 +221,17 @@
   @apply bg-muted/30 hover:bg-primary/40 rounded-full transition-colors;
 }
 
-/* Paper Texture overlay - Warm Editorial feel */
-body::after {
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-muted/30 hover:bg-primary/40 rounded-full transition-colors;
+}
+
+/* Paper Texture overlay - Warm Editorial feel (skipped on slide viewer) */
+body:not(.slides-active)::after {
   content: "";
   position: fixed;
   inset: 0;
@@ -163,6 +242,22 @@ body::after {
   opacity: 0.15;
 }
 
+/* Smooth route + theme transitions everywhere */
+html, body, * {
+  transition-property: background-color, border-color, color, fill, stroke, box-shadow;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  transition-duration: 220ms;
+}
+
+/* Disable transitions on input range, recharts, and animated decorations */
+input[type="range"],
+.recharts-wrapper,
+.recharts-wrapper *,
+[data-no-theme-transition],
+[data-no-theme-transition] * {
+  transition: none !important;
+}
+
 @layer utilities {
   .soft-shadow {
     box-shadow: 0 10px 30px -10px oklch(22% 0.02 50 / 0.08);
@@ -170,4 +265,58 @@ body::after {
   .glass-surface {
     @apply bg-white/40 dark:bg-black/40 backdrop-blur-md border border-white/20 dark:border-white/5;
   }
+
+  .anim-fade { animation: fadeIn 400ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .anim-fade-up { animation: fadeUp 500ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .anim-fade-down { animation: fadeDown 500ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .anim-slide-r { animation: slideInRight 500ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .anim-slide-l { animation: slideInLeft 500ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .anim-scale { animation: scaleIn 400ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .anim-delay-1 { animation-delay: 80ms; }
+  .anim-delay-2 { animation-delay: 160ms; }
+  .anim-delay-3 { animation-delay: 240ms; }
+  .anim-delay-4 { animation-delay: 320ms; }
+  .anim-delay-5 { animation-delay: 400ms; }
+
+  /* Numeric tabular display for metrics */
+  .tabular-num { font-variant-numeric: tabular-nums; }
+}
+
+/* Slide viewer-specific tweaks: cleaner edges, no paper texture inside iframes */
+.slide,
+.slide * {
+  font-family: "Comfortaa", "Tajawal", system-ui, sans-serif;
+}
+
+[dir="rtl"] .slide,
+[dir="rtl"] .slide * {
+  font-family: "Tajawal", "Comfortaa", sans-serif !important;
+}
+
+.slide .font-display,
+.slide-stage .font-display {
+  font-family: "Oswald", "Tajawal", sans-serif;
+  letter-spacing: -0.01em;
+}
+
+[dir="rtl"] .slide .font-display,
+[dir="rtl"] .slide-stage .font-display {
+  font-family: "Tajawal", "Oswald", sans-serif !important;
+  letter-spacing: 0;
+}
+
+/* Smooth fade-in when the active slide remounts on navigation */
+.slide-stage {
+  animation: slideStageIn 350ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes slideStageIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Slide viewer iframe wrapper: hide the global paper-texture overlay
+   so the dark editorial palette stays clean. */
+body.slides-active::after {
+  display: none !important;
 }
