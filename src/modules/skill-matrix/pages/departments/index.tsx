@@ -16,21 +16,14 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@shared/components/ui/alert-dialog";
-import { Plus, Pencil, Trash2, Users, ExternalLink, Download, Terminal, Search, CheckSquare, X } from "lucide-react";
+import { Plus, Pencil, Trash2, Users, ExternalLink, Download, Terminal, Search, CheckSquare, X, Building2, ArrowRight, Layers } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@shared/hooks/use-toast";
 import { useT } from "@modules/skill-matrix/i18n";
 import { useLang } from "@shared/contexts/LangContext";
 import { exportToPDF } from "@modules/skill-matrix/lib/export-utils";
 import { useFactory } from "@shared/contexts/FactoryContext";
-
-const CornerMarks = ({ color = "primary" }: { color?: string }) => (
-  <>
-    <div className={`absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
-    <div className={`absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
-    <div className={`absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
-    <div className={`absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
-  </>);
+import { cn } from "@shared/utils/cn";
 
 interface DeptForm {
   name: string;
@@ -82,7 +75,6 @@ export default function DepartmentsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [factories, setFactories] = useState<Factory[]>([]);
 
-  // Fetch factories manually since hook is missing
   useMemo(() => {
     fetch("/api/factories", { headers }).then(res => res.json()).then(setFactories);
   }, []);
@@ -222,216 +214,238 @@ export default function DepartmentsPage() {
   };
 
   return (
-    <div className="space-y-10 pb-20 font-sans selection:bg-primary/20 selection:text-primary">
-      <div className="relative pt-12 pb-6 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="h-px w-8 bg-primary/20" />
-                <span className="font-sans font-bold tracking-widest text-[10px] text-primary uppercase">{t("label_org_structure")}</span>
-              </div>
-              <h1 className="text-6xl font-headline font-bold tracking-tight text-foreground leading-none">
-                {t("departments_title")}
-              </h1>
+    <div className="max-w-7xl mx-auto space-y-12 py-16 px-8 pb-32">
+      {/* Header Section */}
+      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-10">
+        <div className="space-y-6">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-zinc-900 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-zinc-200">
+              <Layers className="h-6 w-6" />
             </div>
-            
-            <div className="flex flex-wrap items-center gap-3">
-              {selectedIds.size > 0 && (
-                <Button variant="destructive" className="rounded-full font-bold text-[11px] tracking-wide uppercase px-6 h-12" onClick={() => setShowBulkDelete(true)}>
-                  <Trash2 className="h-4 w-4 me-2" /> {t("action_delete_selected", { count: selectedIds.size })}
-                </Button>
-              )}
-              <Button variant="outline" className="rounded-full border-primary/10 bg-surface/50 hover:bg-surface text-foreground font-bold text-[11px] tracking-wide uppercase px-6 h-12" onClick={() => exportToPDF({
-                title: t("departments_title"),
-                filename: "Departments_List",
-                headers: [t("field_name"), t("field_code"), t("field_description"), t("field_manager_email"), t("departments_col_employees")],
-                rows: (departments ?? []).map(d => [d.name, d.code ?? "—", d.description ?? "—", d.manager_email ?? "—", d.employee_count ?? 0])
-              })}>
-                <Download className="h-4 w-4 me-2 opacity-50" /> PDF
-              </Button>
-              {isAdmin && (
-                <Button className="rounded-full bg-primary text-primary-foreground font-bold text-[11px] tracking-wide uppercase px-8 h-12 shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all" onClick={openCreate}>
-                  <Plus className="h-4 w-4 me-2" /> {t("action_init_unit")}
-                </Button>
-              )}
-            </div>
+            <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-zinc-400">{t("label_org_structure")}</span>
           </div>
+          <h1 className="text-6xl lg:text-7xl font-bold font-comfortaa text-zinc-900 tracking-tighter leading-none">
+            {t("departments_title")}
+          </h1>
+          <p className="text-zinc-500 font-medium text-lg max-w-2xl">{t("departments_subtitle")}</p>
+        </div>
+        
+        <div className="flex flex-wrap items-center gap-4">
+          <Button variant="outline" className="rounded-full border-zinc-100 bg-white text-zinc-900 font-bold text-[11px] tracking-widest uppercase px-8 h-14 hover:shadow-lg transition-all" onClick={() => exportToPDF({
+            title: t("departments_title"),
+            filename: "Departments_List",
+            headers: [t("field_name"), t("field_code"), t("field_description"), t("field_manager_email"), t("departments_col_employees")],
+            rows: (departments ?? []).map(d => [d.name, d.code ?? "—", d.description ?? "—", d.manager_email ?? "—", d.employee_count ?? 0])
+          })}>
+            <Download className="h-4 w-4 me-3" /> PDF
+          </Button>
+          {isAdmin && (
+            <Button className="rounded-full bg-zinc-900 text-white font-bold text-[11px] tracking-widest uppercase px-10 h-14 shadow-2xl shadow-zinc-200 hover:scale-[1.02] transition-all" onClick={openCreate}>
+              <Plus className="h-4 w-4 me-3" /> {t("action_init_unit")}
+            </Button>
+          )}
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4">
-        <Card className="bg-surface border-primary/10 rounded-3xl shadow-sm overflow-hidden border">
-          <CardContent className="p-4 flex items-center gap-4">
-            <div className="flex-1 w-full relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground opacity-50" />
-              <Input
-                placeholder={t("search_departments")}
-                className="ps-10 h-12 bg-background border-primary/5 rounded-xl text-sm text-foreground placeholder:text-muted-foreground/50 focus-visible:ring-primary/20"
+      {/* Control Panel */}
+      <Card className="bg-white border-zinc-100 rounded-4xl shadow-sm overflow-hidden">
+        <CardContent className="p-8">
+          <div className="flex flex-col lg:flex-row items-center gap-6">
+            <div className="flex-1 w-full relative group">
+              <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-300 group-focus-within:text-zinc-900 transition-colors" />
+              <Input 
+                placeholder={t("search_departments")} 
+                className="ps-14 h-16 bg-zinc-50 border-transparent rounded-3xl text-sm font-bold text-zinc-900 placeholder:text-zinc-300 focus-visible:ring-zinc-100"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            <Button variant="outline" className="h-12 px-6 rounded-xl border-primary/10" onClick={toggleSelectAll}>
-              <CheckSquare className="h-4 w-4 me-2" /> {selectedIds.size > 0 ? t("action_deselect_all") : t("action_select_all")}
+            <Button variant="outline" className="h-16 px-8 rounded-3xl border-zinc-100 font-bold text-[11px] tracking-widest uppercase text-zinc-400 hover:text-zinc-900 hover:bg-zinc-50 transition-all" onClick={toggleSelectAll}>
+              <CheckSquare className="h-4 w-4 me-3" /> {selectedIds.size > 0 ? t("action_deselect_all") : t("action_select_all")}
             </Button>
-          </CardContent>
-        </Card>
-      </div>
+          </div>
+        </CardContent>
+      </Card>
 
+      {/* Bulk Actions Bar */}
       <AnimatePresence>
         {selectedIds.size > 0 && (
-          <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 50 }} className="fixed bottom-8 left-0 right-0 z-50 flex justify-center px-4">
-            <div className="bg-foreground text-background rounded-full shadow-2xl px-6 py-3 flex items-center gap-4 border border-primary/20 backdrop-blur-xl">
-              <span className="font-bold text-sm uppercase">{selectedIds.size} Selected</span>
-              <Button variant="ghost" className="text-rose-400 hover:text-rose-300" onClick={() => setShowBulkDelete(true)}>
-                <Trash2 className="h-4 w-4 me-2" /> Delete
-              </Button>
-              <Button variant="ghost" onClick={() => setSelectedIds(new Set())}>
-                <X className="h-4 w-4" />
-              </Button>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            className="flex items-center justify-between p-6 bg-zinc-900 text-white rounded-4xl shadow-2xl shadow-zinc-200"
+          >
+            <div className="flex items-center gap-6 px-4">
+               <div className="h-10 w-10 bg-white/10 rounded-2xl flex items-center justify-center">
+                  <Building2 className="h-5 w-5" />
+               </div>
+               <div>
+                  <p className="text-sm font-bold font-comfortaa">{t("action_delete_selected", { count: selectedIds.size })}</p>
+                  <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Active Selection</p>
+               </div>
+            </div>
+            <div className="flex items-center gap-4">
+               <Button variant="ghost" className="rounded-full text-white/60 hover:text-white hover:bg-white/10 uppercase text-[10px] font-bold tracking-widest px-8" onClick={() => setSelectedIds(new Set())}>
+                  {t("common_cancel")}
+               </Button>
+               <Button variant="destructive" className="rounded-full bg-red-500 hover:bg-red-600 uppercase text-[10px] font-bold tracking-widest px-10 h-12" onClick={() => setShowBulkDelete(true)}>
+                  <Trash2 className="h-4 w-4 me-2" /> {t("action_delete")}
+               </Button>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <div className="max-w-7xl mx-auto px-4">
+      {/* Departments Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <Skeleton key={i} className="h-48 w-full bg-muted/50 rounded-3xl" />
-            ))}
-          </div>
+          Array.from({ length: 6 }).map((_, i) => (
+            <Skeleton key={i} className="h-80 w-full bg-zinc-50 rounded-4xl" />
+          ))
         ) : !filteredDepts.length ? (
-          <Card className="bg-surface border-primary/10 rounded-3xl border">
-            <CardContent className="py-20 text-center space-y-4">
-              <Terminal className="h-8 w-8 text-muted-foreground opacity-20 mx-auto" />
-              <p className="font-sans text-sm text-muted-foreground uppercase tracking-widest font-bold opacity-50">
-                {searchQuery ? t("label_no_records") : t("departments_no_data")}
-              </p>
-            </CardContent>
-          </Card>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredDepts.map((dept) => (
-              <motion.div key={dept.id} layout initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}>
-                <Card className={`bg-surface border-primary/10 rounded-3xl group h-full overflow-hidden transition-all duration-300 border ${selectedIds.has(dept.id) ? 'border-primary/40 bg-primary/5' : ''}`}>
-                  <CardContent className="p-8 space-y-8">
-                    <div className="flex justify-between items-start">
-                      <div className="flex items-center gap-3">
-                        <Checkbox checked={selectedIds.has(dept.id)} onCheckedChange={() => toggleSelect(dept.id)} />
-                        <div className="space-y-1">
-                          <span className="font-sans text-[10px] text-primary/60 font-bold tracking-widest uppercase">{dept.code ?? t("label_unit_code")}</span>
-                          <h3 className="font-headline font-bold text-3xl text-foreground uppercase tracking-tight">
-                            {isRtl ? ((dept as any).name_ar || dept.name) : dept.name}
-                          </h3>
-                        </div>
-                      </div>
-                      {isAdmin && (
-                        <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <Button size="icon" variant="ghost" className="h-9 w-9 rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10" onClick={() => openEdit(dept)}>
-                            <Pencil className="h-4 w-4" />
-                          </Button>
-                          <Button size="icon" variant="ghost" className="h-9 w-9 rounded-full text-muted-foreground hover:text-rose-600 hover:bg-rose-50" onClick={() => setDeleteTarget({ id: dept.id, name: dept.name })}>
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      )}
-                    </div>
-
-                    <p className="text-muted-foreground font-medium text-[12px] line-clamp-3 leading-relaxed min-h-[54px] border-l-2 border-primary/5 ps-4 group-hover:border-primary/20 transition-colors">
-                      {dept.description ?? t("label_no_records")}
-                    </p>
-
-                    <div className="pt-8 border-t border-primary/5 flex items-center justify-between">
-                      <div className="flex flex-col gap-1">
-                        <span className="font-sans text-[9px] text-muted-foreground font-bold uppercase tracking-widest opacity-50">{t("label_personnel_count")}</span>
-                        <div className="flex items-center gap-3">
-                          <Users className="h-4 w-4 text-primary opacity-50" />
-                          <span className="font-headline font-bold text-2xl text-foreground tracking-tight">{dept.employee_count}</span>
-                        </div>
-                      </div>
-                      <Link href={`/departments/${dept.id}`}>
-                        <Button variant="ghost" className="rounded-full border border-primary/10 hover:border-primary/30 text-[10px] font-bold tracking-widest uppercase h-11 px-6 group/btn hover:bg-primary/5">
-                          {t("action_access_details")} <ExternalLink className="ms-2.5 h-3.5 w-3.5 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform text-primary" />
-                        </Button>
-                      </Link>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
+          <div className="col-span-full py-32 text-center space-y-6">
+            <div className="h-24 w-24 bg-zinc-50 rounded-4xl flex items-center justify-center mx-auto text-zinc-200">
+              <Building2 className="h-12 w-12" />
+            </div>
+            <p className="text-lg font-bold font-comfortaa text-zinc-300 uppercase tracking-widest">{searchQuery ? t("label_no_records") : t("departments_no_data")}</p>
           </div>
+        ) : (
+          filteredDepts.map((dept) => (
+            <motion.div 
+              key={dept.id} 
+              layout 
+              initial={{ opacity: 0, scale: 0.95 }} 
+              animate={{ opacity: 1, scale: 1 }}
+              className="group"
+            >
+              <Card className={cn(
+                "bg-white border-zinc-100 rounded-4xl h-full overflow-hidden transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-zinc-100 relative",
+                selectedIds.has(dept.id) ? "border-zinc-900 bg-zinc-50/50" : ""
+              )}>
+                <CardContent className="p-10 space-y-10">
+                  <div className="flex justify-between items-start">
+                    <div className="flex items-start gap-5">
+                      <Checkbox 
+                        checked={selectedIds.has(dept.id)} 
+                        onCheckedChange={() => toggleSelect(dept.id)} 
+                        className="rounded-lg border-zinc-200 data-[state=checked]:bg-zinc-900 data-[state=checked]:border-zinc-900 mt-1"
+                      />
+                      <div className="space-y-3">
+                        <span className="text-[9px] font-bold text-zinc-400 tracking-[0.3em] uppercase">{dept.code || t("label_unit_code")}</span>
+                        <h3 className="text-3xl font-bold font-comfortaa text-zinc-900 tracking-tighter leading-tight uppercase group-hover:text-emerald-600 transition-colors">
+                          {isRtl ? ((dept as any).name_ar || dept.name) : dept.name}
+                        </h3>
+                      </div>
+                    </div>
+                    {isAdmin && (
+                      <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0">
+                        <Button size="icon" variant="ghost" className="h-10 w-10 rounded-xl text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100" onClick={() => openEdit(dept)}>
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                        <Button size="icon" variant="ghost" className="h-10 w-10 rounded-xl text-zinc-400 hover:text-red-600 hover:bg-red-50" onClick={() => setDeleteTarget({ id: dept.id, name: dept.name })}>
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="relative">
+                    <p className="text-zinc-500 font-medium text-sm leading-relaxed line-clamp-3 min-h-[4.5rem]">
+                      {dept.description || t("label_no_records")}
+                    </p>
+                    <div className="absolute -left-10 top-0 w-1 h-full bg-zinc-50 rounded-full group-hover:bg-emerald-500 transition-colors" />
+                  </div>
+
+                  <div className="pt-10 border-t border-zinc-50 flex items-center justify-between">
+                    <div className="flex items-center gap-6">
+                       <div className="h-12 w-12 rounded-2xl bg-zinc-50 flex items-center justify-center text-zinc-900 group-hover:bg-zinc-900 group-hover:text-white transition-all duration-500">
+                          <Users className="h-6 w-6" />
+                       </div>
+                       <div>
+                          <p className="text-[9px] font-bold text-zinc-300 uppercase tracking-widest mb-1">{t("label_personnel_count")}</p>
+                          <span className="text-2xl font-bold font-comfortaa text-zinc-900 tracking-tighter">{dept.employee_count}</span>
+                       </div>
+                    </div>
+                    <Link href={`/skill-matrix/departments/${dept.id}`}>
+                      <Button variant="ghost" className="rounded-full border border-zinc-100 hover:border-zinc-900 text-[10px] font-bold tracking-widest uppercase h-12 px-6 group/btn hover:bg-zinc-900 hover:text-white transition-all">
+                        {t("action_access_details")} <ArrowRight className="ms-3 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))
         )}
       </div>
 
-      {/* Forms & Dialogs */}
+      {/* Registration/Edit Dialog */}
       <Dialog open={showCreate || !!editTarget} onOpenChange={(open) => { if (!open) { setShowCreate(false); setEditTarget(null); } }}>
-        <DialogContent className="max-w-md bg-surface border-primary/20 rounded-4xl p-0 overflow-hidden shadow-2xl">
-          <div className="relative z-10">
-            <div className="p-8 border-b border-primary/5 bg-background/50 backdrop-blur-sm">
-              <h2 className="font-headline font-bold text-3xl text-foreground tracking-tight uppercase">{editTarget ? t("action_reconfigure") : t("action_init_unit")}</h2>
-              <p className="text-[10px] font-sans font-bold text-primary tracking-widest mt-2 uppercase opacity-50">{t("label_struct_init")}</p>
+        <DialogContent className="max-w-2xl bg-white border border-zinc-100 rounded-4xl p-0 overflow-hidden shadow-2xl">
+          <div className="p-10 border-b border-zinc-50 bg-zinc-50/30">
+            <h2 className="font-bold text-3xl text-zinc-900 tracking-tighter uppercase font-comfortaa">{editTarget ? t("action_reconfigure") : t("action_init_unit")}</h2>
+            <p className="text-[10px] font-bold text-zinc-400 tracking-[0.3em] mt-3 uppercase">{t("label_struct_init")}</p>
+          </div>
+          
+          <div className="p-12 grid grid-cols-2 gap-8">
+            <div className="space-y-3">
+              <Label className="font-bold text-[10px] text-zinc-400 tracking-widest uppercase ps-1">{t("field_name")} (EN) *</Label>
+              <Input placeholder="English Name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="h-14 bg-zinc-50 border-transparent rounded-2xl font-bold text-zinc-900 focus-visible:ring-zinc-100" />
             </div>
-
-            <div className="p-8 space-y-6">
-              <div className="space-y-2">
-                <Label className="font-bold text-[10px] text-muted-foreground tracking-widest uppercase">{t("field_name")} (EN) *</Label>
-                <Input placeholder="English Name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="h-14 bg-background border-primary/5 rounded-xl font-sans text-sm font-bold text-foreground focus-visible:ring-primary/20" />
-              </div>
-              <div className="space-y-2">
-                <Label className="font-bold text-[10px] text-muted-foreground tracking-widest uppercase">{t("field_name_ar")} *</Label>
-                <Input dir="rtl" placeholder="الاسم بالعربي" value={form.name_ar} onChange={(e) => setForm({ ...form, name_ar: e.target.value })} className="h-14 bg-background border-primary/5 rounded-xl font-sans text-sm font-bold text-foreground focus-visible:ring-primary/20" />
-              </div>
-              <div className="space-y-2">
-                <Label className="font-bold text-[10px] text-muted-foreground tracking-widest uppercase">{t("field_factory")} *</Label>
-                <select 
-                  value={form.factory_id} 
-                  onChange={(e) => setForm({ ...form, factory_id: e.target.value })}
-                  className="w-full h-14 bg-background border-primary/5 rounded-xl px-4 font-sans text-sm font-bold text-foreground outline-none focus:ring-2 focus:ring-primary/20 appearance-none"
-                >
-                  <option value="">Select Factory</option>
-                  {factories.map(f => (
-                    <option key={f.id} value={f.id}>{f.name}</option>
-                  ))}
-                </select>
-              </div>
-              <div className="space-y-2">
-                <Label className="font-bold text-[10px] text-muted-foreground tracking-widest uppercase">{t("field_code")}</Label>
-                <Input placeholder={t("field_code")} value={form.code} onChange={(e) => setForm({ ...form, code: e.target.value })} className="h-14 bg-background border-primary/5 rounded-xl font-sans text-sm text-foreground uppercase" />
-              </div>
-              <div className="space-y-2">
-                <Label className="font-bold text-[10px] text-muted-foreground tracking-widest uppercase">{t("field_description")}</Label>
-                <Input placeholder={t("field_description")} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="h-14 bg-background border-primary/5 rounded-xl font-sans text-sm text-foreground" />
-              </div>
-              <div className="space-y-2">
-                <Label className="font-bold text-[10px] text-muted-foreground tracking-widest uppercase">{t("departments_col_manager_email")}</Label>
-                <Input type="email" placeholder={t("field_manager_email")} value={form.manager_email} onChange={(e) =>setForm({ ...form, manager_email: e.target.value })} className="h-14 bg-background border-primary/5 rounded-xl font-sans text-sm text-foreground" />
-              </div>
+            <div className="space-y-3">
+              <Label className="font-bold text-[10px] text-zinc-400 tracking-widest uppercase ps-1">{t("field_name_ar")} *</Label>
+              <Input dir="rtl" placeholder="الاسم بالعربي" value={form.name_ar} onChange={(e) => setForm({ ...form, name_ar: e.target.value })} className="h-14 bg-zinc-50 border-transparent rounded-2xl font-bold text-zinc-900 focus-visible:ring-zinc-100" />
             </div>
-
-            <div className="p-8 border-t border-primary/5 bg-background/50 flex justify-end gap-3">
-              <Button variant="ghost" className="rounded-full font-bold text-[11px] tracking-wide uppercase text-muted-foreground hover:bg-primary/5" onClick={() =>{ setShowCreate(false); setEditTarget(null); }}>{t("common_cancel")}</Button>
-              <Button onClick={handleSave} disabled={saving} className="rounded-full bg-primary text-primary-foreground font-bold text-[11px] tracking-wide uppercase px-10 h-12 shadow-lg shadow-primary/20">{saving ? t("action_synchronizing") : editTarget ? t("action_apply_config") : t("action_init_unit")}
-              </Button>
+            <div className="space-y-3">
+              <Label className="font-bold text-[10px] text-zinc-400 tracking-widest uppercase ps-1">{t("field_factory")} *</Label>
+              <select 
+                value={form.factory_id} 
+                onChange={(e) => setForm({ ...form, factory_id: e.target.value })}
+                className="w-full h-14 bg-zinc-50 border-transparent rounded-2xl px-4 font-bold text-[11px] tracking-widest text-zinc-900 uppercase outline-none focus:ring-2 focus:ring-zinc-100 appearance-none"
+              >
+                <option value="">SELECT FACTORY</option>
+                {factories.map(f => (
+                  <option key={f.id} value={f.id}>{f.name.toUpperCase()}</option>
+                ))}
+              </select>
             </div>
+            <div className="space-y-3">
+              <Label className="font-bold text-[10px] text-zinc-400 tracking-widest uppercase ps-1">{t("field_code")}</Label>
+              <Input placeholder={t("field_code")} value={form.code} onChange={(e) => setForm({ ...form, code: e.target.value })} className="h-14 bg-zinc-50 border-transparent rounded-2xl font-bold text-zinc-900 uppercase" />
+            </div>
+            <div className="col-span-2 space-y-3">
+              <Label className="font-bold text-[10px] text-zinc-400 tracking-widest uppercase ps-1">{t("field_description")}</Label>
+              <Input placeholder={t("field_description")} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="h-14 bg-zinc-50 border-transparent rounded-2xl font-bold text-zinc-900" />
+            </div>
+            <div className="col-span-2 space-y-3">
+              <Label className="font-bold text-[10px] text-zinc-400 tracking-widest uppercase ps-1">{t("departments_col_manager_email")}</Label>
+              <Input type="email" placeholder={t("field_manager_email")} value={form.manager_email} onChange={(e) =>setForm({ ...form, manager_email: e.target.value })} className="h-14 bg-zinc-50 border-transparent rounded-2xl font-bold text-zinc-900" />
+            </div>
+          </div>
+          
+          <div className="p-10 border-t border-zinc-50 bg-zinc-50/30 flex justify-end gap-6">
+            <Button variant="ghost" className="rounded-full font-bold text-[11px] tracking-widest uppercase text-zinc-400 hover:text-zinc-900 hover:bg-white px-10 h-14" onClick={() =>{ setShowCreate(false); setEditTarget(null); }}>{t("common_cancel")}</Button>
+            <Button onClick={handleSave} disabled={saving} className="rounded-full bg-zinc-900 text-white font-bold text-[11px] tracking-widest uppercase px-14 h-14 shadow-2xl shadow-zinc-200">{saving ? t("action_synchronizing") : editTarget ? t("action_apply_config") : t("action_init_unit")}
+            </Button>
           </div>
         </DialogContent>
       </Dialog>
 
+      {/* Delete Confirmations */}
       <AlertDialog open={showBulkDelete} onOpenChange={setShowBulkDelete}>
-        <AlertDialogContent className="bg-surface border-primary/20 rounded-4xl shadow-2xl p-8">
+        <AlertDialogContent className="bg-white border border-zinc-100 rounded-4xl shadow-2xl p-12">
           <AlertDialogHeader>
-            <AlertDialogTitle className="font-headline font-bold text-3xl text-foreground tracking-tight uppercase">
+            <AlertDialogTitle className="font-bold text-3xl text-zinc-900 tracking-tighter uppercase font-comfortaa">
               {t("action_confirm_bulk_purge", { count: selectedIds.size })}
             </AlertDialogTitle>
-            <AlertDialogDescription className="text-muted-foreground font-sans text-base mt-2">
+            <AlertDialogDescription className="text-zinc-500 font-medium text-lg mt-4">
               {t("desc_bulk_delete_depts", { count: selectedIds.size })}
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter className="mt-10 gap-4">
-            <AlertDialogCancel className="rounded-full border-primary/10 bg-background text-foreground font-bold text-[11px] tracking-wide uppercase hover:bg-primary/5 h-12 px-10">{t("common_cancel")}</AlertDialogCancel>
-            <AlertDialogAction onClick={handleBulkDelete} disabled={deleting} className="rounded-full bg-rose-600 text-white font-bold text-[11px] tracking-wide uppercase hover:bg-rose-700 px-10 h-12 shadow-lg shadow-rose-600/20">
+          <AlertDialogFooter className="mt-12 gap-6">
+            <AlertDialogCancel className="rounded-full border-zinc-100 bg-white text-zinc-400 font-bold text-[11px] tracking-widest uppercase hover:bg-zinc-50 h-14 px-12">{t("common_cancel")}</AlertDialogCancel>
+            <AlertDialogAction onClick={handleBulkDelete} disabled={deleting} className="rounded-full bg-red-500 text-white font-bold text-[11px] tracking-widest uppercase hover:bg-red-600 px-12 h-14 shadow-xl shadow-red-100">
               {deleting ? t("action_purging") : t("action_confirm_purge")}
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -439,30 +453,14 @@ export default function DepartmentsPage() {
       </AlertDialog>
 
       <AlertDialog open={!!deleteTarget} onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}>
-        <AlertDialogContent className="bg-surface border-primary/20 rounded-4xl shadow-2xl">
+        <AlertDialogContent className="bg-white border border-zinc-100 rounded-4xl shadow-2xl p-12">
           <AlertDialogHeader>
-            <AlertDialogTitle className="font-headline font-bold text-2xl text-foreground tracking-tight uppercase">{t("common_delete")} — {deleteTarget?.name}</AlertDialogTitle>
-            <AlertDialogDescription className="text-muted-foreground font-sans text-sm">{t("departments_delete_desc")}</AlertDialogDescription>
+            <AlertDialogTitle className="font-bold text-3xl text-zinc-900 tracking-tighter uppercase font-comfortaa">{t("common_delete")} — {deleteTarget?.name}</AlertDialogTitle>
+            <AlertDialogDescription className="text-zinc-500 font-medium text-lg mt-4">{t("departments_delete_desc")}</AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter className="mt-8">
-            <AlertDialogCancel className="rounded-full border-primary/10 bg-background text-foreground font-bold text-[11px] tracking-wide uppercase hover:bg-primary/5 h-12 px-8">{t("common_cancel")}</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete} disabled={deleting} className="rounded-full bg-rose-600 text-white font-bold text-[11px] tracking-wide uppercase hover:bg-rose-700 px-8 h-12 shadow-lg shadow-rose-600/20">{deleting ? t("action_purging") : t("action_confirm_delete")}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-      <AlertDialog open={showBulkDelete} onOpenChange={setShowBulkDelete}>
-        <AlertDialogContent className="bg-surface border-primary/20 rounded-3xl">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="text-xl font-bold uppercase tracking-tight">{t("confirm_bulk_delete")}</AlertDialogTitle>
-            <AlertDialogDescription className="text-muted-foreground">
-              {t("desc_bulk_delete_depts", { count: selectedIds.size })}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel className="rounded-full uppercase text-[10px] font-bold tracking-widest">{t("common_cancel")}</AlertDialogCancel>
-            <AlertDialogAction onClick={handleBulkDelete} className="rounded-full bg-destructive text-destructive-foreground hover:bg-destructive/90 uppercase text-[10px] font-bold tracking-widest">
-              {deleting ? t("action_purging") : t("action_confirm_delete")}
+          <AlertDialogFooter className="mt-12 gap-6">
+            <AlertDialogCancel className="rounded-full border-zinc-100 bg-white text-zinc-400 font-bold text-[11px] tracking-widest uppercase hover:bg-zinc-50 h-14 px-12">{t("common_cancel")}</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete} disabled={deleting} className="rounded-full bg-red-500 text-white font-bold text-[11px] tracking-widest uppercase hover:bg-red-600 px-12 h-14 shadow-xl shadow-red-100">{deleting ? t("action_purging") : t("action_confirm_delete")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

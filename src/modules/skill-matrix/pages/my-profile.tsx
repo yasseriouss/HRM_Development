@@ -2,37 +2,29 @@ import { useGetMyProfile } from "@hrm-development/api-client-react";
 import { getAuthHeaders } from "@modules/skill-matrix/lib/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@shared/components/ui/card";
 import { Badge } from "@shared/components/ui/badge";
-import { Button } from "@shared/components/ui/button";
 import { Skeleton } from "@shared/components/ui/skeleton";
-import { Briefcase, CalendarDays, Building2, User, Target, Activity, Zap, ShieldCheck, History, GraduationCap, ChevronRight, HardDrive } from "lucide-react";
+import { Briefcase, CalendarDays, Building2, Target, Zap, ShieldCheck, History, GraduationCap, ChevronRight, Fingerprint } from "lucide-react";
 import type { EvaluationSummary } from "@hrm-development/api-client-react";
 import { useT } from "@modules/skill-matrix/i18n";
 import { motion } from "framer-motion";
+import { cn } from "@shared/utils/cn";
 
 type EmployeeClass = "A" | "B" | "C" | null | undefined;
 
-const CornerMarks = ({ color = "primary" }: { color?: string }) => (
-  <>
-    <div className={`absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
-    <div className={`absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
-    <div className={`absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
-    <div className={`absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
-  </>
-);
-
 function scoreBar(score: number) {
   const pct = (score / 4) * 100;
-  const colorMap = ["bg-rose-500", "bg-rose-400", "bg-amber-500", "bg-emerald-500", "bg-primary"];
+  const colorMap = ["bg-red-400", "bg-red-300", "bg-amber-400", "bg-green-400", "bg-zinc-900"];
   return (
-    <div className="flex items-center gap-3">
-      <div className="flex-1 h-1.5 bg-zinc-900 overflow-hidden">
+    <div className="flex items-center gap-4">
+      <div className="flex-1 h-2 bg-zinc-100 rounded-full overflow-hidden">
         <motion.div 
           initial={{ width: 0 }}
           animate={{ width: `${pct}%` }}
-          className={`h-full ${colorMap[score]}`} 
+          transition={{ duration: 1, ease: "easeOut" }}
+          className={cn("h-full rounded-full transition-colors", colorMap[score])} 
         />
       </div>
-      <span className="font-mono text-[10px] font-black text-white w-4 text-end uppercase">{score}</span>
+      <span className="font-bold text-[11px] text-zinc-900 w-4 text-end">{score}</span>
     </div>
   );
 }
@@ -43,13 +35,13 @@ export default function MyProfilePage() {
 
   function classBadge(cls: EmployeeClass) {
     const map: Record<string, string> = {
-      A: "border-emerald-500/40 bg-emerald-500/5 text-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.1)]",
-      B: "border-amber-500/40 bg-amber-500/5 text-amber-400 shadow-[0_0_10px_rgba(245,158,11,0.1)]",
-      C: "border-rose-500/40 bg-rose-500/5 text-rose-400 shadow-[0_0_10px_rgba(244,63,94,0.1)]",
+      A: "bg-green-50 text-green-600 border-green-100",
+      B: "bg-amber-50 text-amber-600 border-amber-100",
+      C: "bg-red-50 text-red-600 border-red-100",
     };
     return (
-      <Badge variant="outline" className={`rounded-none font-mono text-[8px] font-black tracking-[0.2em] px-3 py-1 uppercase ${map[cls ?? ""] ?? "border-zinc-800 text-zinc-600"}`}>
-        {cls ?? "N/A"}
+      <Badge variant="outline" className={cn("rounded-full font-bold text-[10px] tracking-widest px-4 py-1.5 uppercase border-none shadow-sm", map[cls ?? ""] ?? "bg-zinc-50 text-zinc-400")}>
+        {cls ? `Class ${cls}` : "N/A"}
       </Badge>
     );
   }
@@ -60,11 +52,11 @@ export default function MyProfilePage() {
 
   if (isLoading) {
     return (
-      <div className="space-y-6 pb-20">
-        <Skeleton className="h-40 w-full bg-zinc-900 rounded-none" />
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-           <Skeleton className="h-[400px] w-full bg-zinc-900 rounded-none" />
-           <Skeleton className="h-[400px] w-full bg-zinc-900 rounded-none" />
+      <div className="max-w-7xl mx-auto space-y-12 py-16 px-8">
+        <Skeleton className="h-64 w-full bg-zinc-100 rounded-4xl" />
+        <div className="grid grid-cols-1 lg:grid-cols-7 gap-10">
+           <Skeleton className="lg:col-span-4 h-[600px] w-full bg-zinc-100 rounded-4xl" />
+           <Skeleton className="lg:col-span-3 h-[600px] w-full bg-zinc-100 rounded-4xl" />
         </div>
       </div>
     );
@@ -72,7 +64,11 @@ export default function MyProfilePage() {
 
   if (isError || !profile) {
     return (
-      <div className="p-20 text-center border-2 border-zinc-900 bg-black/20 font-mono text-xs uppercase tracking-[0.3em] text-zinc-600">{t("profile_no_record")}
+      <div className="max-w-7xl mx-auto py-32 px-8 text-center">
+        <div className="inline-flex h-20 w-20 items-center justify-center rounded-4xl bg-zinc-50 text-zinc-300 mb-6">
+           <Fingerprint className="h-10 w-10" />
+        </div>
+        <p className="text-xl font-bold font-comfortaa text-zinc-400">{t("profile_no_record")}</p>
       </div>);
   }
 
@@ -83,84 +79,107 @@ export default function MyProfilePage() {
   const historicalSummaries: EvaluationSummary[] = profile.historical_summaries ?? [];
 
   return (
-    <div className="space-y-10 pb-24 font-sans text-white">
+    <div className="max-w-7xl mx-auto space-y-12 py-16 px-8 pb-32">
       {/* Header - Profile Dashboard */}
-      <div className="relative p-12 bg-[#0A0A0A] border-2 border-primary/20 overflow-hidden shadow-2xl">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5" />
-        <div className="relative z-10 flex flex-col md:flex-row items-center gap-12">
-          <div className="relative group">
-            <div className="w-28 h-28 rounded-none bg-zinc-900 border-2 border-zinc-800 flex items-center justify-center text-5xl font-headline font-black text-primary transition-all duration-500 group-hover:border-primary/50 group-hover:scale-105 shadow-2xl relative overflow-hidden">
-               <div className="absolute inset-0 bg-primary/5 animate-pulse" />
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="relative p-16 bg-white border border-zinc-100 overflow-hidden shadow-sm rounded-4xl"
+      >
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,#F4F4F5_0%,transparent_50%)]" />
+        <div className="relative z-10 flex flex-col lg:flex-row items-center gap-16">
+          <div className="relative group shrink-0">
+            <div className="w-40 h-40 rounded-4xl bg-zinc-900 flex items-center justify-center text-6xl font-bold font-comfortaa text-white shadow-2xl shadow-zinc-200 relative overflow-hidden transition-transform duration-500 group-hover:scale-105">
                <span className="relative z-10">{emp.full_name?.charAt(0) ?? "?"}</span>
             </div>
-            <CornerMarks />
+            <div className="absolute -bottom-4 -right-4 h-12 w-12 bg-white rounded-2xl border border-zinc-100 flex items-center justify-center shadow-lg text-zinc-900">
+               <ShieldCheck className="h-6 w-6" />
+            </div>
           </div>
           
-          <div className="flex-1 space-y-6 text-center md:text-start">
-            <div className="flex flex-col md:flex-row items-center gap-6">
-              <h2 className="text-6xl font-headline font-black tracking-tighter uppercase leading-none text-shimmer">{emp.full_name}</h2>
-              {classBadge(emp.current_class as EmployeeClass)}
+          <div className="flex-1 space-y-8 text-center lg:text-start">
+            <div className="space-y-4">
+              <div className="flex flex-col lg:flex-row items-center gap-6">
+                <h2 className="text-5xl lg:text-7xl font-bold font-comfortaa tracking-tighter text-zinc-900 leading-none">{emp.full_name}</h2>
+                {classBadge(emp.current_class as EmployeeClass)}
+              </div>
+              
+              <div className="flex flex-wrap justify-center lg:justify-start gap-10 text-[10px] font-bold text-zinc-400 uppercase tracking-widest">
+                {emp.job_title && (
+                  <span className="flex items-center gap-3">
+                    <Briefcase className="h-4 w-4 text-zinc-900" />
+                    <span>{emp.job_title}</span>
+                  </span>
+                )}
+                {emp.department?.name && (
+                  <span className="flex items-center gap-3">
+                    <Building2 className="h-4 w-4 text-zinc-900" />
+                    <span>{emp.department.name}</span>
+                  </span>)}
+                {emp.joined_date && (
+                  <span className="flex items-center gap-3">
+                    <CalendarDays className="h-4 w-4 text-zinc-900" />
+                    <span>{t("profile_joined")} {new Date(emp.joined_date).toLocaleDateString()}</span>
+                  </span>
+                )}
+              </div>
             </div>
-            
-            <div className="flex flex-wrap justify-center md:justify-start gap-8 text-[9px] font-mono font-black text-zinc-600 uppercase tracking-[0.3em]">{emp.job_title && (
-                <span className="flex items-center gap-3 border-r border-zinc-900 pe-8 last:border-0">
-                  <Briefcase className="h-4 w-4 text-primary opacity-50" />
-                  <span className="text-zinc-400">{emp.job_title}</span>
-                </span>
-              )}
-              {emp.department?.name && (
-                <span className="flex items-center gap-3 border-r border-zinc-900 pe-8 last:border-0">
-                  <Building2 className="h-4 w-4 text-primary opacity-50" />
-                  <span className="text-zinc-400">{emp.department.name}</span>
-                </span>)}
-              {emp.joined_date && (
-                <span className="flex items-center gap-3 border-r border-zinc-900 pe-8 last:border-0">
-                  <CalendarDays className="h-4 w-4 text-primary opacity-50" />
-                  <span className="text-zinc-400">{t("profile_joined")} {new Date(emp.joined_date).toLocaleDateString()}</span>
-                </span>
-              )}
-              <span className="bg-primary/5 text-primary px-4 py-1.5 border border-primary/20 shadow-[0_0_15px_rgba(var(--primary),0.1)]">
-                {t("label_node_id")}::{emp.employee_code || t("profile_unknown")}
-              </span>
+
+            <div className="inline-flex items-center gap-4 px-6 py-2 bg-zinc-50 border border-zinc-100 rounded-full text-[10px] font-bold text-zinc-500 uppercase tracking-widest shadow-xs">
+              <Fingerprint className="h-3.5 w-3.5 text-zinc-900" />
+              <span>{t("label_node_id")}::{emp.employee_code || t("profile_unknown")}</span>
             </div>
           </div>
 
           {latestSummary && (
-            <div className="text-center md:text-end border-s-2 border-zinc-900 ps-12 hidden md:block">
-              <p className="text-6xl font-mono font-black text-primary leading-none tracking-tighter shadow-[0_0_30px_rgba(var(--primary),0.2)]">{Number(latestSummary.percentage).toFixed(1)}%</p>
-              <p className="text-[10px] font-headline font-black text-zinc-600 mt-4 uppercase tracking-[0.4em]">{t("profile_latest_score")}</p>
+            <div className="text-center lg:text-end lg:border-s lg:border-zinc-100 lg:ps-16 shrink-0">
+              <div className="relative inline-block">
+                <p className="text-8xl font-bold font-comfortaa text-zinc-900 leading-none tracking-tighter">{Number(latestSummary.percentage).toFixed(0)}<span className="text-zinc-300">%</span></p>
+                <div className="absolute -top-4 -right-4 h-8 w-8 bg-zinc-900 rounded-full flex items-center justify-center text-[10px] font-bold text-white shadow-xl">
+                   <Target className="h-4 w-4" />
+                </div>
+              </div>
+              <p className="text-[10px] font-bold text-zinc-400 mt-6 uppercase tracking-[0.4em]">{t("profile_latest_score")}</p>
             </div>
           )}
         </div>
-        <CornerMarks />
-      </div>
+      </motion.div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-7 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-7 gap-10">
         {/* Skills Matrix */}
-        <Card className="lg:col-span-4 bg-[#0D0D0D] border-zinc-800 rounded-none relative overflow-hidden group">
-          <CardHeader className="border-b border-zinc-900 py-8 flex flex-row items-center justify-between">
-            <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
-              <Target className="h-5 w-5 text-primary" />{t("profile_skill_competencies")}
+        <Card className="lg:col-span-4 bg-white border-zinc-100 rounded-4xl shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden group">
+          <CardHeader className="p-10 pb-6 flex flex-row items-center justify-between">
+            <CardTitle className="font-bold text-2xl font-comfortaa text-zinc-900 flex items-center gap-4">
+              <div className="w-10 h-10 rounded-2xl bg-zinc-50 flex items-center justify-center text-zinc-900 group-hover:bg-zinc-900 group-hover:text-white transition-colors">
+                <Target className="h-5 w-5" />
+              </div>
+              {t("profile_skill_competencies")}
             </CardTitle>
-            <Zap className="h-4 w-4 text-amber-500 animate-pulse" />
+            <div className="flex items-center gap-3 text-zinc-300">
+               <Zap className="h-5 w-5 animate-pulse" />
+            </div>
           </CardHeader>
-          <CardContent className="p-8 space-y-6">
+          <CardContent className="p-10 pt-0 space-y-10">
             {skillScores.length === 0 ? (
-              <div className="py-10 text-center font-mono text-[10px] text-zinc-600 uppercase tracking-widest italic">{t("label_no_skill_sync")}
+              <div className="py-20 text-center text-zinc-300">
+                <p className="text-xs font-bold uppercase tracking-widest">{t("label_no_skill_sync")}</p>
               </div>
             ) : (
-              <div className="grid gap-6">
+              <div className="grid gap-10">
                 {skillScores.map((sk) => (
                   <div key={sk.skill_id} className="group/skill">
-                    <div className="flex justify-between items-end mb-2">
-                      <span className="font-headline font-black text-xs text-white uppercase tracking-tight group-hover/skill:text-primary transition-colors">{sk.skill_name}
-                      </span>
-                      <span className="font-mono text-[9px] text-zinc-500 uppercase tracking-widest">{sk.score != null ? t(scoreLabels[sk.score]) : t("score_uneval")}
+                    <div className="flex justify-between items-end mb-4">
+                      <div className="space-y-1">
+                        <span className="font-bold text-sm text-zinc-900 tracking-tight group-hover/skill:translate-x-1 transition-transform inline-block">{sk.skill_name}</span>
+                        <div className="h-0.5 w-8 bg-zinc-100 group-hover/skill:w-full transition-all" />
+                      </div>
+                      <span className="font-bold text-[10px] text-zinc-400 uppercase tracking-widest">
+                        {sk.score != null ? t(scoreLabels[sk.score]) : t("score_uneval")}
                       </span>
                     </div>
                     {sk.score != null ? scoreBar(sk.score) : (
-                      <div className="h-1.5 bg-zinc-900/50 border border-zinc-800 relative overflow-hidden">
-                        <div className="absolute inset-0 bg-zinc-800 animate-pulse" />
+                      <div className="h-2 bg-zinc-50 rounded-full overflow-hidden">
+                        <div className="h-full w-full bg-zinc-100 animate-pulse" />
                       </div>
                     )}
                   </div>
@@ -168,83 +187,92 @@ export default function MyProfilePage() {
               </div>
             )}
           </CardContent>
-          <CornerMarks />
         </Card>
 
         {/* Evaluation History & Training */}
-        <div className="lg:col-span-3 space-y-8">
-          <Card className="bg-[#0D0D0D] border-zinc-800 rounded-none relative group overflow-hidden">
-            <CardHeader className="border-b border-zinc-900 py-8">
-              <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
-                <History className="h-5 w-5 text-blue-500" />{t("profile_eval_history")}
+        <div className="lg:col-span-3 space-y-10">
+          <Card className="bg-white border-zinc-100 rounded-4xl shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden group">
+            <CardHeader className="p-10 pb-6">
+              <CardTitle className="font-bold text-2xl font-comfortaa text-zinc-900 flex items-center gap-4">
+                <div className="w-10 h-10 rounded-2xl bg-zinc-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                  <History className="h-5 w-5" />
+                </div>
+                {t("profile_eval_history")}
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-0 divide-y divide-zinc-900">
+            <CardContent className="p-0">
               {historicalSummaries.length === 0 ? (
-                <div className="p-12 text-center font-mono text-[10px] text-zinc-600 uppercase tracking-widest italic">{t("label_empty_log_stream")}
+                <div className="p-20 text-center text-zinc-300">
+                  <p className="text-xs font-bold uppercase tracking-widest">{t("label_empty_log_stream")}</p>
                 </div>
               ) : (
-                historicalSummaries.slice(0, 5).map((s) => (
-                  <div key={s.id} className="p-6 hover:bg-zinc-800/50 transition-colors flex items-center justify-between group/eval">
-                    <div className="space-y-1">
-                      <p className="font-headline font-black text-sm text-white uppercase tracking-tight group-hover/eval:text-primary transition-colors">{s.campaign_title ?? t("nav_campaigns")}
-                      </p>
-                      <p className="font-mono text-[9px] text-zinc-600 uppercase tracking-widest">{t("profile_skills_assessed", { count: s.evaluated_skills_count })} // {new Date(s.updated_at || "").toLocaleDateString()}
-                      </p>
+                <div className="divide-y divide-zinc-50">
+                  {historicalSummaries.slice(0, 5).map((s) => (
+                    <div key={s.id} className="p-10 hover:bg-zinc-50 transition-all flex items-center justify-between group/eval">
+                      <div className="space-y-2">
+                        <p className="font-bold text-sm text-zinc-900 tracking-tight group-hover/eval:translate-x-1 transition-transform">{s.campaign_title ?? t("nav_campaigns")}</p>
+                        <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">
+                          {t("profile_skills_assessed", { count: s.evaluated_skills_count })} • {new Date(s.updated_at || "").toLocaleDateString()}
+                        </p>
+                      </div>
+                      <div className="text-end flex flex-col items-end gap-3">
+                        <span className="font-comfortaa font-bold text-xl text-zinc-900 leading-none">{Number(s.percentage).toFixed(0)}%</span>
+                        {classBadge(s.class as EmployeeClass)}
+                      </div>
                     </div>
-                    <div className="text-end flex flex-col items-end gap-2">
-                      <span className="font-mono font-black text-lg text-primary leading-none">{Number(s.percentage).toFixed(1)}%</span>
-                      {classBadge(s.class as EmployeeClass)}
-                    </div>
-                  </div>
-                ))
+                  ))}
+                </div>
               )}
             </CardContent>
-            <CornerMarks color="blue" />
           </Card>
 
           {training.length > 0 && (
-            <Card className="bg-[#0D0D0D] border-2 border-emerald-500/20 rounded-none relative group">
-              <div className="absolute inset-0 bg-emerald-500/5 pointer-events-none" />
-              <CardHeader className="border-b border-zinc-900 py-8">
-                <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
-                  <GraduationCap className="h-5 w-5 text-emerald-500" />{t("profile_training_recs")}
+            <Card className="bg-zinc-900 text-white rounded-4xl shadow-2xl shadow-zinc-200 overflow-hidden relative group">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,#3F3F46_0%,transparent_60%)] opacity-20" />
+              <CardHeader className="p-10 pb-6 relative z-10">
+                <CardTitle className="font-bold text-2xl font-comfortaa text-white flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center text-white">
+                    <GraduationCap className="h-5 w-5" />
+                  </div>
+                  {t("profile_training_recs")}
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-8 space-y-4">
+              <CardContent className="p-10 pt-0 space-y-6 relative z-10">
                 {training.map((rec) => (
                   <div
                     key={rec.id}
-                    className="flex items-center justify-between p-4 bg-black/40 border border-zinc-800 hover:border-emerald-500/50 transition-all group/rec"
+                    className="flex items-center justify-between p-6 bg-white/5 border border-white/10 rounded-3xl hover:bg-white/10 transition-all group/rec"
                   >
-                    <div className="flex-1">
-                      <p className="font-headline font-black text-xs text-white uppercase tracking-tight group-hover/rec:text-emerald-500 transition-colors">{rec.skill_name ?? rec.recommendation_type}
-                      </p>
+                    <div className="flex-1 pr-6">
+                      <p className="font-bold text-sm text-white tracking-tight group-hover/rec:translate-x-1 transition-transform">{rec.skill_name ?? rec.recommendation_type}</p>
                       {rec.notes && (
-                        <p className="font-mono text-[9px] text-zinc-500 mt-1 uppercase leading-relaxed line-clamp-1 italic">{rec.notes}</p>
+                        <p className="text-[10px] font-bold text-white/40 mt-2 uppercase tracking-widest leading-relaxed italic line-clamp-1">{rec.notes}</p>
                       )}
                     </div>
-                    <div className="flex items-center gap-3">
-                       <Badge variant="outline" className={`rounded-none font-mono text-[8px] font-black tracking-tighter uppercase px-2 py-0.5 ${rec.status === "Completed" ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-500" : "border-amber-500/30 bg-amber-500/10 text-amber-500"}`}>
+                    <div className="flex items-center gap-4">
+                       <Badge variant="outline" className={cn("rounded-full font-bold text-[9px] tracking-widest uppercase px-3 py-1 border-none shadow-sm", rec.status === "Completed" ? "bg-green-500/20 text-green-400" : "bg-amber-500/20 text-amber-400")}>
                           {rec.status}
                        </Badge>
-                       <ChevronRight className="h-3 w-3 text-zinc-800" />
+                       <ChevronRight className="h-4 w-4 text-white/20" />
                     </div>
                   </div>
                 ))}
               </CardContent>
-              <CornerMarks color="emerald" />
             </Card>
           )}
           
-          <div className="p-8 border-2 border-primary/20 bg-primary/3 relative overflow-hidden group">
-             <ShieldCheck className="absolute -right-4 -top-4 h-24 w-24 text-primary opacity-5 group-hover:opacity-10 transition-all duration-700" />
-             <p className="font-headline font-black text-[11px] text-primary uppercase tracking-[0.3em] mb-4">{t("label_security_status")}</p>
-             <p className="text-[10px] font-mono text-zinc-500 leading-relaxed uppercase tracking-tighter">{t("label_profile_verified")}
-             </p>
-             <div className="mt-8 flex items-center justify-between text-[9px] font-mono font-black text-zinc-600 uppercase tracking-widest">
+          <div className="p-10 bg-white border border-zinc-100 rounded-4xl shadow-sm hover:shadow-xl transition-all duration-500 relative overflow-hidden group">
+             <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-all">
+                <ShieldCheck className="h-24 w-24 text-zinc-900" />
+             </div>
+             <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-[0.3em] mb-6">{t("label_security_status")}</p>
+             <p className="text-sm font-bold font-comfortaa text-zinc-900 leading-relaxed uppercase tracking-tight max-w-[80%]">{t("label_profile_verified")}</p>
+             <div className="mt-10 flex items-center justify-between text-[10px] font-bold text-zinc-300 uppercase tracking-widest pt-6 border-t border-zinc-50">
                  <span>{t("label_identity_sync")}</span>
-                 <span className="text-emerald-500">{t("label_encrypted_stream_active")}</span>
+                 <span className="text-green-600 flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                    {t("label_encrypted_stream_active")}
+                 </span>
              </div>
           </div>
         </div>

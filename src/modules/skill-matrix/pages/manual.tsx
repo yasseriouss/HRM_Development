@@ -17,17 +17,10 @@ import {
   BrainCircuit,
   LayoutDashboard,
   Database,
-  Crosshair
+  Crosshair,
+  ArrowRight
 } from "lucide-react";
-
-const CornerMarks = () => (
-  <>
-    <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-s-2 border-primary/40" />
-    <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-e-2 border-primary/40" />
-    <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-s-2 border-primary/40" />
-    <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-e-2 border-primary/40" />
-  </>
-);
+import { cn } from "@shared/utils/cn";
 
 export default function ManualPage() {
   const t = useT();
@@ -47,58 +40,53 @@ export default function ManualPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto space-y-12 py-12 px-6 pb-32 font-sans selection:bg-primary selection:text-primary-foreground">
+    <div className="max-w-7xl mx-auto space-y-12 py-16 px-8 pb-32 selection:bg-zinc-900 selection:text-white">
       {/* Hero Section - Editorial Style */}
       <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="relative p-16 bg-surface border-2 border-primary/20 shadow-sm overflow-hidden rounded-2xl"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="relative p-20 bg-white border border-zinc-100 shadow-sm overflow-hidden rounded-4xl"
       >
-        <div className="absolute inset-0 bg-primary/5 opacity-30" />
-        <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-transparent via-primary/40 to-transparent" />
-        
-        <div className="relative z-10 flex flex-col md:flex-row items-center gap-12">
-          <div className="relative">
-            <div className="h-32 w-32 bg-primary/10 border-2 border-primary/20 rounded-2xl flex items-center justify-center text-primary shadow-sm">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,#F4F4F5_0%,transparent_50%)]" />
+        <div className="relative z-10 flex flex-col lg:flex-row items-center gap-16">
+          <div className="relative shrink-0">
+            <div className="h-40 w-40 bg-zinc-900 rounded-4xl flex items-center justify-center text-white shadow-2xl shadow-zinc-200">
               <BookOpen className="h-16 w-16" />
-              <div className="absolute -top-2 -left-2 w-4 h-4 bg-primary/20 rounded-full" />
-              <div className="absolute -bottom-2 -right-2 w-4 h-4 bg-primary/20 rounded-full" />
             </div>
             <motion.div 
               animate={{ rotate: 360 }}
-              transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-              className="absolute -inset-4 border border-dashed border-primary/10 rounded-full" 
+              transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+              className="absolute -inset-6 border border-dashed border-zinc-200 rounded-full opacity-50" 
             />
           </div>
           
-          <div className="text-center md:text-start space-y-4">
-            <div className="flex items-center justify-center md:justify-start gap-3">
-              <div className="h-1 w-8 bg-primary/30 rounded-full" />
-              <span className="font-headline font-black tracking-[0.4em] uppercase text-[10px] text-primary">{t("manual_protocol")}
-              </span>
-              <div className="h-1 w-8 bg-primary/30 rounded-full" />
+          <div className="text-center lg:text-start space-y-6">
+            <div className="flex items-center justify-center lg:justify-start gap-3">
+              <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-zinc-400">{t("manual_protocol")}</span>
             </div>
-            <h1 className="text-5xl md:text-7xl font-headline font-black tracking-tighter text-foreground uppercase leading-none">{t("manual_title")}
+            <h1 className="text-6xl lg:text-8xl font-bold font-comfortaa text-zinc-900 tracking-tighter leading-[0.9]">
+              {t("manual_title")}
             </h1>
-            <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 pt-2">
-              <Badge variant="outline" className="border-primary/20 text-primary bg-primary/5 rounded-full px-4 py-1 font-mono text-[10px]">
-                BUILD v2.4.8
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-4">
+              <Badge variant="outline" className="border-zinc-200 text-zinc-500 bg-zinc-50 rounded-full px-4 py-1.5 font-bold text-[10px] uppercase tracking-widest">
+                BUILD v2.5.0
               </Badge>
-              <Badge variant="outline" className="border-secondary/20 text-foreground/60 bg-muted/20 rounded-full px-4 py-1 font-mono text-[10px]">{t("label_auth_admin")}
+              <Badge variant="outline" className="border-zinc-200 text-zinc-500 bg-zinc-50 rounded-full px-4 py-1.5 font-bold text-[10px] uppercase tracking-widest">
+                {t("label_auth_admin")}
               </Badge>
-              <Badge variant="outline" className="border-emerald-500/20 text-emerald-600 bg-emerald-500/5 rounded-full px-4 py-1 font-mono text-[10px]">
+              <Badge variant="outline" className="border-green-100 text-green-600 bg-green-50 rounded-full px-4 py-1.5 font-bold text-[10px] uppercase tracking-widest">
                 {t("label_status_encrypted_full")}
               </Badge>
             </div>
           </div>
         </div>
-        <CornerMarks />
       </motion.div>
 
       {/* Main Navigation Tabs */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-12">
-        <div className="flex justify-center sticky top-4 z-50">
-          <TabsList className="bg-surface/80 backdrop-blur-xl border border-primary/20 p-1 rounded-full shadow-lg">{[
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-16">
+        <div className="flex justify-center sticky top-8 z-50">
+          <TabsList className="bg-white/80 backdrop-blur-2xl border border-zinc-100 p-1.5 rounded-full shadow-xl shadow-zinc-100/50">
+            {[
               { id: "overview", icon: LayoutDashboard, label: t("manual_tab_overview") },
               { id: "skills", icon: BrainCircuit, label: t("manual_tab_skills") },
               { id: "evaluation", icon: Scaling, label: t("manual_tab_evaluation") },
@@ -107,10 +95,10 @@ export default function ManualPage() {
               <TabsTrigger 
                 key={tab.id}
                 value={tab.id} 
-                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-full px-8 py-3 flex items-center gap-3 transition-all font-headline font-black text-[11px] tracking-widest uppercase border border-transparent"
+                className="data-[state=active]:bg-zinc-900 data-[state=active]:text-white data-[state=active]:shadow-lg rounded-full px-10 py-3.5 flex items-center gap-3 transition-all font-bold text-[11px] tracking-widest uppercase border border-transparent"
               >
                 <tab.icon className="h-4 w-4" />
-                <span className="hidden lg:inline">{tab.label}</span>
+                <span className="hidden md:inline">{tab.label}</span>
               </TabsTrigger>
             ))}
           </TabsList>
@@ -120,136 +108,156 @@ export default function ManualPage() {
           <TabsContent value="overview" className="mt-0">
             <motion.div variants={container} initial="hidden" animate="show" className="grid grid-cols-1 md:grid-cols-2 gap-10">
               <motion.div variants={item}>
-                <Card className="h-full bg-surface border border-primary/10 rounded-2xl relative group hover:border-primary/30 transition-all overflow-hidden shadow-sm">
-                  <div className="absolute top-0 left-0 w-1 h-full bg-primary opacity-20 group-hover:opacity-100 transition-opacity" />
-                  <CardHeader className="pb-2">
-                    <CardTitle className="font-headline text-2xl font-black uppercase flex items-center gap-3 text-foreground">
-                      <Target className="h-6 w-6 text-primary" />{t("manual_strategic_obj")}
+                <Card className="h-full bg-white border border-zinc-100 rounded-4xl relative group transition-all duration-500 hover:shadow-xl hover:shadow-zinc-100 overflow-hidden">
+                  <div className="absolute top-0 left-0 w-2 h-full bg-zinc-900 opacity-5 group-hover:opacity-100 transition-opacity" />
+                  <CardHeader className="p-10 pb-4">
+                    <CardTitle className="font-bold text-2xl font-comfortaa flex items-center gap-4 text-zinc-900">
+                      <div className="w-10 h-10 rounded-2xl bg-zinc-50 flex items-center justify-center text-zinc-900 group-hover:bg-zinc-900 group-hover:text-white transition-colors">
+                        <Target className="h-5 w-5" />
+                      </div>
+                      {t("manual_strategic_obj")}
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="text-foreground/70 leading-relaxed font-medium">
-                    <p className="border-s-2 border-primary/20 ps-4 py-2 italic bg-primary/5 rounded-e-lg">{t("manual_strategic_vision")}
-                    </p>
-                    <p className="mt-4">{t("manual_strategic_desc")}
-                    </p>
+                  <CardContent className="p-10 pt-0 text-zinc-500 leading-relaxed font-medium">
+                    <p className="border-s-4 border-zinc-100 ps-6 py-4 italic bg-zinc-50/50 rounded-r-3xl text-zinc-600 mb-6">{t("manual_strategic_vision")}</p>
+                    <p className="text-sm">{t("manual_strategic_desc")}</p>
                   </CardContent>
-                  <CornerMarks />
                 </Card>
               </motion.div>
 
               <motion.div variants={item}>
-                <Card className="h-full bg-surface border border-primary/10 rounded-2xl relative group hover:border-emerald-500/30 transition-all overflow-hidden shadow-sm">
-                  <div className="absolute top-0 left-0 w-1 h-full bg-emerald-500 opacity-20 group-hover:opacity-100 transition-opacity" />
-                  <CardHeader className="pb-2">
-                    <CardTitle className="font-headline text-2xl font-black uppercase flex items-center gap-3 text-foreground">
-                      <ShieldCheck className="h-6 w-6 text-emerald-500" />{t("manual_security_protocol")}
+                <Card className="h-full bg-white border border-zinc-100 rounded-4xl relative group transition-all duration-500 hover:shadow-xl hover:shadow-zinc-100 overflow-hidden">
+                  <div className="absolute top-0 left-0 w-2 h-full bg-green-500 opacity-5 group-hover:opacity-100 transition-opacity" />
+                  <CardHeader className="p-10 pb-4">
+                    <CardTitle className="font-bold text-2xl font-comfortaa flex items-center gap-4 text-zinc-900">
+                      <div className="w-10 h-10 rounded-2xl bg-green-50 flex items-center justify-center text-green-600 group-hover:bg-green-600 group-hover:text-white transition-colors">
+                        <ShieldCheck className="h-5 w-5" />
+                      </div>
+                      {t("manual_security_protocol")}
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="text-foreground/70 leading-relaxed font-medium">
-                    <div className="space-y-4">{[
+                  <CardContent className="p-10 pt-0 text-zinc-500 leading-relaxed font-medium">
+                    <div className="space-y-6">
+                      {[
                         { r: "ADMIN", d: t("manual_role_admin") },
                         { r: "MANAGER", d: t("manual_role_manager") },
                         { r: "COORDINATOR", d: t("manual_role_coordinator") }
                       ].map((role) => (
-                        <div key={role.r} className="flex gap-4 items-center">
-                          <div className="font-mono text-[10px] bg-muted/30 px-2 py-1 border border-primary/10 text-emerald-600 rounded-md">{role.r}</div>
-                          <p className="text-xs">{role.d}</p>
+                        <div key={role.r} className="flex gap-6 items-center p-4 rounded-3xl bg-zinc-50/50 group-hover:bg-white transition-colors">
+                          <div className="font-bold text-[10px] bg-white px-3 py-1 border border-zinc-200 text-zinc-900 rounded-full tracking-widest uppercase">{role.r}</div>
+                          <p className="text-xs font-bold text-zinc-600 uppercase tracking-tight">{role.d}</p>
                         </div>
                       ))}
                     </div>
                   </CardContent>
-                  <CornerMarks />
                 </Card>
               </motion.div>
             </motion.div>
           </TabsContent>
 
           <TabsContent value="skills" className="mt-0">
-            <motion.div variants={container} initial="hidden" animate="show" className="space-y-12">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">{[
-                  { class: "CLASS A", color: "border-emerald-500", text: "text-emerald-600", label: "EXPERT", desc: t("manual_class_a_desc") },
-                  { class: "CLASS B", color: "border-primary", text: "text-primary", label: "ADVANCED", desc: t("manual_class_b_desc") },
-                  { class: "CLASS C", color: "border-rose-500", text: "text-rose-600", label: "TRAINEE", desc: t("manual_class_c_desc") }
+            <motion.div variants={container} initial="hidden" animate="show" className="space-y-16">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {[
+                  { class: "CLASS A", color: "bg-green-500", text: "text-green-600", light: "bg-green-50", label: "EXPERT", desc: t("manual_class_a_desc") },
+                  { class: "CLASS B", color: "bg-amber-500", text: "text-amber-600", light: "bg-amber-50", label: "ADVANCED", desc: t("manual_class_b_desc") },
+                  { class: "CLASS C", color: "bg-red-500", text: "text-red-600", light: "bg-red-50", label: "TRAINEE", desc: t("manual_class_c_desc") }
                 ].map((c, i) => (
-                  <motion.div key={i} variants={item} className={`p-8 bg-surface border-t-4 ${c.color} relative group rounded-b-2xl shadow-sm border border-primary/5`}>
-                    <div className="flex justify-between items-start mb-4">
-                      <span className={`font-headline font-black text-2xl ${c.text}`}>{c.class}</span>
-                      <Badge variant="outline" className={`rounded-full border-current ${c.text} text-[10px] px-2`}>{c.label}</Badge>
+                  <motion.div key={i} variants={item} className="p-10 bg-white border border-zinc-100 relative group rounded-4xl shadow-sm hover:shadow-xl transition-all duration-500">
+                    <div className="flex justify-between items-start mb-8">
+                      <div className="space-y-1">
+                        <span className={cn("font-comfortaa font-bold text-3xl", c.text)}>{c.class}</span>
+                        <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Classification</p>
+                      </div>
+                      <Badge variant="outline" className={cn("rounded-full border-none px-3 py-1 font-bold text-[10px]", c.light, c.text)}>{c.label}</Badge>
                     </div>
-                    <p className="text-sm text-foreground/60 leading-relaxed">{c.desc}</p>
-                    <CornerMarks />
+                    <p className="text-sm text-zinc-500 leading-relaxed font-medium">{c.desc}</p>
+                    <div className={cn("absolute bottom-0 left-0 w-full h-1.5 opacity-20 group-hover:opacity-100 transition-opacity rounded-b-4xl", c.color)} />
                   </motion.div>
                 ))}
               </div>
 
-              <motion.div variants={item} className="p-12 bg-surface border border-primary/10 relative rounded-2xl shadow-sm">
-                <h3 className="font-headline text-3xl font-black uppercase text-primary mb-12 flex items-center gap-4">
-                  <Zap className="h-8 w-8" />{t("manual_pipeline_title")}
+              <motion.div variants={item} className="p-16 bg-zinc-900 relative rounded-4xl shadow-2xl shadow-zinc-200 overflow-hidden">
+                <div className="absolute top-0 right-0 w-1/2 h-full bg-[radial-gradient(circle_at_70%_30%,#3F3F46_0%,transparent_60%)] opacity-20" />
+                <h3 className="font-comfortaa text-3xl font-bold text-white mb-16 flex items-center gap-6">
+                  <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-white">
+                    <Zap className="h-6 w-6" />
+                  </div>
+                  {t("manual_pipeline_title")}
                 </h3>
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">{[
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                  {[
                     { s: "01", t: t("manual_step_define"), d: t("manual_step_define_desc") },
                     { s: "02", t: t("manual_step_deploy"), d: t("manual_step_deploy_desc") },
                     { s: "03", t: t("manual_step_execute"), d: t("manual_step_execute_desc") },
                     { s: "04", t: t("manual_step_analyze"), d: t("manual_step_analyze_desc") }
                   ].map((step, idx) => (
-                    <div key={idx} className="relative group p-6 bg-background border border-primary/5 rounded-xl hover:border-primary/30 transition-all">
-                      <span className="font-mono text-5xl font-black text-primary/5 absolute -top-4 -right-2 group-hover:text-primary/10 transition-colors">{step.s}</span>
-                      <h4 className="font-headline font-black text-lg text-foreground mb-2">{step.t}</h4>
-                      <p className="text-xs text-foreground/50 uppercase tracking-tighter">{step.d}</p>
-                      {idx < 3 && <div className="hidden md:block absolute top-1/2 -right-4 translate-y-[-50%] z-20 text-primary/20 font-black text-xl">{" >> "}</div>}
+                    <div key={idx} className="relative group p-8 bg-white/5 border border-white/10 rounded-3xl hover:bg-white/10 transition-all duration-300">
+                      <span className="font-bold text-6xl text-white/5 absolute -top-4 -right-2 group-hover:text-white/10 transition-colors">{step.s}</span>
+                      <h4 className="font-bold text-lg text-white mb-3 font-comfortaa">{step.t}</h4>
+                      <p className="text-[10px] text-white/40 font-bold uppercase tracking-widest leading-relaxed">{step.d}</p>
+                      {idx < 3 && <div className="hidden lg:block absolute top-1/2 -right-6 translate-y-[-50%] z-20 text-white/20">
+                        <ArrowRight className="h-6 w-6" />
+                      </div>}
                     </div>
                   ))}
                 </div>
-                <CornerMarks />
               </motion.div>
             </motion.div>
           </TabsContent>
 
           <TabsContent value="evaluation" className="mt-0">
-            <motion.div variants={container} initial="hidden" animate="show" className="space-y-12">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-                <motion.div variants={item} className="space-y-8">
-                  <div className="flex items-center gap-4">
-                    <Scaling className="h-10 w-10 text-primary" />
-                    <h3 className="font-headline text-4xl font-black uppercase text-foreground leading-none">{t("manual_point_factor_title")}
+            <motion.div variants={container} initial="hidden" animate="show" className="space-y-16">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <motion.div variants={item} className="space-y-10">
+                  <div className="flex items-center gap-6">
+                    <div className="w-16 h-16 rounded-3xl bg-zinc-900 flex items-center justify-center text-white shadow-lg shadow-zinc-200">
+                      <Scaling className="h-8 w-8" />
+                    </div>
+                    <h3 className="font-comfortaa text-4xl font-bold text-zinc-900 leading-tight">
+                      {t("manual_point_factor_title")}
                     </h3>
                   </div>
-                  <div className="space-y-4">{[
+                  <div className="space-y-6">
+                    {[
                       { l: t("manual_factor_skills"), w: "350", p: "35%", d: t("manual_factor_skills_desc") },
                       { l: t("manual_factor_responsibility"), w: "350", p: "35%", d: t("manual_factor_responsibility_desc") },
                       { l: t("manual_factor_effort"), w: "100", p: "10%", d: t("manual_factor_effort_desc") },
                       { l: t("manual_factor_conditions"), w: "200", p: "20%", d: t("manual_factor_conditions_desc") }
                     ].map((f, i) => (
-                      <div key={i} className="flex items-center justify-between p-6 bg-surface border border-primary/10 rounded-xl group hover:border-primary/30 transition-all relative shadow-sm">
-                        <div className="space-y-2">
-                          <p className="font-headline font-black text-sm tracking-widest text-foreground">{f.l}</p>
-                          <p className="text-[10px] text-foreground/40 font-mono">{f.d}</p>
+                      <div key={i} className="flex items-center justify-between p-8 bg-white border border-zinc-100 rounded-4xl group hover:shadow-lg transition-all relative">
+                        <div className="space-y-3">
+                          <p className="font-bold text-sm uppercase tracking-widest text-zinc-900">{f.l}</p>
+                          <p className="text-[10px] text-zinc-400 font-bold uppercase tracking-tight">{f.d}</p>
                         </div>
-                        <div className="text-end">
-                          <p className="font-mono text-2xl font-black text-primary leading-none">{f.w}</p>
-                          <p className="text-[9px] text-foreground/40 font-bold tracking-[0.2em]">{f.p}</p>
+                        <div className="text-end shrink-0 pl-8">
+                          <p className="font-comfortaa text-4xl font-bold text-zinc-900 leading-none">{f.w}</p>
+                          <p className="text-[10px] text-zinc-300 font-bold tracking-[0.2em] mt-1 uppercase">{f.p}</p>
                         </div>
                       </div>
                     ))}
                   </div>
                 </motion.div>
 
-                <motion.div variants={item} className="space-y-8">
-                  <div className="flex items-center gap-4">
-                    <Layers className="h-10 w-10 text-primary" />
-                    <h3 className="font-headline text-4xl font-black uppercase text-foreground leading-none">{t("manual_grade_hierarchy")}
+                <motion.div variants={item} className="space-y-10">
+                  <div className="flex items-center gap-6">
+                    <div className="w-16 h-16 rounded-3xl bg-zinc-50 border border-zinc-100 flex items-center justify-center text-zinc-900">
+                      <Layers className="h-8 w-8" />
+                    </div>
+                    <h3 className="font-comfortaa text-4xl font-bold text-zinc-900 leading-tight">
+                      {t("manual_grade_hierarchy")}
                     </h3>
                   </div>
-                  <div className="bg-surface border border-primary/20 p-1 relative overflow-hidden rounded-2xl shadow-sm">
-                    <table className="w-full text-[10px] font-mono border-collapse">
-                      <thead className="bg-primary/5 text-primary font-black uppercase tracking-widest">
+                  <div className="bg-white border border-zinc-100 p-2 relative overflow-hidden rounded-4xl shadow-sm">
+                    <table className="w-full text-[11px] border-collapse">
+                      <thead className="bg-zinc-50 text-zinc-400 font-bold uppercase tracking-widest">
                         <tr>
-                          <th className="p-4 border border-primary/10 text-center">{t("label_grade")}</th>
-                          <th className="p-4 border border-primary/10 text-center">{t("label_points")}</th>
-                          <th className="p-4 border border-primary/10 text-start">{t("label_designation")}</th>
+                          <th className="p-6 text-center">{t("label_grade")}</th>
+                          <th className="p-6 text-center">{t("label_points")}</th>
+                          <th className="p-6 text-start">{t("label_designation")}</th>
                         </tr>
                       </thead>
-                      <tbody className="text-foreground">
+                      <tbody className="text-zinc-600">
                         {[
                           { g: "G1-G2", p: "100 - 199", c: t("je_cat_labor_manual") },
                           { g: "G3-G4", p: "200 - 329", c: t("je_cat_tech_manual") },
@@ -257,22 +265,20 @@ export default function ManualPage() {
                           { g: "G7-G8", p: "510 - 769", c: t("je_cat_mgmt_manual") },
                           { g: "G9-G10", p: "770 - 1000", c: t("je_cat_exec_manual") }
                         ].map((r, i) => (
-                          <tr key={i} className="hover:bg-primary/5 transition-colors group">
-                            <td className="p-4 border border-primary/5 text-center font-black group-hover:text-primary">{r.g}</td>
-                            <td className="p-4 border border-primary/5 text-center">{r.p}</td>
-                            <td className="p-4 border border-primary/5 text-start text-foreground/50 group-hover:text-foreground transition-colors">{r.c}</td>
+                          <tr key={i} className="hover:bg-zinc-50 transition-colors group">
+                            <td className="p-6 border-t border-zinc-50 text-center font-bold text-zinc-900 font-comfortaa text-sm">{r.g}</td>
+                            <td className="p-6 border-t border-zinc-50 text-center font-bold tracking-widest">{r.p}</td>
+                            <td className="p-6 border-t border-zinc-50 text-start font-bold uppercase tracking-tight opacity-60 group-hover:opacity-100 transition-opacity">{r.c}</td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
-                    <CornerMarks />
                   </div>
-                  <div className="p-6 bg-primary/5 border border-primary/20 flex gap-4 items-center rounded-xl">
-                    <div className="h-10 w-10 rounded-full border border-primary/30 flex items-center justify-center animate-pulse">
-                      <Info className="h-5 w-5 text-primary" />
+                  <div className="p-8 bg-zinc-900 text-white flex gap-6 items-center rounded-4xl shadow-xl shadow-zinc-200">
+                    <div className="h-12 w-12 rounded-2xl bg-white/10 flex items-center justify-center shrink-0">
+                      <Info className="h-6 w-6 text-white" />
                     </div>
-                    <p className="text-xs text-foreground/60 leading-tight">{t("manual_grade_notice")}
-                    </p>
+                    <p className="text-xs font-bold uppercase tracking-widest leading-relaxed opacity-80">{t("manual_grade_notice")}</p>
                   </div>
                 </motion.div>
               </div>
@@ -280,26 +286,26 @@ export default function ManualPage() {
           </TabsContent>
 
           <TabsContent value="tech" className="mt-0">
-            <motion.div variants={container} initial="hidden" animate="show" className="grid grid-cols-1 md:grid-cols-2 gap-10">
-              <motion.div variants={item} className="space-y-6">
-                <div className="flex items-center gap-4">
-                  <div className="h-12 w-12 bg-surface border border-primary/10 flex items-center justify-center rounded-xl shadow-sm">
-                    <FileJson className="h-6 w-6 text-primary" />
+            <motion.div variants={container} initial="hidden" animate="show" className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              <motion.div variants={item} className="space-y-8">
+                <div className="flex items-center gap-6">
+                  <div className="h-16 w-16 bg-white border border-zinc-100 flex items-center justify-center rounded-3xl shadow-sm">
+                    <FileJson className="h-8 w-8 text-zinc-900" />
                   </div>
-                  <h3 className="font-headline text-3xl font-black uppercase text-foreground">{t("label_data_schema")}</h3>
+                  <h3 className="font-comfortaa text-3xl font-bold text-zinc-900">{t("label_data_schema")}</h3>
                 </div>
-                <div className="relative group">
-                  <div className="absolute -inset-0.5 bg-linear-to-r from-primary/30 to-transparent opacity-20 group-hover:opacity-40 blur transition duration-1000"></div>
-                  <div className="relative bg-surface border border-primary/10 p-8 font-mono text-[11px] text-emerald-600 overflow-x-auto rounded-2xl shadow-sm">
-                    <div className="flex justify-between items-center mb-4 border-b border-primary/5 pb-2">
-                      <span className="text-foreground/30 text-[9px]">METHODOLOGY STRUCT.JSON</span>
-                      <div className="flex gap-1">
-                        <div className="h-2 w-2 rounded-full bg-rose-400" />
-                        <div className="h-2 w-2 rounded-full bg-amber-400" />
-                        <div className="h-2 w-2 rounded-full bg-emerald-400" />
+                <div className="relative group overflow-hidden rounded-4xl border border-zinc-100">
+                  <div className="bg-zinc-900 p-12 font-mono text-[12px] text-zinc-400 overflow-x-auto">
+                    <div className="flex justify-between items-center mb-8 border-b border-white/5 pb-4">
+                      <span className="text-white/20 text-[10px] font-bold tracking-[0.3em] uppercase">METHODOLOGY STRUCT.JSON</span>
+                      <div className="flex gap-1.5">
+                        <div className="h-2.5 w-2.5 rounded-full bg-red-400/50" />
+                        <div className="h-2.5 w-2.5 rounded-full bg-amber-400/50" />
+                        <div className="h-2.5 w-2.5 rounded-full bg-green-400/50" />
                       </div>
                     </div>
-                    <pre className="leading-relaxed">{`{
+                    <pre className="leading-loose text-zinc-100">
+{`{
   "protocol": "POINT FACTOR",
   "calibration": {
     "total_units": 1000,
@@ -316,36 +322,35 @@ export default function ManualPage() {
 }`}
                     </pre>
                   </div>
-                  <CornerMarks />
                 </div>
               </motion.div>
 
-              <motion.div variants={item} className="space-y-6">
-                <div className="flex items-center gap-4">
-                  <div className="h-12 w-12 bg-surface border border-primary/10 flex items-center justify-center rounded-xl shadow-sm">
-                    <Download className="h-6 w-6 text-primary" />
+              <motion.div variants={item} className="space-y-8">
+                <div className="flex items-center gap-6">
+                  <div className="h-16 w-16 bg-white border border-zinc-100 flex items-center justify-center rounded-3xl shadow-sm">
+                    <Download className="h-8 w-8 text-zinc-900" />
                   </div>
-                  <h3 className="font-headline text-3xl font-black uppercase text-foreground">{t("label_system_exports")}</h3>
+                  <h3 className="font-comfortaa text-3xl font-bold text-zinc-900">{t("label_system_exports")}</h3>
                 </div>
                 <div className="space-y-4">
                   {[
-                    { l: "PDF EVALUATION REPORT", v: "v2.1", s: "SECURE", c: "text-rose-600" },
-                    { l: "XLSX DATA MATRIX", v: "v3.0", s: "READY", c: "text-emerald-600" },
-                    { l: "JSON SYSTEM STATE", v: "v1.5", s: "PROTECTED", c: "text-primary" }
+                    { l: "PDF EVALUATION REPORT", v: "v2.1", s: "SECURE", c: "text-red-600" },
+                    { l: "XLSX DATA MATRIX", v: "v3.0", s: "READY", c: "text-green-600" },
+                    { l: "JSON SYSTEM STATE", v: "v1.5", s: "PROTECTED", c: "text-zinc-900" }
                   ].map((e, i) => (
-                    <div key={i} className="flex items-center justify-between p-6 bg-surface border border-primary/5 rounded-xl group hover:border-primary/30 transition-all relative shadow-sm">
-                      <div className="flex items-center gap-6">
-                        <Crosshair className={`h-5 w-5 ${e.c} opacity-30 group-hover:opacity-100 transition-all`} />
+                    <div key={i} className="flex items-center justify-between p-8 bg-white border border-zinc-100 rounded-4xl group hover:shadow-lg transition-all relative">
+                      <div className="flex items-center gap-8">
+                        <Crosshair className={cn("h-6 w-6 opacity-20 group-hover:opacity-100 transition-all", e.c)} />
                         <div>
-                          <span className="font-headline font-black text-sm tracking-widest text-foreground block">{e.l}</span>
-                          <span className="text-[9px] font-mono text-foreground/30">HASH: SHA256_{Math.random().toString(16).substring(2, 10).toUpperCase()}</span>
+                          <span className="font-bold text-sm tracking-widest text-zinc-900 block mb-1 uppercase">{e.l}</span>
+                          <span className="text-[9px] font-bold text-zinc-300 tracking-widest uppercase">HASH: {Math.random().toString(16).substring(2, 12).toUpperCase()}</span>
                         </div>
                       </div>
                       <div className="text-end">
-                        <Badge className="bg-muted/20 text-foreground/40 rounded-full border-primary/5 font-mono text-[9px] mb-1">{e.v}</Badge>
-                        <span className={`block text-[8px] font-black tracking-widest ${e.c}`}>{e.s}</span>
+                        <Badge className="bg-zinc-50 text-zinc-400 rounded-full border-none font-bold text-[9px] mb-2 px-3 py-1 uppercase tracking-widest">{e.v}</Badge>
+                        <span className={cn("block text-[10px] font-bold tracking-[0.2em] uppercase", e.c)}>{e.s}</span>
                       </div>
-                      <div className="absolute top-0 right-0 w-1 h-0 bg-primary/40 group-hover:h-full transition-all duration-300" />
+                      <div className="absolute top-0 right-0 w-2 h-0 bg-zinc-900 group-hover:h-full transition-all duration-300" />
                     </div>
                   ))}
                 </div>
@@ -358,18 +363,19 @@ export default function ManualPage() {
       {/* Footer Branding */}
       <motion.div 
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1 }}
-        className="pt-24 flex flex-col items-center gap-6"
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.5 }}
+        className="pt-32 flex flex-col items-center gap-10"
       >
-        <div className="flex items-center gap-4">
-          <div className="h-px w-20 bg-primary/20" />
-          <div className="flex items-center gap-3 px-8 py-3 bg-surface border border-primary/20 text-[10px] text-primary font-headline font-black tracking-[0.5em] uppercase rounded-full shadow-sm">
+        <div className="flex items-center gap-6 w-full max-w-2xl">
+          <div className="h-px flex-1 bg-zinc-100" />
+          <div className="flex items-center gap-4 px-10 py-4 bg-zinc-900 text-[10px] text-white font-bold tracking-[0.5em] uppercase rounded-full shadow-2xl shadow-zinc-200">
             <Info className="h-4 w-4" />{t("manual_footer_suite")}
           </div>
-          <div className="h-px w-20 bg-primary/20" />
+          <div className="h-px flex-1 bg-zinc-100" />
         </div>
-        <div className="flex gap-8 text-[9px] font-mono text-foreground/20 uppercase tracking-[0.2em]">
+        <div className="flex flex-wrap justify-center gap-12 text-[10px] font-bold text-zinc-300 uppercase tracking-[0.3em]">
           <span>{t("label_copyright_footer")}</span>
           <span>{t("label_latency_footer")}</span>
           <span>{t("label_kern_mod")}</span>
