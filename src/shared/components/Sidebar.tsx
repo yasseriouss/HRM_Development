@@ -20,7 +20,8 @@ import {
   Building2,
   Workflow,
   BookOpen,
-  Cpu
+  Cpu,
+  X
 } from "lucide-react";
 import { useLang } from "@shared/contexts/LangContext";
 import { getAuthUser, clearAuthToken, clearAuthUser } from "@shared/lib/auth";
@@ -32,10 +33,9 @@ interface SidebarProps {
   setCollapsed: (v: boolean) => void;
 }
 
-export function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
-  const [location, setLocation] = useLocation();
+export function Sidebar({ setCollapsed }: { setCollapsed?: (v: boolean) => void }) {
+  const [location] = useLocation();
   const { t, lang } = useLang();
-  const user = getAuthUser();
   const isAr = lang === 'ar';
 
   const NAV_ITEMS = [
@@ -53,46 +53,36 @@ export function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
     { id: 'presentation', href: '/interactive-presentation', icon: Presentation, labelKey: 's1_title' },
   ];
 
-  const handleLogout = () => {
-    clearAuthToken();
-    clearAuthUser();
-    setLocation("/login");
-  };
-
   const isActive = (href: string) => 
     href === "/" ? location === "/" : location.startsWith(href);
 
   return (
     <aside 
-      className={`relative h-full bg-background border-e border-muted/10 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] flex flex-col z-40 ${
-        collapsed ? 'w-20' : 'w-72'
-      }`}
+      className={`relative h-full bg-background border-e border-muted/10 flex flex-col z-40 w-72`}
     >
-      {/* Sidebar Accent Effect */}
       <div className="absolute inset-y-0 inset-inline-end-0 w-px bg-linear-to-b from-transparent via-primary/20 to-transparent opacity-50" />
       
-      {/* Header / Logo */}
-      <div className="h-24 flex items-center px-8 border-b border-muted/5 bg-surface/50">
+      <div className="h-24 flex items-center px-8 border-b border-muted/5 bg-surface/50 justify-between">
         <div className="flex items-center gap-5 overflow-hidden">
           <div className="shrink-0 w-11 h-11 bg-primary/5 border border-primary/10 flex items-center justify-center relative group rounded-2xl">
             <Layers className="w-5 h-5 text-primary" />
-            <div className="absolute inset-0 bg-primary/10 scale-0 group-hover:scale-100 transition-transform rounded-2xl" />
           </div>
-          {!collapsed && (
-            <div className="flex flex-col whitespace-nowrap animate-in fade-in slide-in-from-inline-start-4 duration-700">
-              <span className="text-base font-headline font-black tracking-tight uppercase leading-none text-foreground">HRM Platform</span>
-              <span className="text-[9px] font-body-default text-muted font-bold tracking-[0.2em] mt-2 uppercase opacity-40">Enterprise Edition</span>
-            </div>
-          )}
+          <div className="flex flex-col whitespace-nowrap">
+            <span className="text-base font-headline font-black tracking-tight uppercase leading-none text-foreground">HRM Platform</span>
+            <span className="text-[9px] font-body-default text-muted font-bold tracking-[0.2em] mt-2 uppercase opacity-40">Enterprise Edition</span>
+          </div>
         </div>
+        {setCollapsed && (
+          <Button variant="ghost" size="icon" onClick={() => setCollapsed(false)} className="md:hidden">
+            <X className="h-5 w-5" />
+          </Button>
+        )}
       </div>
       
-      {/* Factory Switcher */}
       <div className="mt-8">
-        <FactorySwitcher collapsed={collapsed} />
+        <FactorySwitcher collapsed={false} />
       </div>
 
-      {/* Nav Content */}
       <div className="flex-1 overflow-y-auto py-10 px-5 custom-scrollbar">
         <div className="space-y-1.5">
           {NAV_ITEMS.map((item) => (
@@ -105,54 +95,12 @@ export function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
                 }`}
               >
                 <item.icon className={`w-5 h-5 transition-transform duration-500 ${isActive(item.href) ? 'scale-110' : 'group-hover:scale-110'}`} />
-                {!collapsed && (
-                  <span className="text-[10px] font-headline font-bold tracking-[0.15em] uppercase whitespace-nowrap animate-in fade-in slide-in-from-inline-start-2 duration-300">
-                    {t(item.labelKey as any)}
-                  </span>
-                )}
-                {/* Tooltip for collapsed mode */}
-                {collapsed && (
-                  <div className={`absolute ${isAr ? 'right-full mr-4' : 'left-full ml-4'} px-3 py-2 bg-background border border-muted/10 text-[10px] font-bold tracking-widest uppercase text-foreground opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50 rounded-2xl shadow-xl`}>
-                    {t(item.labelKey as any)}
-                  </div>
-                )}
+                <span className="text-[10px] font-headline font-bold tracking-[0.15em] uppercase whitespace-nowrap">
+                  {t(item.labelKey as any)}
+                </span>
               </div>
             </Link>
           ))}
-        </div>
-      </div>
-
-      {/* Footer / User */}
-      <div className="p-6 border-t border-muted/5 bg-surface/30">
-        <div className="flex flex-col gap-3">
-          {!collapsed && user && (
-            <div className="flex items-center gap-4 px-3 py-2 mb-3 animate-in fade-in slide-in-from-bottom-2">
-              <div className="w-12 h-12 rounded-2xl border border-muted/10 bg-background flex items-center justify-center soft-shadow">
-                <User className="w-6 h-6 text-muted" />
-              </div>
-              <div className="flex flex-col min-w-0">
-                <span className="text-xs font-headline font-black text-foreground truncate uppercase tracking-wider">{user.full_name}</span>
-                <span className="text-[9px] font-body-default text-muted truncate uppercase font-bold opacity-50 mt-1">{user.role}</span>
-              </div>
-            </div>
-          )}
-          
-          <Button
-            variant="ghost"
-            className="w-full justify-start gap-4 px-4 py-4 rounded-3xl text-muted hover:text-destructive hover:bg-destructive/5 transition-all"
-            onClick={handleLogout}
-          >
-            <LogOut className="w-5 h-5" />
-            {!collapsed && <span className="text-[10px] font-headline font-bold tracking-[0.15em] uppercase">SIGN OUT</span>}
-          </Button>
-
-          <Button
-            variant="ghost"
-            className="w-full justify-center py-2.5 rounded-3xl text-muted hover:text-primary transition-all border border-transparent hover:border-primary/10"
-            onClick={() => setCollapsed(!collapsed)}
-          >
-            <ChevronLeft className={`w-4 h-4 transition-transform duration-500 ${collapsed ? (isAr ? '' : 'rotate-180') : (isAr ? 'rotate-180' : '')}`} />
-          </Button>
         </div>
       </div>
     </aside>

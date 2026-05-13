@@ -28,7 +28,7 @@ export default function Slide04_Architecture() {
         </p>
       </div>
 
-      <div className="absolute right-[6vw] top-[8vh]" style={{ width: "50vw", display: "flex", flexDirection: "column", gap: "1.8vh" }}>
+      <div className="absolute right-[6vw] top-[8vh]" style={{ width: "46vw", display: "flex", flexDirection: "column", gap: "1.8vh" }}>
         <div className="arch-anim-2" style={{ background: "rgba(212,150,10,0.08)", border: "0.15vw solid rgba(212,150,10,0.35)", borderRadius: "0.8vw", padding: "2.2vh 3vw", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div>
             <div className="font-display font-bold" style={{ fontSize: "2vw", color: "var(--slide-primary)", marginBottom: "0.4vh" }}>{t("s4_frontend")}</div>

@@ -87,9 +87,8 @@ export default function Slide02_Challenge() {
         </div>
       </div>
 
-      <div className="absolute bottom-[3vh] right-[4vw]">
-          <span style={{ color: "var(--slide-primary)" }}> &times; </span>{t("s6_formula_label").toLowerCase()}) <span style={{ color: "var(--slide-primary)" }}>/</span> <span style={{ color: "var(--slide-primary)" }}>&#x3A3;</span>({t("s6_formula_label").toLowerCase()})
-          <span style={{ color: "var(--slide-primary)" }}> &times; </span>100
+      <div className="absolute bottom-[4vh] right-[6vw]">
+        <div className="font-body" style={{ fontSize: "1.1vw", color: "var(--slide-muted)" }}>{t("s1_created_by")} <span style={{ color: "var(--slide-primary)" }}>yasserious.com</span></div>
       </div>
     </div>
   );

@@ -25,7 +25,7 @@ export default function Slide05_Features() {
         <h2 className="font-display font-bold tracking-tight" style={{ fontSize: "4.5vw", lineHeight: 1, color: "var(--slide-text)" }}>{t("s5_subtitle")}</h2>
       </div>
 
-      <div className="absolute top-[20vh] left-[8vw] right-[6vw]" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "2vh 2.5vw" }}>
+      <div className="absolute top-[20vh] left-[8vw] right-[8vw]" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "2.5vh 3vw" }}>
         <div className="feat-1" style={{ background: "rgba(212,150,10,0.07)", border: "0.15vw solid rgba(212,150,10,0.25)", borderRadius: "0.8vw", padding: "2.5vh 2.5vw" }}>
           <div className="font-display font-bold mb-[1vh]" style={{ fontSize: "1.8vw", color: "var(--slide-primary)" }}>{t("s5_f1_title")}</div>
           <div className="font-body" style={{ fontSize: "1.35vw", color: "var(--slide-muted)", lineHeight: 1.5 }}>{t("s5_f1_desc")}</div>
@@ -52,7 +52,7 @@ export default function Slide05_Features() {
         </div>
       </div>
 
-      <div className="absolute bottom-[3vh] right-[6vw]">
+      <div className="absolute bottom-[6vh] right-[8vw]">
         <div className="font-body" style={{ fontSize: "1.1vw", color: "var(--slide-muted)" }}>{t("s1_created_by")} <span style={{ color: "var(--slide-primary)" }}>yasserious.com</span></div>
       </div>
     </div>

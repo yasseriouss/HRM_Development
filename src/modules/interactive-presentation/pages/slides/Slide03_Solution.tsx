@@ -33,7 +33,7 @@ export default function Slide03_Solution() {
         </h2>
         <p
           className="font-body mt-[2.5vh]"
-          style={{ fontSize: "1.6vw", color: "var(--slide-muted)", maxWidth: "35vw", lineHeight: 1.7 }}
+          style={{ fontSize: "1.6vw", color: "var(--slide-muted)", maxWidth: "32vw", lineHeight: 1.7 }}
         >
           {t("s3_description")}
         </p>
@@ -41,7 +41,7 @@ export default function Slide03_Solution() {
 
       <div
         className="absolute right-[6vw] top-[8vh]"
-        style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2vh 2vw", width: "48vw" }}
+        style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2vh 2vw", width: "46vw" }}
       >
         <div
           style={{
@@ -112,7 +112,7 @@ export default function Slide03_Solution() {
         </div>
       </div>
 
-      <div className="absolute bottom-[3vh] right-[4vw]">
+      <div className="absolute bottom-[5vh] right-[6vw]">
         <div className="font-body" style={{ fontSize: "1.1vw", color: "var(--slide-muted)" }}>{t("s1_created_by")} <span style={{ color: "var(--slide-primary)" }}>yasserious.com</span></div>
       </div>
     </div>

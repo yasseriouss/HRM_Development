@@ -165,6 +165,7 @@ function AllSlides() {
 
 // This component is used for the deployed view at `/`
 function SlideViewer() {
+  const [location] = useLocation();
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -196,7 +197,7 @@ function SlideViewer() {
       const w = "innerWidth" in target ? (target as Window).innerWidth : (target as HTMLElement).clientWidth;
       const h = "innerHeight" in target ? (target as Window).innerHeight : (target as HTMLElement).clientHeight;
       
-      const padding = isFullscreen ? 0 : 80;
+      const padding = isFullscreen ? 0 : Math.max(40, Math.min(w * 0.1, h * 0.1));
       const availableW = w - padding;
       const availableH = h - padding;
 
@@ -263,41 +264,44 @@ function SlideViewer() {
           onLoad={() => iframeRef.current?.focus()}
           title="Slide viewer"
         />
-        
-        {/* Floating Controls Overlay - Editorial Style */}
-        <div className="absolute bottom-8 right-8 z-50 flex items-center gap-3 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
-          <div className="flex fs-toggle-btn p-2 rounded-2xl">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => {
-                 iframeRef.current?.contentWindow?.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowLeft" }));
-              }}
-              className="rounded-xl h-10 w-10 hover:bg-primary/10 text-primary transition-colors"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => {
-                 iframeRef.current?.contentWindow?.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight" }));
-              }}
-              className="rounded-xl h-10 w-10 hover:bg-primary/10 text-primary transition-colors"
-            >
-              <ChevronRight className="h-5 w-5" />
-            </Button>
-            <div className="w-px h-5 bg-primary/10 self-center mx-1" />
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleFullscreen}
-              className="rounded-xl h-10 w-10 hover:bg-primary/10 text-primary transition-colors"
-              title={isFullscreen ? "Exit Fullscreen (F)" : "Enter Fullscreen (F)"}
-            >
-              {isFullscreen ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
-            </Button>
+      </div>
+
+      {/* Floating Controls Overlay - Moved outside frame to prevent overlap */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+        <div className="flex fs-toggle-btn p-2 rounded-2xl">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => {
+               iframeRef.current?.contentWindow?.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowLeft" }));
+            }}
+            className="rounded-xl h-10 w-10 hover:bg-primary/10 text-primary transition-colors"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </Button>
+          <div className="px-2 flex items-center justify-center font-headline font-bold text-xs text-primary/60 min-w-12">
+            {slides.findIndex(s => String(location).includes(s.position.toString())) + 1} / {slides.length}
           </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => {
+               iframeRef.current?.contentWindow?.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight" }));
+            }}
+            className="rounded-xl h-10 w-10 hover:bg-primary/10 text-primary transition-colors"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </Button>
+          <div className="w-px h-5 bg-primary/10 self-center mx-1" />
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleFullscreen}
+            className="rounded-xl h-10 w-10 hover:bg-primary/10 text-primary transition-colors"
+            title={isFullscreen ? "Exit Fullscreen (F)" : "Enter Fullscreen (F)"}
+          >
+            {isFullscreen ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
+          </Button>
         </div>
       </div>
 

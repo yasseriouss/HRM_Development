@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { useTheme } from "next-themes";
-import { Sun, Moon, LogOut, Globe, Menu, X, ChevronRight, LayoutGrid, BarChart3, FileText, Presentation, Table, FlaskConical, ExternalLink, Shield, Cpu, Activity } from "lucide-react";
+import { Sun, Moon, LogOut, Globe, Menu, X, ChevronRight, LayoutGrid, BarChart3, FileText, Presentation, Table, FlaskConical, ExternalLink, Shield, Cpu, Activity, User } from "lucide-react";
 import { clearAuthToken, clearAuthUser, getAuthUser } from "@shared/lib/auth";
 import { Button } from "@shared/components/ui/button";
 import { useLang } from "@shared/contexts/LangContext";
@@ -111,10 +111,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className={`min-h-screen flex bg-background text-foreground font-body-default relative overflow-hidden h-screen ${isAr ? 'rtl' : 'ltr'}`} dir={isAr ? 'rtl' : 'ltr'}>
       
-      {/* Desktop Sidebar */}
-      <div className="hidden md:block h-full">
-        <Sidebar collapsed={isSidebarCollapsed} setCollapsed={setIsSidebarCollapsed} />
-      </div>
+      {/* Desktop Sidebar - Removed in favor of Burger Menu */}
+
 
       {/* Mobile Sidebar Overlay */}
       <AnimatePresence>
@@ -148,7 +146,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               variant="ghost"
               size="icon"
               onClick={() => setIsMobileMenuOpen(true)}
-              className="md:hidden h-10 w-10 border border-muted/20 bg-background/50 hover:bg-primary/10 text-muted hover:text-primary rounded-2xl"
+              className="h-10 w-10 border border-muted/20 bg-background/50 hover:bg-primary/10 text-muted hover:text-primary rounded-2xl"
             >
               <Menu className="h-5 w-5" />
             </Button>
@@ -195,6 +193,40 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <Globe className="h-3 w-3 me-2" />
                 {lang === "en" ? "AR" : "EN"}
               </Button>
+
+              {user && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-10 px-4 border border-primary/20 bg-primary/5 hover:bg-primary/10 text-[10px] font-headline font-bold tracking-widest text-primary rounded-2xl transition-all uppercase"
+                    >
+                      <User className="h-3 w-3 me-2" />
+                      {t("common_profile" as any) || "PROFILE"}
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56 bg-background border-muted/10 rounded-2xl shadow-2xl p-2">
+                    <DropdownMenuLabel className="px-3 py-2">
+                      <div className="flex flex-col gap-1">
+                        <span className="text-xs font-headline font-bold text-foreground uppercase tracking-wider">{user.full_name}</span>
+                        <span className="text-[10px] text-muted uppercase font-bold opacity-60">{user.role}</span>
+                      </div>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator className="bg-muted/5 my-1" />
+                    <DropdownMenuItem className="p-0">
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-start gap-3 px-3 py-2 h-10 rounded-xl text-muted hover:text-destructive hover:bg-destructive/5 transition-all group"
+                        onClick={handleLogout}
+                      >
+                        <LogOut className="h-4 w-4 transition-transform group-hover:scale-110" />
+                        <span className="text-[10px] font-headline font-bold tracking-widest uppercase">{t("nav_logout") || "SIGN OUT"}</span>
+                      </Button>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
             </div>
           </div>
         </header>

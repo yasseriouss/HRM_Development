@@ -71,10 +71,9 @@ export default function Slide08_DeptDashboard() {
         </div>
       </div>
 
-      <div className="absolute bottom-[3vh] right-[6vw]">
+      <div className="absolute bottom-[6vh] right-[8vw]">
         <div className="font-body" style={{ fontSize: "1.1vw", color: "var(--slide-muted)" }}>{t("s1_created_by")} <span style={{ color: "var(--slide-primary)" }}>yasserious.com</span></div>
       </div>
     </div>
   );
 }
-
