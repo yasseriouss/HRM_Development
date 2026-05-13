@@ -138,7 +138,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         )}
       </AnimatePresence>
 
-      <div className="flex-1 flex flex-col min-w-0 relative h-full">
+      <div className="flex-1 flex flex-col min-w-0 min-h-0 relative h-full">
         <header className="sticky top-0 z-40 border-b border-muted/10 bg-background/90 backdrop-blur-md px-4 md:px-8 py-4 flex items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <Button
@@ -230,7 +230,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </header>
 
-        <main className="flex-1 min-w-0 relative">
+        <main className="flex-1 min-h-0 min-w-0 relative flex flex-col">
           {/* Scroll container.
               - For full-viewport routes (slides / docs / spreadsheet) we
                 lock the content box to the viewport and hide overflow so
@@ -245,9 +245,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
               location.startsWith("/spreadsheet");
             return (
               <div
-                className={`h-full w-full ${
+                className={`min-h-0 flex-1 w-full ${
                   fullViewport
-                    ? "overflow-hidden"
+                    ? "h-full overflow-hidden"
                     : "overflow-y-auto custom-scrollbar"
                 }`}
               >

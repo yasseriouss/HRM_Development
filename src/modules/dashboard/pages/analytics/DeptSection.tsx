@@ -11,6 +11,7 @@ import {
   dataTableBase,
   dataTableBody,
   dataTableHeadRow,
+  dataTableRow,
   dataTableScroll,
   dataTableShell,
   dataTableTd,
