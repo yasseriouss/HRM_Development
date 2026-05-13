@@ -3,19 +3,53 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/logo.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#1A1C22" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#F8F6F2" media="(prefers-color-scheme: light)" />
+    <meta name="color-scheme" content="light dark" />
+
     <title>HRM Unified | Professional Management Suite</title>
     <meta name="description" content="Professional HRM platform for skill matrix management, employee evaluations, and workforce intelligence. Optimized for enterprise excellence." />
     <meta name="keywords" content="HRM, Skill Matrix, Enterprise HR, Employee Evaluation, Workforce Intelligence" />
+
     <meta property="og:title" content="HRM Unified | Enterprise Management Suite" />
     <meta property="og:description" content="Integrated management suite for workforce competency tracking and performance analytics." />
     <meta property="og:type" content="website" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <meta property="og:image" content="/logo.png" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="HRM Unified | Enterprise Management Suite" />
+    <meta name="twitter:description" content="Integrated management suite for workforce competency tracking and performance analytics." />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&family=Tajawal:wght@300;400;500;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* Initial paint background — avoids the brief white flash before
+         the Tailwind theme kicks in, in both light and dark modes. */
+      html, body { background: #F8F6F2; }
+      @media (prefers-color-scheme: dark) {
+        html, body { background: #1A1C22; }
+      }
+      html.dark, html.dark body { background: #1A1C22; }
+      body { margin: 0; }
+
+      /* Hide root until React mounts — clean fade-in instead of flash */
+      #root { opacity: 0; animation: appFadeIn 320ms cubic-bezier(0.16, 1, 0.3, 1) 60ms forwards; }
+      @keyframes appFadeIn { to { opacity: 1; } }
+    </style>
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <p style="font-family: system-ui; padding: 2rem; text-align: center;">
+        This application requires JavaScript. Please enable JavaScript to continue.
+      </p>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

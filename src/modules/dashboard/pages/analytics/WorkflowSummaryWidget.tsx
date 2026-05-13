@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, ClipboardList, CheckCircle2, Clock, Activity } from "lucide-react";
 import { cn } from "@shared/utils/cn";
 
-const MAIN_APP_TASKS_URL = "/hrm-skill-matrix/my-tasks";
+const MAIN_APP_TASKS_URL = "/skill-matrix/my-tasks";
 const ACTIVE_STATUSES = ["In Progress", "Awaiting Approval"];
 const COMPLETED_STATUS = "Finalized";
 const ACTIONABLE_STEP_STATUSES = ["in_progress", "submitted"];

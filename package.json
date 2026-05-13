@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "main": "index.ts",
   "engines": {
     "node": "22.x"
   },
@@ -11,12 +10,15 @@
     "dev": "pnpm --parallel --filter hrm-development --filter @hrm-development/api-server run /^dev:/",
     "dev:client": "vite --host 0.0.0.0",
     "dev:server": "pnpm --filter @hrm-development/api-server run dev",
-    "build": "vite build && pnpm -r --filter \"./artifacts/**\" build",
-    "vercel-build": "pnpm build",
+    "build": "vite build",
+    "build:all": "vite build && pnpm -r --filter \"./artifacts/**\" build",
+    "vercel-build": "vite build",
     "serve": "vite preview --host 0.0.0.0",
+    "preview": "vite preview --host 0.0.0.0",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "clean": "rimraf dist node_modules/.vite .vite *.tsbuildinfo"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

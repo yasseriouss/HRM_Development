@@ -32,7 +32,7 @@ const SUITE_APPS: SuiteApp[] = [
   {
     id: "matrix",
     labelKey: "login_title",
-    href: "/",
+    href: "/skill-matrix",
     icon: LayoutGrid,
     description: "Core skill management system",
     active: true,
@@ -40,37 +40,30 @@ const SUITE_APPS: SuiteApp[] = [
   {
     id: "dashboard",
     labelKey: "suite_dashboard",
-    href: "/hrm-dashboard",
+    href: "/",
     icon: BarChart3,
     description: "Enterprise analytics & reporting",
   },
   {
     id: "docs",
     labelKey: "suite_docs",
-    href: "/hrm-docs",
+    href: "/docs",
     icon: FileText,
     description: "System documentation & help",
   },
   {
     id: "pitch",
     labelKey: "suite_pitch_deck",
-    href: "/hrm-pitch-deck",
+    href: "/interactive-presentation",
     icon: Presentation,
     description: "Project overview & vision",
   },
   {
     id: "spreadsheet",
     labelKey: "suite_spreadsheet",
-    href: "/hrm-spreadsheet",
+    href: "/spreadsheet",
     icon: Table,
     description: "Interactive data analysis",
-  },
-  {
-    id: "sandbox",
-    labelKey: "suite_sandbox",
-    href: "/mockup-sandbox",
-    icon: FlaskConical,
-    description: "UI experimentation environment",
   },
 ] as const;
 

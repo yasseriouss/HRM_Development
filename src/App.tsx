@@ -78,6 +78,40 @@ function ProtectedRoute({ component: Component, roles }: ProtectedRouteProps) {
 const ADMIN_HR_DEPT = ["super_admin", "hr_coordinator", "dept_head"];
 const ALL_ROLES = ["super_admin", "hr_coordinator", "dept_head", "employee"];
 
+function NotFoundPage() {
+  const [, navigate] = useLocation();
+  return (
+    <div className="min-h-[60vh] flex flex-col items-center justify-center gap-6 px-6 text-center">
+      <div className="font-headline font-black text-7xl md:text-9xl text-primary/30 tracking-tight tabular-num">
+        404
+      </div>
+      <div className="space-y-2">
+        <h1 className="font-headline font-bold text-2xl md:text-3xl text-foreground tracking-tight uppercase">
+          Module not found
+        </h1>
+        <p className="text-sm text-muted-foreground max-w-md">
+          The page you’re looking for doesn’t exist or has been moved. Use the
+          menu to navigate, or return to the dashboard.
+        </p>
+      </div>
+      <div className="flex gap-3">
+        <button
+          onClick={() => navigate("/")}
+          className="h-10 px-5 rounded-2xl bg-primary text-primary-foreground text-[11px] font-headline font-bold tracking-widest uppercase hover:opacity-90 transition-opacity"
+        >
+          Go home
+        </button>
+        <button
+          onClick={() => window.history.back()}
+          className="h-10 px-5 rounded-2xl border border-border bg-background text-foreground text-[11px] font-headline font-bold tracking-widest uppercase hover:bg-muted/10 transition-colors"
+        >
+          Go back
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function AppRoutes() {
   const [location] = useLocation();
 
@@ -150,7 +184,7 @@ function AppRoutes() {
 
               <Route path="/my-profile" component={() => <ProtectedRoute component={MyProfilePage} roles={ALL_ROLES} />} />
 
-              <Route component={() => <div className="text-white">404 - Module Not Found</div>} />
+              <Route component={NotFoundPage} />
             </Switch>
           </motion.div>
         </AnimatePresence>

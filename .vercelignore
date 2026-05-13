@@ -1,17 +1,22 @@
-# Dependencies
+# Dependencies — re-installed during Vercel build
 node_modules/
 **/node_modules/
 
-# Build artifacts (will be rebuilt during vercel-build)
+# Build artifacts — rebuilt during vercel-build
 **/dist/
+.vite/
+**/.vite/
 
-# Development files
+# Dev / Replit / local-only state
 .git/
 .cache/
 .local/
 .agents/
-my-app/
 attached_assets/
+playwright-report/
+test-results/
+scratch/
+my-app/
 
 # IDE
 .vscode/
@@ -28,5 +33,17 @@ Thumbs.db
 .config/
 replit.md
 
-# Misc
+# Misc / generated
 *.tsbuildinfo
+build_log.txt
+build_error.txt
+output.log
+*.log
+
+# Standalone HTML mockups (not part of the deployed app)
+hrm-unified-warm-soft.html
+hrm-unified-warm-soft.html.artifact.json
+hrm-unified-warm-soft-premium.html
+hrm-unified-warm-soft-premium.html.artifact.json
+hrm-unified-warm-soft-premium-2.html
+hrm-unified-warm-soft-premium-2.html.artifact.json
