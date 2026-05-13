@@ -19,13 +19,14 @@ import {
   User,
   Fingerprint,
   ShieldCheck,
-  Zap
+  Zap,
+  GraduationCap
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@shared/utils/cn";
 
 export default function EmployeeDetailPage() {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const headers = getAuthHeaders();
   const t = useT();
   const isAr = document.documentElement.dir === "rtl";

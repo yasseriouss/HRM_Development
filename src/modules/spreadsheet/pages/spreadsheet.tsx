@@ -348,14 +348,14 @@ function SkillsLibrarySheet() {
 function EmployeesSheet() {
   return (
     <div className="space-y-12 animate-in fade-in duration-1000">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 bg-surface/50 p-10 rounded-[2rem] border border-muted/10 soft-shadow backdrop-blur-md">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 bg-surface/50 p-10 rounded-4xl border border-muted/10 soft-shadow backdrop-blur-md">
         <div>
           <h2 className="text-3xl font-headline font-bold text-foreground tracking-tight mb-2">Personnel Registry</h2>
           <p className="text-muted font-medium text-sm">Industrial workforce mapping and operative identification database.</p>
         </div>
       </div>
 
-      <div className="overflow-hidden rounded-[2rem] border border-muted/10 bg-surface soft-shadow">
+      <div className="overflow-hidden rounded-4xl border border-muted/10 bg-surface soft-shadow">
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>
@@ -396,7 +396,7 @@ function CampaignsSheet() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {CAMPAIGNS.map(camp => (
-          <div key={camp.id} className="relative p-10 bg-surface border border-muted/10 rounded-[2rem] hover:border-primary/20 transition-all duration-500 soft-shadow group">
+          <div key={camp.id} className="relative p-10 bg-surface border border-muted/10 rounded-4xl hover:border-primary/20 transition-all duration-500 soft-shadow group">
             <div className="flex justify-between items-start mb-8">
               <div>
                 <h3 className="text-2xl font-headline font-bold text-foreground tracking-tight mb-2 group-hover:text-primary transition-colors">{camp.title}</h3>

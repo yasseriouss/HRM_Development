@@ -351,7 +351,7 @@ export default function DepartmentsPage() {
                   </div>
 
                   <div className="relative">
-                    <p className="text-zinc-500 font-medium text-sm leading-relaxed line-clamp-3 min-h-[4.5rem]">
+                    <p className="text-zinc-500 font-medium text-sm leading-relaxed line-clamp-3 min-h-18">
                       {dept.description || t("label_no_records")}
                     </p>
                     <div className="absolute -left-10 top-0 w-1 h-full bg-zinc-50 rounded-full group-hover:bg-emerald-500 transition-colors" />

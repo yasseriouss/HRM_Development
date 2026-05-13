@@ -7,6 +7,7 @@ import { Card, CardContent } from "@shared/components/ui/card";
 import { Button } from "@shared/components/ui/button";
 import { Badge } from "@shared/components/ui/badge";
 import { Skeleton } from "@shared/components/ui/skeleton";
+import { Input } from "@shared/components/ui/input";
 import { 
   ChevronLeft, 
   Users, 
@@ -27,7 +28,7 @@ import { useLang } from "@shared/contexts/LangContext";
 import { cn } from "@shared/utils/cn";
 
 export default function DepartmentDetailPage() {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const headers = getAuthHeaders();
   const t = useT();
   const { lang } = useLang();

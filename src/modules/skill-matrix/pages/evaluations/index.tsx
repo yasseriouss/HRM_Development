@@ -145,10 +145,10 @@ function SummaryTable({ campaignId }: { campaignId: string }) {
               {items.map((row) => (
                 <tr key={row.employee_id} className="group transition-all hover:bg-zinc-50/50">
                   <td className="px-10 py-10 whitespace-nowrap">
-                    <p className="font-bold text-zinc-900 text-lg tracking-tight group-hover:translate-x-1 transition-transform font-comfortaa">{row.full_name}</p>
+                    <p className="font-bold text-zinc-900 text-lg tracking-tight group-hover:translate-x-1 transition-transform font-comfortaa">{row.employee_name}</p>
                     <p className="text-[9px] font-bold text-zinc-300 mt-2 uppercase tracking-widest">{row.employee_code}</p>
                   </td>
-                  <td className="px-10 py-10 whitespace-nowrap uppercase font-bold text-[10px] text-zinc-400 tracking-widest">{row.department_name}</td>
+                  <td className="px-10 py-10 whitespace-nowrap uppercase font-bold text-[10px] text-zinc-400 tracking-widest">{(row as any).department_name}</td>
                   <td className="px-10 py-10 whitespace-nowrap text-center">
                     <span className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-zinc-50 font-bold text-lg text-zinc-900 font-comfortaa">
                       {row.percentage}%

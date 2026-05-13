@@ -74,7 +74,7 @@ function classBadge(cls: string | null, t: any) {
 }
 
 export default function CampaignDetailPage() {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const headers = getAuthHeaders();
   const t = useT();
   const { toast } = useToast();
@@ -285,7 +285,7 @@ export default function CampaignDetailPage() {
                               )}
                             </button>
                           </PopoverTrigger>
-                          <PopoverContent className="w-64 p-3 bg-white border border-zinc-100 rounded-3xl shadow-2xl z-[50]">
+                          <PopoverContent className="w-64 p-3 bg-white border border-zinc-100 rounded-3xl shadow-2xl z-50">
                             <div className="space-y-1">
                               {[4, 3, 2, 1, 0].map((s) => (
                                 <button
