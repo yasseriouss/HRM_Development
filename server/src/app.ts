@@ -120,7 +120,22 @@ if (!isVercel) {
 
 // ── Public file downloads (always available) ─────────────────────────────────
 app.get("/hrm-skill-matrix-template.xlsx", (_req, res) => {
-  const xlsxPath = path.join(process.cwd(), "public/skill-matrix-template.xlsx");
+  // Resolve the workbook from any plausible launch context: workspace root
+  // (`pnpm dev` from the repo root), the server package (`pnpm --filter
+  // api-server run dev`), the built server bundle (`server/dist/index.mjs`),
+  // and the Vercel bundle.
+  const candidates = [
+    path.resolve(process.cwd(), "public/skill-matrix-template.xlsx"),
+    path.resolve(process.cwd(), "../public/skill-matrix-template.xlsx"),
+    path.resolve(__dirname, "../../public/skill-matrix-template.xlsx"),
+    path.resolve(__dirname, "../../../public/skill-matrix-template.xlsx"),
+    path.resolve(process.cwd(), "dist/skill-matrix-template.xlsx"),
+  ];
+  const xlsxPath = candidates.find((p) => fs.existsSync(p));
+  if (!xlsxPath) {
+    res.status(404).json({ error: "Spreadsheet not yet generated" });
+    return;
+  }
   res.download(xlsxPath, "hrm-Skill-Matrix-Template.xlsx", (err) => {
     if (err && !res.headersSent) {
       res.status(404).json({ error: "Spreadsheet not yet generated" });
