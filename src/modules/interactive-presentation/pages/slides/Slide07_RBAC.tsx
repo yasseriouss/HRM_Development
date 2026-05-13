@@ -1,9 +1,12 @@
 import { useT } from "@/i18n";
+import { useLang } from "@/shared/contexts/LangContext";
 
 const isExport = typeof window !== "undefined" && window.location.pathname.endsWith("/allslides");
 
 export default function Slide07_RBAC() {
   const t = useT();
+  const { lang } = useLang();
+  const isAr = lang === 'ar';
   return (
     <div className="relative w-screen h-screen overflow-hidden" style={{ background: "var(--slide-bg)" }}>
       <style>{`
@@ -15,7 +18,7 @@ export default function Slide07_RBAC() {
       <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, var(--slide-bg) 0%, #1D1F2A 100%)" }} />
       <div className="absolute right-0 top-0 h-full" style={{ width: "0.4vw", background: "linear-gradient(180deg, transparent 0%, var(--slide-primary) 40%, var(--slide-primary) 60%, transparent 100%)" }} />
 
-      <div className="absolute top-[7vh] left-[8vw] rbac-h">
+      <div className={`absolute top-[7vh] ${isAr ? 'right-[8vw]' : 'left-[8vw]'} rbac-h`} style={{ textAlign: isAr ? 'right' : 'left' }}>
         <div className="font-body font-semibold mb-[1vh]" style={{ fontSize: "1.2vw", color: "var(--slide-primary)", letterSpacing: "0.2em" }}>{t("s7_title")}</div>
         <h2 className="font-display font-bold tracking-tight" style={{ fontSize: "4.5vw", lineHeight: 1, color: "var(--slide-text)" }}>
           {t("s7_subtitle").split(" ").slice(0, 1)}<br />{t("s7_subtitle").split(" ").slice(1).join(" ")}
@@ -25,7 +28,7 @@ export default function Slide07_RBAC() {
         </p>
       </div>
 
-      <div className="absolute top-[7vh] right-[6vw] rbac-t" style={{ width: "52vw" }}>
+      <div className={`absolute top-[7vh] ${isAr ? 'left-[6vw]' : 'right-[6vw]'} rbac-t`} style={{ width: "52vw", direction: isAr ? 'rtl' : 'ltr' }}>
         <div style={{ background: "rgba(245,240,232,0.03)", border: "0.15vw solid rgba(245,240,232,0.1)", borderRadius: "0.8vw", overflow: "hidden" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1.8fr 1fr 1fr 1fr 1fr", background: "rgba(212,150,10,0.12)", borderBottom: "0.15vw solid rgba(212,150,10,0.25)" }}>
             <div className="font-body font-semibold" style={{ fontSize: "1.2vw", color: "var(--slide-primary)", padding: "1.5vh 1.5vw" }}>{t("s7_header_perm")}</div>

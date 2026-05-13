@@ -1,9 +1,12 @@
 import { useT } from "@/i18n";
+import { useLang } from "@/shared/contexts/LangContext";
 
 const base = import.meta.env.BASE_URL;
 
 export default function Slide01_Title() {
   const t = useT();
+  const { lang } = useLang();
+  const isAr = lang === 'ar';
   return (
     <div className="relative w-screen h-screen overflow-hidden" style={{ background: "var(--slide-bg)" }}>
       <img
@@ -11,7 +14,7 @@ export default function Slide01_Title() {
         crossOrigin="anonymous"
         alt="Wood manufacturing factory"
         className="absolute inset-0 w-full h-full object-cover"
-        style={{ opacity: 0.35 }}
+        style={{ opacity: 0.65 }}
       />
       <div
         className="absolute inset-0"
@@ -20,7 +23,10 @@ export default function Slide01_Title() {
         }}
       />
 
-      <div className="absolute left-[8vw] top-[50%]" style={{ transform: "translateY(-50%)" }}>
+      <div 
+        className={`absolute top-[50%] ${isAr ? 'right-[8vw]' : 'left-[8vw]'}`} 
+        style={{ transform: "translateY(-50%)", textAlign: isAr ? 'right' : 'left' }}
+      >
         <div
           className="mb-[2vh]"
           style={{
@@ -47,7 +53,7 @@ export default function Slide01_Title() {
         >
           {t("s1_description")}
         </p>
-        <div className="mt-[4vh]" style={{ display: "flex", gap: "3vw" }}>
+        <div className="mt-[4vh]" style={{ display: "flex", gap: "3vw", justifyContent: isAr ? 'flex-end' : 'flex-start' }}>
           <div>
             <div className="font-display font-bold" style={{ fontSize: "3vw", color: "var(--slide-primary)" }}>146+</div>
             <div className="font-body" style={{ fontSize: "1.3vw", color: "var(--slide-muted)" }}>{t("s1_employees")}</div>
@@ -68,10 +74,10 @@ export default function Slide01_Title() {
       </div>
 
       <div
-        className="absolute right-0 top-0 h-full"
+        className={`absolute top-0 h-full ${isAr ? 'left-0' : 'right-0'}`}
         style={{
           width: "0.4vw",
-          background: "linear-gradient(180deg, transparent 0%, var(--slide-primary) 40%, var(--slide-primary) 60%, transparent 100%)"
+          background: `linear-gradient(180deg, transparent 0%, var(--slide-primary) 40%, var(--slide-primary) 60%, transparent 100%)`
         }}
       />
     </div>

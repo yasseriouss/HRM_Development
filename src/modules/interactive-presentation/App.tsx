@@ -15,6 +15,8 @@
 import { useEffect, useRef, useState, useContext } from "react";
 import { useLocation } from "wouter";
 import { useTheme } from "next-themes";
+import { useT } from "@/i18n";
+import { useLang } from "@shared/contexts/LangContext";
 import { slides } from "./slideLoader";
 import { Maximize2, Minimize2, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -166,6 +168,8 @@ function AllSlides() {
 // This component is used for the deployed view at `/`
 function SlideViewer() {
   const [location] = useLocation();
+  const { lang } = useLang();
+  const isAr = lang === 'ar';
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -306,8 +310,8 @@ function SlideViewer() {
       </div>
 
       {/* Subtle Branding */}
-      <div className="absolute top-10 left-10 z-50 opacity-20 pointer-events-none transition-opacity duration-1000">
-        <div className="flex items-center gap-4">
+      <div className={`absolute top-10 ${isAr ? 'right-10' : 'left-10'} z-50 opacity-20 pointer-events-none transition-opacity duration-1000`}>
+        <div className={`flex items-center gap-4 ${isAr ? 'flex-row-reverse' : 'flex-row'}`}>
           <div className="font-headline font-black text-xs tracking-[0.3em] text-primary uppercase">
             EDITORIAL PRESENTATION
           </div>
