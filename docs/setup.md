@@ -65,5 +65,5 @@ This guide ensures you can get the HRM Unified platform running from zero in und
 ## Troubleshooting
 
 - **Port Conflict:** If port 8080 or 8081 is in use, check `server/.env` or `vite.config.ts`.
-- **Login HTTP 500 / 503:** Usually missing `DATABASE_URL` or DB unreachable. Check API logs; ensure `server/.env` exists when running `pnpm dev` (which starts the API from the `server` package). For Neon, ensure your IP is allowlisted if required.
+- **Login HTTP 500 / 503:** Usually missing `DATABASE_URL` or DB unreachable. Check API logs; ensure `server/.env` exists when running `pnpm dev` (which starts the API from the `server` package). For Neon from Vercel, the app rewrites non-pooled `ep-…` hosts to the **pooled** `ep-…-pooler…` host for the HTTP driver (disable with `HRM_NEON_USE_POOLER=0` if your URL is already correct). Ensure your IP is allowlisted if your Neon project requires it.
 - **Database Connection:** Ensure your IP is whitelisted in the Neon console when using Neon.

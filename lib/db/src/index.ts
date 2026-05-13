@@ -37,6 +37,28 @@ function shouldUseNeonHttpDriver(url: string): boolean {
   }
 }
 
+/**
+ * Neon recommends the **pooled** host (`ep-…-pooler.…`) for serverless / many
+ * short-lived clients. Direct `ep-…` URLs often work locally but can fail or
+ * hang from Vercel or cold starts. Opt out: `HRM_NEON_USE_POOLER=0`.
+ */
+function normalizeNeonHttpConnectionString(urlStr: string): string {
+  if (process.env.HRM_NEON_USE_POOLER === "0") return urlStr;
+  try {
+    const u = new URL(urlStr);
+    const host = u.hostname.toLowerCase();
+    if (!host.includes("neon.tech")) return urlStr;
+    const labels = u.hostname.split(".");
+    const first = labels[0] ?? "";
+    if (!first.startsWith("ep-") || first.includes("-pooler")) return urlStr;
+    labels[0] = `${first}-pooler`;
+    u.hostname = labels.join(".");
+    return u.toString();
+  } catch {
+    return urlStr;
+  }
+}
+
 const databaseUrl = resolveDatabaseUrl();
 
 if (!databaseUrl) {
@@ -65,13 +87,17 @@ export const db = (() => {
     return missingDbProxy;
   }
   if (shouldUseNeonHttpDriver(databaseUrl)) {
-    sql = neon(databaseUrl);
+    const neonUrl = normalizeNeonHttpConnectionString(databaseUrl);
+    sql = neon(neonUrl);
     return drizzleNeon(sql, { schema });
   }
   const max = Number(process.env.HRM_PG_POOL_MAX ?? 10);
+  const connectTimeout = Number(process.env.HRM_PG_CONNECT_TIMEOUT_MS ?? 15_000);
   pgPool = new Pool({
     connectionString: databaseUrl,
     max: Number.isFinite(max) && max > 0 ? max : 10,
+    connectionTimeoutMillis:
+      Number.isFinite(connectTimeout) && connectTimeout > 0 ? connectTimeout : 15_000,
   });
   return drizzleNodePg(pgPool, { schema });
 })();
