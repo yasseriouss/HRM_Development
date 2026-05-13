@@ -12,7 +12,7 @@ import { ErrorBoundary } from "@modules/skill-matrix/components/error-boundary";
 import type { ComponentType } from "react";
 
 // Dashboard Module
-import DashboardHome from "@modules/dashboard/pages/dashboard";
+import DashboardHome from "@modules/dashboard/pages/analytics/index";
 import DashboardLogin from "@modules/dashboard/pages/login";
 
 // Skill Matrix Module
