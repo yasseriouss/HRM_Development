@@ -11,13 +11,13 @@
     "dev:client": "vite --host 0.0.0.0",
     "dev:server": "pnpm --filter @hrm-development/api-server run dev",
     "build": "vite build",
-    "build:all": "vite build && pnpm -r --filter \"./artifacts/**\" build",
     "vercel-build": "vite build",
     "serve": "vite preview --host 0.0.0.0",
     "preview": "vite preview --host 0.0.0.0",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
+    "generate:excel": "node scripts/generate-excel.mjs",
     "clean": "rimraf dist node_modules/.vite .vite *.tsbuildinfo"
   },
   "dependencies": {

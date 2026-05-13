@@ -139,7 +139,12 @@ function AppRoutes() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="h-full"
+            // min-h-full (not h-full) so the motion wrapper grows with
+            // long page content — h-full clamped it to the scroll
+            // container's height and blocked normal scroll on tall pages.
+            // Full-viewport routes (slides/docs/spreadsheet) get their
+            // height from the Layout's inner wrapper, not from here.
+            className="min-h-full w-full"
           >
             <Switch>
               {/* Dashboard */}

@@ -6,7 +6,6 @@ import fs from "fs";
 import { fileURLToPath } from "url";
 import router from "./routes";
 import { logger } from "./lib/logger";
-import { registerFrontend } from "./lib/vite";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -55,16 +54,11 @@ app.get("/healthz", (_req, res) => {
 app.use("/api", router);
 
 // ── Static / Frontend Serving (skipped on Vercel) ────────────────────────────
-// Vercel's CDN handles `dist/` and `artifacts/*/dist/public/` directly via
-// `vercel.json` rewrites. Only run the Node static server in local/dev or
-// in non-Vercel production hosts (e.g. when running `pnpm start`).
+// On Vercel the CDN serves the built SPA in `dist/` directly via `vercel.json`
+// rewrites — Express only handles the `/api/*` surface and the xlsx download.
+// In every other host (local dev / self-hosted / Docker) we still serve the
+// unified SPA from this Express process so the API and UI share one port.
 if (!isVercel) {
-  // Redirect root to main app in standalone mode
-  app.get("/", (_req, res) => {
-    res.redirect("/skill-matrix");
-  });
-
-  // Serve main app from root dist
   const possibleDistPaths = [
     path.resolve(process.cwd(), "dist"),
     path.resolve(process.cwd(), "server/dist"),
@@ -106,6 +100,13 @@ if (!isVercel) {
     }
   };
 
+  // SPA fallback for every client-routed top-level path. The order matters:
+  // static files first, then route-based fallbacks for unknown paths.
+  if (fs.existsSync(rootDist)) {
+    app.use(express.static(rootDist));
+  }
+
+  app.get("/", serveIndex);
   app.get(/^\/skill-matrix/, serveIndex);
   app.get(/^\/job-evaluation/, serveIndex);
   app.get(/^\/spreadsheet/, serveIndex);
@@ -113,17 +114,6 @@ if (!isVercel) {
   app.get(/^\/login/, serveIndex);
   app.get(/^\/docs/, serveIndex);
   app.get(/^\/interactive-presentation/, serveIndex);
-
-  if (fs.existsSync(rootDist)) {
-    app.use(express.static(rootDist));
-  }
-
-  // Frontend artifacts (Vite/Static): /hrm-skill-matrix, /hrm-dashboard, etc.
-  try {
-    await registerFrontend(app);
-  } catch (err) {
-    logger.error({ err }, "Failed to register frontend artifacts");
-  }
 } else {
   logger.info("Running on Vercel — Express only handles /api/* and /healthz. Static assets served by Vercel CDN.");
 }

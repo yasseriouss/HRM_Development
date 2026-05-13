@@ -2,8 +2,8 @@
  * Vercel serverless entrypoint.
  *
  * This handler is invoked ONLY for routes that `vercel.json` forwards to it —
- * namely `/api/*` and `/healthz`. Every other URL (the SPA, hashed assets,
- * artifacts, public images) is served by Vercel's static CDN.
+ * namely `/api/*`, `/healthz`, and the xlsx download. Every other URL (the
+ * built SPA, hashed assets, public images) is served by Vercel's static CDN.
  *
  * The underlying Express app self-skips its static-file branch when it
  * detects the Vercel runtime (`process.env.VERCEL === "1"`), so this file

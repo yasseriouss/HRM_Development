@@ -23,7 +23,6 @@ Full-stack workforce competency management platform for a wood manufacturing fac
 │  └─ shared/                   i18n, theme, layout, utils
 ├─ server/                     Express API (mounted under /api/* on Vercel)
 ├─ api/index.ts                Vercel serverless function entrypoint
-├─ artifacts/                  Optional standalone sub-apps (not deployed by default)
 ├─ lib/                        Shared workspace libraries (api-client, schemas, …)
 ├─ scripts/                    Build / data scripts (e.g. generate-excel.mjs)
 ├─ public/                     Static assets served as-is by Vite/Vercel
@@ -58,9 +57,9 @@ Full-stack workforce competency management platform for a wood manufacturing fac
 | `pnpm dev` | Run client + server in parallel (Vite on :5173, API on :8080) |
 | `pnpm dev:client` | Run only the Vite dev server |
 | `pnpm dev:server` | Run only the Express API |
-| `pnpm build` | Production build of the main SPA |
-| `pnpm build:all` | Build SPA **and** every artifact in `artifacts/*` |
-| `pnpm vercel-build` | Vercel-compatible production build |
+| `pnpm build` | Production build of the unified SPA (`dist/`) |
+| `pnpm vercel-build` | Vercel-compatible production build (same as `build`) |
+| `pnpm generate:excel` | Regenerate `public/skill-matrix-template.xlsx` |
 | `pnpm preview` | Serve the production build locally |
 | `pnpm typecheck` | TypeScript check (no emit) |
 | `pnpm test` / `pnpm test:watch` | Vitest |

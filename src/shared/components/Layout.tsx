@@ -231,15 +231,38 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </header>
 
         <main className="flex-1 min-w-0 relative">
-          <div className="h-full w-full overflow-y-auto custom-scrollbar">
-            <div className={`relative z-10 h-full ${
-              location.startsWith("/docs") || location.startsWith("/interactive-presentation") || location.startsWith("/spreadsheet")
-                ? "w-full"
-                : "p-4 md:p-8 lg:p-12"
-            }`}>
-              {children}
-            </div>
-          </div>
+          {/* Scroll container.
+              - For full-viewport routes (slides / docs / spreadsheet) we
+                lock the content box to the viewport and hide overflow so
+                those experiences fit exactly in the available space.
+              - For every other page we let the inner wrapper grow with
+                its content (min-h-full instead of h-full) and provide
+                overflow-y-auto so the page can scroll naturally. */}
+          {(() => {
+            const fullViewport =
+              location.startsWith("/docs") ||
+              location.startsWith("/interactive-presentation") ||
+              location.startsWith("/spreadsheet");
+            return (
+              <div
+                className={`h-full w-full ${
+                  fullViewport
+                    ? "overflow-hidden"
+                    : "overflow-y-auto custom-scrollbar"
+                }`}
+              >
+                <div
+                  className={`relative z-10 ${
+                    fullViewport
+                      ? "h-full w-full"
+                      : "min-h-full p-4 md:p-8 lg:p-12"
+                  }`}
+                >
+                  {children}
+                </div>
+              </div>
+            );
+          })()}
         </main>
 
         <footer className="border-t border-muted/10 bg-background/90 py-4 px-6 md:px-10 hidden sm:block">

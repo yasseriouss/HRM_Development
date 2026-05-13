@@ -4,7 +4,10 @@ import { fileURLToPath } from "url";
 import fs from "fs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const OUTPUT_PATH = path.resolve(__dirname, "../artifacts/hrm-docs/skill-matrix-template.xlsx");
+// The unified SPA serves this file from `/skill-matrix-template.xlsx`
+// (Vite copies `public/*` straight to the build root, and Express's
+// download handler at `/hrm-skill-matrix-template.xlsx` reads from here).
+const OUTPUT_PATH = path.resolve(__dirname, "../public/skill-matrix-template.xlsx");
 
 // ── Color palette ─────────────────────────────────────────────────────────────
 const C = {
