@@ -46,29 +46,29 @@ export default function Slide06_ScoringEngine() {
       </div>
 
       <div className={`absolute bottom-[14vh] ${isAr ? 'right-[8vw]' : 'left-[8vw]'} score-ex`} style={{ display: "flex", gap: "2.5vw", alignItems: "flex-end", flexDirection: isAr ? 'row-reverse' : 'row' }}>
-        <div style={{ background: "rgba(245,240,232,0.04)", border: "0.15vw solid rgba(245,240,232,0.1)", borderRadius: "0.8vw", padding: "2vh 2.5vw", minWidth: "18vw" }}>
+        <div style={{ background: "rgba(245,240,232,0.04)", border: "0.15vw solid rgba(245,240,232,0.1)", borderRadius: "0.8vw", padding: "2vh 2.5vw", minWidth: "18vw", textAlign: isAr ? 'right' : 'left' }}>
           <div className="font-body mb-[1vh]" style={{ fontSize: "1.1vw", color: "var(--slide-muted)" }}>{t("s6_skill1")}</div>
           <div className="font-display font-bold" style={{ fontSize: "2vw", color: "var(--slide-primary)" }}>3 / 4</div>
           <div className="font-body" style={{ fontSize: "1.2vw", color: "var(--slide-muted)" }}>{t("s6_skill1_w")}</div>
         </div>
-        <div style={{ background: "rgba(245,240,232,0.04)", border: "0.15vw solid rgba(245,240,232,0.1)", borderRadius: "0.8vw", padding: "2vh 2.5vw", minWidth: "18vw" }}>
+        <div style={{ background: "rgba(245,240,232,0.04)", border: "0.15vw solid rgba(245,240,232,0.1)", borderRadius: "0.8vw", padding: "2vh 2.5vw", minWidth: "18vw", textAlign: isAr ? 'right' : 'left' }}>
           <div className="font-body mb-[1vh]" style={{ fontSize: "1.1vw", color: "var(--slide-muted)" }}>{t("s6_skill2")}</div>
           <div className="font-display font-bold" style={{ fontSize: "2vw", color: "var(--slide-primary)" }}>4 / 4</div>
           <div className="font-body" style={{ fontSize: "1.2vw", color: "var(--slide-muted)" }}>{t("s6_skill2_w")}</div>
         </div>
-        <div style={{ background: "rgba(245,240,232,0.04)", border: "0.15vw solid rgba(245,240,232,0.1)", borderRadius: "0.8vw", padding: "2vh 2.5vw", minWidth: "18vw" }}>
+        <div style={{ background: "rgba(245,240,232,0.04)", border: "0.15vw solid rgba(245,240,232,0.1)", borderRadius: "0.8vw", padding: "2vh 2.5vw", minWidth: "18vw", textAlign: isAr ? 'right' : 'left' }}>
           <div className="font-body mb-[1vh]" style={{ fontSize: "1.1vw", color: "var(--slide-muted)" }}>{t("s6_skill3")}</div>
           <div className="font-display font-bold" style={{ fontSize: "2vw", color: "var(--slide-primary)" }}>3 / 4</div>
           <div className="font-body" style={{ fontSize: "1.2vw", color: "var(--slide-muted)" }}>{t("s6_skill3_w")}</div>
         </div>
-        <div style={{ fontSize: "2.5vw", color: "var(--slide-muted)", marginBottom: "2vh" }}>&#8594;</div>
+        <div style={{ fontSize: "2.5vw", color: "var(--slide-muted)", marginBottom: "2vh" }}>{isAr ? "←" : "→"}</div>
         <div style={{ background: "rgba(16,185,129,0.08)", border: "0.15vw solid rgba(16,185,129,0.3)", borderRadius: "0.8vw", padding: "2vh 2.5vw", minWidth: "14vw", textAlign: "center" }}>
           <div className="font-body mb-[0.5vh]" style={{ fontSize: "1.1vw", color: "#10B981" }}>{t("s6_final_score")}</div>
           <div className="font-display font-bold" style={{ fontSize: "2.8vw", color: "#10B981" }}>87.5%</div>
         </div>
       </div>
 
-      <div className="absolute bottom-[5vh] right-[6vw]">
+      <div className={`absolute bottom-[5vh] ${isAr ? 'left-[6vw]' : 'right-[6vw]'}`}>
         <div className="font-body" style={{ fontSize: "1.1vw", color: "var(--slide-muted)" }}>{t("s1_created_by")} <span style={{ color: "var(--slide-primary)" }}>yasserious.com</span></div>
       </div>
     </div>
