@@ -19,7 +19,7 @@ import { Button } from "@shared/components/ui/button";
 import { Input } from "@shared/components/ui/input";
 import { Label } from "@shared/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@shared/components/ui/select";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useFactory } from "@shared/contexts/FactoryContext";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
@@ -28,72 +28,56 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@shared/components/ui/alert-dialog";
-import { Plus, Pencil, Trash2, ExternalLink, Shield, Activity, Cpu, HardDrive, Target } from "lucide-react";
+import { Plus, Pencil, Trash2, ExternalLink, ShieldCheck, Zap, Target, GraduationCap, ChevronRight, Search, Filter, BookOpen } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@shared/hooks/use-toast";
 import { useT } from "@modules/skill-matrix/i18n";
+import { cn } from "@shared/utils/cn";
 
 const STATUSES = ["Pending", "In Progress", "Completed", "Cancelled"] as const;
 const TYPES = ["Immediate", "Short-term", "Long-term", "Promotion"] as const;
 type TrainingType = (typeof TYPES)[number];
 type TrainingStatus = (typeof STATUSES)[number];
 
-// CornerMarks removed - legacy industrial element
-
-
-function statusBadge(status: string, t: (k: any) => string) {
-  const map: Record<string, { bg: string; text: string; key: string }>= {
-    Pending: { bg: "bg-amber-100 text-amber-700 border-amber-200", text: "", key: "training_pending" },
-    "In Progress": { bg: "bg-sky-100 text-sky-700 border-sky-200", text: "", key: "training_in_progress" },
-    Completed: { bg: "bg-emerald-100 text-emerald-700 border-emerald-200", text: "", key: "training_completed" },
-    Cancelled: { bg: "bg-zinc-100 text-zinc-700 border-zinc-200", text: "", key: "training_cancelled" },
+function statusBadge(status: string, t: any) {
+  const map: Record<string, string> = {
+    Pending: "bg-amber-50 text-amber-600 border-amber-100",
+    "In Progress": "bg-blue-50 text-blue-600 border-blue-100",
+    Completed: "bg-emerald-50 text-emerald-600 border-emerald-100",
+    Cancelled: "bg-zinc-50 text-zinc-400 border-zinc-100",
   };
-  const config = map[status] ?? map.Pending;
-  return (
-    <Badge variant="outline" className={`rounded-full font-headline text-[10px] font-bold px-3 py-1 uppercase tracking-tight whitespace-nowrap ${config.bg}`}>
-      {t(config.key)}
-    </Badge>);
-}
-
-const TRAINING_TYPE_KEYS: Record<string, string>= {
-  Immediate: "training_type_immediate",
-  "Short-term": "training_type_short",
-  "Long-term": "training_type_long",
-  Promotion: "training_type_promotion",
-};
-
-function typeBadge(type: string, t: (k: any) => string) {
-  const map: Record<string, { bg: string; text: string }> = {
-    Immediate: { bg: "bg-rose-100 text-rose-700 border-rose-200", text: "" },
-    "Short-term": { bg: "bg-amber-100 text-amber-700 border-amber-200", text: "" },
-    "Long-term": { bg: "bg-sky-100 text-sky-700 border-sky-200", text: "" },
-    Promotion: { bg: "bg-violet-100 text-violet-700 border-violet-200", text: "" },
+  const keyMap: Record<string, string> = {
+    Pending: "training_pending",
+    "In Progress": "training_in_progress",
+    Completed: "training_completed",
+    Cancelled: "training_cancelled",
   };
-  const config = map[type] ?? map.Immediate;
   return (
-    <Badge variant="outline" className={`rounded-full font-headline text-[10px] font-bold px-3 py-1 uppercase tracking-tight whitespace-nowrap ${config.bg}`}>{t((TRAINING_TYPE_KEYS[type] ?? "training_type_short") as any)}
-    </Badge>);
+    <Badge variant="outline" className={cn("rounded-full font-bold text-[9px] tracking-widest px-3 py-1 uppercase border", map[status] ?? map.Pending)}>
+      {t(keyMap[status] ?? "training_pending")}
+    </Badge>
+  );
 }
 
-type StatusOption = { value: string; apiValue?: ListTrainingRecommendationsStatus };
-
-interface TrainingForm {
-  employee_id: string;
-  skill_id: string;
-  recommendation_type: TrainingType;
-  target_date: string;
-  notes: string;
+function typeBadge(type: string, t: any) {
+  const map: Record<string, string> = {
+    Immediate: "bg-red-50 text-red-600 border-red-100",
+    "Short-term": "bg-amber-50 text-amber-600 border-amber-100",
+    "Long-term": "bg-blue-50 text-blue-600 border-blue-100",
+    Promotion: "bg-purple-50 text-purple-600 border-purple-100",
+  };
+  const keyMap: Record<string, string> = {
+    Immediate: "training_type_immediate",
+    "Short-term": "training_type_short",
+    "Long-term": "training_type_long",
+    Promotion: "training_type_promotion",
+  };
+  return (
+    <Badge variant="outline" className={cn("rounded-full font-bold text-[9px] tracking-widest px-3 py-1 uppercase border", map[type] ?? map.Immediate)}>
+      {t(keyMap[type] ?? "training_type_short")}
+    </Badge>
+  );
 }
-
-interface EditForm {
-  status: TrainingStatus;
-  target_date: string;
-  notes: string;
-}
-
-const emptyCreateForm = (): TrainingForm => ({
-  employee_id: "", skill_id: "", recommendation_type: "Short-term", target_date: "", notes: "",
-});
 
 export default function TrainingPage() {
   const headers = getAuthHeaders();
@@ -103,88 +87,47 @@ export default function TrainingPage() {
   const queryClient = useQueryClient();
   const isAdmin = user?.role === "super_admin";
   const t = useT();
-
-  const STATUS_OPTIONS: StatusOption[] = [
-    { value: "all" },
-    { value: "Pending", apiValue: "Pending" },
-    { value: "In Progress", apiValue: "In Progress" },
-    { value: "Completed", apiValue: "Completed" },
-    { value: "Cancelled", apiValue: "Cancelled" },
-  ];
-
-  const STATUS_LABELS: Record<string, string>= {
-    all: t("all_statuses"),
-    Pending: t("training_pending"),
-    "In Progress": t("training_in_progress"),
-    Completed: t("training_completed"),
-    Cancelled: t("training_cancelled"),
-  };
+  const isAr = document.documentElement.dir === "rtl";
 
   const [statusFilter, setStatusFilter] = useState("all");
   const [showCreate, setShowCreate] = useState(false);
   const [editTarget, setEditTarget] = useState<TrainingRecommendation | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
-  const [createForm, setCreateForm] = useState<TrainingForm>(emptyCreateForm());
-  const [editForm, setEditForm] = useState<EditForm>({ status: "Pending", target_date: "", notes: "" });
+  const [createForm, setCreateForm] = useState({ employee_id: "", skill_id: "", recommendation_type: "Short-term" as TrainingType, target_date: "", notes: "" });
+  const [editForm, setEditForm] = useState({ status: "Pending" as TrainingStatus, target_date: "", notes: "" });
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
-  const apiStatus = STATUS_OPTIONS.find((o) => o.value === statusFilter)?.apiValue;
-
   const { data: recommendations, isLoading, queryKey } = useListTrainingRecommendations(
-    { status: apiStatus, factory_id: activeFactoryId ?? undefined },
+    { status: statusFilter === "all" ? undefined : (statusFilter as any), factory_id: activeFactoryId ?? undefined },
     { request: { headers } },
   );
 
   const { data: employeesData } = useListEmployees({ page_size: 200 }, { request: { headers } });
   const { data: skills } = useListSkills({}, { request: { headers } });
 
-  const items: TrainingRecommendation[] = recommendations ?? [];
-  const pending = items.filter((r) => r.status === "Pending").length;
-  const inProgress = items.filter((r) => r.status === "In Progress").length;
-  const completed = items.filter((r) => r.status === "Completed").length;
-
-  const openEdit = (r: TrainingRecommendation) => {
-    setEditForm({
-      status: r.status as TrainingStatus,
-      target_date: r.target_date ? String(r.target_date).split("T")[0] : "",
-      notes: r.notes ?? "",
-    });
-    setEditTarget(r);
-  };
+  const items = recommendations ?? [];
+  const metrics = [
+    { label: t("training_pending"), value: items.filter(r => r.status === "Pending").length, icon: Clock, color: "text-amber-500", bg: "bg-amber-50/50" },
+    { label: t("training_in_progress"), value: items.filter(r => r.status === "In Progress").length, icon: Zap, color: "text-blue-500", bg: "bg-blue-50/50" },
+    { label: t("training_completed"), value: items.filter(r => r.status === "Completed").length, icon: ShieldCheck, color: "text-emerald-500", bg: "bg-emerald-50/50" },
+  ];
 
   const handleCreate = async () => {
-    if (!createForm.employee_id || !createForm.recommendation_type) {
-      toast({ title: t("training_required"), variant: "destructive" });
-      return;
-    }
+    if (!createForm.employee_id) return;
     setSaving(true);
     try {
       const res = await fetch(`/api/training`, {
         method: "POST",
         headers: { "Content-Type": "application/json", ...headers },
-        body: JSON.stringify({
-          employee_id: createForm.employee_id,
-          skill_id: createForm.skill_id || undefined,
-          recommendation_type: createForm.recommendation_type,
-          target_date: createForm.target_date || undefined,
-          notes: createForm.notes || undefined,
-        }),
+        body: JSON.stringify(createForm),
       });
       if (res.ok) {
         toast({ title: t("training_created") });
         setShowCreate(false);
-        setCreateForm(emptyCreateForm());
-        await queryClient.invalidateQueries({ queryKey });
-      } else {
-        const body = await res.json() as { message?: string };
-        toast({ title: t("common_failed"), description: body.message ?? "Could not create.", variant: "destructive" });
+        queryClient.invalidateQueries({ queryKey });
       }
-    } catch {
-      toast({ title: t("common_network_error"), variant: "destructive" });
-    } finally {
-      setSaving(false);
-    }
+    } finally { setSaving(false); }
   };
 
   const handleEdit = async () => {
@@ -194,25 +137,14 @@ export default function TrainingPage() {
       const res = await fetch(`/api/training/${editTarget.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json", ...headers },
-        body: JSON.stringify({
-          status: editForm.status,
-          target_date: editForm.target_date || null,
-          notes: editForm.notes || null,
-        }),
+        body: JSON.stringify(editForm),
       });
       if (res.ok) {
         toast({ title: t("training_updated") });
         setEditTarget(null);
-        await queryClient.invalidateQueries({ queryKey });
-      } else {
-        const body = await res.json() as { message?: string };
-        toast({ title: t("common_failed"), description: body.message ?? "Could not update.", variant: "destructive" });
+        queryClient.invalidateQueries({ queryKey });
       }
-    } catch {
-      toast({ title: t("common_network_error"), variant: "destructive" });
-    } finally {
-      setSaving(false);
-    }
+    } finally { setSaving(false); }
   };
 
   const handleDelete = async () => {
@@ -223,282 +155,235 @@ export default function TrainingPage() {
       if (res.ok) {
         toast({ title: t("training_deleted") });
         setDeleteTarget(null);
-        await queryClient.invalidateQueries({ queryKey });
-      } else {
-        const body = await res.json() as { message?: string };
-        toast({ title: t("common_failed"), description: body.message ?? "Could not delete.", variant: "destructive" });
-        setDeleteTarget(null);
+        queryClient.invalidateQueries({ queryKey });
       }
-    } catch {
-      toast({ title: t("common_network_error"), variant: "destructive" });
-    } finally {
-      setDeleting(false);
-    }
+    } finally { setDeleting(false); }
   };
 
   return (
-    <div className="space-y-8 pb-20 font-sans selection:bg-primary/30">
-      {/* Header - Editorial Style */}
-      <div className="relative p-12 bg-surface border border-muted/20 rounded-3xl overflow-hidden shadow-sm">
-        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-primary/10 rounded-xl">
-                <Target className="h-5 w-5 text-primary" />
+    <div className="max-w-7xl mx-auto space-y-12 py-16 px-8 pb-32 selection:bg-zinc-900 selection:text-white">
+      {/* Header Section */}
+      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-12">
+        <div className="space-y-6">
+           <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-zinc-900 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-zinc-200">
+                 <GraduationCap className="h-6 w-6" />
               </div>
-              <span className="font-headline font-bold tracking-tight text-sm text-primary uppercase">{t("training_protocol_label")}</span>
-            </div>
-            <h2 className="text-5xl font-headline font-extrabold tracking-tight text-foreground leading-none">{t("training_title")}
-            </h2>
-            <p className="text-muted-foreground font-medium border-s-2 border-primary/20 ps-6 max-w-2xl">{t("training_subtitle")}</p>
-          </div>
-          
-          {isAdmin && (
-            <Button className="rounded-2xl bg-primary text-primary-foreground font-headline font-bold text-sm tracking-tight py-7 px-10 h-auto hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all hover:scale-[1.02]" onClick={() => { setCreateForm(emptyCreateForm()); setShowCreate(true); }}>
-              <Plus className="h-5 w-5 me-2" />{t("training_new")}
-            </Button>
-          )}
+              <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-zinc-400">{t("training_protocol_label")}</span>
+           </div>
+           <h1 className="text-6xl lg:text-7xl font-bold font-comfortaa text-zinc-900 tracking-tighter leading-none uppercase">
+              {t("training_title")}
+           </h1>
+           <p className="text-zinc-500 font-medium text-lg max-w-2xl leading-relaxed">{t("training_subtitle")}</p>
         </div>
+
+        {isAdmin && (
+          <Button 
+            className="rounded-full bg-zinc-900 text-white hover:scale-105 transition-all font-bold text-[10px] tracking-widest uppercase h-16 px-10 shadow-2xl shadow-zinc-200"
+            onClick={() => setShowCreate(true)}
+          >
+            <Plus className="h-5 w-5 me-3" /> {t("training_new")}
+          </Button>
+        )}
       </div>
 
       {/* Metrics Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">{[
-          { label: t("training_pending"), value: pending, icon: Target, color: "text-amber-600", bg: "bg-amber-50" },
-          { label: t("training_in_progress"), value: inProgress, icon: Cpu, color: "text-sky-600", bg: "bg-sky-50" },
-          { label: t("training_completed"), value: completed, icon: Shield, color: "text-emerald-600", bg: "bg-emerald-50" },
-        ].map((m, i) => (
-          <Card key={i} className="bg-surface border border-muted/20 rounded-3xl relative group overflow-hidden hover:border-primary/30 transition-all duration-300">
-             <div className={`absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity ${m.color}`}>
-                <m.icon className="h-16 w-16" />
-             </div>
-             <CardContent className="p-8">
-                <p className="font-headline font-bold text-xs tracking-tight text-muted-foreground uppercase mb-3">{m.label}</p>
-                <div className="flex items-baseline gap-2">
-                   <p className={`text-4xl font-headline font-extrabold tracking-tight ${m.color}`}>{m.value}</p>
-                   <span className="text-[10px] font-medium text-muted-foreground/40 uppercase">{t("label_total_nodes")}</span>
-                </div>
-             </CardContent>
-          </Card>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {metrics.map((m, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.1 }}
+          >
+            <Card className="bg-white border-zinc-100 rounded-4xl p-10 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden group relative">
+               <div className={cn("absolute top-0 right-0 p-8 opacity-[0.03] scale-150 transition-transform duration-700 group-hover:scale-125", m.color)}>
+                  <m.icon className="h-24 w-24" />
+               </div>
+               <div className="space-y-4 relative z-10">
+                  <p className="text-[9px] font-bold text-zinc-300 uppercase tracking-widest">{m.label}</p>
+                  <div className="flex items-end justify-between">
+                     <h3 className={cn("text-5xl font-bold font-comfortaa", m.color)}>{m.value}</h3>
+                     <div className={cn("p-3 rounded-2xl", m.bg)}>
+                        <m.icon className={cn("h-5 w-5", m.color)} />
+                     </div>
+                  </div>
+               </div>
+            </Card>
+          </motion.div>
         ))}
       </div>
 
       {/* Control Panel */}
-      <Card className="bg-surface border border-muted/20 rounded-3xl relative">
-        <CardContent className="p-6">
-          <div className="flex flex-col md:flex-row items-center gap-6">
-            <div className="w-full md:w-80 relative">
-              <Label className="font-headline font-bold text-xs text-muted-foreground tracking-tight uppercase mb-3 block">{t("filter_by_status_label")}</Label>
+      <Card className="bg-white border-zinc-100 rounded-4xl shadow-sm overflow-hidden">
+        <CardContent className="p-8 flex flex-col sm:flex-row items-center gap-8">
+           <div className="flex-1 w-full relative group">
+              <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-300 group-focus-within:text-zinc-900 transition-colors" />
+              <Input
+                placeholder={t("search_nodes_placeholder")}
+                className="ps-14 h-16 bg-zinc-50 border-transparent rounded-3xl text-sm font-bold text-zinc-900 placeholder:text-zinc-300 focus-visible:ring-zinc-100"
+              />
+           </div>
+           <div className="w-full sm:w-64">
               <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="h-12 bg-background border-muted/20 rounded-xl font-headline font-bold text-sm tracking-tight text-foreground">
-                  <SelectValue placeholder={t("filter_by_status")} />
+                <SelectTrigger className="h-16 bg-zinc-50 border-transparent rounded-3xl font-bold text-[10px] tracking-widest uppercase text-zinc-900 focus:ring-zinc-100">
+                  <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-surface border-muted/20 rounded-xl">
-                  {STATUS_OPTIONS.map((opt) => (
-                    <SelectItem key={opt.value} value={opt.value} className="font-headline font-medium text-sm focus:bg-primary/10">
-                      {STATUS_LABELS[opt.value]}
-                    </SelectItem>
+                <SelectContent className="rounded-3xl border-zinc-100 shadow-2xl">
+                  {STATUSES.map(s => (
+                    <SelectItem key={s} value={s} className="font-bold text-[10px] tracking-widest uppercase focus:bg-zinc-50">{s}</SelectItem>
                   ))}
+                  <SelectItem value="all" className="font-bold text-[10px] tracking-widest uppercase focus:bg-zinc-50">ALL STATUS</SelectItem>
                 </SelectContent>
               </Select>
-            </div>
-          </div>
+           </div>
         </CardContent>
       </Card>
 
-      {/* Data Table */}
-      <div className="relative border border-muted/20 bg-surface rounded-3xl overflow-hidden shadow-sm">
-        {isLoading ? (
-          <div className="p-8 space-y-4">{Array.from({ length: 6 }).map((_, i) => (
-                <Skeleton key={i} className="h-16 w-full bg-muted/5 rounded-xl" />
-             ))}
-          </div>
-        ) : items.length === 0 ? (
-          <div className="p-24 text-center space-y-6">
-            <div className="p-6 bg-background rounded-full w-24 h-24 flex items-center justify-center mx-auto">
-              <HardDrive className="h-10 w-10 text-muted/30" />
+      {/* Data List */}
+      <div className="space-y-6">
+        <AnimatePresence mode="popLayout">
+          {isLoading ? (
+            Array.from({ length: 4 }).map((_, i) => (
+              <Skeleton key={i} className="h-40 w-full bg-zinc-50 rounded-4xl" />
+            ))
+          ) : items.length === 0 ? (
+            <div className="py-32 text-center bg-white border border-dashed border-zinc-200 rounded-4xl">
+               <BookOpen className="h-12 w-12 text-zinc-100 mx-auto mb-6" />
+               <p className="text-xs font-bold text-zinc-300 uppercase tracking-widest">{t("label_no_records")}</p>
             </div>
-            <p className="font-headline font-bold text-sm text-muted-foreground uppercase tracking-widest">{t("label_no_records")}</p>
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-start border-collapse text-sm">
-              <thead>
-                <tr className="bg-muted/5 border-b border-muted/10">
-                  <th className="px-8 py-6 font-headline font-bold text-xs tracking-tight text-muted-foreground uppercase whitespace-nowrap">{t("field_employee")}</th>
-                  <th className="px-8 py-6 font-headline font-bold text-xs tracking-tight text-muted-foreground uppercase whitespace-nowrap">{t("field_skill")}</th>
-                  <th className="px-8 py-6 font-headline font-bold text-xs tracking-tight text-muted-foreground uppercase whitespace-nowrap">{t("field_type")}</th>
-                  <th className="px-8 py-6 font-headline font-bold text-xs tracking-tight text-muted-foreground uppercase whitespace-nowrap">{t("field_status")}</th>
-                  <th className="px-8 py-6 font-headline font-bold text-xs tracking-tight text-muted-foreground uppercase whitespace-nowrap">{t("training_col_target_date")}</th>
-                  <th className="px-8 py-6 font-headline font-bold text-xs tracking-tight text-muted-foreground uppercase whitespace-nowrap">{t("field_notes")}</th>
-                  <th className="px-8 py-6 font-headline font-bold text-xs tracking-tight text-muted-foreground uppercase whitespace-nowrap text-end">{t("common_actions")}</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-muted/10">
-                {items.map((r) => (
-                  <tr key={r.id} className="group hover:bg-muted/5 transition-colors">
-                    <td className="px-8 py-7 whitespace-nowrap">
-                      <Link href={`/employees/${r.employee_id}`} className="group/link">
-                        <p className="font-headline font-bold text-foreground text-base tracking-tight group-hover/link:text-primary transition-colors whitespace-nowrap">{r.employee_name ?? "—"}
-                        </p>
-                        <div className="flex items-center gap-1.5 text-[10px] font-bold text-muted-foreground/60 mt-1 uppercase whitespace-nowrap">
-                          <ExternalLink className="h-3 w-3" />{t("label_node_profile")}
-                        </div>
-                      </Link>
-                    </td>
-                    <td className="px-8 py-7 font-headline font-bold text-xs text-primary/70 whitespace-nowrap">{r.skill_name ?? "—"}</td>
-                    <td className="px-8 py-7 whitespace-nowrap">{typeBadge(r.recommendation_type, t)}</td>
-                    <td className="px-8 py-7 whitespace-nowrap">{statusBadge(r.status, t)}</td>
-                    <td className="px-8 py-7 font-headline font-bold text-xs text-muted-foreground whitespace-nowrap">{r.target_date ? new Date(r.target_date).toLocaleDateString() : t("common_no_data")}
-                    </td>
-                    <td className="px-8 py-7">
-                       <p className="text-xs font-medium text-muted-foreground max-w-xs truncate italic">{r.notes ?? "—"}</p>
-                    </td>
-                    <td className="px-8 py-7 text-end">
-                      {isAdmin && (
-                        <div className="flex items-center justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <Button size="icon" variant="ghost" className="h-10 w-10 rounded-xl border border-transparent hover:border-primary/30 hover:bg-primary/10 text-muted-foreground hover:text-primary" onClick={() => openEdit(r)}>
-                            <Pencil className="h-4 w-4" />
-                          </Button>
-                          <Button size="icon" variant="ghost" className="h-10 w-10 rounded-xl border border-transparent hover:border-rose-500/30 hover:bg-rose-500/10 text-muted-foreground hover:text-rose-500" onClick={() =>setDeleteTarget({ id: r.id, name: r.employee_name ?? r.id })}>
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+          ) : (
+            items.map((r, i) => (
+              <motion.div
+                key={r.id}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.05 }}
+              >
+                <Card className="bg-white border-zinc-100 rounded-4xl p-10 shadow-sm hover:shadow-2xl hover:shadow-zinc-100 transition-all duration-500 group relative overflow-hidden">
+                   <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-10">
+                      <div className="flex items-center gap-8">
+                         <div className="w-16 h-16 rounded-3xl bg-zinc-50 flex items-center justify-center group-hover:bg-zinc-900 group-hover:text-white transition-all duration-500">
+                            <Target className="h-6 w-6" />
+                         </div>
+                         <div className="space-y-2">
+                            <Link href={`/skill-matrix/employees/${r.employee_id}`}>
+                               <h3 className="text-2xl font-bold font-comfortaa text-zinc-900 hover:text-zinc-600 transition-colors uppercase tracking-tight">
+                                  {r.employee_name}
+                               </h3>
+                            </Link>
+                            <div className="flex items-center gap-4">
+                               <span className="text-[10px] font-bold text-zinc-300 uppercase tracking-widest">{r.skill_name || "GENERAL DEVELOPMENT"}</span>
+                               <div className="h-1 w-1 rounded-full bg-zinc-200" />
+                               <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">{r.target_date ? new Date(r.target_date).toLocaleDateString() : 'NO TARGET DATE'}</span>
+                            </div>
+                         </div>
+                      </div>
+
+                      <div className="flex flex-wrap items-center gap-4">
+                         {typeBadge(r.recommendation_type, t)}
+                         {statusBadge(r.status, t)}
+                         <div className="h-10 w-px bg-zinc-100 mx-2 hidden lg:block" />
+                         <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-4 group-hover:translate-x-0">
+                            <Button size="icon" variant="ghost" className="h-12 w-12 rounded-2xl text-zinc-400 hover:text-zinc-900 hover:bg-zinc-50" onClick={() => {
+                               setEditTarget(r);
+                               setEditForm({ status: r.status as any, target_date: r.target_date ? String(r.target_date).split('T')[0] : '', notes: r.notes || '' });
+                            }}>
+                               <Pencil className="h-4 w-4" />
+                            </Button>
+                            <Button size="icon" variant="ghost" className="h-12 w-12 rounded-2xl text-zinc-400 hover:text-red-600 hover:bg-red-50" onClick={() => setDeleteTarget({ id: r.id, name: r.employee_name || '' })}>
+                               <Trash2 className="h-4 w-4" />
+                            </Button>
+                         </div>
+                      </div>
+                   </div>
+                   
+                   {r.notes && (
+                     <div className="mt-8 p-6 bg-zinc-50/50 rounded-3xl border border-transparent group-hover:border-zinc-100 group-hover:bg-white transition-all">
+                        <p className="text-xs text-zinc-500 font-medium leading-relaxed italic">"{r.notes}"</p>
+                     </div>
+                   )}
+                </Card>
+              </motion.div>
+            ))
+          )}
+        </AnimatePresence>
       </div>
 
-      {/* Forms & Dialogs */}
-      <Dialog open={showCreate} onOpenChange={(open) => { if (!open) setShowCreate(false); }}>
-        <DialogContent className="max-w-2xl bg-surface border border-muted/20 rounded-3xl p-0 overflow-hidden text-foreground">
-          <div className="relative z-10">
-            <div className="p-8 border-b border-muted/10 bg-muted/5">
-              <h2 className="font-headline font-extrabold text-3xl text-foreground tracking-tight">{t("training_create_title")}
-              </h2>
-              <p className="text-xs font-bold text-primary tracking-widest mt-2 uppercase">{t("label_protocol_sequence")}</p>
+      {/* Modals - Simplified & Styled */}
+      <Dialog open={showCreate} onOpenChange={setShowCreate}>
+         <DialogContent className="max-w-2xl bg-white border-none rounded-4xl p-12 shadow-2xl shadow-zinc-200">
+            <div className="space-y-10">
+               <div className="space-y-4">
+                  <h2 className="text-4xl font-bold font-comfortaa text-zinc-900 tracking-tighter uppercase">{t("training_new")}</h2>
+                  <p className="text-xs font-bold text-zinc-400 tracking-widest uppercase">{t("label_protocol_sequence")}</p>
+               </div>
+
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="md:col-span-2 space-y-3">
+                     <Label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">{t("field_employee")}</Label>
+                     <Select onValueChange={(v) => setCreateForm({...createForm, employee_id: v})}>
+                        <SelectTrigger className="h-14 bg-zinc-50 border-transparent rounded-2xl font-bold text-xs uppercase focus:ring-zinc-100">
+                           <SelectValue placeholder="SELECT EMPLOYEE" />
+                        </SelectTrigger>
+                        <SelectContent className="rounded-2xl border-zinc-100 shadow-2xl">
+                           {employeesData?.data?.map(e => (
+                             <SelectItem key={e.id} value={e.id} className="font-bold text-xs uppercase focus:bg-zinc-50">{e.full_name}</SelectItem>
+                           ))}
+                        </SelectContent>
+                     </Select>
+                  </div>
+                  <div className="space-y-3">
+                     <Label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">{t("field_type")}</Label>
+                     <Select onValueChange={(v) => setCreateForm({...createForm, recommendation_type: v as any})}>
+                        <SelectTrigger className="h-14 bg-zinc-50 border-transparent rounded-2xl font-bold text-xs uppercase focus:ring-zinc-100">
+                           <SelectValue placeholder="TYPE" />
+                        </SelectTrigger>
+                        <SelectContent className="rounded-2xl border-zinc-100 shadow-2xl">
+                           {TYPES.map(t => <SelectItem key={t} value={t} className="font-bold text-xs uppercase focus:bg-zinc-50">{t}</SelectItem>)}
+                        </SelectContent>
+                     </Select>
+                  </div>
+                  <div className="space-y-3">
+                     <Label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">TARGET DATE</Label>
+                     <Input type="date" className="h-14 bg-zinc-50 border-transparent rounded-2xl font-bold text-xs uppercase focus-visible:ring-zinc-100" onChange={e => setCreateForm({...createForm, target_date: e.target.value})} />
+                  </div>
+               </div>
+
+               <Button 
+                  className="w-full h-16 rounded-full bg-zinc-900 text-white font-bold text-[10px] tracking-widest uppercase hover:scale-[1.02] transition-all shadow-xl shadow-zinc-200"
+                  onClick={handleCreate}
+                  disabled={saving}
+               >
+                  {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : "DEPLOY RECOMMENDATION"}
+               </Button>
             </div>
-            
-            <div className="p-10 grid grid-cols-2 gap-8">
-              <div className="col-span-2 space-y-3">
-                <Label className="font-headline font-bold text-xs text-muted-foreground tracking-tight uppercase">{t("field_employee")} *</Label>
-                <Select value={createForm.employee_id || "none"} onValueChange={(v) =>setCreateForm({ ...createForm, employee_id: v === "none" ? "" : v })}>
-                  <SelectTrigger className="h-14 bg-background border-muted/20 rounded-2xl font-headline font-bold text-sm text-foreground">
-                    <SelectValue placeholder={t("select_none")} />
-                  </SelectTrigger>
-                  <SelectContent className="bg-surface border-muted/20 rounded-2xl">
-                    <SelectItem value="none" className="font-headline font-bold text-xs focus:bg-primary/10">{t("select_none")}</SelectItem>
-                    {(employeesData?.data ?? []).map((e: Employee) => (
-                      <SelectItem key={e.id} value={e.id} className="font-headline font-bold text-xs focus:bg-primary/10">{e.full_name}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-3">
-                <Label className="font-headline font-bold text-xs text-muted-foreground tracking-tight uppercase">{t("field_type")} *</Label>
-                <Select value={createForm.recommendation_type} onValueChange={(v) =>setCreateForm({ ...createForm, recommendation_type: v as TrainingType })}>
-                  <SelectTrigger className="h-14 bg-background border-muted/20 rounded-2xl font-headline font-bold text-sm text-foreground">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-surface border-muted/20 rounded-2xl">
-                    {TYPES.map((tp) => <SelectItem key={tp} value={tp} className="font-headline font-bold text-xs focus:bg-primary/10">{tp}</SelectItem>)}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-3">
-                <Label className="font-headline font-bold text-xs text-muted-foreground tracking-tight uppercase">{t("field_related_skill")}</Label>
-                <Select value={createForm.skill_id || "none"} onValueChange={(v) =>setCreateForm({ ...createForm, skill_id: v === "none" ? "" : v })}>
-                  <SelectTrigger className="h-14 bg-background border-muted/20 rounded-2xl font-headline font-bold text-sm text-foreground">
-                    <SelectValue placeholder={t("optional")} />
-                  </SelectTrigger>
-                  <SelectContent className="bg-surface border-muted/20 rounded-2xl">
-                    <SelectItem value="none" className="font-headline font-bold text-xs focus:bg-primary/10">{t("select_none")}</SelectItem>
-                    {(skills ?? []).map((s: Skill) => <SelectItem key={s.id} value={s.id} className="font-headline font-bold text-xs focus:bg-primary/10">{s.name}</SelectItem>)}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-3">
-                <Label className="font-headline font-bold text-xs text-muted-foreground tracking-tight uppercase">{t("training_col_target_date")}</Label>
-                <Input type="date" value={createForm.target_date} onChange={(e) =>setCreateForm({ ...createForm, target_date: e.target.value })} className="h-14 bg-background border-muted/20 rounded-2xl font-headline font-bold text-sm text-foreground" />
-              </div>
-              <div className="col-span-2 space-y-3">
-                <Label className="font-headline font-bold text-xs text-muted-foreground tracking-tight uppercase">{t("field_notes")}</Label>
-                <Input placeholder={t("label_remarks_spec")} value={createForm.notes} onChange={(e) => setCreateForm({ ...createForm, notes: e.target.value })} className="h-14 bg-background border-muted/20 rounded-2xl font-headline font-bold text-sm text-foreground" />
-              </div>
-            </div>
-            
-            <div className="p-8 border-t border-muted/10 bg-muted/5 flex justify-end gap-4">
-              <Button variant="ghost" className="rounded-2xl font-headline font-bold text-sm text-muted-foreground hover:bg-muted/10" onClick={() =>setShowCreate(false)}>{t("common_cancel")}</Button>
-              <Button onClick={handleCreate} disabled={saving} className="rounded-2xl bg-primary text-primary-foreground font-headline font-bold text-sm px-10 py-7 h-auto shadow-lg shadow-primary/20">{saving ? t("action_synchronizing") : t("training_new")}
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
+         </DialogContent>
       </Dialog>
 
-      <Dialog open={!!editTarget} onOpenChange={(open) => { if (!open) setEditTarget(null); }}>
-        <DialogContent className="max-w-md bg-surface border border-muted/20 rounded-3xl p-0 overflow-hidden text-foreground">
-          <div className="relative z-10">
-            <div className="p-8 border-b border-muted/10 bg-muted/5">
-              <h2 className="font-headline font-extrabold text-2xl text-foreground tracking-tight">{t("action_reconfigure")}</h2>
-              <p className="text-xs font-bold text-primary tracking-widest mt-2 uppercase">{t("label_update_sequence")}</p>
+      <AlertDialog open={!!deleteTarget} onOpenChange={() => setDeleteTarget(null)}>
+         <AlertDialogContent className="rounded-4xl border-none p-12 bg-white shadow-2xl shadow-zinc-200">
+            <div className="space-y-6">
+               <div className="w-16 h-16 bg-red-50 rounded-3xl flex items-center justify-center text-red-600">
+                  <Trash2 className="h-8 w-8" />
+               </div>
+               <div className="space-y-2">
+                  <h2 className="text-3xl font-bold font-comfortaa text-zinc-900 tracking-tighter uppercase">{t("action_confirm_delete")}</h2>
+                  <p className="text-zinc-500 font-medium">{t("training_delete_desc")}</p>
+               </div>
+               <div className="flex gap-4 pt-4">
+                  <Button variant="ghost" className="flex-1 h-14 rounded-full font-bold text-[10px] tracking-widest uppercase text-zinc-400" onClick={() => setDeleteTarget(null)}>CANCEL</Button>
+                  <Button className="flex-1 h-14 rounded-full bg-red-600 text-white font-bold text-[10px] tracking-widest uppercase hover:bg-red-700" onClick={handleDelete} disabled={deleting}>
+                     {deleting ? "PURGING..." : "DELETE"}
+                  </Button>
+               </div>
             </div>
-            
-            <div className="p-8 space-y-6">
-              {editTarget && (
-                <div className="bg-muted/5 p-5 border border-muted/20 rounded-2xl">
-                  <p className="font-headline font-bold text-[10px] text-primary tracking-widest uppercase mb-2">{t("label_target_node")}</p>
-                  <p className="text-lg font-extrabold text-foreground tracking-tight">{editTarget.employee_name}</p>
-                  <p className="text-xs font-medium text-muted-foreground mt-1">{editTarget.skill_name || t("label_general_development")}</p>
-                </div>
-              )}
-              <div className="space-y-3">
-                <Label className="font-headline font-bold text-xs text-muted-foreground tracking-tight uppercase">{t("field_status")}</Label>
-                <Select value={editForm.status} onValueChange={(v) => setEditForm({ ...editForm, status: v as TrainingStatus })}>
-                  <SelectTrigger className="h-14 bg-background border-muted/20 rounded-2xl font-headline font-bold text-sm text-foreground">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-surface border-muted/20 rounded-2xl">
-                    {STATUSES.map((s) => <SelectItem key={s} value={s} className="font-headline font-bold text-xs focus:bg-primary/10">{STATUS_LABELS[s] ?? s}</SelectItem>)}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-3">
-                <Label className="font-headline font-bold text-xs text-muted-foreground tracking-tight uppercase">{t("training_col_target_date")}</Label>
-                <Input type="date" value={editForm.target_date} onChange={(e) =>setEditForm({ ...editForm, target_date: e.target.value })} className="h-14 bg-background border-muted/20 rounded-2xl font-headline font-bold text-sm text-foreground" />
-              </div>
-              <div className="space-y-3">
-                <Label className="font-headline font-bold text-xs text-muted-foreground tracking-tight uppercase">{t("field_notes")}</Label>
-                <Input placeholder="REMARKS..." value={editForm.notes} onChange={(e) => setEditForm({ ...editForm, notes: e.target.value })} className="h-14 bg-background border-muted/20 rounded-2xl font-headline font-bold text-sm text-foreground" />
-              </div>
-            </div>
-            
-            <div className="p-8 border-t border-muted/10 bg-muted/5 flex justify-end gap-4">
-              <Button variant="ghost" className="rounded-2xl font-headline font-bold text-sm text-muted-foreground hover:bg-muted/10" onClick={() =>setEditTarget(null)}>{t("common_cancel")}</Button>
-              <Button size="sm" onClick={handleEdit} disabled={saving} className="rounded-2xl bg-primary text-primary-foreground font-headline font-bold text-sm px-10 py-7 h-auto shadow-lg shadow-primary/20">{saving ? t("action_synchronizing") : t("action_apply_config")}
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      <AlertDialog open={!!deleteTarget} onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}>
-        <AlertDialogContent className="bg-surface border border-rose-500/30 rounded-3xl overflow-hidden shadow-xl">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="font-headline font-extrabold text-3xl text-foreground tracking-tight">{t("action_confirm_delete")} — {deleteTarget?.name}</AlertDialogTitle>
-            <AlertDialogDescription className="text-muted-foreground font-medium text-sm">{t("training_delete_desc")}</AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter className="mt-10 gap-3">
-            <AlertDialogCancel className="rounded-2xl border-muted/20 bg-background text-foreground font-headline font-bold text-sm tracking-tight hover:bg-muted/10 h-auto py-4 px-8 transition-colors">{t("common_cancel")}</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete} disabled={deleting} className="rounded-2xl bg-rose-600 text-white font-headline font-bold text-sm tracking-tight hover:bg-rose-700 px-10 h-auto py-4 shadow-lg shadow-rose-600/20 transition-all">{deleting ? t("action_purging") : t("action_confirm_delete")}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
+         </AlertDialogContent>
       </AlertDialog>
     </div>
   );
 }
+
+// Missing icons from view_file, adding them here
+const Clock = (props: any) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>;
+const Loader2 = (props: any) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>;
