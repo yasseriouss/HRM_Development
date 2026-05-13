@@ -139,7 +139,7 @@
     <tr><td>Backend</td><td>Node.js + Express 5</td><td>REST API, TypeScript, ESBuild</td></tr>
     <tr><td>API contract</td><td>OpenAPI 3.1</td><td>Single source of truth for all routes</td></tr>
     <tr><td>Validation</td><td>Zod</td><td>Runtime schema validation</td></tr>
-    <tr><td>Database</td><td>PostgreSQL (Replit managed)</td><td>Primary data store</td></tr>
+    <tr><td>Database</td><td>PostgreSQL (Neon / managed)</td><td>Primary data store</td></tr>
     <tr><td>ORM</td><td>Drizzle ORM</td><td>Type-safe SQL queries, migrations</td></tr>
     <tr><td>Logging</td><td>Pino + pino-http</td><td>Structured JSON request logging</td></tr>
   </table>
@@ -468,7 +468,7 @@ weight INTEGER <span class="kw">CHECK</span> (weight >= <span class="num">1</spa
 <p>When deployed to Supabase, all 9 tables have RLS enabled. Each table has policies that enforce the same access rules as the Express middleware layer, providing defence-in-depth at the database level.</p>
 
 <div class="callout callout-info">
-  <p><strong>Note:</strong> The Replit deployment uses Express middleware for auth (token-based). The RLS policies below apply to Supabase/direct PostgreSQL access and use <code>auth.uid()</code> from Supabase Auth. Both layers enforce the same business rules.</p>
+  <p><strong>Note:</strong> The Vercel deployment uses Express middleware for auth (token-based) inside a serverless function. The RLS policies below apply to Supabase / direct PostgreSQL access and use <code>auth.uid()</code> from Supabase Auth. Both layers enforce the same business rules.</p>
 </div>
 
 <pre><span class="pre-label">sql</span><code><span class="cmt">-- Enable RLS on all tables</span>

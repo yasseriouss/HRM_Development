@@ -7,7 +7,7 @@ node_modules/
 .vite/
 **/.vite/
 
-# Dev / Replit / local-only state
+# Local / dev-only state
 .git/
 .cache/
 .local/
@@ -26,12 +26,6 @@ my-app/
 # OS
 .DS_Store
 Thumbs.db
-
-# Replit
-.replit
-.replitignore
-.config/
-replit.md
 
 # Misc / generated
 *.tsbuildinfo
