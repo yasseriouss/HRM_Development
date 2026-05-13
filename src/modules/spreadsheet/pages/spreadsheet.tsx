@@ -62,14 +62,7 @@ function getClassColor(cls: EvalClass): string {
 
 // ── SHARED COMPONENTS ────────────────────────────────────────────────────────
 
-const CornerMarks = ({ color = "primary" }: { color?: string }) => (
-  <>
-    <div className={`absolute top-0 left-0 w-2 h-2 border-t border-l border-${color}/40`} />
-    <div className={`absolute top-0 right-0 w-2 h-2 border-t border-r border-${color}/40`} />
-    <div className={`absolute bottom-0 left-0 w-2 h-2 border-b border-l border-${color}/40`} />
-    <div className={`absolute bottom-0 right-0 w-2 h-2 border-b border-r border-${color}/40`} />
-  </>
-);
+// Removed Industrial CornerMarks as per ADR-001
 
 interface EvaluationGridProps {
   employees: Employee[];
@@ -99,68 +92,70 @@ function EvaluationGrid({
   }, [onScoresChange]);
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-white/10 bg-black/20">
-      <table className="w-full text-sm border-collapse">
-        <thead>
-          <tr className="bg-slate-800/80 border-b border-white/10">
-            <th className="sticky left-0 z-10 bg-slate-800 text-left px-4 py-3 font-semibold text-white/90 min-w-[180px] border-r border-white/10">Employee</th>
-            {skills.map(skill => (
-              <th key={skill.id} className="px-3 py-3 text-center font-medium text-amber-400/90 min-w-[110px] border-r border-white/10">
-                <div className="text-xs leading-tight">{skill.name}</div>
-                <div className="text-white/50 text-xs mt-0.5">W: {skill.weight}</div>
-              </th>
-            ))}
-            <th className="px-3 py-3 text-center font-semibold text-white/80 min-w-[90px] bg-slate-700/50">Score</th>
-            <th className="px-3 py-3 text-center font-semibold text-white/80 min-w-[80px] bg-slate-700/50">Max</th>
-            <th className="px-3 py-3 text-center font-semibold text-white/80 min-w-[80px] bg-slate-700/50">%</th>
-            <th className="px-3 py-3 text-center font-semibold text-white/80 min-w-[70px] bg-slate-700/50">Class</th>
-          </tr>
-        </thead>
-        <tbody>
-          {employees.map((emp, rowIdx) => {
-            const empScores = scores[emp.id] ?? {};
-            const result = calculateScore(empScores, skills);
-            return (
-              <tr key={emp.id} className={rowIdx % 2 === 0 ? 'bg-slate-900/60' : 'bg-slate-800/40'}>
-                <td className="sticky left-0 z-10 px-4 py-2.5 font-medium text-white border-r border-white/10 bg-inherit">
-                  <div className="text-sm">{emp.fullName}</div>
-                  <div className="text-xs text-white/40">{emp.code}</div>
-                </td>
-                {skills.map(skill => {
-                  const score = empScores[skill.id] ?? 0;
-                  const bgColor = getScoreColor(score);
-                  return (
-                    <td key={skill.id} className="px-2 py-2 text-center border-r border-white/5">
-                      {readOnly ? (
-                        <div className="inline-flex items-center justify-center w-10 h-8 rounded font-bold text-white text-sm" style={{ backgroundColor: bgColor }} title={getScoreLabel(score)}>{score}</div>
-                      ) : (
-                        <select
-                          value={score}
-                          onChange={e => setScore(emp.id, skill.id, Number(e.target.value))}
-                          className="w-14 h-8 rounded text-center font-bold text-white text-sm border-0 cursor-pointer outline-none appearance-none"
-                          style={{ backgroundColor: bgColor }}
-                          title={getScoreLabel(score)}
-                        >
-                          {[0,1,2,3,4].map(opt => <option key={opt} value={opt} style={{ backgroundColor: '#1e293b', color: 'white' }}>{opt}</option>)}
-                        </select>
-                      )}
-                    </td>
-                  );
-                })}
-                <td className="px-3 py-2 text-center text-white/90 font-mono bg-slate-800/30">{result.totalScore}</td>
-                <td className="px-3 py-2 text-center text-white/50 font-mono bg-slate-800/30">{result.maxScore}</td>
-                <td className="px-3 py-2 text-center font-mono bg-slate-800/30"><span className="text-amber-400 font-semibold">{result.percentage}%</span></td>
-                <td className="px-3 py-2 text-center bg-slate-800/30">
-                  <span className="inline-flex items-center justify-center w-8 h-7 rounded font-bold text-white text-sm" style={{ backgroundColor: getClassColor(result.evalClass) }}>{result.evalClass}</span>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+    <div className="overflow-hidden rounded-3xl border border-muted/10 bg-surface soft-shadow">
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm border-collapse">
+          <thead>
+            <tr className="bg-muted/5 border-b border-muted/5">
+              <th className="sticky left-0 z-10 bg-surface text-left px-8 py-5 font-headline font-bold text-foreground min-w-[220px] border-e border-muted/5 uppercase tracking-widest text-[10px]">Employee</th>
+              {skills.map(skill => (
+                <th key={skill.id} className="px-4 py-5 text-center font-headline font-bold text-primary min-w-[120px] border-e border-muted/5 uppercase tracking-widest text-[9px]">
+                  <div className="leading-tight">{skill.name}</div>
+                  <div className="text-muted/60 text-[8px] mt-2">W: {skill.weight}</div>
+                </th>
+              ))}
+              <th className="px-4 py-5 text-center font-headline font-bold text-foreground min-w-[100px] bg-muted/5 uppercase tracking-widest text-[10px]">Score</th>
+              <th className="px-4 py-5 text-center font-headline font-bold text-muted/60 min-w-[90px] bg-muted/5 uppercase tracking-widest text-[10px]">Max</th>
+              <th className="px-4 py-5 text-center font-headline font-bold text-foreground min-w-[90px] bg-muted/5 uppercase tracking-widest text-[10px]">%</th>
+              <th className="px-4 py-5 text-center font-headline font-bold text-foreground min-w-[80px] bg-muted/5 uppercase tracking-widest text-[10px]">Class</th>
+            </tr>
+          </thead>
+          <tbody>
+            {employees.map((emp, rowIdx) => {
+              const empScores = scores[emp.id] ?? {};
+              const result = calculateScore(empScores, skills);
+              return (
+                <tr key={emp.id} className={`${rowIdx % 2 === 0 ? 'bg-transparent' : 'bg-muted/2'} hover:bg-primary/5 transition-colors group`}>
+                  <td className="sticky left-0 z-10 px-8 py-4 font-headline font-bold text-foreground border-e border-muted/5 bg-inherit">
+                    <div className="text-sm tracking-tight">{emp.fullName}</div>
+                    <div className="text-[10px] text-muted/40 uppercase tracking-widest mt-1">{emp.code}</div>
+                  </td>
+                  {skills.map(skill => {
+                    const score = empScores[skill.id] ?? 0;
+                    const bgColor = getScoreColor(score);
+                    return (
+                      <td key={skill.id} className="px-3 py-4 text-center border-e border-muted/5">
+                        {readOnly ? (
+                          <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl font-bold text-white text-xs shadow-sm" style={{ backgroundColor: bgColor }} title={getScoreLabel(score)}>{score}</div>
+                        ) : (
+                          <select
+                            value={score}
+                            onChange={e => setScore(emp.id, skill.id, Number(e.target.value))}
+                            className="w-14 h-10 rounded-xl text-center font-bold text-white text-xs border-0 cursor-pointer outline-none appearance-none shadow-sm hover:scale-105 transition-transform"
+                            style={{ backgroundColor: bgColor }}
+                            title={getScoreLabel(score)}
+                          >
+                            {[0,1,2,3,4].map(opt => <option key={opt} value={opt} className="bg-surface text-foreground">{opt}</option>)}
+                          </select>
+                        )}
+                      </td>
+                    );
+                  })}
+                  <td className="px-4 py-4 text-center text-foreground/80 font-bold tabular-nums bg-muted/2">{result.totalScore}</td>
+                  <td className="px-4 py-4 text-center text-muted/40 font-bold tabular-nums bg-muted/2">{result.maxScore}</td>
+                  <td className="px-4 py-4 text-center bg-muted/2"><span className="text-primary font-bold tabular-nums">{result.percentage}%</span></td>
+                  <td className="px-4 py-4 text-center bg-muted/2">
+                    <span className="inline-flex items-center justify-center w-10 h-8 rounded-lg font-bold text-white text-xs shadow-sm" style={{ backgroundColor: getClassColor(result.evalClass) }}>{result.evalClass}</span>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
       {showSampleBadge && (
-        <div className="px-4 py-2 bg-amber-500/10 border-t border-amber-500/20 text-amber-400 text-xs">
-          ✨ Sample evaluation data shown — edit any score dropdown to see live recalculations
+        <div className="px-8 py-3 bg-primary/5 border-t border-muted/5 text-primary text-[10px] font-bold uppercase tracking-widest flex items-center gap-2">
+          <span className="animate-pulse">✨</span> Sample evaluation data shown — edit any score dropdown to see live recalculations
         </div>
       )}
     </div>
@@ -181,40 +176,36 @@ function HrmSystemSheet() {
   ];
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-700">
-      <div className="relative p-10 bg-[#0A0A0A] border border-white/5 shadow-2xl overflow-hidden group">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent opacity-30" />
+    <div className="space-y-12 animate-in fade-in duration-1000">
+      <div className="relative p-8 md:p-16 bg-surface/50 border border-muted/10 rounded-[2.5rem] overflow-hidden soft-shadow backdrop-blur-md">
         <div className="relative z-10">
-          <div className="flex items-center gap-3 mb-4 text-primary">
-            <span className="font-headline font-black tracking-[0.4em] text-[10px] uppercase">SYSTEM_STATE_v4.2</span>
-            <div className="h-px w-12 bg-primary/30" />
+          <div className="flex items-center gap-4 mb-6 text-primary">
+            <span className="font-headline font-bold tracking-[0.2em] text-[10px] uppercase">{t('label_mission_control')}</span>
+            <div className="h-px w-16 bg-primary/20" />
           </div>
-          <h1 className="text-5xl font-headline font-black text-white uppercase tracking-tighter mb-4">HRM Operational Telemetry</h1>
-          <p className="text-zinc-500 font-medium max-w-2xl border-l-2 border-primary/20 ps-6 leading-relaxed">
+          <h1 className="text-4xl md:text-6xl font-headline font-bold text-foreground tracking-tight leading-none mb-6">HRM Operational Telemetry</h1>
+          <p className="text-muted font-medium max-w-2xl border-s-4 border-primary/20 ps-8 leading-relaxed text-sm">
             Real-time aggregate data across all industrial sectors. Monitoring proficiency deltas and resource allocation efficiency within the production grid.
           </p>
         </div>
-        <CornerMarks />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {allDepts.map((dept, i) => (
-          <div key={i} className="relative p-6 bg-zinc-900/40 border border-white/5 group hover:border-primary/30 transition-all duration-500 overflow-hidden">
-            <div className="absolute -right-4 -top-4 text-6xl opacity-[0.03] font-black group-hover:scale-110 transition-transform duration-700">0{i+1}</div>
-            <div className="flex justify-between items-start mb-6">
+          <div key={i} className="relative p-8 bg-surface border border-muted/10 rounded-3xl group hover:border-primary/30 transition-all duration-500 soft-shadow overflow-hidden">
+            <div className="flex justify-between items-start mb-10">
               <div>
-                <h3 className="text-[11px] font-headline font-black text-zinc-500 uppercase tracking-widest mb-1 group-hover:text-primary transition-colors">{dept.name}</h3>
-                <div className="text-2xl font-headline font-black text-white tracking-tight">{dept.count} <span className="text-[10px] text-zinc-600 font-medium tracking-normal">OPERATIVES</span></div>
+                <h3 className="text-[10px] font-bold text-muted uppercase tracking-widest mb-2 group-hover:text-primary transition-colors">{dept.name}</h3>
+                <div className="text-3xl font-headline font-bold text-foreground tracking-tight">{dept.count} <span className="text-[10px] text-muted/60 font-bold tracking-widest uppercase">OPERATIVES</span></div>
               </div>
-              <div className="px-3 py-1 bg-black border border-white/10 font-mono text-[10px] text-primary/80">NODE_{dept.name.substring(0,3).toUpperCase()}</div>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-6">
               <div className="flex justify-between items-end">
-                <span className="text-[10px] font-black text-zinc-500 uppercase">Proficiency</span>
-                <span className="text-lg font-headline font-black" style={{ color: getClassColor(dept.class as EvalClass) }}>{dept.score}%</span>
+                <span className="text-[10px] font-bold text-muted uppercase tracking-widest">Proficiency</span>
+                <span className="text-xl font-headline font-bold" style={{ color: getClassColor(dept.class as EvalClass) }}>{dept.score}%</span>
               </div>
-              <div className="h-1 bg-white/5 w-full relative overflow-hidden">
-                <div className="absolute top-0 left-0 h-full transition-all duration-1000" style={{ width: `${dept.score}%`, backgroundColor: getClassColor(dept.class as EvalClass) }} />
+              <div className="h-2 bg-muted/5 w-full rounded-full relative overflow-hidden">
+                <div className="absolute top-0 left-0 h-full transition-all duration-1000 rounded-full" style={{ width: `${dept.score}%`, backgroundColor: getClassColor(dept.class as EvalClass) }} />
               </div>
             </div>
           </div>
@@ -234,64 +225,60 @@ function InstructionsSheet() {
   ];
 
   return (
-    <div className="space-y-12 max-w-5xl animate-in fade-in duration-1000">
-      <div className="relative p-10 bg-[#0A0A0A] border-l-4 border-primary shadow-2xl overflow-hidden">
-        <div className="absolute inset-0 bg-black opacity-40" />
+    <div className="space-y-16 max-w-6xl animate-in fade-in duration-1000">
+      <div className="relative p-10 md:p-16 bg-surface/50 border-s-8 border-primary rounded-[2.5rem] overflow-hidden soft-shadow backdrop-blur-md">
         <div className="relative z-10">
-          <div className="flex items-center gap-3 mb-4 text-primary">
-            <span className="font-headline font-black tracking-[0.4em] text-[9px] uppercase">PROTOCOL_GUIDE_v2.0</span>
+          <div className="flex items-center gap-4 mb-6 text-primary">
+            <span className="font-headline font-bold tracking-[0.2em] text-[10px] uppercase">PROTOCOL_GUIDE_v2.0</span>
           </div>
-          <h1 className="text-4xl font-headline font-black text-white uppercase tracking-tight mb-2">Instructions & User Guide</h1>
-          <p className="text-zinc-500 font-medium border-l border-white/10 ps-4">System directives for standardized operational evaluation and personnel classification.</p>
+          <h1 className="text-4xl font-headline font-bold text-foreground tracking-tight mb-4">Instructions & User Guide</h1>
+          <p className="text-muted font-medium border-s border-muted/20 ps-6 text-sm">System directives for standardized operational evaluation and personnel classification.</p>
         </div>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="relative p-8 bg-zinc-900/40 border border-white/5 overflow-hidden group">
-          <h2 className="text-[11px] font-headline font-black text-primary uppercase tracking-[0.3em] mb-8 flex items-center gap-3">
-            <div className="h-px w-8 bg-primary/30" /> Evaluation Scale (0–4)
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <div className="relative p-10 bg-surface border border-muted/10 rounded-3xl overflow-hidden group soft-shadow">
+          <h2 className="text-[10px] font-bold text-primary uppercase tracking-[0.2em] mb-10 flex items-center gap-4">
+            <div className="h-px w-10 bg-primary/30" /> Evaluation Scale (0–4)
+          </h2>
+          <div className="space-y-8">
+            {scoreItems.map(item => (
+              <div key={item.score} className="flex gap-8 items-start group/item">
+                <div className="w-14 h-14 flex items-center justify-center font-headline font-bold text-white text-2xl rounded-2xl shrink-0 border border-muted/10 group-hover/item:border-primary/50 transition-all duration-500 relative bg-background/50 shadow-sm" style={{ color: getScoreColor(item.score) }}>
+                  {item.score}
+                  <div className="absolute inset-0 bg-current opacity-[0.03] rounded-2xl" />
+                </div>
+                <div className="space-y-2">
+                  <div className="font-headline font-bold text-sm text-foreground uppercase tracking-tight">{item.label}</div>
+                  <div className="text-[11px] text-muted font-medium leading-relaxed group-hover/item:text-foreground/70 transition-colors">{item.detail}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="relative p-10 bg-surface border border-muted/10 rounded-3xl overflow-hidden soft-shadow">
+          <h2 className="text-[10px] font-bold text-primary uppercase tracking-[0.2em] mb-10 flex items-center gap-4">
+            <div className="h-px w-10 bg-primary/30" /> Performance Matrix
           </h2>
           <div className="space-y-6">
-            {scoreItems.map(item => (
-              <div key={item.score} className="flex gap-6 items-start group/item">
-                <div className="w-12 h-12 flex items-center justify-center font-headline font-black text-white text-xl shrink-0 border border-white/10 group-hover/item:border-primary/50 transition-all duration-300 relative bg-black/40" style={{ color: getScoreColor(item.score) }}>
-                  {item.score}
-                  <div className="absolute inset-0 bg-current opacity-[0.03]" />
-                </div>
-                <div className="space-y-1">
-                  <div className="font-headline font-black text-[10px] text-zinc-100 uppercase tracking-widest">{item.label}</div>
-                  <div className="text-[11px] text-zinc-500 font-medium leading-relaxed group-hover/item:text-zinc-400 transition-colors">{item.detail}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-          <CornerMarks />
-        </div>
-        <div className="relative p-8 bg-zinc-900/40 border border-white/5 overflow-hidden">
-          <h2 className="text-[11px] font-headline font-black text-primary uppercase tracking-[0.3em] mb-8 flex items-center gap-3">
-            <div className="h-px w-8 bg-primary/30" /> Performance Matrix
-          </h2>
-          <div className="space-y-4">
             {[
-              { cls: 'A', range: '85–100%', label: 'PROMOTION READY', color: '#10B981', desc: 'Mastered competencies. Authorized for mentoring and succession planning.' },
-              { cls: 'B', range: '60–84%', label: 'CORE PERFORMER', color: '#F59E0B', desc: 'Competent operative. Targeted training required for peak proficiency.' },
-              { cls: 'C', range: '0–59%', label: 'NEEDS INTERVENTION', color: '#EF4444', desc: 'Critical skill gaps. Mandatory intensive oversight and re-evaluation.' },
+              { cls: 'A', range: '85–100%', label: 'PROMOTION READY', color: '#16A34A', desc: 'Mastered competencies. Authorized for mentoring and succession planning.' },
+              { cls: 'B', range: '60–84%', label: 'CORE PERFORMER', color: '#CA8A04', desc: 'Competent operative. Targeted training required for peak proficiency.' },
+              { cls: 'C', range: '0–59%', label: 'NEEDS INTERVENTION', color: '#DC2626', desc: 'Critical skill gaps. Mandatory intensive oversight and re-evaluation.' },
             ].map(item => (
-              <div key={item.cls} className="relative p-6 bg-black/40 border border-white/5 flex gap-6 items-start hover:border-white/10 transition-colors">
-                <div className="w-12 h-12 flex items-center justify-center font-headline font-black text-white text-2xl shrink-0 relative" style={{ backgroundColor: item.color + '15', color: item.color }}>
+              <div key={item.cls} className="relative p-8 bg-background/40 border border-muted/10 rounded-2xl flex gap-8 items-start hover:border-primary/20 transition-all duration-500">
+                <div className="w-16 h-16 flex items-center justify-center font-headline font-bold text-white text-3xl rounded-2xl shrink-0 relative shadow-sm" style={{ backgroundColor: item.color, opacity: 0.9 }}>
                    {item.cls}
-                   <div className="absolute inset-0 border border-current opacity-20" />
                 </div>
                 <div className="min-w-0">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="font-headline font-black text-[10px] text-white tracking-widest uppercase">{item.label}</span>
-                    <span className="text-[9px] font-mono font-black border px-2 py-0.5" style={{ color: item.color, borderColor: item.color + '40' }}>{item.range}</span>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="font-headline font-bold text-xs text-foreground tracking-tight uppercase">{item.label}</span>
+                    <span className="text-[9px] font-bold rounded-xl px-3 py-1 border border-muted/20" style={{ color: item.color }}>{item.range}</span>
                   </div>
-                  <p className="text-[10px] text-zinc-500 font-medium leading-tight">{item.desc}</p>
+                  <p className="text-[11px] text-muted font-medium leading-relaxed">{item.desc}</p>
                 </div>
               </div>
             ))}
           </div>
-          <CornerMarks />
         </div>
       </div>
     </div>
@@ -300,26 +287,25 @@ function InstructionsSheet() {
 
 function DepartmentsSheet() {
   return (
-    <div className="space-y-8 animate-in slide-in-from-bottom-4 duration-700">
-      <div className="relative p-10 bg-[#0A0A0A] border border-white/5 overflow-hidden shadow-2xl">
+    <div className="space-y-12 animate-in slide-in-from-bottom-4 duration-1000">
+      <div className="relative p-10 md:p-16 bg-surface/50 border border-muted/10 rounded-[2.5rem] overflow-hidden shadow-2xl backdrop-blur-md">
         <div className="relative z-10">
-          <h1 className="text-3xl font-headline font-black text-white uppercase tracking-widest mb-2">Facility Infrastructure</h1>
-          <p className="text-zinc-500 font-medium border-l border-primary/20 ps-4">Registry of operational units and department-level resource mapping.</p>
+          <h1 className="text-3xl md:text-5xl font-headline font-bold text-foreground tracking-tight mb-4">Facility Infrastructure</h1>
+          <p className="text-muted font-medium border-s-4 border-primary/20 ps-8 leading-relaxed text-sm">Registry of operational units and department-level resource mapping.</p>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {DEPARTMENTS.map(dept => (
-          <div key={dept.id} className="relative p-6 bg-zinc-900/40 border border-white/5 hover:border-white/10 transition-colors">
-            <div className="flex justify-between items-start mb-4">
-              <span className="text-2xl opacity-80">{dept.id === 'UPH' ? '✨' : dept.id === 'PNT' ? '🎨' : '🏢'}</span>
-              <span className="text-[10px] font-mono text-zinc-500 font-bold border border-white/10 px-2 py-1">{dept.code}</span>
+          <div key={dept.id} className="relative p-8 bg-surface border border-muted/10 rounded-3xl hover:border-primary/20 transition-all duration-500 soft-shadow group overflow-hidden">
+            <div className="flex justify-between items-start mb-8">
+              <span className="text-4xl opacity-80 group-hover:scale-110 transition-transform duration-700">{dept.id === 'UPH' ? '✨' : dept.id === 'PNT' ? '🎨' : '🏢'}</span>
             </div>
-            <h3 className="text-sm font-headline font-black text-white uppercase tracking-widest mb-1">{dept.name}</h3>
-            <div className="text-[11px] text-zinc-500 font-medium mb-4">{dept.manager}</div>
-            <div className="text-[10px] text-zinc-600 font-medium line-clamp-2 italic leading-relaxed">{dept.description}</div>
-            <div className="mt-6 pt-4 border-t border-white/5 flex justify-between items-center">
-              <span className="text-[9px] font-black text-zinc-500 uppercase tracking-widest">Operatives</span>
-              <span className="text-xs font-headline font-black text-white">{dept.employeeCount}</span>
+            <h3 className="text-lg font-headline font-bold text-foreground tracking-tight mb-2 group-hover:text-primary transition-colors">{dept.name}</h3>
+            <div className="text-[10px] font-bold text-primary uppercase tracking-widest mb-6">{dept.manager}</div>
+            <div className="text-[11px] text-muted font-medium line-clamp-2 leading-relaxed opacity-60 group-hover:opacity-100 transition-opacity italic">{dept.description}</div>
+            <div className="mt-10 pt-6 border-t border-muted/5 flex justify-between items-center">
+              <span className="text-[10px] font-bold text-muted uppercase tracking-widest">Operatives</span>
+              <span className="text-lg font-headline font-bold text-foreground">{dept.employeeCount}</span>
             </div>
           </div>
         ))}
@@ -330,76 +316,28 @@ function DepartmentsSheet() {
 
 function SkillsLibrarySheet() {
   return (
-    <div className="space-y-8">
-      <div className="relative p-10 bg-[#0A0A0A] border border-white/5 overflow-hidden shadow-2xl">
-        <div className="relative z-10">
-          <h1 className="text-3xl font-headline font-black text-white uppercase tracking-widest mb-2">Competency Repository</h1>
-          <p className="text-zinc-500 font-medium border-l border-primary/20 ps-4">Standardized evaluation vectors and criticality weight matrices.</p>
+    <div className="space-y-12 animate-in fade-in duration-1000">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div>
+          <h2 className="text-3xl font-headline font-bold text-foreground tracking-tight mb-2">Competency Matrix</h2>
+          <p className="text-muted font-medium text-sm">Standardized skill library for multi-sector industrial evaluation.</p>
         </div>
+        <span className="px-6 py-2 rounded-2xl border border-primary/20 bg-primary/5 text-primary font-bold text-[10px] tracking-widest uppercase">
+          {SKILLS.length} ACTIVE_COMPETENCIES
+        </span>
       </div>
-      <div className="overflow-hidden border border-white/5 bg-zinc-900/40">
-        <table className="w-full text-[11px] border-collapse">
-          <thead>
-            <tr className="bg-black/40 border-b border-white/10 text-zinc-500 font-black uppercase tracking-widest">
-              <th className="px-6 py-4 text-left">Code</th>
-              <th className="px-6 py-4 text-left">Skill Node</th>
-              <th className="px-6 py-4 text-left">Classification</th>
-              <th className="px-6 py-4 text-center">Weight</th>
-              <th className="px-6 py-4 text-center">Criticality</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-white/5">
-            {SKILLS.slice(0, 20).map(skill => (
-              <tr key={skill.id} className="hover:bg-white/5 transition-colors group">
-                <td className="px-6 py-4 font-mono text-primary font-bold group-hover:text-white transition-colors">{skill.code}</td>
-                <td className="px-6 py-4">
-                  <div className="text-zinc-200 font-black uppercase tracking-wider">{skill.name}</div>
-                  <div className="text-[9px] text-zinc-600 font-medium mt-1">{skill.description}</div>
-                </td>
-                <td className="px-6 py-4 text-zinc-500 font-bold uppercase">{skill.category}</td>
-                <td className="px-6 py-4 text-center font-headline font-black text-white">{skill.weight}</td>
-                <td className="px-6 py-4 text-center">
-                  <span className={`px-2 py-0.5 border text-[9px] font-black uppercase tracking-tighter ${
-                    skill.criticality === 'Critical' ? 'border-red-500/40 text-red-400 bg-red-500/5' :
-                    skill.criticality === 'High' ? 'border-amber-500/40 text-amber-400 bg-amber-500/5' :
-                    'border-zinc-500/40 text-zinc-400'
-                  }`}>{skill.criticality}</span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-}
 
-function EmployeesSheet() {
-  return (
-    <div className="space-y-8">
-      <div className="relative p-10 bg-[#0A0A0A] border border-white/5 overflow-hidden shadow-2xl">
-        <div className="relative z-10">
-          <h1 className="text-3xl font-headline font-black text-white uppercase tracking-widest mb-2">Operative Roster</h1>
-          <p className="text-zinc-500 font-medium border-l border-primary/20 ps-4">Personnel deployment and current proficiency classification.</p>
-        </div>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {EMPLOYEES.slice(0, 15).map(emp => (
-          <div key={emp.id} className="relative p-6 bg-zinc-900/40 border border-white/5 group hover:border-primary/30 transition-all overflow-hidden">
-            <div className="flex gap-6 items-start relative z-10">
-              <div className="w-16 h-16 bg-black border-2 border-white/5 flex items-center justify-center font-headline font-black text-3xl text-zinc-700 group-hover:text-primary transition-colors">{emp.fullName.charAt(0)}</div>
-              <div className="min-w-0">
-                <h3 className="text-[13px] font-headline font-black text-white uppercase tracking-widest truncate">{emp.fullName}</h3>
-                <div className="text-[10px] text-zinc-500 font-bold mb-3">{emp.jobTitle}</div>
-                <div className="flex gap-2">
-                   <span className="px-2 py-0.5 bg-black border border-white/10 text-[9px] font-black text-zinc-500 uppercase">{emp.code}</span>
-                   <span className="px-2 py-0.5 border text-[9px] font-black uppercase tracking-tighter" style={{ borderColor: getClassColor(emp.currentClass) + '40', color: getClassColor(emp.currentClass) }}>CLASS_{emp.currentClass}</span>
-                </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {SKILLS.map(skill => (
+          <div key={skill.id} className="relative p-8 bg-surface border border-muted/10 rounded-3xl hover:border-primary/20 transition-all duration-500 soft-shadow group">
+            <div className="flex justify-between items-center mb-8">
+              <span className="text-[10px] font-bold text-muted uppercase tracking-[0.2em]">{skill.category}</span>
+              <div className="w-10 h-10 rounded-xl bg-background flex items-center justify-center font-headline font-bold text-primary text-xs shadow-sm">
+                W:{skill.weight}
               </div>
             </div>
-            <div className="absolute top-0 right-0 p-4 opacity-[0.03] group-hover:opacity-[0.1] transition-opacity">
-              <div className="font-headline font-black text-4xl text-white uppercase tracking-tighter leading-none">{emp.currentClass}</div>
-            </div>
+            <h3 className="text-lg font-headline font-bold text-foreground tracking-tight mb-4 group-hover:text-primary transition-colors">{skill.name}</h3>
+            <p className="text-[11px] text-muted font-medium leading-relaxed mb-8 line-clamp-3 opacity-70 group-hover:opacity-100 transition-opacity italic">{skill.description}</p>
           </div>
         ))}
       </div>
@@ -407,32 +345,70 @@ function EmployeesSheet() {
   );
 }
 
-function CampaignsSheet() {
+function EmployeesSheet() {
   return (
-    <div className="space-y-8">
-      <div className="relative p-10 bg-[#0A0A0A] border border-white/5 overflow-hidden shadow-2xl">
-        <div className="relative z-10">
-          <h1 className="text-3xl font-headline font-black text-white uppercase tracking-widest mb-2">Evaluation Cycles</h1>
-          <p className="text-zinc-500 font-medium border-l border-primary/20 ps-4">Temporal evaluation campaign scheduling and execution state.</p>
+    <div className="space-y-12 animate-in fade-in duration-1000">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 bg-surface/50 p-10 rounded-[2rem] border border-muted/10 soft-shadow backdrop-blur-md">
+        <div>
+          <h2 className="text-3xl font-headline font-bold text-foreground tracking-tight mb-2">Personnel Registry</h2>
+          <p className="text-muted font-medium text-sm">Industrial workforce mapping and operative identification database.</p>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <div className="overflow-hidden rounded-[2rem] border border-muted/10 bg-surface soft-shadow">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm border-collapse">
+            <thead>
+              <tr className="bg-muted/5 border-b border-muted/5">
+                <th className="px-8 py-5 text-left font-headline font-bold text-foreground uppercase tracking-widest text-[10px]">Operative</th>
+                <th className="px-6 py-5 text-left font-headline font-bold text-foreground uppercase tracking-widest text-[10px]">ID_Code</th>
+                <th className="px-6 py-5 text-left font-headline font-bold text-foreground uppercase tracking-widest text-[10px]">Rank</th>
+              </tr>
+            </thead>
+            <tbody>
+              {EMPLOYEES.slice(0, 15).map((emp, i) => (
+                <tr key={emp.id} className={`${i % 2 === 0 ? 'bg-transparent' : 'bg-muted/2'} hover:bg-primary/2 transition-colors group`}>
+                  <td className="px-8 py-4 font-headline font-bold text-foreground tracking-tight">{emp.fullName}</td>
+                  <td className="px-6 py-4 font-bold text-muted text-xs tracking-widest uppercase">{emp.code}</td>
+                  <td className="px-6 py-4 text-xs font-bold text-primary/80 uppercase tracking-widest">CLASS_{emp.currentClass}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CampaignsSheet() {
+  return (
+    <div className="space-y-12 animate-in fade-in duration-1000">
+      <div className="relative p-10 md:p-16 bg-surface border border-muted/10 rounded-[2.5rem] soft-shadow overflow-hidden group">
+        <div className="relative z-10">
+          <div className="flex items-center gap-4 mb-6 text-primary">
+            <span className="font-headline font-bold tracking-[0.2em] text-[10px] uppercase">OPERATIONAL_CYCLES</span>
+          </div>
+          <h2 className="text-4xl font-headline font-bold text-foreground tracking-tight mb-4">Evaluation Cycles</h2>
+          <p className="text-muted font-medium text-sm">Strategic performance review campaign management and temporal data tracking.</p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {CAMPAIGNS.map(camp => (
-          <div key={camp.id} className="relative p-8 bg-zinc-900/40 border border-white/5 flex gap-8 items-start">
-             <div className="w-12 h-12 flex items-center justify-center border border-white/10 bg-black text-primary font-headline font-black text-xl">{camp.title.charAt(0)}</div>
-             <div className="flex-1">
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="text-sm font-headline font-black text-white uppercase tracking-widest leading-tight">{camp.title}</h3>
-                  <span className={`px-2 py-0.5 text-[8px] font-black uppercase tracking-widest border ${
-                    camp.status === 'Active' ? 'border-green-500/40 text-green-400 bg-green-500/5' : 'border-zinc-700 text-zinc-500'
-                  }`}>{camp.status}</span>
-                </div>
-                <div className="text-[10px] text-zinc-500 font-bold mb-4 uppercase tracking-tighter">{camp.type} • {camp.department}</div>
-                <div className="flex gap-8 text-[9px] font-black uppercase tracking-widest text-zinc-600">
-                  <div>START: <span className="text-zinc-400 ms-1">{camp.startDate}</span></div>
-                  <div>END: <span className="text-zinc-400 ms-1">{camp.endDate}</span></div>
-                </div>
-             </div>
+          <div key={camp.id} className="relative p-10 bg-surface border border-muted/10 rounded-[2rem] hover:border-primary/20 transition-all duration-500 soft-shadow group">
+            <div className="flex justify-between items-start mb-8">
+              <div>
+                <h3 className="text-2xl font-headline font-bold text-foreground tracking-tight mb-2 group-hover:text-primary transition-colors">{camp.title}</h3>
+                <div className="text-[10px] font-bold text-muted uppercase tracking-[0.2em]">{camp.type}</div>
+              </div>
+            </div>
+            <div className="space-y-8">
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-[10px] font-bold text-muted uppercase tracking-widest">Temporal Window</span>
+                <span className="font-headline font-bold text-foreground/80">{camp.startDate} <span className="mx-2 text-muted/40">→</span> {camp.endDate}</span>
+              </div>
+            </div>
           </div>
         ))}
       </div>
@@ -447,31 +423,14 @@ interface EvalSheetProps {
 function EvalSheet({ title, icon, employees, skills, initialScores = {}, onScoresChange, hasSampleData = false }: EvalSheetProps) {
   const [scores, setScores] = useState<ScoreMap>(initialScores);
   const handleChange = (s: ScoreMap) => { setScores(s); onScoresChange(s); };
-  const results = employees.map(emp => calculateScore(scores[emp.id] ?? {}, skills));
-  const classA = results.filter(r => r.evalClass === 'A').length;
-  const classB = results.filter(r => r.evalClass === 'B').length;
-  const classC = results.filter(r => r.evalClass === 'C').length;
-  const avgPct = results.length > 0 ? Math.round(results.reduce((s, r) => s + r.percentage, 0) / results.length * 10) / 10 : 0;
-
+  
   return (
     <div className="space-y-6">
       <div className="flex items-start justify-between flex-wrap gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">{icon} {title} — Skill Evaluations</h1>
-          <p className="text-white/60 text-sm">{hasSampleData ? 'Live evaluation grid with sample data.' : 'Blank evaluation grid — enter scores (0–4).'}</p>
+          <h1 className="text-2xl font-bold text-foreground mb-1">{icon} {title} — Skill Evaluations</h1>
+          <p className="text-muted text-sm">{hasSampleData ? 'Live evaluation grid with sample data.' : 'Blank evaluation grid — enter scores (0–4).'}</p>
         </div>
-      </div>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <div className="rounded-lg border border-white/10 bg-slate-800/40 p-3 text-center"><div className="text-lg font-bold text-white">{employees.length}</div><div className="text-xs text-white/50">Employees</div></div>
-        <div className="rounded-lg border border-white/10 bg-slate-800/40 p-3 text-center"><div className="text-lg font-bold text-amber-400">{avgPct}%</div><div className="text-xs text-white/50">Avg Score</div></div>
-        <div className="rounded-lg border border-white/10 bg-slate-800/40 p-3">
-          <div className="flex justify-around text-center">
-            <div><div className="text-base font-bold text-green-400">{classA}</div><div className="text-xs text-white/40">A</div></div>
-            <div><div className="text-base font-bold text-yellow-400">{classB}</div><div className="text-xs text-white/40">B</div></div>
-            <div><div className="text-base font-bold text-red-400">{classC}</div><div className="text-xs text-white/40">C</div></div>
-          </div>
-        </div>
-        <div className="rounded-lg border border-white/10 bg-slate-800/40 p-3 text-center"><div className="text-lg font-bold text-white">{skills.length}</div><div className="text-xs text-white/50">Skills</div></div>
       </div>
       <EvaluationGrid employees={employees} skills={skills} initialScores={initialScores} onScoresChange={handleChange} showSampleBadge={hasSampleData} />
     </div>
@@ -491,22 +450,22 @@ function ProductionManagementSheet({ scores, setScores, resetKey }: { scores: an
   const currentDept = DEPTS.find(d => d.id === activeDept)!;
 
   return (
-    <div className="flex flex-col bg-[#0A0A0A] border border-white/10 overflow-hidden">
-      <div className="bg-[#121212] border-b border-white/10 px-6 py-4 flex items-center gap-4 overflow-x-auto relative">
-        <div className="flex items-center gap-3 mr-6 border-r border-white/10 pr-6">
-          <div className="w-2 h-2 bg-primary animate-pulse" />
-          <span className="text-[10px] font-black text-primary uppercase tracking-[0.3em] whitespace-nowrap">{t('sheet_tab_production_management')}</span>
+    <div className="space-y-12 animate-in fade-in duration-1000">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+        <div>
+          <h2 className="text-3xl font-headline font-bold text-foreground tracking-tight mb-2">Production Analytics</h2>
+          <p className="text-muted font-medium text-sm">Industrial node scoring and factory-level proficiency aggregation.</p>
         </div>
-        <div className="flex items-center gap-2">
+      </div>
+
+      <div className="p-10 bg-surface border border-muted/10 rounded-[2.5rem] soft-shadow backdrop-blur-md">
+        <div className="flex flex-wrap gap-2 mb-10 border-b border-muted/5 pb-6">
           {DEPTS.map(dept => (
-            <button key={dept.id} onClick={() => setActiveDept(dept.id)} className={`flex items-center gap-3 px-6 py-3 text-[10px] font-black tracking-widest uppercase transition-all border ${activeDept === dept.id ? 'bg-primary text-primary-foreground border-primary' : 'text-white/40 hover:text-white border-white/10 hover:border-white/20 bg-white/5'}`}>
-              <span className="opacity-70">{dept.icon}</span><span>{t(dept.labelKey as any)}</span>
+            <button key={dept.id} onClick={() => setActiveDept(dept.id)} className={`px-6 py-3 text-[10px] font-bold tracking-widest uppercase transition-all border rounded-2xl ${activeDept === dept.id ? 'bg-primary text-primary-foreground border-primary' : 'text-muted border-muted/10 hover:border-primary/20'}`}>
+              {t(dept.labelKey as any)}
             </button>
           ))}
         </div>
-        <div className="absolute top-0 right-0 w-8 h-8 border-t border-r border-primary/20" />
-      </div>
-      <div className="p-4">
         <EvalSheet key={`${activeDept}-${resetKey}`} title={t(currentDept.labelKey as any)} icon={currentDept.icon} employees={currentDept.employees} skills={currentDept.skills} initialScores={scores[activeDept]} onScoresChange={setScores[activeDept]} hasSampleData />
       </div>
     </div>
@@ -515,7 +474,10 @@ function ProductionManagementSheet({ scores, setScores, resetKey }: { scores: an
 
 function CalculationsSheet({ departments }: { departments: any[] }) {
   const computeDeptStats = (dept: any) => {
-    const results = dept.employees.map((emp: any) => { const r = calculateScore(dept.scores[emp.id] ?? {}, dept.skills); return { employee: emp, percentage: r.percentage, evalClass: r.evalClass }; });
+    const results = dept.employees.map((emp: any) => { 
+      const r = calculateScore(dept.scores[emp.id] ?? {}, dept.skills); 
+      return { employee: emp, percentage: r.percentage, evalClass: r.evalClass }; 
+    });
     const total = results.length;
     const countA = results.filter((r: any) => r.evalClass === 'A').length;
     const countB = results.filter((r: any) => r.evalClass === 'B').length;
@@ -525,31 +487,66 @@ function CalculationsSheet({ departments }: { departments: any[] }) {
   };
 
   return (
-    <div className="space-y-8 max-w-6xl mx-auto">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-6">
-          <h2 className="text-lg font-semibold text-amber-400 mb-4">The Weighted Scoring Formula</h2>
-          <div className="space-y-3 font-mono text-xs">
-            <div className="bg-slate-900/60 rounded-lg px-4 py-2 border border-white/5"><span className="text-white/50">Total Score = </span>Σ (Score × Weight)</div>
-            <div className="bg-slate-900/60 rounded-lg px-4 py-2 border border-white/5"><span className="text-white/50">Max Score = </span>Σ (4 × Weight)</div>
-            <div className="bg-slate-900/60 rounded-lg px-4 py-2 border border-white/5"><span className="text-white/50">Percentage = </span>(Total / Max) × 100</div>
+    <div className="space-y-12 animate-in fade-in duration-1000">
+      <div className="relative p-10 md:p-16 bg-surface border border-muted/10 rounded-4xl soft-shadow overflow-hidden group">
+        <div className="relative z-10">
+          <div className="flex items-center gap-4 mb-6 text-primary">
+            <span className="font-headline font-bold tracking-[0.2em] text-[10px] uppercase">ALGORITHMIC_CORE_v1.2</span>
           </div>
+          <h2 className="text-4xl font-headline font-bold text-foreground tracking-tight mb-4">Scoring Engine</h2>
+          <p className="text-muted font-medium text-sm">Documentation of mathematical vectors and classification logic used for proficiency mapping.</p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {departments.slice(0, 4).map(dept => {
-            const stats = computeDeptStats(dept);
-            return (
-              <div key={dept.title} className="p-4 bg-zinc-900/40 border border-white/10 rounded-lg">
-                <div className="flex justify-between items-center mb-4">
-                  <div className="font-bold text-white text-sm">{dept.icon} {dept.title}</div>
-                  <div className="text-xl font-bold text-amber-400">{stats.avgScore}%</div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {departments.slice(0, 4).map(dept => {
+          const stats = computeDeptStats(dept);
+          return (
+            <div key={dept.title} className="p-8 bg-surface border border-muted/10 rounded-3xl soft-shadow group hover:border-primary/20 transition-all">
+              <div className="flex justify-between items-center mb-6">
+                <div className="font-headline font-bold text-foreground text-sm flex items-center gap-2">
+                  <span>{dept.icon}</span> <span>{dept.title}</span>
                 </div>
-                <div className="flex h-1.5 rounded-full overflow-hidden bg-white/5">
-                  <div style={{ width: `${stats.pctA}%`, backgroundColor: '#16A34A' }} /><div style={{ width: `${stats.pctB}%`, backgroundColor: '#CA8A04' }} /><div style={{ width: `${stats.pctC}%`, backgroundColor: '#DC2626' }} />
+                <div className="text-2xl font-headline font-bold text-primary">{stats.avgScore}%</div>
+              </div>
+              <div className="flex h-2 rounded-full overflow-hidden bg-muted/5 mb-4 shadow-inner">
+                <div style={{ width: `${stats.pctA}%`, backgroundColor: '#16A34A' }} />
+                <div style={{ width: `${stats.pctB}%`, backgroundColor: '#CA8A04' }} />
+                <div style={{ width: `${stats.pctC}%`, backgroundColor: '#DC2626' }} />
+              </div>
+              <div className="flex justify-between text-[9px] font-bold text-muted uppercase tracking-widest">
+                <span>A: {stats.pctA}%</span>
+                <span>B: {stats.pctB}%</span>
+                <span>C: {stats.pctC}%</span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div className="p-10 bg-surface border border-muted/10 rounded-4xl soft-shadow">
+          <h3 className="text-[10px] font-bold text-primary uppercase tracking-[0.2em] mb-10 flex items-center gap-4">
+            <div className="h-px w-10 bg-primary/30" /> Core Equation
+          </h3>
+          <div className="p-8 bg-background/50 rounded-2xl border border-muted/5 font-headline font-bold text-lg text-foreground text-center mb-10 shadow-inner">
+            Score = Σ (Skill_Value × Skill_Weight)
+          </div>
+          <div className="space-y-6">
+            {[
+              { label: 'Skill Value', desc: 'Raw score (0–4) assigned by the evaluator.' },
+              { label: 'Skill Weight', desc: 'Criticality multiplier (1–5) assigned to the skill node.' },
+              { label: 'Normalization', desc: 'Aggregate score divided by max possible for percentage mapping.' },
+            ].map((rule, i) => (
+              <div key={i} className="flex gap-6 items-start">
+                <div className="w-2 h-2 rounded-full bg-primary mt-1.5" />
+                <div className="min-w-0">
+                  <div className="text-[10px] font-bold text-foreground uppercase tracking-widest mb-1">{rule.label}</div>
+                  <p className="text-[11px] text-muted font-medium leading-relaxed">{rule.desc}</p>
                 </div>
               </div>
-            );
-          })}
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -558,12 +555,21 @@ function CalculationsSheet({ departments }: { departments: any[] }) {
 
 function BlankTemplateSheet() {
   const [scores, setScores] = useState<Record<string, Record<string, number>>>({});
-  const SKILLS = Array.from({ length: 5 }, (_, i) => ({ id: `b${i}`, weight: i < 2 ? 4 : 2 }));
+  const SKILLS = Array.from({ length: 5 }, (_, i) => ({ id: `b${i}`, weight: i < 2 ? 4 : 2, name: `Skill ${i+1}` }));
   const EMPS = Array.from({ length: 5 }, (_, i) => ({ id: `e${i}`, fullName: `Operative ${i+1}`, code: `D-00${i+1}` }));
+  
   return (
-    <div className="space-y-6">
-      <div className="p-4 bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs"><strong>Blank Template:</strong> Customize skill weights and export to Excel for new departments.</div>
-      <EvaluationGrid employees={EMPS as any} skills={SKILLS as any} />
+    <div className="space-y-12 animate-in fade-in duration-1000">
+      <div className="p-8 bg-primary/5 border border-primary/20 rounded-3xl text-primary text-sm font-medium flex items-center gap-4 soft-shadow">
+        <span className="text-2xl">📝</span>
+        <div>
+          <div className="font-bold uppercase tracking-widest text-[10px] mb-1">Architectural Sandbox</div>
+          <p className="opacity-80">Blank Template: Customize skill weights and export to Excel for new departments.</p>
+        </div>
+      </div>
+      <div className="bg-surface p-1 rounded-4xl border border-muted/5 soft-shadow">
+        <EvaluationGrid employees={EMPS as any} skills={SKILLS as any} />
+      </div>
     </div>
   );
 }
@@ -571,24 +577,65 @@ function BlankTemplateSheet() {
 function PrintReportSheet({ departments }: { departments: any[] }) {
   const allRows = departments.flatMap(dept => dept.employees.map((emp: any) => ({ emp, dept, result: calculateScore(dept.scores[emp.id] ?? {}, dept.skills) })));
   const handlePrint = () => window.print();
+  
   return (
-    <div className="space-y-6">
-      <div className="no-print flex justify-between items-center">
-        <h2 className="text-xl font-bold text-white">🖨 Summary Report Ready</h2>
-        <button onClick={handlePrint} className="px-6 py-2 bg-amber-500 text-black font-bold text-xs uppercase tracking-widest">Print Report</button>
+    <div className="space-y-12 animate-in fade-in duration-1000">
+      <div className="no-print flex flex-col md:flex-row justify-between items-start md:items-center gap-8 bg-surface/50 p-10 rounded-4xl border border-muted/10 soft-shadow backdrop-blur-md">
+        <div>
+          <h2 className="text-3xl font-headline font-bold text-foreground tracking-tight mb-2">Operational Artifacts</h2>
+          <p className="text-muted font-medium text-sm">Generate physical documentation for the industrial archive.</p>
+        </div>
+        <button 
+          onClick={handlePrint} 
+          className="px-10 py-5 bg-primary text-primary-foreground font-headline font-bold text-[10px] uppercase tracking-[0.2em] rounded-2xl hover:scale-105 transition-all shadow-lg active:scale-95"
+        >
+          Print System Report
+        </button>
       </div>
-      <div className="print-area bg-white text-black p-8 rounded shadow-2xl">
-        <h1 className="text-2xl font-black uppercase mb-6 border-b-4 border-black pb-2">Skill Matrix Cycle Summary</h1>
-        <table className="w-full text-xs">
-          <thead><tr className="border-b-2 border-black font-bold uppercase">
-            <th className="text-left py-2">Operative</th><th className="text-left py-2">Dept</th><th className="text-center py-2">Score</th><th className="text-center py-2">Class</th>
-          </tr></thead>
-          <tbody className="divide-y divide-gray-200">
+
+      <div className="print-area bg-white text-slate-900 p-16 rounded-4xl shadow-2xl border border-slate-200">
+        <div className="flex justify-between items-start mb-16 border-b-8 border-slate-900 pb-8">
+          <div>
+            <h1 className="text-5xl font-headline font-bold tracking-tighter uppercase leading-none mb-2">Skill Matrix</h1>
+            <div className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.4em]">Operational Proficiency Report</div>
+          </div>
+          <div className="text-right">
+            <div className="text-sm font-bold uppercase tracking-widest">{new Date().toLocaleDateString()}</div>
+            <div className="text-[10px] text-slate-400 font-medium">SYSTEM_ID: HRM_SR_2024</div>
+          </div>
+        </div>
+
+        <table className="w-full text-xs border-collapse">
+          <thead>
+            <tr className="border-b-2 border-slate-900 font-bold uppercase text-[10px] tracking-widest">
+              <th className="text-left py-4">Operative</th>
+              <th className="text-left py-4">Node_Assignment</th>
+              <th className="text-center py-4">Proficiency</th>
+              <th className="text-center py-4">Rank</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-slate-100">
             {allRows.slice(0, 15).map((r: any, i: number) => (
-              <tr key={i}><td className="py-2 font-bold">{r.emp.fullName}</td><td className="py-2">{r.dept.title}</td><td className="text-center py-2">{r.result.percentage}%</td><td className="text-center py-2 font-bold">{r.result.evalClass}</td></tr>
+              <tr key={i}>
+                <td className="py-4 font-bold text-sm tracking-tight">{r.emp.fullName}</td>
+                <td className="py-4 text-slate-500 font-medium">{r.dept.title}</td>
+                <td className="text-center py-4 font-bold text-slate-700">{r.result.percentage}%</td>
+                <td className="text-center py-4">
+                  <span className={`px-4 py-1 rounded-full font-bold text-white text-[10px]`} style={{ backgroundColor: getClassColor(r.result.evalClass) }}>{r.result.evalClass}</span>
+                </td>
+              </tr>
             ))}
           </tbody>
         </table>
+        
+        <div className="mt-20 pt-8 border-t border-slate-200 flex justify-between items-end">
+          <div className="text-[8px] font-bold text-slate-300 uppercase tracking-widest">
+            Generated by HRM Editorial System • All data strictly confidential
+          </div>
+          <div className="w-32 h-32 border border-slate-100 flex items-center justify-center text-[8px] text-slate-200 font-bold uppercase text-center p-4">
+            Official System Seal
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -670,25 +717,25 @@ export default function SpreadsheetPage() {
   };
 
   return (
-    <div className="flex flex-col h-full bg-[#0A0A0A] font-sans selection:bg-primary/20 selection:text-primary">
-      <div className="overflow-x-auto border-b border-white/5 bg-black/40 backdrop-blur-xl sticky top-0 z-50">
-        <div className="flex min-w-max px-6 py-2">
+    <div className="flex flex-col h-full bg-background font-body-default selection:bg-primary/20 selection:text-primary">
+      <div className="overflow-x-auto border-b border-muted/10 bg-surface/80 backdrop-blur-xl sticky top-0 z-50">
+        <div className="flex min-w-max px-8 py-2">
           {TABS.map(tab => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-3 px-6 py-4 text-[10px] font-headline font-black transition-all border-b-2 uppercase tracking-[0.2em] relative group ${
-                activeTab === tab.id ? 'border-primary text-primary bg-primary/5' : 'border-transparent text-zinc-500 hover:text-zinc-300'
+              className={`flex items-center gap-3 px-8 py-5 text-[10px] font-headline font-bold transition-all border-b-2 uppercase tracking-[0.2em] relative group ${
+                activeTab === tab.id ? 'border-primary text-primary bg-primary/5' : 'border-transparent text-muted hover:text-foreground'
               }`}
             >
-              <span className={`text-sm transition-transform duration-500 ${activeTab === tab.id ? 'scale-110' : 'grayscale opacity-50'}`}>{tab.icon}</span>
+              <span className={`text-base transition-transform duration-500 ${activeTab === tab.id ? 'scale-110' : 'grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100'}`}>{tab.icon}</span>
               <span>{t(tab.key_label as any)}</span>
             </button>
           ))}
         </div>
       </div>
-      <div className="flex-1 overflow-auto bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] bg-fixed opacity-95">
-        <div className="p-8 max-w-[1600px] mx-auto">
+      <div className="flex-1 overflow-auto">
+        <div className="p-8 md:p-12 max-w-[1600px] mx-auto">
           {renderContent()}
         </div>
       </div>

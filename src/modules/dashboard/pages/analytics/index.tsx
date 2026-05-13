@@ -8,6 +8,7 @@ import SkillSection from "./SkillSection";
 import EmployeeSection from "./EmployeeSection";
 import TrainingSection from "./TrainingSection";
 import CampaignSection from "./CampaignSection";
+import { Sun, Moon, Languages } from "lucide-react";
 
 export default function Analytics() {
   const { theme, setTheme } = useTheme();
@@ -15,42 +16,45 @@ export default function Analytics() {
   const t = useT();
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b border-border bg-card/60 sticky top-0 z-20 backdrop-blur">
-        <div className="max-w-screen-2xl mx-auto px-6 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-1 h-7 rounded-full" style={{ background: "#D4960A" }} />
+    <div className="min-h-screen bg-[#FDFCFB] text-zinc-900 selection:bg-zinc-200">
+      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-zinc-100">
+        <div className="max-w-[1600px] mx-auto px-6 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 rounded-2xl bg-zinc-900 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-zinc-200">
+              H
+            </div>
             <div>
-              <h1 className="font-bold text-base text-foreground leading-tight tracking-wide uppercase">{t('common_app_title')}</h1>
-              <p className="text-xs text-muted-foreground leading-tight">{t('common_app_subtitle')}</p>
+              <h1 className="font-bold text-xl tracking-tight text-zinc-900 font-comfortaa leading-none">
+                {t('common_app_title')}
+              </h1>
+              <p className="text-xs text-zinc-400 font-medium uppercase tracking-widest mt-1">
+                {t('common_app_subtitle')}
+              </p>
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="hidden md:flex items-center gap-2 text-xs text-muted-foreground">
-              {t('dash_app_stats').split("|").map((s, i, arr) => (
-                <span key={i} className="flex items-center gap-2">
-                  {s.trim()}
-                  {i < arr.length - 1 && <span className="opacity-30">|</span>}
-                </span>
+
+          <div className="flex items-center gap-6">
+            <div className="hidden lg:flex items-center gap-6 text-xs font-bold text-zinc-400 uppercase tracking-widest border-r border-zinc-100 pr-6 mr-2">
+              {t('dash_app_stats').split("|").map((s, i) => (
+                <div key={i} className="flex flex-col items-center">
+                  <span className="text-zinc-800 text-sm font-comfortaa normal-case tracking-tight">{s.trim().split(" ")[0]}</span>
+                  <span className="opacity-60 text-[10px]">{s.trim().split(" ").slice(1).join(" ")}</span>
+                </div>
               ))}
             </div>
-            <span className="text-xs text-muted-foreground hidden sm:inline">
-              {t('dash_app_created_by')} <span style={{ color: "#D4960A" }}>yasserious.com</span>
-            </span>
-            <div className="flex items-center gap-2">
+
+            <div className="flex items-center gap-3">
               <button
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                title={t('common_toggle_theme')}
-                className="px-2.5 py-1.5 rounded-lg text-xs font-medium border border-border bg-card text-foreground hover:bg-muted transition-colors"
+                className="w-10 h-10 rounded-2xl flex items-center justify-center border border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-50 transition-all active:scale-95"
               >
-                {theme === "dark" ? "☀" : "☾"}
+                {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
               </button>
               <button
                 onClick={() => setLang(lang === "en" ? "ar" : "en")}
-                title={t('common_toggle_language')}
-                className="px-2.5 py-1.5 rounded-lg text-xs font-bold border border-border bg-card text-foreground hover:bg-muted transition-colors"
-                style={{ minWidth: 36 }}
+                className="h-10 px-4 rounded-2xl flex items-center gap-2 border border-zinc-200 bg-white text-zinc-900 text-xs font-bold hover:bg-zinc-50 transition-all active:scale-95 uppercase tracking-widest"
               >
+                <Languages className="w-4 h-4 opacity-40" />
                 {lang === "en" ? t('common_lang_ar') : t('common_lang_en')}
               </button>
             </div>
@@ -58,7 +62,7 @@ export default function Analytics() {
         </div>
       </header>
 
-      <main className="max-w-screen-2xl mx-auto px-4 md:px-6 py-8 space-y-10">
+      <main className="max-w-[1600px] mx-auto px-6 py-12 space-y-16">
         <OverviewSection />
         <WorkflowSummaryWidget />
         <DeptSection />
@@ -68,10 +72,15 @@ export default function Analytics() {
         <CampaignSection />
       </main>
 
-      <footer className="border-t border-border mt-12 py-6">
-        <p className="text-center text-xs text-muted-foreground">
-          {t('dash_app_footer')} · {t('dash_app_created_by')} <span style={{ color: "#D4960A" }}>yasserious.com</span>
-        </p>
+      <footer className="max-w-[1600px] mx-auto px-6 py-12 border-t border-zinc-100">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <p className="text-zinc-400 text-sm font-medium">
+            {t('dash_app_footer')}
+          </p>
+          <p className="text-zinc-500 text-sm">
+            {t('dash_app_created_by')} <span className="text-zinc-900 font-bold">yasserious.com</span>
+          </p>
+        </div>
       </footer>
     </div>
   );

@@ -11,19 +11,11 @@ import { Skeleton } from "@shared/components/ui/skeleton";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@shared/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@shared/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@shared/components/ui/alert-dialog";
-import { Plus, Trash2, ExternalLink, ChevronRight, CheckCircle2, Clock, Circle, X, GitBranch, Activity, Shield, Terminal, Zap, Cpu, Users } from "lucide-react";
+import { Plus, Trash2, ExternalLink, ChevronRight, CheckCircle2, Clock, Circle, X, GitBranch, Activity, Shield, Terminal, Zap, Cpu, Users, Layers, Workflow } from "lucide-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@shared/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { useFactory } from "@shared/contexts/FactoryContext";
-
-const CornerMarks = ({ color = "primary" }: { color?: string }) => (
-  <>
-    <div className={`absolute top-0 left-0 w-2 h-2 border-t border-l border-${color}/40`} />
-    <div className={`absolute top-0 right-0 w-2 h-2 border-t border-r border-${color}/40`} />
-    <div className={`absolute bottom-0 left-0 w-2 h-2 border-b border-l border-${color}/40`} />
-    <div className={`absolute bottom-0 right-0 w-2 h-2 border-b border-r border-${color}/40`} />
-  </>);
 
 interface WorkflowSummary {
   id: string;
@@ -45,17 +37,17 @@ interface Campaign { id: string; title: string; }
 interface SystemUser { id: string; full_name: string | null; email: string; role: string; }
 
 const STATUS_CONFIG: Record<string, { bg: string; text: string; key: string }>= {
-  Draft: { bg: "bg-amber-500/10", text: "text-amber-500", key: "status_draft" },
-  "In Progress": { bg: "bg-sky-500/10", text: "text-sky-500", key: "status_active" },
-  "Awaiting Approval": { bg: "bg-violet-500/10", text: "text-violet-500", key: "status_review" },
-  Finalized: { bg: "bg-emerald-500/10", text: "text-emerald-500", key: "status_finalized" },
-  Cancelled: { bg: "bg-zinc-700/10", text: "text-zinc-500", key: "status_cancelled" },
+  Draft: { bg: "bg-amber-100", text: "text-amber-700", key: "status_draft" },
+  "In Progress": { bg: "bg-sky-100", text: "text-sky-700", key: "status_active" },
+  "Awaiting Approval": { bg: "bg-violet-100", text: "text-violet-700", key: "status_review" },
+  Finalized: { bg: "bg-emerald-100", text: "text-emerald-700", key: "status_finalized" },
+  Cancelled: { bg: "bg-zinc-100", text: "text-zinc-700", key: "status_cancelled" },
 };
 
 function statusBadge(status: string, t: (k: any) => string) {
-  const config = STATUS_CONFIG[status] ?? { bg: "bg-zinc-500/10", text: "text-zinc-500", key: status };
+  const config = STATUS_CONFIG[status] ?? { bg: "bg-zinc-100", text: "text-zinc-600", key: status };
   return (
-    <Badge variant="outline" className={`rounded-none font-mono text-[9px] font-black border-current/20 px-2 py-0.5 uppercase tracking-widest ${config.bg} ${config.text}`}>
+    <Badge variant="outline" className={`rounded-full font-medium text-[10px] border-none px-3 py-1 ${config.bg} ${config.text}`}>
       {config.key ? t(config.key as any) : config.key}
     </Badge>);
 }
@@ -311,112 +303,133 @@ export default function WorkflowsPage() {
   };
 
   return (
-    <div className="space-y-8 pb-20 font-sans selection:bg-primary selection:text-primary-foreground text-white">
-      {/* Header - Industrial Style */}
-      <div className="relative p-10 bg-[#0A0A0A] border-2 border-primary/20 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
+    <div className="space-y-10 pb-20 font-sans selection:bg-primary/20 selection:text-primary">
+      {/* Header - Editorial Style */}
+      <div className="relative p-10 bg-white/40 backdrop-blur-xl border border-primary/5 rounded-4xl overflow-hidden shadow-soft-xl">
         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="space-y-3 text-center md:text-start">
             <div className="flex items-center justify-center md:justify-start gap-3">
-              <GitBranch className="h-4 w-4 text-primary animate-pulse" />
-              <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">{t("workflows_protocol_label")}</span>
+              <div className="p-2 bg-primary/10 rounded-xl">
+                <Workflow className="h-5 w-5 text-primary" />
+              </div>
+              <span className="font-comfortaa font-bold tracking-wider text-xs text-primary/60 uppercase">{t("label_wf_protocol")}</span>
             </div>
-            <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">{t("workflows_title")}
-            </h2>
-            <p className="text-zinc-500 font-medium border-s-2 border-primary/20 ps-4">{t("workflows_subtitle")}</p>
+            <h1 className="text-4xl md:text-5xl font-comfortaa font-bold text-zinc-900 tracking-tight leading-tight">
+              {t("label_strategic_workflows")}
+            </h1>
+            <p className="text-zinc-500 font-medium max-w-xl">{t("label_wf_desc") || "Manage hierarchical evaluation and approval chains with professional precision."}</p>
           </div>
           
           {isManager && (
-            <Button className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-8 h-auto hover:bg-primary/90" onClick={openCreate}>
-              <Plus className="h-4 w-4 me-2" />INITIALIZE PROTOCOL
+            <Button 
+              className="rounded-2xl bg-primary text-primary-foreground font-comfortaa font-bold px-8 py-6 h-auto shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform active:scale-[0.98]" 
+              onClick={openCreate}
+            >
+               <Plus className="h-5 w-5 me-2" />{t("action_initialize_protocol")}
             </Button>
           )}
         </div>
-        <CornerMarks />
       </div>
 
       {isLoading ? (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{Array.from({ length: 6 }).map((_, i) => (
-            <Skeleton key={i} className="h-56 w-full bg-white/5 rounded-none" />
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Skeleton key={i} className="h-64 w-full bg-white/40 rounded-3xl" />
           ))}
         </div>
       ) : !workflows?.length ? (
-        <Card className="bg-[#121212] border-white/10 rounded-none relative">
-          <CardContent className="py-24 text-center space-y-4">
-             <Terminal className="h-12 w-12 text-zinc-800 mx-auto" />
-             <p className="font-mono text-xs text-zinc-600 uppercase tracking-[0.3em]">{t("label_no_records")}
-             </p>
+        <Card className="bg-white/40 backdrop-blur-xl border-primary/5 rounded-4xl shadow-soft-lg overflow-hidden">
+          <CardContent className="py-32 text-center space-y-6">
+            <div className="p-6 bg-zinc-50 w-fit mx-auto rounded-3xl border border-zinc-100">
+              <Layers className="h-12 w-12 text-zinc-300" />
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-xl font-comfortaa font-bold text-zinc-900">{t("label_no_streams")}</h3>
+              <p className="text-zinc-500 text-sm max-w-xs mx-auto">Initializing a new protocol will display it here for tracking and execution.</p>
+            </div>
           </CardContent>
-          <CornerMarks />
         </Card>
       ) : (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{workflows.map((wf) => {
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {workflows.map((wf) => {
             const progress = wf.total_steps > 0 ? Math.round((wf.completed_steps / wf.total_steps) * 100) : 0;
             return (
               <motion.div
                 key={wf.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                whileHover={{ y: -5 }}
+                whileHover={{ y: -8 }}
+                className="group"
               >
-                <Card className="bg-[#0D0D0D] border border-white/10 rounded-none relative group h-full overflow-hidden">
-                  <CardHeader className="pb-4">
+                <Card className="bg-white/60 backdrop-blur-md border-primary/5 rounded-4xl shadow-soft-lg group-hover:shadow-soft-xl transition-all duration-300 h-full flex flex-col">
+                  <CardHeader className="pb-4 space-y-4">
                     <div className="flex items-start justify-between gap-4">
                       <div className="min-w-0 space-y-1">
-                        <div className="flex items-center gap-2">
-                           <span className="font-mono text-[9px] text-primary/60 tracking-widest uppercase">ID::{wf.id.substring(0, 8)}</span>
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="text-[10px] font-bold text-zinc-400 tracking-tighter uppercase">#{wf.id.substring(0, 8)}</span>
                         </div>
-                        <h3 className="font-headline font-black text-xl text-white uppercase tracking-tight group-hover:text-primary transition-colors truncate">
+                        <h3 className="font-comfortaa font-bold text-xl text-zinc-900 group-hover:text-primary transition-colors line-clamp-2 leading-tight">
                           {wf.title}
                         </h3>
-                        <p className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">{t("workflows_unit")}::{wf.department?.name ?? t("workflows_general")}
-                        </p>
                       </div>
                       {statusBadge(wf.status, t)}
                     </div>
+                    
+                    <div className="flex flex-wrap gap-2">
+                      <div className="flex items-center gap-1.5 px-3 py-1 bg-zinc-50 rounded-full border border-zinc-100">
+                        <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-tight">
+                          {wf.department?.name ?? "GENERAL"}
+                        </span>
+                      </div>
+                      {wf.campaign && (
+                        <div className="flex items-center gap-1.5 px-3 py-1 bg-primary/5 rounded-full border border-primary/10">
+                          <Activity className="h-3 w-3 text-primary" />
+                          <span className="text-[10px] font-bold text-primary/70 uppercase tracking-tight">{wf.campaign.title}</span>
+                        </div>
+                      )}
+                    </div>
                   </CardHeader>
-                  <CardContent className="space-y-6">
-                    {wf.campaign && (
-                      <div className="flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 w-fit">
-                         <Activity className="h-3 w-3 text-primary" />
-                         <span className="text-[9px] font-mono font-black text-zinc-500 uppercase tracking-widest">{t("campaigns_col_type")}::{wf.campaign.title}</span>
+                  
+                  <CardContent className="space-y-8 flex-1 flex flex-col justify-between">
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between text-[11px] font-bold text-zinc-400 uppercase tracking-tight">
+                        <span>{t("label_execution_progress")}</span>
+                        <span className="text-zinc-900">{progress}%</span>
                       </div>
-                    )}
-
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between font-mono text-[9px] text-zinc-500 uppercase tracking-widest">
-                        <span>{t("workflows_progress")}</span>
-                        <span className="text-white">{progress}%</span>
-                      </div>
-                      <div className="h-1 bg-white/5 rounded-none overflow-hidden relative">
+                      <div className="h-2 bg-zinc-100 rounded-full overflow-hidden relative">
                         <motion.div 
                           initial={{ width: 0 }}
                           animate={{ width: `${progress}%` }}
-                          transition={{ duration: 1, ease: "easeOut" }}
-                          className={`h-full ${progress === 100 ? "bg-emerald-500" : "bg-primary"} shadow-[0_0_10px_rgba(255,255,255,0.2)]`} 
+                          transition={{ duration: 1.5, ease: "circOut" }}
+                          className={`h-full ${progress === 100 ? "bg-emerald-400" : "bg-primary"} rounded-full`} 
                         />
                       </div>
                     </div>
 
-                    <div className="pt-6 border-t border-white/5 flex items-center justify-between">
-                      <span className="font-mono text-[9px] text-zinc-700 uppercase">{t("workflows_init_date")}::{new Date(wf.created_at).toLocaleDateString()}
-                      </span>
-                      <div className="flex items-center gap-2">
+                    <div className="pt-6 border-t border-zinc-50 flex items-center justify-between">
+                      <div className="flex flex-col">
+                        <span className="text-[9px] font-bold text-zinc-400 uppercase tracking-tighter">{t("label_initialized")}</span>
+                        <span className="text-[11px] font-bold text-zinc-600">{new Date(wf.created_at).toLocaleDateString()}</span>
+                      </div>
+                      <div className="flex items-center gap-3">
                         {isManager && wf.status !== "Finalized" && (
-                          <Button size="icon" variant="ghost" className="h-8 w-8 rounded-none border border-white/10 hover:border-rose-500/30 hover:bg-rose-500/5 text-zinc-600 hover:text-rose-500"
-                            onClick={() => setDeleteTarget({ id: wf.id, title: wf.title })}>
-                            <Trash2 className="h-3.5 w-3.5" />
+                          <Button 
+                            size="icon" 
+                            variant="ghost" 
+                            className="h-10 w-10 rounded-2xl border border-zinc-100 hover:bg-rose-50 hover:text-rose-500 hover:border-rose-100 transition-colors"
+                            onClick={() => setDeleteTarget({ id: wf.id, title: wf.title })}
+                          >
+                            <Trash2 className="h-4 w-4" />
                           </Button>
                         )}
-                        <Link href={`/workflows/${wf.id}`}>
-                          <Button variant="ghost" className="rounded-none border border-white/10 hover:border-primary/50 text-[10px] font-headline font-black tracking-widest uppercase h-auto py-3 px-5 group/btn">
-                             ACCESS <ExternalLink className="ms-2 h-3 w-3 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+                        <Link href={`/skill-matrix/workflows/${wf.id}`}>
+                          <Button className="rounded-2xl bg-zinc-900 text-white hover:bg-primary transition-all duration-300 font-comfortaa font-bold px-6 group/btn shadow-soft-lg">
+                             {t("action_access") || "Access"} <ChevronRight className="ms-1.5 h-4 w-4 group-hover/btn:translate-x-0.5 transition-transform" />
                           </Button>
                         </Link>
                       </div>
                     </div>
                   </CardContent>
-                  <CornerMarks />
                 </Card>
               </motion.div>
             );
@@ -426,51 +439,55 @@ export default function WorkflowsPage() {
 
       {/* Create Dialog */}
       <Dialog open={showCreate} onOpenChange={(open) => { if (!open) setShowCreate(false); }}>
-        <DialogContent className="max-w-4xl max-h-[90vh] bg-[#0A0A0A] border-2 border-primary/30 rounded-none p-0 overflow-hidden text-white">
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5" />
+        <DialogContent className="max-w-4xl max-h-[90vh] bg-white/90 backdrop-blur-2xl border-primary/5 rounded-4xl p-0 overflow-hidden text-zinc-900 shadow-soft-2xl border">
           <div className="relative z-10 flex flex-col h-full max-h-[90vh]">
-            <div className="p-8 border-b border-white/10 bg-white/5 shrink-0">
-              <h2 className="font-headline font-black text-2xl text-white uppercase tracking-tighter">{t("workflows_create_title")}</h2>
-              <p className="text-[10px] font-mono text-primary tracking-[0.3em] mt-2 uppercase">STRAT INIT_v9.4</p>
+            <div className="p-8 border-b border-zinc-100 bg-zinc-50/50 shrink-0">
+              <div className="flex items-center gap-3 mb-1">
+                <div className="p-2 bg-primary/10 rounded-xl">
+                  <Plus className="h-4 w-4 text-primary" />
+                </div>
+                <h2 className="font-comfortaa font-bold text-2xl text-zinc-900 tracking-tight">{t("label_init_protocol_chain")}</h2>
+              </div>
+              <p className="text-[11px] font-bold text-primary/60 tracking-wider uppercase ml-12">{t("label_strat_init")}</p>
             </div>
             
-            <div className="p-10 space-y-10 overflow-y-auto">
+            <div className="p-10 space-y-10 overflow-y-auto custom-scrollbar">
               <div className="grid grid-cols-2 gap-8">
                 <div className="col-span-2 space-y-3">
-                  <Label className="font-headline font-black text-[10px] text-zinc-500 tracking-[0.2em] uppercase">PROTOCOL TITLE *</Label>
+                  <Label className="font-bold text-[11px] text-zinc-400 tracking-tight uppercase ml-1">{t("label_protocol_title")} *</Label>
                   <Input
                     placeholder="e.g. Q2 PROD EVALUATION"
                     value={form.title}
                     onChange={(e) => setForm({ ...form, title: e.target.value })}
-                    className="h-14 bg-white/5 border-white/10 rounded-none font-mono text-sm tracking-widest text-white focus-visible:ring-primary/50"
+                    className="h-14 bg-white border-zinc-200 rounded-2xl font-medium text-sm text-zinc-900 focus-visible:ring-primary/20 transition-all"
                   />
                 </div>
                 <div className="space-y-3">
-                  <Label className="font-headline font-black text-[10px] text-zinc-500 tracking-[0.2em] uppercase">TARGET UNIT *</Label>
+                  <Label className="font-bold text-[11px] text-zinc-400 tracking-tight uppercase ml-1">{t("label_target_unit")} *</Label>
                   <Select value={form.department_id} onValueChange={(v) =>setForm({ ...form, department_id: v })}>
-                    <SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
+                    <SelectTrigger className="h-14 bg-white border-zinc-200 rounded-2xl font-bold text-xs text-zinc-900 uppercase">
                       <SelectValue placeholder="SELECT DEPLOYMENT UNIT" />
                     </SelectTrigger>
-                    <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">
+                    <SelectContent className="bg-white border-zinc-100 rounded-2xl text-zinc-900 shadow-soft-xl">
                       {departments?.map((d) => (
-                        <SelectItem key={d.id} value={d.id} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{d.name}</SelectItem>
+                        <SelectItem key={d.id} value={d.id} className="font-bold text-[10px] uppercase focus:bg-primary/5">{d.name}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-3">
-                  <Label className="font-headline font-black text-[10px] text-zinc-500 tracking-[0.2em] uppercase">ACTIVE CAMPAIGN</Label>
+                  <Label className="font-bold text-[11px] text-zinc-400 tracking-tight uppercase ml-1">ACTIVE CAMPAIGN</Label>
                   <Select
                     value={form.campaign_id || "_none"}
                     onValueChange={(v) =>setForm({ ...form, campaign_id: v === "_none" ? "" : v })}
                   >
-                    <SelectTrigger className="h-14 bg-white/5 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
+                    <SelectTrigger className="h-14 bg-white border-zinc-200 rounded-2xl font-bold text-xs text-zinc-900 uppercase">
                       <SelectValue placeholder="— NULL —" />
                     </SelectTrigger>
-                    <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">
-                      <SelectItem value="_none" className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">— NULL —</SelectItem>
+                    <SelectContent className="bg-white border-zinc-100 rounded-2xl text-zinc-900 shadow-soft-xl">
+                      <SelectItem value="_none" className="font-bold text-[10px] uppercase focus:bg-primary/5">— NULL —</SelectItem>
                       {campaigns?.map((c) => (
-                        <SelectItem key={c.id} value={c.id} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{c.title}</SelectItem>
+                        <SelectItem key={c.id} value={c.id} className="font-bold text-[10px] uppercase focus:bg-primary/5">{c.title}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -478,94 +495,95 @@ export default function WorkflowsPage() {
               </div>
 
               {/* Hierarchy Builder */}
-              <div className="bg-white/5 border border-white/10 rounded-none p-8 space-y-8 relative">
-                <div className="flex items-center gap-3 mb-6">
-                   <div className="h-px flex-1 bg-white/10" />
-                   <h4 className="font-headline font-black text-xs text-primary uppercase tracking-[0.4em]">HIERARCHY ARCHITECTURE</h4>
-                   <div className="h-px flex-1 bg-white/10" />
+              <div className="bg-zinc-50/50 border border-zinc-100 rounded-3xl p-8 space-y-8 relative">
+                <div className="flex items-center gap-4 mb-6">
+                   <div className="h-px flex-1 bg-zinc-200/50" />
+                   <h4 className="font-comfortaa font-bold text-xs text-primary uppercase tracking-widest">{t("label_hierarchy_arch")}</h4>
+                   <div className="h-px flex-1 bg-zinc-200/50" />
                 </div>
 
                 {/* Manager */}
-                <div className="space-y-3">
-                  <Label className="font-headline font-black text-[10px] text-zinc-500 tracking-[0.2em] uppercase flex items-center gap-2">
-                    <Shield className="h-3 w-3 text-amber-500" />PRODUCTION MANAGER
+                <div className="space-y-4">
+                  <Label className="font-bold text-[11px] text-zinc-400 tracking-tight uppercase flex items-center gap-2 ml-1">
+                    <Shield className="h-3.5 w-3.5 text-amber-500" />{t("label_production_manager")}
                   </Label>
                   <Select value={form.manager_id} onValueChange={(v) =>setForm({ ...form, manager_id: v })}>
-                    <SelectTrigger className="h-12 bg-black/40 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
+                    <SelectTrigger className="h-12 bg-white border-zinc-200 rounded-2xl font-bold text-[11px] text-zinc-900 uppercase">
                       <SelectValue placeholder="ASSIGN TOP LEVEL ADMIN" />
                     </SelectTrigger>
-                    <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">
+                    <SelectContent className="bg-white border-zinc-100 rounded-2xl text-zinc-900 shadow-soft-xl">
                       {users.map((u) => (
-                        <SelectItem key={u.id} value={u.id} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{u.full_name ?? u.email}</SelectItem>
+                        <SelectItem key={u.id} value={u.id} className="font-bold text-[10px] uppercase focus:bg-primary/5">{u.full_name ?? u.email}</SelectItem>
                       ))}
                     </SelectContent>
-                  </Select>{form.manager_id && (
-                    <div className="flex items-center gap-2 text-[10px] font-mono font-black text-emerald-500 uppercase tracking-widest px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 w-fit">
-                      <CheckCircle2 className="h-3 w-3" />{t("workflows_authorized")}::{users.find((u) => u.id === form.manager_id)?.full_name ?? "OPERATIVE"}
+                  </Select>
+                  {form.manager_id && (
+                    <div className="flex items-center gap-2 text-[10px] font-bold text-emerald-600 uppercase tracking-tight px-4 py-2 bg-emerald-50 rounded-full border border-emerald-100 w-fit animate-in fade-in slide-in-from-left-2">
+                      <CheckCircle2 className="h-3.5 w-3.5" />AUTHORIZED::{users.find((u) => u.id === form.manager_id)?.full_name ?? "OPERATIVE"}
                     </div>
                   )}
                 </div>
 
                 {/* Engineers */}
-                <div className="space-y-4">
-                  <Label className="font-headline font-black text-[10px] text-zinc-500 tracking-[0.2em] uppercase flex items-center gap-2">
-                     <Cpu className="h-3 w-3 text-sky-500" />SYSTEM ENGINEERS
+                <div className="space-y-6">
+                  <Label className="font-bold text-[11px] text-zinc-400 tracking-tight uppercase flex items-center gap-2 ml-1">
+                     <Cpu className="h-3.5 w-3.5 text-sky-500" />{t("label_system_engineers")}
                   </Label>
                   <Select onValueChange={addEngineer} value="">
-                    <SelectTrigger className="h-12 bg-black/40 border-white/10 rounded-none font-headline font-black text-[10px] tracking-widest text-white uppercase">
+                    <SelectTrigger className="h-12 bg-white border-zinc-200 rounded-2xl font-bold text-[11px] text-zinc-900 uppercase">
                       <SelectValue placeholder="ADD ENGINEER NODE..." />
                     </SelectTrigger>
-                    <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">{users
+                    <SelectContent className="bg-white border-zinc-100 rounded-2xl text-zinc-900 shadow-soft-xl">{users
                         .filter((u) => u.id !== form.manager_id && !engineers.find((e) => e.userId === u.id))
                         .map((u) => (
-                          <SelectItem key={u.id} value={u.id} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{u.full_name ?? u.email}</SelectItem>
+                          <SelectItem key={u.id} value={u.id} className="font-bold text-[10px] uppercase focus:bg-primary/5">{u.full_name ?? u.email}</SelectItem>
                         ))}
                     </SelectContent>
                   </Select>
 
                   <div className="grid grid-cols-1 gap-6">
                     {engineers.map((eng) => (
-                      <div key={eng.userId} className="border border-white/10 rounded-none p-6 space-y-6 bg-black/40 relative group/eng">
+                      <div key={eng.userId} className="border border-zinc-100 rounded-3xl p-6 space-y-6 bg-white shadow-soft-md relative group/eng animate-in zoom-in-95">
                         <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-3 font-headline font-black text-[11px] uppercase tracking-widest text-sky-500">
+                          <div className="flex items-center gap-3 font-bold text-xs uppercase tracking-tight text-sky-600">
                             <ChevronRight className="h-4 w-4" />
                             <span>ENGINEER::{eng.fullName}</span>
                           </div>
-                          <button onClick={() => removeEngineer(eng.userId)} className="text-zinc-700 hover:text-rose-500 transition-colors">
+                          <button onClick={() => removeEngineer(eng.userId)} className="p-1.5 rounded-lg text-zinc-300 hover:text-rose-500 hover:bg-rose-50 transition-all">
                             <X className="h-4 w-4" />
                           </button>
                         </div>
 
                         {/* Supervisors under engineer */}
-                        <div className="ps-6 space-y-4 border-l border-sky-500/20">
-                          <Label className="font-headline font-black text-[9px] text-zinc-600 tracking-[0.2em] uppercase">DIRECT SUPERVISORS</Label>
+                        <div className="ps-6 space-y-5 border-l-2 border-sky-100">
+                          <Label className="font-bold text-[10px] text-zinc-400 tracking-tight uppercase">{t("label_direct_supervisors")}</Label>
                           <Select onValueChange={(v) => addSupervisor(eng.userId, v)} value="">
-                            <SelectTrigger className="h-10 bg-white/5 border-white/5 rounded-none font-headline font-black text-[9px] tracking-widest text-white uppercase">
+                            <SelectTrigger className="h-10 bg-zinc-50 border-zinc-100 rounded-xl font-bold text-[10px] text-zinc-900 uppercase">
                               <SelectValue placeholder="ADD SUPERVISOR..." />
                             </SelectTrigger>
-                            <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white">{users
+                            <SelectContent className="bg-white border-zinc-100 rounded-2xl shadow-soft-xl text-zinc-900">{users
                                 .filter((u) => u.id !== form.manager_id && u.id !== eng.userId && !eng.supervisors.find((s) => s.userId === u.id))
                                 .map((u) => (
-                                  <SelectItem key={u.id} value={u.id} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{u.full_name ?? u.email}</SelectItem>
+                                  <SelectItem key={u.id} value={u.id} className="font-bold text-[10px] uppercase focus:bg-primary/5">{u.full_name ?? u.email}</SelectItem>
                                 ))}
                             </SelectContent>
                           </Select>
 
                           <div className="space-y-4">
                             {eng.supervisors.map((sup) => (
-                              <div key={sup.userId} className="bg-white/2 border border-white/5 p-4 space-y-4">
-                                <div className="flex items-center justify-between font-headline font-black text-[10px] uppercase tracking-widest text-amber-500">
+                              <div key={sup.userId} className="bg-zinc-50/50 border border-zinc-100 rounded-2xl p-5 space-y-5 animate-in slide-in-from-top-2">
+                                <div className="flex items-center justify-between font-bold text-[11px] uppercase tracking-tight text-amber-600">
                                   <span>
                                     <ChevronRight className="h-3 w-3 inline me-2" />
                                     SUPERVISOR::{sup.fullName}
                                   </span>
-                                  <button onClick={() => removeSupervisor(eng.userId, sup.userId)} className="text-zinc-700 hover:text-rose-500 transition-colors">
-                                    <X className="h-3 w-3" />
+                                  <button onClick={() => removeSupervisor(eng.userId, sup.userId)} className="p-1 rounded-md text-zinc-300 hover:text-rose-500 hover:bg-rose-50 transition-all">
+                                    <X className="h-3.5 w-3.5" />
                                   </button>
                                 </div>
 
                                 {/* Workers under this supervisor */}
-                                <div className="ps-6 space-y-4 border-l border-amber-500/20">
+                                <div className="ps-6 space-y-4 border-l-2 border-amber-100">
                                   <div className="flex items-center gap-3">
                                     <Select
                                       onValueChange={(v) => {
@@ -574,37 +592,42 @@ export default function WorkflowsPage() {
                                       }}
                                       value=""
                                     >
-                                      <SelectTrigger className="h-9 bg-black/40 border-white/5 rounded-none font-headline font-black text-[9px] tracking-widest text-white uppercase flex-1">
-                                        <SelectValue placeholder="DEPLOY OPERATIVE..." />
+                                      <SelectTrigger className="h-9 bg-white border-zinc-200 rounded-xl font-bold text-[10px] text-zinc-900 uppercase flex-1">
+                                        <SelectValue placeholder={t("label_deploy_operative")} />
                                       </SelectTrigger>
-                                      <SelectContent className="bg-[#121212] border-white/10 rounded-none text-white max-h-[300px]">
-                                        <SelectItem value="_tech_hdr" disabled className="font-black text-primary opacity-50 uppercase tracking-widest text-[9px]">--- TECHNICIANS ---</SelectItem>
+                                      <SelectContent className="bg-white border-zinc-100 rounded-2xl shadow-soft-xl text-zinc-900 max-h-[300px]">
+                                        <SelectItem value="_tech_hdr" disabled className="font-bold text-primary opacity-50 uppercase tracking-tight text-[10px]">--- TECHNICIANS ---</SelectItem>
                                         {(employees ?? [])
                                           .filter((e) => !sup.workers.find((w) => w.employeeId === e.id))
                                           .map((e) => (
-                                            <SelectItem key={`technician:${e.id}`} value={`technician:${e.id}`} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{e.full_name} ({e.employee_code})
+                                            <SelectItem key={`technician:${e.id}`} value={`technician:${e.id}`} className="font-bold text-[10px] uppercase focus:bg-primary/5">{e.full_name} ({e.employee_code})
                                             </SelectItem>
                                           ))}
-                                        <SelectItem value="_help_hdr" disabled className="font-black text-amber-500 opacity-50 uppercase tracking-widest text-[9px]">--- HELPERS ---</SelectItem>
+                                        <SelectItem value="_help_hdr" disabled className="font-bold text-amber-500 opacity-50 uppercase tracking-tight text-[10px]">--- HELPERS ---</SelectItem>
                                         {(employees ?? [])
                                           .filter((e) => !sup.workers.find((w) => w.employeeId === e.id))
                                           .map((e) => (
-                                            <SelectItem key={`helper:${e.id}`} value={`helper:${e.id}`} className="font-headline font-black text-[9px] tracking-widest uppercase focus:bg-primary/20">{e.full_name} ({e.employee_code})
+                                            <SelectItem key={`helper:${e.id}`} value={`helper:${e.id}`} className="font-bold text-[10px] uppercase focus:bg-primary/5">{e.full_name} ({e.employee_code})
                                             </SelectItem>
                                           ))}
                                       </SelectContent>
                                     </Select>
                                   </div>
                                   
-                                  <div className="grid grid-cols-2 gap-3">
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                     {sup.workers.map((w) => (
-                                      <div key={w.employeeId} className="flex items-center justify-between text-[10px] font-mono font-black text-zinc-500 border border-white/5 bg-black/20 p-3 uppercase tracking-tighter group/worker">
-                                        <div className="flex items-center gap-2">
-                                          <Users className="h-3 w-3 text-zinc-800" />
-                                          <span className={`${w.role === "technician" ? "text-primary/60" : "text-amber-500/60"}`}>{w.role.substring(0, 4)}:</span> {w.fullName}
+                                      <div key={w.employeeId} className="flex items-center justify-between text-[11px] font-bold text-zinc-600 border border-zinc-100 bg-white rounded-xl p-3 shadow-soft-sm group/worker animate-in fade-in">
+                                        <div className="flex items-center gap-3">
+                                          <div className={`p-1.5 rounded-lg ${w.role === "technician" ? "bg-primary/5 text-primary" : "bg-amber-50 text-amber-600"}`}>
+                                            <Users className="h-3.5 w-3.5" />
+                                          </div>
+                                          <div className="flex flex-col">
+                                            <span className="text-[9px] uppercase tracking-tighter opacity-50">{w.role}</span>
+                                            <span className="leading-none">{w.fullName}</span>
+                                          </div>
                                         </div>
-                                        <button onClick={() => removeWorker(eng.userId, sup.userId, w.employeeId)} className="text-zinc-800 hover:text-rose-500 opacity-0 group-hover/worker:opacity-100 transition-opacity">
-                                          <X className="h-3 w-3" />
+                                        <button onClick={() => removeWorker(eng.userId, sup.userId, w.employeeId)} className="p-1 rounded-md text-zinc-200 hover:text-rose-500 hover:bg-rose-50 transition-all opacity-0 group-hover/worker:opacity-100">
+                                          <X className="h-3.5 w-3.5" />
                                         </button>
                                       </div>
                                     ))}
@@ -614,55 +637,64 @@ export default function WorkflowsPage() {
                             ))}
                           </div>
                         </div>
-                        <CornerMarks color="sky" />
                       </div>
                     ))}
                   </div>
                 </div>
               </div>
 
-              <div className="space-y-3">
-                <Label className="font-headline font-black text-[10px] text-zinc-500 tracking-[0.2em] uppercase">SYSTEM NOTES</Label>
+              <div className="space-y-4">
+                <Label className="font-bold text-[11px] text-zinc-400 tracking-tight uppercase ml-1">{t("label_system_notes")}</Label>
                 <textarea
-                  placeholder="SPECIFY OPERATIONAL PARAMETERS..."
+                  placeholder={t("label_specify_params")}
                   value={form.notes}
                   onChange={(e) => setForm({ ...form, notes: e.target.value })}
-                  className="w-full min-h-[100px] p-4 bg-white/5 border border-white/10 rounded-none font-mono text-sm tracking-widest text-white focus:outline-none focus:border-primary/50"
+                  className="w-full min-h-[120px] p-5 bg-white border border-zinc-200 rounded-3xl font-medium text-sm text-zinc-900 focus:outline-none focus:border-primary/20 focus:ring-4 focus:ring-primary/5 transition-all resize-none"
                 />
               </div>
             </div>
 
-            <div className="p-8 border-t border-white/10 bg-white/5 flex justify-end gap-4 shrink-0">
-              <Button variant="ghost" className="rounded-none font-headline font-black text-[10px] tracking-widest uppercase text-white hover:bg-white/5" onClick={() =>setShowCreate(false)}>CANCEL INIT</Button>
+            <div className="p-8 border-t border-zinc-100 bg-zinc-50/50 flex justify-end gap-4 shrink-0">
+              <Button 
+                variant="ghost" 
+                className="rounded-2xl font-bold text-xs uppercase text-zinc-400 hover:bg-zinc-100 px-8 transition-colors" 
+                onClick={() =>setShowCreate(false)}
+              >
+                {t("action_cancel_init")}
+              </Button>
               <Button
                 onClick={handleCreate}
                 disabled={saving}
-                className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase px-10 py-6 h-auto"
-              >{saving ? t("action_synchronizing") : t("workflows_new")}
+                className="rounded-2xl bg-primary text-primary-foreground font-comfortaa font-bold text-sm px-10 py-6 h-auto shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform active:scale-[0.98]"
+              >{saving ? t("action_synchronizing") : t("action_execute_deployment")}
               </Button>
             </div>
           </div>
-          <CornerMarks />
         </DialogContent>
       </Dialog>
 
       <AlertDialog open={!!deleteTarget} onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}>
-        <AlertDialogContent className="bg-[#0A0A0A] border-2 border-rose-500/30 rounded-none text-white">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="font-headline font-black text-2xl text-white uppercase tracking-tighter">{t("action_confirm_delete")}</AlertDialogTitle>
-            <AlertDialogDescription className="text-zinc-500 font-mono text-xs uppercase tracking-widest">{t("workflows_delete_desc", { name: deleteTarget?.title || "" })}
-            </AlertDialogDescription>
+        <AlertDialogContent className="bg-white border-primary/5 rounded-4xl p-8 text-zinc-900 shadow-soft-2xl border max-w-md">
+          <AlertDialogHeader className="space-y-4">
+            <div className="p-4 bg-rose-50 w-fit rounded-2xl border border-rose-100">
+              <Trash2 className="h-6 w-6 text-rose-500" />
+            </div>
+            <div className="space-y-2">
+              <AlertDialogTitle className="font-comfortaa font-bold text-2xl text-zinc-900 tracking-tight">{t("label_terminate_protocol")}</AlertDialogTitle>
+              <AlertDialogDescription className="text-zinc-500 font-medium text-sm leading-relaxed">
+                 {t("msg_confirm_wf_purge") || `This action will permanently terminate the workflow "${deleteTarget?.title}" and purge all associated evaluation data.`}
+              </AlertDialogDescription>
+            </div>
           </AlertDialogHeader>
-          <AlertDialogFooter className="mt-8">
-            <AlertDialogCancel className="rounded-none border-white/10 bg-white/5 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-white/10 h-auto py-4 px-8">{t("common_cancel")}</AlertDialogCancel>
+          <AlertDialogFooter className="mt-10 gap-3">
+            <AlertDialogCancel className="rounded-2xl border-zinc-100 bg-zinc-50 text-zinc-600 font-bold text-xs uppercase hover:bg-zinc-100 h-auto py-4 px-8 transition-colors">{t("action_abort_termination")}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               disabled={deleting}
-              className="rounded-none bg-rose-600 text-white font-headline font-black text-[10px] tracking-widest uppercase hover:bg-rose-700 px-8 h-auto py-4"
-            >{deleting ? t("action_purging") : t("action_confirm_delete")}
+              className="rounded-2xl bg-rose-500 text-white font-bold text-xs uppercase hover:bg-rose-600 px-8 h-auto py-4 shadow-lg shadow-rose-200 transition-all"
+            >{deleting ? t("action_purging") : t("action_confirm_purge")}
             </AlertDialogAction>
           </AlertDialogFooter>
-          <CornerMarks color="rose" />
         </AlertDialogContent>
       </AlertDialog>
     </div>

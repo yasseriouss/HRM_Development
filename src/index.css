@@ -38,7 +38,7 @@
 
 @layer base {
   :root {
-    /* DEFAULT THEME: Warm Soft (Editorial) */
+    /* PRIMARY THEME: Warm Soft (Editorial) */
     --background: oklch(97% 0.018 70);
     --foreground: oklch(22% 0.02 50);
     --primary: oklch(64% 0.13 28);
@@ -61,17 +61,6 @@
     --font-tajawal: "Tajawal", sans-serif;
 
     --radius: 0.75rem;
-
-    /* 
-    LEGACY THEME: Dark Industrial Luxury (Commented Out)
-    --background: #0A0A0A;
-    --foreground: #F5F5F5;
-    --primary: #D4960A; (Gold Accent)
-    --secondary: #1A1A1A;
-    --border: #333333;
-    --surface: #121212;
-    --ring: #D4960A;
-    */
   }
 
   .dark {
@@ -110,12 +99,12 @@
 }
 
 @layer components {
-  /* Paper/Editorial Typography */
+  /* Editorial Typography */
   .text-editorial {
     @apply font-headline tracking-tight;
   }
 
-  /* Soft Component Card (New Theme) */
+  /* Soft Component Card */
   .card-soft {
     @apply bg-surface/50 border border-muted/20 rounded-xl backdrop-blur-sm transition-all duration-300;
   }
@@ -123,27 +112,12 @@
   .card-soft:hover {
     @apply border-primary/30 shadow-lg shadow-primary/5;
   }
-
-  /* 
-  LEGACY COMPONENTS: Industrial Luxury (Commented Out)
-  .industrial-card {
-    background: #121212;
-    border: 2px solid var(--primary);
-    box-shadow: 0 0 20px rgba(212, 150, 10, 0.2);
-  }
-  */
 }
 
 @keyframes shine {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 /* Custom Scrollbar */
@@ -159,7 +133,7 @@
   @apply bg-muted/30 hover:bg-primary/40 rounded-full transition-colors;
 }
 
-/* Paper Texture overlay - warm editorial feel */
+/* Paper Texture overlay - Warm Editorial feel */
 body::after {
   content: "";
   position: fixed;
