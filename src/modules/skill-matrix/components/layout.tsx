@@ -1,6 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { useTheme } from "next-themes";
-import { Sun, Moon, LogOut, Globe, Menu, X, ChevronRight, LayoutGrid, BarChart3, FileText, Presentation, Table, FlaskConical, ExternalLink, Shield, Cpu, Activity } from "lucide-react";
+import { LogOut, Globe, Menu, X, ChevronRight, LayoutGrid, BarChart3, FileText, Presentation, Table, FlaskConical, ExternalLink, Shield, Cpu, Activity } from "lucide-react";
 import { clearAuthToken, clearAuthUser, getAuthUser } from "@modules/skill-matrix/lib/auth";
 import { Button } from "@shared/components/ui/button";
 import { useLang } from "@shared/contexts/LangContext";
@@ -71,7 +70,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const [location, setLocation] = useLocation();
   const user = getAuthUser();
   const role: Role = (user?.role as Role) ?? "employee";
-  const { theme, setTheme } = useTheme();
   const { lang, setLang } = useLang();
   const t = useT();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -116,8 +114,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   const isActive = (href: string) =>
     href === "/" ? location === "/" : location.startsWith(href);
-
-  const isDark = theme === "dark";
 
   return (
     <div className={`min-h-screen flex flex-col bg-background text-foreground font-sans selection:bg-primary selection:text-primary-foreground relative overflow-hidden`}>
@@ -230,15 +226,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
           <div className="flex items-center gap-3">
             <NotificationBell />
-
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setTheme(isDark ? "light" : "dark")}
-              className="h-10 w-10 border border-primary/10 bg-primary/5 hover:bg-primary/10 text-foreground/40 hover:text-primary rounded-full transition-colors"
-            >
-              {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </Button>
 
             <Button
               variant="ghost"

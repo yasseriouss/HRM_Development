@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
-import { useTheme } from "next-themes";
-import { Sun, Moon, Shield, Lock, User, Globe, Cpu, AlertCircle, Zap, ShieldCheck } from "lucide-react";
+import { Shield, Lock, User, Globe, Cpu, AlertCircle, Zap, ShieldCheck } from "lucide-react";
 import { useLogin } from "@hrm-development/api-client-react";
 import { setAuthToken, setAuthUser } from "@modules/skill-matrix/lib/auth";
 import { Button } from "@shared/components/ui/button";
@@ -22,7 +21,6 @@ export default function Login() {
   const loginMutation = useLogin();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { theme, setTheme } = useTheme();
   const { lang, setLang } = useLang();
   const t = useT();
 
@@ -42,8 +40,6 @@ export default function Login() {
     }
   };
 
-  const isDark = theme === "dark";
-
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background p-6 font-sans selection:bg-primary/30 relative overflow-hidden">
       {/* Editorial Background Gradient */}
@@ -55,14 +51,6 @@ export default function Login() {
 
       {/* Top Controls - Standardized */}
       <div className="absolute top-10 right-10 flex items-center gap-4 z-50">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setTheme(isDark ? "light" : "dark")}
-          className="h-12 w-12 border border-muted/20 bg-surface/50 backdrop-blur-md hover:bg-surface text-muted-foreground hover:text-primary rounded-2xl transition-all shadow-sm"
-        >
-          {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-        </Button>
         <Button
           variant="ghost"
           size="sm"

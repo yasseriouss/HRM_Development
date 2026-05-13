@@ -200,7 +200,13 @@ function AppRoutes() {
 
 export default function App() {
   return (
-    <ThemeProvider attribute="class" defaultTheme="light" themes={["dark", "light"]} enableSystem={false}>
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="light"
+      forcedTheme="light"
+      themes={["light"]}
+      enableSystem={false}
+    >
       <LangProvider>
         <QueryClientProvider client={queryClient}>
           <FactoryProvider>

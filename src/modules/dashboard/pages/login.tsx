@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { login, setToken, setUser } from "@modules/dashboard/lib/api";
 import { useLang } from "@shared/contexts/LangContext";
-import { useTheme } from "next-themes";
-import { Sun, Moon, Globe, Shield, Cpu, Activity, Lock } from "lucide-react";
+import { Globe, Shield, Cpu, Activity, Lock } from "lucide-react";
 import { Button } from "@shared/components/ui/button";
 
 interface LoginProps {
@@ -20,13 +19,11 @@ const CornerMarks = ({ color = "primary" }: { color?: string }) => (
 
 export default function Login({ onLogin }: LoginProps) {
   const { t, lang, setLang } = useLang();
-  const { theme, setTheme } = useTheme();
   const [email, setEmail] = useState("super_admin@hrm-dev.com");
   const [password, setPassword] = useState("admin123");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const isDark = theme === "dark";
   const isAr = lang === "ar";
 
   async function handleSubmit(e: React.FormEvent) {
@@ -50,15 +47,6 @@ export default function Login({ onLogin }: LoginProps) {
       
       {/* Top Controls */}
       <div className="absolute top-8 right-8 flex items-center gap-4 z-50">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setTheme(isDark ? "light" : "dark")}
-          className="h-10 w-10 border border-muted/20 bg-background/50 hover:bg-background/80 text-muted hover:text-primary rounded-xl transition-colors"
-        >
-          {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-        </Button>
-
         <Button
           variant="ghost"
           size="sm"

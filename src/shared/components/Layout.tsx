@@ -1,6 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { useTheme } from "next-themes";
-import { Sun, Moon, LogOut, Globe, Menu, X, ChevronRight, LayoutGrid, BarChart3, FileText, Presentation, Table, FlaskConical, ExternalLink, Shield, Cpu, Activity, User } from "lucide-react";
+import { LogOut, Globe, Menu, X, ChevronRight, LayoutGrid, BarChart3, FileText, Presentation, Table, FlaskConical, ExternalLink, Shield, Cpu, Activity, User } from "lucide-react";
 import { clearAuthToken, clearAuthUser, getAuthUser } from "@shared/lib/auth";
 import { Button } from "@shared/components/ui/button";
 import { useLang } from "@shared/contexts/LangContext";
@@ -70,7 +69,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const [location, setLocation] = useLocation();
   const user = getAuthUser();
   const role: Role = (user?.role as Role) ?? "employee";
-  const { theme, setTheme } = useTheme();
   const { lang, setLang, t } = useLang();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const isAr = lang === "ar";
@@ -104,8 +102,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   const isActive = (href: string) =>
     href === "/" ? location === "/" : location.startsWith(href);
-
-  const isDark = theme === "dark";
 
   return (
     <div className={`min-h-screen flex bg-background text-foreground font-body-default relative overflow-hidden h-screen ${isAr ? 'rtl' : 'ltr'}`} dir={isAr ? 'rtl' : 'ltr'}>
@@ -174,15 +170,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
           <div className="flex items-center gap-2 md:gap-4 shrink-0">
             <div className="flex items-center gap-2">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setTheme(isDark ? "light" : "dark")}
-                className="h-10 w-10 border border-muted/10 bg-background/50 hover:bg-background/80 text-muted hover:text-primary rounded-2xl transition-colors"
-              >
-                {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-              </Button>
-
               <Button
                 variant="ghost"
                 size="sm"
