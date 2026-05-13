@@ -68,8 +68,8 @@ export default function Slide15_NextSteps() {
                 <span className="font-display font-bold" style={{ fontSize: "1.5vw", color: step.active || step.green ? "var(--slide-bg)" : "var(--slide-primary)" }}>{step.num}</span>
               </div>
               <div>
-                <div className="font-display font-semibold" style={{ fontSize: "1.8vw", color: step.green ? "#10B981" : "var(--slide-text)", marginBottom: "0.5vh" }}>{t(step.title)}</div>
-                <div className="font-body" style={{ fontSize: "1.3vw", color: "var(--slide-muted)", lineHeight: 1.5 }}>{t(step.desc)}</div>
+                <div className="font-display font-semibold" style={{ fontSize: "1.8vw", color: step.green ? "#10B981" : "var(--slide-text)", marginBottom: "0.5vh" }}>{step.title}</div>
+                <div className="font-body" style={{ fontSize: "1.3vw", color: "var(--slide-muted)", lineHeight: 1.5 }}>{step.desc}</div>
               </div>
             </div>
           ))}

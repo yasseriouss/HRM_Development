@@ -1,10 +1,13 @@
 import { useT } from "@/i18n";
+import { useLang } from "@/shared/contexts/LangContext";
 
 const base = import.meta.env.BASE_URL;
 const isExport = typeof window !== "undefined" && window.location.pathname.endsWith("/allslides");
 
 export default function Slide16_Credits() {
   const t = useT();
+  const { lang } = useLang();
+  const isAr = lang === 'ar';
 
   return (
     <div className="relative w-screen h-screen overflow-hidden" style={{ background: "var(--slide-bg)" }}>
@@ -32,13 +35,13 @@ export default function Slide16_Credits() {
 
       <div
         className="absolute inset-0"
-        style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center" }}
+        style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", direction: isAr ? 'rtl' : 'ltr' }}
       >
         <div className="cred-line" style={{ height: "0.4vh", background: "var(--slide-primary)", marginBottom: "4vh", width: "6vw" }} />
 
         <div className="cred-1">
           <div className="font-body font-semibold" style={{ fontSize: "1.3vw", color: "var(--slide-muted)", letterSpacing: "0.25em", marginBottom: "1.5vh" }}>{t("s16_title")}</div>
-          <div className="font-display font-bold" style={{ fontSize: "8vw", color: "var(--slide-primary)", lineHeight: 0.9, letterSpacing: "-0.02em" }}>
+          <div className="font-display font-bold" style={{ fontSize: "8vw", color: "var(--slide-primary)", lineHeight: 0.9, letterSpacing: "-0.02em", direction: 'ltr' }}>
             yasserious
             <span style={{ color: "rgba(212,150,10,0.5)" }}>.com</span>
           </div>
@@ -51,7 +54,7 @@ export default function Slide16_Credits() {
           </div>
         </div>
 
-        <div className="cred-3" style={{ marginTop: "4vh", display: "flex", gap: "5vw" }}>
+        <div className="cred-3" style={{ marginTop: "4vh", display: "flex", gap: "5vw", flexDirection: isAr ? 'row-reverse' : 'row' }}>
           <div style={{ textAlign: "center" }}>
             <div className="font-display font-bold" style={{ fontSize: "3.5vw", color: "var(--slide-primary)" }}>146+</div>
             <div className="font-body" style={{ fontSize: "1.2vw", color: "var(--slide-muted)" }}>{t("s16_employees")}</div>
