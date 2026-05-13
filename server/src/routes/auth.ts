@@ -1,5 +1,5 @@
-import { Router } from "express";
-import { db } from "@hrm-development/db";
+import { Router, type Response } from "express";
+import { db, isDatabaseConfigured } from "@hrm-development/db";
 import { usersTable, departmentsTable, userSessionsTable } from "@hrm-development/db/schema";
 import { eq } from "drizzle-orm";
 import { getUserFromToken } from "../lib/auth";
@@ -7,9 +7,39 @@ import { randomUUID } from "crypto";
 
 const router = Router();
 
+function sendAuthDbError(res: Response, err: unknown, logLabel: string) {
+  const message = err instanceof Error ? err.message : String(err);
+  console.error(logLabel, err);
+  if (
+    message.includes("DATABASE_URL is missing") ||
+    message.includes("Database access attempted but DATABASE_URL")
+  ) {
+    res.status(503).json({
+      error: "Service Unavailable",
+      message:
+        "Database is not configured. Set DATABASE_URL (or hrmdev_DATABASE_URL / HRMDEV_DATABASE_URL on Vercel). For local dev use server/.env — see docs/setup.md.",
+    });
+    return;
+  }
+  const expose = process.env.NODE_ENV !== "production";
+  res.status(500).json({
+    error: "Internal Server Error",
+    ...(expose && message ? { message } : {}),
+  });
+}
+
 // POST /auth/login
 router.post("/login", async (req, res) => {
   try {
+    if (!isDatabaseConfigured()) {
+      res.status(503).json({
+        error: "Service Unavailable",
+        message:
+          "Database is not configured. Set DATABASE_URL in server/.env (local) or project env (e.g. Vercel). See docs/setup.md.",
+      });
+      return;
+    }
+
     const { email, password } = req.body;
     if (!email || !password) {
       res.status(400).json({ error: "Bad Request", message: "email and password required" });
@@ -45,8 +75,7 @@ router.post("/login", async (req, res) => {
       user: { ...safeUser, department },
     });
   } catch (err) {
-    console.error("Login error:", err);
-    res.status(500).json({ error: "Internal Server Error" });
+    sendAuthDbError(res, err, "Login error:");
   }
 });
 
@@ -87,8 +116,7 @@ router.get("/users", async (req, res) => {
 
     res.json(users);
   } catch (err) {
-    console.error("List users error:", err);
-    res.status(500).json({ error: "Internal Server Error" });
+    sendAuthDbError(res, err, "List users error:");
   }
 });
 
@@ -115,8 +143,7 @@ router.get("/me", async (req, res) => {
     const { password_hash, ...safeUser } = user;
     res.json({ ...safeUser, department });
   } catch (err) {
-    console.error("Auth me error:", err);
-    res.status(500).json({ error: "Internal Server Error" });
+    sendAuthDbError(res, err, "Auth me error:");
   }
 });
 

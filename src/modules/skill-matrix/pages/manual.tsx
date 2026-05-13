@@ -21,6 +21,15 @@ import {
   ArrowRight
 } from "lucide-react";
 import { cn } from "@shared/utils/cn";
+import {
+  dataTableBase,
+  dataTableBody,
+  dataTableHeadRow,
+  dataTableRow,
+  dataTableShell,
+  dataTableTd,
+  dataTableTh,
+} from "@shared/components/data/data-table-styles";
 
 export default function ManualPage() {
   const t = useT();
@@ -248,31 +257,33 @@ export default function ManualPage() {
                       {t("manual_grade_hierarchy")}
                     </h3>
                   </div>
-                  <div className="bg-white border border-zinc-100 p-2 relative overflow-hidden rounded-4xl shadow-sm">
-                    <table className="w-full text-[11px] border-collapse">
-                      <thead className="bg-zinc-50 text-zinc-400 font-bold uppercase tracking-widest">
-                        <tr>
-                          <th className="p-6 text-center">{t("label_grade")}</th>
-                          <th className="p-6 text-center">{t("label_points")}</th>
-                          <th className="p-6 text-start">{t("label_designation")}</th>
-                        </tr>
-                      </thead>
-                      <tbody className="text-zinc-600">
-                        {[
-                          { g: "G1-G2", p: "100 - 199", c: t("je_cat_labor_manual") },
-                          { g: "G3-G4", p: "200 - 329", c: t("je_cat_tech_manual") },
-                          { g: "G5-G6", p: "330 - 509", c: t("je_cat_spec_manual") },
-                          { g: "G7-G8", p: "510 - 769", c: t("je_cat_mgmt_manual") },
-                          { g: "G9-G10", p: "770 - 1000", c: t("je_cat_exec_manual") }
-                        ].map((r, i) => (
-                          <tr key={i} className="hover:bg-zinc-50 transition-colors group">
-                            <td className="p-6 border-t border-zinc-50 text-center font-bold text-zinc-900 font-comfortaa text-sm">{r.g}</td>
-                            <td className="p-6 border-t border-zinc-50 text-center font-bold tracking-widest">{r.p}</td>
-                            <td className="p-6 border-t border-zinc-50 text-start font-bold uppercase tracking-tight opacity-60 group-hover:opacity-100 transition-opacity">{r.c}</td>
+                  <div className={cn(dataTableShell, "p-0 shadow-sm")}>
+                    <div className="overflow-x-auto">
+                      <table className={cn(dataTableBase, "text-[11px]")}>
+                        <thead>
+                          <tr className={dataTableHeadRow}>
+                            <th className={cn(dataTableTh, "text-center")}>{t("label_grade")}</th>
+                            <th className={cn(dataTableTh, "text-center")}>{t("label_points")}</th>
+                            <th className={cn(dataTableTh, "text-start")}>{t("label_designation")}</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody className={dataTableBody}>
+                          {[
+                            { g: "G1-G2", p: "100 - 199", c: t("je_cat_labor_manual") },
+                            { g: "G3-G4", p: "200 - 329", c: t("je_cat_tech_manual") },
+                            { g: "G5-G6", p: "330 - 509", c: t("je_cat_spec_manual") },
+                            { g: "G7-G8", p: "510 - 769", c: t("je_cat_mgmt_manual") },
+                            { g: "G9-G10", p: "770 - 1000", c: t("je_cat_exec_manual") }
+                          ].map((r, i) => (
+                            <tr key={i} className={cn(dataTableRow, "hover:bg-muted/30 transition-colors group")}>
+                              <td className={cn(dataTableTd, "border-t border-border/60 text-center font-bold text-foreground font-comfortaa text-sm")}>{r.g}</td>
+                              <td className={cn(dataTableTd, "border-t border-border/60 text-center font-bold tracking-widest")}>{r.p}</td>
+                              <td className={cn(dataTableTd, "border-t border-border/60 text-start font-bold uppercase tracking-tight text-muted-foreground group-hover:text-foreground transition-colors")}>{r.c}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                   <div className="p-8 bg-zinc-900 text-white flex gap-6 items-center rounded-4xl shadow-xl shadow-zinc-200">
                     <div className="h-12 w-12 rounded-2xl bg-white/10 flex items-center justify-center shrink-0">

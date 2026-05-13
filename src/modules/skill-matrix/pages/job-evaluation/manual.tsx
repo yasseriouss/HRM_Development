@@ -18,6 +18,17 @@ import {
   Cpu,
   ChevronRight
 } from "lucide-react";
+import { cn } from "@shared/utils/cn";
+import {
+  dataTableBase,
+  dataTableBody,
+  dataTableHeadRow,
+  dataTableRow,
+  dataTableScroll,
+  dataTableShell,
+  dataTableTd,
+  dataTableTh,
+} from "@shared/components/data/data-table-styles";
 
 const CornerMarks = ({ color = "primary" }: { color?: string }) => (
   <>
@@ -211,36 +222,39 @@ export default function JobEvaluationManualPage() {
              <CardTitle className="font-headline font-black text-4xl text-white uppercase tracking-tighter">{t("je_matrix_title")}</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="bg-zinc-900/50 text-zinc-500 uppercase text-[10px] font-headline font-black tracking-widest border-b border-zinc-800">
-                    <th className="p-8 text-center">{t("je_col_tier")}</th>
-                    <th className="p-8 text-center">{t("je_col_band")}</th>
-                    <th className="p-8 text-start">{t("je_col_cat")}</th>
-                    <th className="p-8 text-end">{t("common_status")}</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-zinc-900 font-mono">{[
-                    { g: "G1-G2", range: "100 - 199", cat: t("je_cat_labor") },
-                    { g: "G3-G4", range: "200 - 329", cat: t("je_cat_tech") },
-                    { g: "G5-G6", range: "330 - 509", cat: t("je_cat_spec") },
-                    { g: "G7-G8", range: "510 - 769", cat: t("je_cat_mgmt") },
-                    { g: "G9-G10", range: "770 - 1000", cat: t("je_cat_exec") },
-                  ].map((row, i) => (
-                    <tr key={i} className="hover:bg-white/5 transition-colors group">
-                      <td className="p-8 text-center font-headline font-black text-2xl text-primary">{row.g}</td>
-                      <td className="p-8 text-center text-lg font-black text-white">{row.range}</td>
-                      <td className="p-8 text-start font-headline font-black text-[10px] text-zinc-500 uppercase tracking-widest group-hover:text-white transition-colors">{row.cat}</td>
-                      <td className="p-8 text-end">
-                         <div className="flex items-center justify-end gap-2 text-emerald-500 font-black text-[9px] tracking-tighter">
-                            <Activity className="h-3 w-3 animate-pulse" />{t("je_active_tier")}
-                         </div>
-                      </td>
+            <div className={cn(dataTableShell, "rounded-none border-zinc-800 bg-[#0A0A0A] p-0 shadow-2xl")}>
+              <div className={dataTableScroll}>
+                <table className={cn(dataTableBase, "text-sm")}>
+                  <thead>
+                    <tr className={cn(dataTableHeadRow, "border-zinc-800 bg-zinc-900/50 text-zinc-500 uppercase text-[10px] font-headline font-black tracking-widest border-b")}>
+                      <th className={cn(dataTableTh, "p-8 text-center border-zinc-800")}>{t("je_col_tier")}</th>
+                      <th className={cn(dataTableTh, "p-8 text-center border-zinc-800")}>{t("je_col_band")}</th>
+                      <th className={cn(dataTableTh, "p-8 text-start border-zinc-800")}>{t("je_col_cat")}</th>
+                      <th className={cn(dataTableTh, "p-8 text-end border-zinc-800")}>{t("common_status")}</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className={cn(dataTableBody, "divide-zinc-900 font-mono")}>
+                    {[
+                        { g: "G1-G2", range: "100 - 199", cat: t("je_cat_labor") },
+                        { g: "G3-G4", range: "200 - 329", cat: t("je_cat_tech") },
+                        { g: "G5-G6", range: "330 - 509", cat: t("je_cat_spec") },
+                        { g: "G7-G8", range: "510 - 769", cat: t("je_cat_mgmt") },
+                        { g: "G9-G10", range: "770 - 1000", cat: t("je_cat_exec") },
+                      ].map((row, i) => (
+                        <tr key={i} className={cn(dataTableRow, "border-zinc-900 hover:bg-white/5 transition-colors group")}>
+                          <td className={cn(dataTableTd, "p-8 text-center font-headline font-black text-2xl text-primary")}>{row.g}</td>
+                          <td className={cn(dataTableTd, "p-8 text-center text-lg font-black text-white")}>{row.range}</td>
+                          <td className={cn(dataTableTd, "p-8 text-start font-headline font-black text-[10px] text-zinc-500 uppercase tracking-widest group-hover:text-white transition-colors")}>{row.cat}</td>
+                          <td className={cn(dataTableTd, "p-8 text-end")}>
+                             <div className="flex items-center justify-end gap-2 text-emerald-500 font-black text-[9px] tracking-tighter">
+                                <Activity className="h-3 w-3 animate-pulse" />{t("je_active_tier")}
+                             </div>
+                          </td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </CardContent>
           <CornerMarks />

@@ -14,6 +14,16 @@ import { exportToPDF, exportToExcel } from "@modules/skill-matrix/lib/export-uti
 import { motion } from "framer-motion";
 import { useFactory } from "@shared/contexts/FactoryContext";
 import { cn } from "@shared/utils/cn";
+import {
+  dataTableBase,
+  dataTableBody,
+  dataTableHeadRow,
+  dataTableRow,
+  dataTableScroll,
+  dataTableShell,
+  dataTableTdSpacious,
+  dataTableThSpacious,
+} from "@shared/components/data/data-table-styles";
 
 type EmployeeClass = "A" | "B" | "C" | null | undefined;
 
@@ -129,36 +139,41 @@ function SummaryTable({ campaignId }: { campaignId: string }) {
       </div>
 
       {/* Result Table */}
-      <div className="bg-white border border-zinc-100 rounded-4xl shadow-sm overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-start border-collapse text-sm">
+      <div className={dataTableShell} data-testid="evaluations-summary-table">
+        <div className={dataTableScroll}>
+          <table className={dataTableBase}>
             <thead>
-              <tr className="bg-zinc-50/50 border-b border-zinc-50">
-                <th className="px-10 py-8 font-bold text-[10px] tracking-widest text-zinc-400 uppercase whitespace-nowrap text-start">{t("employees_col_name")}</th>
-                <th className="px-10 py-8 font-bold text-[10px] tracking-widest text-zinc-400 uppercase whitespace-nowrap text-start">{t("field_department")}</th>
-                <th className="px-10 py-8 font-bold text-[10px] tracking-widest text-zinc-400 uppercase whitespace-nowrap text-center">{t("evaluations_col_score")}</th>
-                <th className="px-10 py-8 font-bold text-[10px] tracking-widest text-zinc-400 uppercase whitespace-nowrap text-start">{t("evaluations_col_class")}</th>
-                <th className="px-10 py-8 font-bold text-[10px] tracking-widest text-zinc-400 uppercase whitespace-nowrap text-end">{t("common_actions")}</th>
+              <tr className={dataTableHeadRow}>
+                <th className={cn(dataTableThSpacious, "text-start")}>{t("employees_col_name")}</th>
+                <th className={cn(dataTableThSpacious, "text-start")}>{t("field_department")}</th>
+                <th className={cn(dataTableThSpacious, "text-center")}>{t("evaluations_col_score")}</th>
+                <th className={cn(dataTableThSpacious, "text-start")}>{t("evaluations_col_class")}</th>
+                <th className={cn(dataTableThSpacious, "text-end")}>{t("common_actions")}</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-50 font-sans">
+            <tbody className={cn(dataTableBody, "font-sans")}>
               {items.map((row) => (
-                <tr key={row.employee_id} className="group transition-all hover:bg-zinc-50/50">
-                  <td className="px-10 py-10 whitespace-nowrap">
-                    <p className="font-bold text-zinc-900 text-lg tracking-tight group-hover:translate-x-1 transition-transform font-comfortaa">{row.employee_name}</p>
-                    <p className="text-[9px] font-bold text-zinc-300 mt-2 uppercase tracking-widest">{row.employee_code}</p>
+                <tr key={row.employee_id} className={cn(dataTableRow, "group")}>
+                  <td className={cn(dataTableTdSpacious, "whitespace-nowrap")}>
+                    <p className="font-bold text-foreground text-lg tracking-tight group-hover:translate-x-1 transition-transform font-comfortaa">{row.employee_name}</p>
+                    <p className="text-[9px] font-bold text-muted-foreground mt-2 uppercase tracking-widest">{row.employee_code}</p>
                   </td>
-                  <td className="px-10 py-10 whitespace-nowrap uppercase font-bold text-[10px] text-zinc-400 tracking-widest">{(row as any).department_name}</td>
-                  <td className="px-10 py-10 whitespace-nowrap text-center">
-                    <span className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-zinc-50 font-bold text-lg text-zinc-900 font-comfortaa">
+                  <td className={cn(dataTableTdSpacious, "whitespace-nowrap uppercase font-bold text-[10px] text-muted-foreground tracking-widest")}>
+                    {(row as any).department_name}
+                  </td>
+                  <td className={cn(dataTableTdSpacious, "whitespace-nowrap text-center")}>
+                    <span className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-muted/50 font-bold text-lg text-foreground font-comfortaa border border-border/60">
                       {row.percentage}%
                     </span>
                   </td>
-                  <td className="px-10 py-10 whitespace-nowrap">{classBadge(row.class as EmployeeClass)}</td>
-                  <td className="px-10 py-10 text-end whitespace-nowrap">
+                  <td className={cn(dataTableTdSpacious, "whitespace-nowrap")}>{classBadge(row.class as EmployeeClass)}</td>
+                  <td className={cn(dataTableTdSpacious, "text-end whitespace-nowrap")}>
                     <Link href={`/skill-matrix/employees/${row.employee_id}`}>
-                      <Button variant="ghost" className="rounded-full h-12 px-6 border border-zinc-50 hover:border-zinc-900 transition-all font-bold text-[10px] tracking-widest uppercase">
-                         {t("label_node_profile")} <ArrowUpRight className="ms-2 h-3 w-3 opacity-40" />
+                      <Button
+                        variant="ghost"
+                        className="rounded-full h-12 px-6 border border-border hover:border-foreground transition-all font-bold text-[10px] tracking-widest uppercase"
+                      >
+                        {t("label_node_profile")} <ArrowUpRight className="ms-2 h-3 w-3 opacity-40" />
                       </Button>
                     </Link>
                   </td>

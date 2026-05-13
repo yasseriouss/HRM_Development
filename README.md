@@ -10,7 +10,7 @@ Full-stack workforce competency management platform for a wood manufacturing fac
 - **UI:** Radix UI primitives, `next-themes`, `framer-motion`, Recharts
 - **Charts / Export:** Recharts, ExcelJS, jsPDF
 - **Backend:** Express 5 (Node 22) - runs as a Vercel serverless function in production
-- **Database:** PostgreSQL via Drizzle ORM (`@neondatabase/serverless` driver compatible)
+- **Database:** PostgreSQL via Drizzle ORM (Neon HTTP on `*.neon.tech`, `pg` TCP elsewhere)
 - **Validation / API codegen:** Zod, Orval (OpenAPI spec)
 - **Package manager:** pnpm 10 (workspaces)
 
@@ -54,7 +54,7 @@ Full-stack workforce competency management platform for a wood manufacturing fac
 | Command | What it does |
 |---|---|
 | `pnpm install` | Install dependencies |
-| `pnpm dev` | Run client + server in parallel (Vite on :5173, API on :8080) |
+| `pnpm dev` | Run client + server in parallel (Vite on :8081, API on :8080) |
 | `pnpm dev:client` | Run only the Vite dev server |
 | `pnpm dev:server` | Run only the Express API |
 | `pnpm build` | Production build of the unified SPA (`dist/`) |
@@ -77,10 +77,13 @@ See `vercel.json` for full configuration.
 
 ## Environment
 
-Required env vars (set locally in `.env.local` or in your Vercel project settings):
+Required env vars:
+
+- **Local API:** `server/.env` (see `server/.env.example`) — `pnpm dev` loads it via the api-server script. Must include `PORT=8080` and `DATABASE_URL`.
+- **Vercel:** Project settings — `DATABASE_URL` (or Neon integration vars such as `hrmdev_DATABASE_URL`).
 
 ```
-DATABASE_URL=postgres://…
+DATABASE_URL=postgresql://…
 NODE_ENV=production            # set automatically on Vercel
 ```
 

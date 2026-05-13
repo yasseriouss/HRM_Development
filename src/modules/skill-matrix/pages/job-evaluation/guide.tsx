@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { useT } from "@modules/skill-matrix/i18n";
 import { Card, CardContent, CardHeader, CardTitle } from "@shared/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@shared/components/ui/table";
 import { Badge } from "@shared/components/ui/badge";
 import { 
   CheckCircle2, 
@@ -18,6 +17,11 @@ import {
   Cpu,
   Target
 } from "lucide-react";
+import { cn } from "@shared/utils/cn";
+import {
+  dataTableBase,
+  dataTableScroll,
+} from "@shared/components/data/data-table-styles";
 import { 
   BarChart, 
   Bar, 
@@ -149,8 +153,8 @@ export default function JobEvaluationGuide() {
               </CardTitle>
             </CardHeader>
             <CardContent className="p-0">
-              <div className="overflow-x-auto border border-zinc-900 bg-[#0A0A0A]">
-                <table className="w-full border-collapse">
+              <div className={cn("overflow-x-auto border border-zinc-900 bg-[#0A0A0A]", dataTableScroll)}>
+                <table className={dataTableBase}>
                   <thead>
                     <tr className="bg-white/5 border-b border-zinc-900 text-start">
                       <th className="px-8 py-5 font-headline font-black text-[10px] tracking-[0.3em] text-zinc-500 uppercase text-start">{t("je_col_pillar")}</th>
@@ -268,10 +272,10 @@ export default function JobEvaluationGuide() {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                 {[gradeData.slice(0, 5), gradeData.slice(5)].map((subset, idx) => (
-                  <div key={idx} className="border border-zinc-900 bg-black/40 p-1">
-                    <table className="w-full text-start">
-                      <thead className="bg-zinc-900/80 font-headline font-black text-[9px] uppercase tracking-widest text-zinc-500">
-                        <tr>
+                  <div key={idx} className={cn("border border-zinc-900 bg-black/40 p-1", dataTableScroll)}>
+                    <table className={dataTableBase}>
+                      <thead>
+                        <tr className="bg-zinc-900/80 font-headline font-black text-[9px] uppercase tracking-widest text-zinc-500">
                           <th className="px-6 py-4">{t("je_col_range")}</th>
                           <th className="px-6 py-4">{t("je_col_tier")}</th>
                           <th className="px-6 py-4">{t("je_col_designation")}</th>

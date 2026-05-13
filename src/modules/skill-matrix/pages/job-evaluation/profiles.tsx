@@ -59,6 +59,9 @@ import {
   Cell
 } from 'recharts';
 
+import { cn } from "@shared/utils/cn";
+import { dataTableBase, dataTableScroll } from "@shared/components/data/data-table-styles";
+
 const CornerMarks = ({ color = "primary" }: { color?: string }) => (
   <>
     <div className={`absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.2)]`} />
@@ -291,9 +294,8 @@ export default function JobProfilesPage() {
             </div>
           </CardHeader>
           <CardContent className="p-0">
-            <div className="overflow-x-auto">
-            <div className="overflow-x-auto border border-zinc-900 bg-[#0A0A0A]">
-              <table className="w-full border-collapse">
+            <div className={cn(dataTableScroll, "border border-zinc-900 bg-[#0A0A0A]")}>
+              <table className={dataTableBase}>
                 <thead className="bg-white/5 text-zinc-500 font-headline font-black text-[10px] uppercase tracking-[0.3em] border-b border-zinc-900">
                   <tr>
                     <th className="px-8 py-5 text-start">{t("je_col_profile_id")}</th>
@@ -348,7 +350,6 @@ export default function JobProfilesPage() {
                   </AnimatePresence>
                 </tbody>
               </table>
-            </div>
             </div>
           </CardContent>
           <CornerMarks />

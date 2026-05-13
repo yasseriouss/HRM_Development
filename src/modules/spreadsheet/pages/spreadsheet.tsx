@@ -1,4 +1,14 @@
-import React, { useState, useCallback } from "react";
+import { cn } from "@shared/utils/cn";
+import {
+  dataTableBase,
+  dataTableBody,
+  dataTableHeadRow,
+  dataTableRow,
+  dataTableScroll,
+  dataTableShell,
+  dataTableTd,
+  dataTableTh,
+} from "@shared/components/data/data-table-styles";
 import { useT } from "@shared/contexts/LangContext";
 import {
   DEPARTMENTS, EMPLOYEES, SKILLS, CAMPAIGNS,
@@ -92,39 +102,41 @@ function EvaluationGrid({
   }, [onScoresChange]);
 
   return (
-    <div className="overflow-hidden rounded-3xl border border-muted/10 bg-surface soft-shadow">
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm border-collapse">
+    <div className={cn(dataTableShell, "p-0 overflow-hidden soft-shadow")}>
+      <div className={dataTableScroll}>
+        <table className={dataTableBase}>
           <thead>
-            <tr className="bg-muted/5 border-b border-muted/5">
-              <th className="sticky left-0 z-10 bg-surface text-left px-8 py-5 font-headline font-bold text-foreground min-w-[220px] border-e border-muted/5 uppercase tracking-widest text-[10px]">Employee</th>
+            <tr className={dataTableHeadRow}>
+              <th className="sticky left-0 z-10 bg-background text-left px-8 py-5 font-headline font-bold text-foreground min-w-[220px] border-e border-border uppercase tracking-widest text-[10px]">
+                Employee
+              </th>
               {skills.map(skill => (
-                <th key={skill.id} className="px-4 py-5 text-center font-headline font-bold text-primary min-w-[120px] border-e border-muted/5 uppercase tracking-widest text-[9px]">
+                <th key={skill.id} className="px-4 py-5 text-center font-headline font-bold text-primary min-w-[120px] border-e border-border uppercase tracking-widest text-[9px]">
                   <div className="leading-tight">{skill.name}</div>
-                  <div className="text-muted/60 text-[8px] mt-2">W: {skill.weight}</div>
+                  <div className="text-muted-foreground text-[8px] mt-2">W: {skill.weight}</div>
                 </th>
               ))}
-              <th className="px-4 py-5 text-center font-headline font-bold text-foreground min-w-[100px] bg-muted/5 uppercase tracking-widest text-[10px]">Score</th>
-              <th className="px-4 py-5 text-center font-headline font-bold text-muted/60 min-w-[90px] bg-muted/5 uppercase tracking-widest text-[10px]">Max</th>
-              <th className="px-4 py-5 text-center font-headline font-bold text-foreground min-w-[90px] bg-muted/5 uppercase tracking-widest text-[10px]">%</th>
-              <th className="px-4 py-5 text-center font-headline font-bold text-foreground min-w-[80px] bg-muted/5 uppercase tracking-widest text-[10px]">Class</th>
+              <th className="px-4 py-5 text-center font-headline font-bold text-foreground min-w-[100px] bg-muted/20 uppercase tracking-widest text-[10px]">Score</th>
+              <th className="px-4 py-5 text-center font-headline font-bold text-muted-foreground min-w-[90px] bg-muted/20 uppercase tracking-widest text-[10px]">Max</th>
+              <th className="px-4 py-5 text-center font-headline font-bold text-foreground min-w-[90px] bg-muted/20 uppercase tracking-widest text-[10px]">%</th>
+              <th className="px-4 py-5 text-center font-headline font-bold text-foreground min-w-[80px] bg-muted/20 uppercase tracking-widest text-[10px]">Class</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className={dataTableBody}>
             {employees.map((emp, rowIdx) => {
               const empScores = scores[emp.id] ?? {};
               const result = calculateScore(empScores, skills);
               return (
-                <tr key={emp.id} className={`${rowIdx % 2 === 0 ? 'bg-transparent' : 'bg-muted/2'} hover:bg-primary/5 transition-colors group`}>
-                  <td className="sticky left-0 z-10 px-8 py-4 font-headline font-bold text-foreground border-e border-muted/5 bg-inherit">
-                    <div className="text-sm tracking-tight">{emp.fullName}</div>
-                    <div className="text-[10px] text-muted/40 uppercase tracking-widest mt-1">{emp.code}</div>
+                <tr key={emp.id} className={cn(dataTableRow, rowIdx % 2 === 1 && "bg-muted/5", "hover:bg-primary/5 group")}>
+                  <td className={cn(dataTableTd, "sticky left-0 z-10 border-e border-border bg-background group-hover:bg-muted/30")}>
+                    <div className="text-sm tracking-tight font-headline font-bold text-foreground">{emp.fullName}</div>
+                    <div className="text-[10px] text-muted-foreground uppercase tracking-widest mt-1">{emp.code}</div>
                   </td>
                   {skills.map(skill => {
                     const score = empScores[skill.id] ?? 0;
                     const bgColor = getScoreColor(score);
                     return (
-                      <td key={skill.id} className="px-3 py-4 text-center border-e border-muted/5">
+                      <td key={skill.id} className={cn(dataTableTd, "text-center border-e border-border py-4")}>
                         {readOnly ? (
                           <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl font-bold text-white text-xs shadow-sm" style={{ backgroundColor: bgColor }} title={getScoreLabel(score)}>{score}</div>
                         ) : (
@@ -135,16 +147,16 @@ function EvaluationGrid({
                             style={{ backgroundColor: bgColor }}
                             title={getScoreLabel(score)}
                           >
-                            {[0,1,2,3,4].map(opt => <option key={opt} value={opt} className="bg-surface text-foreground">{opt}</option>)}
+                            {[0,1,2,3,4].map(opt => <option key={opt} value={opt} className="bg-background text-foreground">{opt}</option>)}
                           </select>
                         )}
                       </td>
                     );
                   })}
-                  <td className="px-4 py-4 text-center text-foreground/80 font-bold tabular-nums bg-muted/2">{result.totalScore}</td>
-                  <td className="px-4 py-4 text-center text-muted/40 font-bold tabular-nums bg-muted/2">{result.maxScore}</td>
-                  <td className="px-4 py-4 text-center bg-muted/2"><span className="text-primary font-bold tabular-nums">{result.percentage}%</span></td>
-                  <td className="px-4 py-4 text-center bg-muted/2">
+                  <td className={cn(dataTableTd, "text-center text-foreground/80 font-bold tabular-nums bg-muted/10 py-4")}>{result.totalScore}</td>
+                  <td className={cn(dataTableTd, "text-center text-muted-foreground font-bold tabular-nums bg-muted/10 py-4")}>{result.maxScore}</td>
+                  <td className={cn(dataTableTd, "text-center bg-muted/10 py-4")}><span className="text-primary font-bold tabular-nums">{result.percentage}%</span></td>
+                  <td className={cn(dataTableTd, "text-center bg-muted/10 py-4")}>
                     <span className="inline-flex items-center justify-center w-10 h-8 rounded-lg font-bold text-white text-xs shadow-sm" style={{ backgroundColor: getClassColor(result.evalClass) }}>{result.evalClass}</span>
                   </td>
                 </tr>
@@ -355,22 +367,22 @@ function EmployeesSheet() {
         </div>
       </div>
 
-      <div className="overflow-hidden rounded-4xl border border-muted/10 bg-surface soft-shadow">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm border-collapse">
+      <div className={cn(dataTableShell, "p-0")}>
+        <div className={dataTableScroll}>
+          <table className={dataTableBase}>
             <thead>
-              <tr className="bg-muted/5 border-b border-muted/5">
-                <th className="px-8 py-5 text-left font-headline font-bold text-foreground uppercase tracking-widest text-[10px]">Operative</th>
-                <th className="px-6 py-5 text-left font-headline font-bold text-foreground uppercase tracking-widest text-[10px]">ID_Code</th>
-                <th className="px-6 py-5 text-left font-headline font-bold text-foreground uppercase tracking-widest text-[10px]">Rank</th>
+              <tr className={dataTableHeadRow}>
+                <th className={cn(dataTableTh, "text-left min-w-[220px]")}>Operative</th>
+                <th className={cn(dataTableTh, "text-left")}>ID_Code</th>
+                <th className={cn(dataTableTh, "text-left")}>Rank</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className={dataTableBody}>
               {EMPLOYEES.slice(0, 15).map((emp, i) => (
-                <tr key={emp.id} className={`${i % 2 === 0 ? 'bg-transparent' : 'bg-muted/2'} hover:bg-primary/2 transition-colors group`}>
-                  <td className="px-8 py-4 font-headline font-bold text-foreground tracking-tight">{emp.fullName}</td>
-                  <td className="px-6 py-4 font-bold text-muted text-xs tracking-widest uppercase">{emp.code}</td>
-                  <td className="px-6 py-4 text-xs font-bold text-primary/80 uppercase tracking-widest">CLASS_{emp.currentClass}</td>
+                <tr key={emp.id} className={cn(dataTableRow, i % 2 === 1 && "bg-muted/5", "hover:bg-primary/5 group")}>
+                  <td className={cn(dataTableTd, "font-headline font-bold text-foreground tracking-tight")}>{emp.fullName}</td>
+                  <td className={cn(dataTableTd, "font-bold text-muted-foreground text-xs tracking-widest uppercase")}>{emp.code}</td>
+                  <td className={cn(dataTableTd, "text-xs font-bold text-primary/80 uppercase tracking-widest")}>CLASS_{emp.currentClass}</td>
                 </tr>
               ))}
             </tbody>

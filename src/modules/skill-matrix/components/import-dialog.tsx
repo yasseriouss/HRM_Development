@@ -7,6 +7,15 @@ import { Button } from "@shared/components/ui/button";
 import { Upload, FileDown, CheckCircle2, Loader2, FileSpreadsheet, X } from "lucide-react";
 import { useToast } from "@shared/hooks/use-toast";
 import { getAuthHeaders } from "@modules/skill-matrix/lib/auth";
+import { cn } from "@shared/utils/cn";
+import {
+  dataTableBase,
+  dataTableBody,
+  dataTableHeadRow,
+  dataTableRow,
+  dataTableTdDense,
+  dataTableTh,
+} from "@shared/components/data/data-table-styles";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface ImportDialogProps {
@@ -265,19 +274,29 @@ export function ImportDialog({ open, onOpenChange, onSuccess, type }: ImportDial
                   </div>
                 </div>
                 <div className="max-h-[240px] overflow-auto rounded-3xl border border-muted/10 bg-background/50 custom-scrollbar shadow-inner">
-                  <table className="w-full text-[10px]">
-                    <thead className="sticky top-0 bg-muted/5 backdrop-blur-md border-b border-muted/10">
-                      <tr>
+                  <table className={cn(dataTableBase, "text-[10px]")}>
+                    <thead className="sticky top-0 z-[1] bg-muted/5 backdrop-blur-md border-b border-muted/10">
+                      <tr className={dataTableHeadRow}>
                         {Object.keys(preview[0] || {}).map((k, i) => (
-                          <th key={i} className="px-3 py-2 text-start font-bold text-muted-foreground">Col {k}</th>
+                          <th key={i} className={cn(dataTableTh, "!px-3 !py-2 !text-[10px]")}>
+                            Col {k}
+                          </th>
                         ))}
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-muted/5">
+                    <tbody className={dataTableBody}>
                       {preview.slice(0, 5).map((row, i) => (
-                        <tr key={i} className="hover:bg-primary/5 transition-colors group/row">
+                        <tr key={i} className={cn(dataTableRow, "hover:bg-primary/5 transition-colors group/row")}>
                           {Object.values(row).map((val: any, j) => (
-                            <td key={j} className="px-4 py-3 truncate max-w-[150px] font-sans font-bold text-foreground/70 group-hover/row:text-foreground">{String(val)}</td>
+                            <td
+                              key={j}
+                              className={cn(
+                                dataTableTdDense,
+                                "truncate max-w-[150px] font-sans font-bold text-foreground/70 group-hover/row:text-foreground !py-3",
+                              )}
+                            >
+                              {String(val)}
+                            </td>
                           ))}
                         </tr>
                       ))}

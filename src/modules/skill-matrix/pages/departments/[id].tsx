@@ -26,6 +26,16 @@ import {
 import { useT } from "@modules/skill-matrix/i18n";
 import { useLang } from "@shared/contexts/LangContext";
 import { cn } from "@shared/utils/cn";
+import {
+  dataTableBase,
+  dataTableBody,
+  dataTableHeadRow,
+  dataTableRow,
+  dataTableScroll,
+  dataTableShell,
+  dataTableTdSpacious,
+  dataTableThSpacious,
+} from "@shared/components/data/data-table-styles";
 
 export default function DepartmentDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -159,7 +169,7 @@ export default function DepartmentDetailPage() {
            </div>
         </div>
 
-        <div className="bg-white border border-zinc-100 rounded-4xl shadow-sm overflow-hidden">
+        <div className={dataTableShell} data-testid="department-employees-table">
            {loadingEmps ? (
               <div className="p-10 space-y-6">
                  {Array.from({ length: 5 }).map((_, i) => (
@@ -174,42 +184,42 @@ export default function DepartmentDetailPage() {
                  <p className="text-lg font-bold font-comfortaa text-zinc-300 uppercase tracking-widest">{t("label_no_records")}</p>
               </div>
            ) : (
-              <div className="overflow-x-auto">
-                 <table className="w-full text-start border-collapse text-sm">
+              <div className={dataTableScroll}>
+                 <table className={dataTableBase}>
                     <thead>
-                       <tr className="bg-zinc-50/50 border-b border-zinc-50">
-                          <th className="px-10 py-8 font-bold text-[10px] tracking-widest text-zinc-400 uppercase whitespace-nowrap text-start">{t("employees_col_name")}</th>
-                          <th className="px-10 py-8 font-bold text-[10px] tracking-widest text-zinc-400 uppercase whitespace-nowrap text-start">{t("employees_col_code")}</th>
-                          <th className="px-10 py-8 font-bold text-[10px] tracking-widest text-zinc-400 uppercase whitespace-nowrap text-start">{t("employees_col_job_title")}</th>
-                          <th className="px-10 py-8 font-bold text-[10px] tracking-widest text-zinc-400 uppercase whitespace-nowrap text-start">{t("employees_col_class")}</th>
-                          <th className="px-10 py-8 font-bold text-[10px] tracking-widest text-zinc-400 uppercase whitespace-nowrap text-end">{t("common_actions")}</th>
+                       <tr className={dataTableHeadRow}>
+                          <th className={cn(dataTableThSpacious, "text-start")}>{t("employees_col_name")}</th>
+                          <th className={cn(dataTableThSpacious, "text-start")}>{t("employees_col_code")}</th>
+                          <th className={cn(dataTableThSpacious, "text-start")}>{t("employees_col_job_title")}</th>
+                          <th className={cn(dataTableThSpacious, "text-start")}>{t("employees_col_class")}</th>
+                          <th className={cn(dataTableThSpacious, "text-end")}>{t("common_actions")}</th>
                        </tr>
                     </thead>
-                    <tbody className="divide-y divide-zinc-50">
+                    <tbody className={dataTableBody}>
                        {employees.map((emp) => (
-                          <tr key={emp.id} className="group transition-all hover:bg-zinc-50/50">
-                             <td className="px-10 py-10 whitespace-nowrap">
+                          <tr key={emp.id} className={cn(dataTableRow, "group")}>
+                             <td className={cn(dataTableTdSpacious, "whitespace-nowrap")}>
                                 <Link href={`/skill-matrix/employees/${emp.id}`} className="block">
-                                   <p className="font-bold text-zinc-900 text-lg tracking-tight group-hover:translate-x-1 transition-transform font-comfortaa">{emp.full_name}</p>
-                                   <p className="text-[9px] font-bold text-zinc-300 mt-2 uppercase tracking-widest">{emp.email || "—"}</p>
+                                   <p className="font-bold text-foreground text-lg tracking-tight group-hover:translate-x-1 transition-transform font-comfortaa">{emp.full_name}</p>
+                                   <p className="text-[9px] font-bold text-muted-foreground mt-2 uppercase tracking-widest">{emp.email || "—"}</p>
                                 </Link>
                              </td>
-                             <td className="px-10 py-10 font-bold text-[11px] text-zinc-400 tracking-widest whitespace-nowrap">{emp.employee_code || "—"}</td>
-                             <td className="px-10 py-10 font-bold text-[10px] text-zinc-400 tracking-widest uppercase whitespace-nowrap">{emp.job_title || "OPERATIVE"}</td>
-                             <td className="px-10 py-10 whitespace-nowrap">
+                             <td className={cn(dataTableTdSpacious, "font-bold text-[11px] text-muted-foreground tracking-widest whitespace-nowrap")}>{emp.employee_code || "—"}</td>
+                             <td className={cn(dataTableTdSpacious, "font-bold text-[10px] text-muted-foreground tracking-widest uppercase whitespace-nowrap")}>{emp.job_title || "OPERATIVE"}</td>
+                             <td className={cn(dataTableTdSpacious, "whitespace-nowrap")}>
                                 <Badge variant="outline" className={cn(
                                    "rounded-full font-bold text-[9px] tracking-widest px-3 py-1 uppercase border",
                                    emp.current_class === 'A' ? "bg-green-50 text-green-600 border-green-100" :
                                    emp.current_class === 'B' ? "bg-amber-50 text-amber-600 border-amber-100" :
                                    emp.current_class === 'C' ? "bg-red-50 text-red-600 border-red-100" :
-                                   "bg-zinc-50 text-zinc-400 border-zinc-100"
+                                   "bg-muted/30 text-muted-foreground border-border"
                                 )}>
                                    {emp.current_class || "N/A"}
                                 </Badge>
                              </td>
-                             <td className="px-10 py-10 text-end whitespace-nowrap">
+                             <td className={cn(dataTableTdSpacious, "text-end whitespace-nowrap")}>
                                 <Link href={`/skill-matrix/employees/${emp.id}`}>
-                                   <Button variant="ghost" className="rounded-full h-12 px-6 border border-zinc-50 hover:border-zinc-900 transition-all font-bold text-[10px] tracking-widest uppercase">
+                                   <Button variant="ghost" className="rounded-full h-12 px-6 border border-border hover:border-foreground transition-all font-bold text-[10px] tracking-widest uppercase">
                                       {t("label_node_profile")} <ArrowUpRight className="ms-2 h-3 w-3 opacity-40" />
                                    </Button>
                                 </Link>

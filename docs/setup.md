@@ -25,12 +25,14 @@ This guide ensures you can get the HRM Unified platform running from zero in und
 
 3. **Configure Environment Variables:**
 
-   Copy the example environment file and fill in your secrets.
+   The API server loads **`server/.env`** (see `server/package.json` `dev` / `start` scripts). Copy the example file there and set a Postgres URL.
 
    ```bash
-   cp .env.example .env
-   # Ensure DATABASE_URL and PORT=8080 are set.
+   cp server/.env.example server/.env
+   # Set DATABASE_URL and PORT=8080 in server/.env
    ```
+
+   Use a **Neon** connection string for hosted preview/production, or **any Postgres** URL for local Docker — the app picks the `pg` TCP driver automatically when the host is not `*.neon.tech`.
 
 4. **Database Seeding (Optional):**
 
@@ -42,14 +44,17 @@ This guide ensures you can get the HRM Unified platform running from zero in und
 
 5. **Start Development Servers:**
 
-   Launch both frontend and backend in parallel:
+   From the repo root (recommended — starts Vite + API together):
 
    ```bash
-   # Terminal 1: Backend
-   pnpm --filter @hrm-development/api-server run dev
+   pnpm dev
+   ```
 
-   # Terminal 2: Frontend
-   pnpm run dev
+   Or run them in separate terminals:
+
+   ```bash
+   pnpm dev:server   # API on :8080 (loads server/.env)
+   pnpm dev:client   # Vite on :8081
    ```
 
 ## Key Endpoints
@@ -59,5 +64,6 @@ This guide ensures you can get the HRM Unified platform running from zero in und
 
 ## Troubleshooting
 
-- **Port Conflict:** If port 8080 or 8081 is in use, check your `.env` or `vite.config.ts`.
-- **Database Connection:** Ensure your IP is whitelisted in the Neon console.
+- **Port Conflict:** If port 8080 or 8081 is in use, check `server/.env` or `vite.config.ts`.
+- **Login HTTP 500 / 503:** Usually missing `DATABASE_URL` or DB unreachable. Check API logs; ensure `server/.env` exists when running `pnpm dev` (which starts the API from the `server` package). For Neon, ensure your IP is allowlisted if required.
+- **Database Connection:** Ensure your IP is whitelisted in the Neon console when using Neon.

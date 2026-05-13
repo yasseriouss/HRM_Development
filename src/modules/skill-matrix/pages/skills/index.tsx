@@ -27,6 +27,17 @@ import { Upload } from "lucide-react";
 import { useFactory } from "@shared/contexts/FactoryContext";
 import { useLang } from "@shared/contexts/LangContext";
 import { cn } from "@shared/utils/cn";
+import {
+  dataTableBase,
+  dataTableBody,
+  dataTableHeadRow,
+  dataTableRow,
+  dataTableRowSelected,
+  dataTableScroll,
+  dataTableShell,
+  dataTableTdSpacious,
+  dataTableThSpacious,
+} from "@shared/components/data/data-table-styles";
 
 const CRITICALITIES = ["Low", "Medium", "High", "Critical"] as const;
 type Criticality = (typeof CRITICALITIES)[number];
@@ -329,7 +340,7 @@ export default function SkillsPage() {
       </AnimatePresence>
 
       {/* Skills Registry */}
-      <div className="bg-white border border-zinc-100 rounded-4xl shadow-sm overflow-hidden">
+      <div className={dataTableShell} data-testid="skills-data-table">
         {isLoading ? (
           <div className="p-12 space-y-6">
             {Array.from({ length: 10 }).map((_, i) => (
@@ -344,71 +355,88 @@ export default function SkillsPage() {
             <p className="text-lg font-bold font-comfortaa text-zinc-300 uppercase tracking-widest">{t("label_no_records")}</p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-start border-collapse text-sm">
+          <div className={dataTableScroll}>
+            <table className={dataTableBase}>
               <thead>
-                <tr className="bg-zinc-50/50 border-b border-zinc-50">
-                  <th className="px-10 py-8 w-10">
-                    <Checkbox 
+                <tr className={dataTableHeadRow}>
+                  <th className={cn(dataTableThSpacious, "w-10")}>
+                    <Checkbox
                       checked={selectedIds.size === filteredSkills.length && filteredSkills.length > 0}
                       onCheckedChange={toggleSelectAll}
-                      className="rounded-lg border-zinc-200 data-[state=checked]:bg-zinc-900 data-[state=checked]:border-zinc-900"
+                      className="rounded-lg border-border data-[state=checked]:bg-primary data-[state=checked]:border-primary"
                     />
                   </th>
-                  <th className="px-10 py-8 font-bold text-[10px] tracking-widest text-zinc-400 uppercase whitespace-nowrap text-start">{t("field_name")}</th>
-                  <th className="px-10 py-8 font-bold text-[10px] tracking-widest text-zinc-400 uppercase whitespace-nowrap text-start">{t("field_code")}</th>
-                  <th className="px-10 py-8 font-bold text-[10px] tracking-widest text-zinc-400 uppercase whitespace-nowrap text-start">{t("skills_col_category")}</th>
-                  <th className="px-10 py-8 font-bold text-[10px] tracking-widest text-zinc-400 uppercase whitespace-nowrap text-start">{t("field_department")}</th>
-                  <th className="px-10 py-8 font-bold text-[10px] tracking-widest text-zinc-400 uppercase whitespace-nowrap text-center">{t("skills_col_weight")}</th>
-                  <th className="px-10 py-8 font-bold text-[10px] tracking-widest text-zinc-400 uppercase whitespace-nowrap text-start">{t("skills_col_criticality")}</th>
-                  <th className="px-10 py-8 font-bold text-[10px] tracking-widest text-zinc-400 uppercase whitespace-nowrap text-end">{t("common_actions")}</th>
+                  <th className={cn(dataTableThSpacious, "text-start")}>{t("field_name")}</th>
+                  <th className={cn(dataTableThSpacious, "text-start")}>{t("field_code")}</th>
+                  <th className={cn(dataTableThSpacious, "text-start")}>{t("skills_col_category")}</th>
+                  <th className={cn(dataTableThSpacious, "text-start")}>{t("field_department")}</th>
+                  <th className={cn(dataTableThSpacious, "text-center")}>{t("skills_col_weight")}</th>
+                  <th className={cn(dataTableThSpacious, "text-start")}>{t("skills_col_criticality")}</th>
+                  <th className={cn(dataTableThSpacious, "text-end")}>{t("common_actions")}</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-50">
+              <tbody className={dataTableBody}>
                 {filteredSkills.map((sk) => (
-                  <tr key={sk.id} className={cn("group transition-all hover:bg-zinc-50/50", selectedIds.has(sk.id) ? "bg-zinc-50" : "")}>
-                    <td className="px-10 py-10 whitespace-nowrap">
-                      <Checkbox 
+                  <tr
+                    key={sk.id}
+                    className={cn(dataTableRow, "group", selectedIds.has(sk.id) ? dataTableRowSelected : "")}
+                  >
+                    <td className={cn(dataTableTdSpacious, "whitespace-nowrap")}>
+                      <Checkbox
                         checked={selectedIds.has(sk.id)}
                         onCheckedChange={() => toggleSelect(sk.id)}
-                        className="rounded-lg border-zinc-200 data-[state=checked]:bg-zinc-900 data-[state=checked]:border-zinc-900"
+                        className="rounded-lg border-border data-[state=checked]:bg-primary data-[state=checked]:border-primary"
                       />
                     </td>
-                    <td className="px-10 py-10 whitespace-nowrap">
+                    <td className={cn(dataTableTdSpacious, "whitespace-nowrap")}>
                       <div className="flex items-center gap-5">
-                         <div className="h-10 w-10 rounded-xl bg-zinc-900 flex items-center justify-center text-white text-[10px] font-bold shadow-lg shadow-zinc-100 group-hover:scale-110 transition-transform">
-                            {sk.name.charAt(0)}
-                         </div>
-                         <div className="space-y-1">
-                            <p className="font-bold text-zinc-900 text-lg tracking-tight group-hover:translate-x-1 transition-transform font-comfortaa">
-                              {isRtl ? (sk.name_ar || sk.name) : sk.name}
-                            </p>
-                            {sk.description && (
-                              <p className="text-[10px] font-bold text-zinc-300 uppercase tracking-widest max-w-xs truncate">{sk.description}</p>
-                            )}
-                         </div>
+                        <div className="h-10 w-10 rounded-xl bg-primary flex items-center justify-center text-primary-foreground text-[10px] font-bold shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
+                          {sk.name.charAt(0)}
+                        </div>
+                        <div className="space-y-1">
+                          <p className="font-bold text-foreground text-lg tracking-tight group-hover:translate-x-1 transition-transform font-comfortaa">
+                            {isRtl ? (sk.name_ar || sk.name) : sk.name}
+                          </p>
+                          {sk.description && (
+                            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest max-w-xs truncate">{sk.description}</p>
+                          )}
+                        </div>
                       </div>
                     </td>
-                    <td className="px-10 py-10 font-bold text-[11px] text-zinc-400 tracking-widest whitespace-nowrap uppercase">{sk.code ?? "—"}</td>
-                    <td className="px-10 py-10 font-bold text-[10px] text-zinc-400 tracking-widest uppercase whitespace-nowrap">{sk.category ?? "SYSTEM"}</td>
-                    <td className="px-10 py-10 whitespace-nowrap">
-                      <Badge variant="outline" className="rounded-full border-zinc-100 bg-white text-[10px] font-bold text-zinc-500 py-1.5 px-4 uppercase tracking-tight shadow-xs">
+                    <td className={cn(dataTableTdSpacious, "font-bold text-[11px] text-muted-foreground tracking-widest whitespace-nowrap uppercase")}>
+                      {sk.code ?? "—"}
+                    </td>
+                    <td className={cn(dataTableTdSpacious, "font-bold text-[10px] text-muted-foreground tracking-widest uppercase whitespace-nowrap")}>
+                      {sk.category ?? "SYSTEM"}
+                    </td>
+                    <td className={cn(dataTableTdSpacious, "whitespace-nowrap")}>
+                      <Badge variant="outline" className="rounded-full border-border bg-background text-[10px] font-bold text-muted-foreground py-1.5 px-4 uppercase tracking-tight shadow-xs">
                         {(sk as any).department?.name ?? "GENERAL"}
                       </Badge>
                     </td>
-                    <td className="px-10 py-10 text-center whitespace-nowrap">
-                      <span className="inline-flex items-center justify-center w-10 h-10 rounded-2xl bg-zinc-50 font-bold text-lg text-zinc-900 font-comfortaa">
+                    <td className={cn(dataTableTdSpacious, "text-center whitespace-nowrap")}>
+                      <span className="inline-flex items-center justify-center w-10 h-10 rounded-2xl bg-muted/50 font-bold text-lg text-foreground font-comfortaa border border-border/60">
                         {sk.weight}
                       </span>
                     </td>
-                    <td className="px-10 py-10 whitespace-nowrap">{critBadge(sk.criticality, t)}</td>
-                    <td className="px-10 py-10 text-end whitespace-nowrap">
+                    <td className={cn(dataTableTdSpacious, "whitespace-nowrap")}>{critBadge(sk.criticality, t)}</td>
+                    <td className={cn(dataTableTdSpacious, "text-end whitespace-nowrap")}>
                       {isAdmin && (
                         <div className="flex items-center justify-end gap-3 opacity-0 group-hover:opacity-100 transition-all">
-                          <Button size="icon" variant="ghost" className="h-12 w-12 rounded-2xl text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100" onClick={() => openEdit(sk)}>
+                          <Button
+                            size="icon"
+                            variant="ghost"
+                            className="h-12 w-12 rounded-2xl text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                            onClick={() => openEdit(sk)}
+                          >
                             <Pencil className="h-5 w-5" />
                           </Button>
-                          <Button size="icon" variant="ghost" className="h-12 w-12 rounded-2xl text-zinc-400 hover:text-red-600 hover:bg-red-50" onClick={() => setDeleteTarget({ id: sk.id, name: sk.name })}>
+                          <Button
+                            size="icon"
+                            variant="ghost"
+                            className="h-12 w-12 rounded-2xl text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                            onClick={() => setDeleteTarget({ id: sk.id, name: sk.name })}
+                          >
                             <Trash2 className="h-5 w-5" />
                           </Button>
                         </div>

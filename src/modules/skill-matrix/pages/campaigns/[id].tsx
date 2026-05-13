@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { useParams, Link } from "wouter";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getAuthHeaders } from "@modules/skill-matrix/lib/auth";
@@ -25,6 +25,14 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@shared/hooks/use-toast";
 import { cn } from "@shared/utils/cn";
+import {
+  dataTableBase,
+  dataTableBody,
+  dataTableHeadRow,
+  dataTableRow,
+  dataTableScroll,
+  dataTableShell,
+} from "@shared/components/data/data-table-styles";
 import { Popover, PopoverContent, PopoverTrigger } from "@shared/components/ui/popover";
 import { Input } from "@shared/components/ui/input";
 
@@ -202,18 +210,18 @@ export default function CampaignDetailPage() {
       </Card>
 
       {/* Spreadsheet Evaluation Grid */}
-      <div className="bg-white border border-zinc-100 rounded-4xl shadow-sm overflow-hidden relative">
-        <div className="overflow-auto max-h-[800px] scrollbar-thin scrollbar-thumb-zinc-200">
-          <table className="w-full text-start border-collapse">
+      <div className={cn(dataTableShell, "relative p-0")} data-testid="campaign-matrix-table">
+        <div className={cn(dataTableScroll, "max-h-[800px] scrollbar-thin scrollbar-thumb-border")}>
+          <table className={dataTableBase}>
             <thead className="sticky top-0 z-20">
-              <tr className="bg-zinc-50/80 backdrop-blur-md border-b border-zinc-100">
-                <th className="sticky left-0 z-30 bg-zinc-50/80 backdrop-blur-md px-10 py-8 font-bold text-[10px] tracking-widest text-zinc-400 uppercase text-start min-w-[300px] border-e border-zinc-100/50">
+              <tr className={cn(dataTableHeadRow, "backdrop-blur-md bg-muted/40")}>
+                <th className="sticky left-0 z-30 bg-muted/40 backdrop-blur-md px-10 py-8 font-bold text-[10px] tracking-widest text-muted-foreground uppercase text-start min-w-[300px] border-e border-border/50">
                   {t("employees_col_name")}
                 </th>
                 {skills.map((skill) => (
                   <th key={skill.id} className={cn(
-                    "px-6 py-8 font-bold text-[10px] tracking-widest uppercase text-center min-w-[140px] border-e border-zinc-100/50 transition-colors",
-                    activeSkillId === skill.id ? "text-zinc-900 bg-zinc-100/50" : "text-zinc-400"
+                    "px-6 py-8 font-bold text-[10px] tracking-widest uppercase text-center min-w-[140px] border-e border-border/50 transition-colors",
+                    activeSkillId === skill.id ? "text-foreground bg-muted/60" : "text-muted-foreground"
                   )}>
                     <div className="space-y-2">
                        <p className="line-clamp-1">{skill.name}</p>
@@ -221,25 +229,25 @@ export default function CampaignDetailPage() {
                     </div>
                   </th>
                 ))}
-                <th className="px-10 py-8 font-bold text-[10px] tracking-widest text-zinc-900 uppercase text-center min-w-[120px] bg-zinc-100/30">
+                <th className="px-10 py-8 font-bold text-[10px] tracking-widest text-foreground uppercase text-center min-w-[120px] bg-muted/50">
                   {t("evaluations_col_score")}
                 </th>
-                <th className="px-10 py-8 font-bold text-[10px] tracking-widest text-zinc-900 uppercase text-start min-w-[100px] bg-zinc-100/30">
+                <th className="px-10 py-8 font-bold text-[10px] tracking-widest text-foreground uppercase text-start min-w-[100px] bg-muted/50">
                   {t("evaluations_col_class")}
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-50">
+            <tbody className={dataTableBody}>
               {filteredRows.map((row) => (
-                <tr key={row.employee.id} className="group hover:bg-zinc-50/50 transition-all">
-                  <td className="sticky left-0 z-10 bg-white group-hover:bg-zinc-50/80 backdrop-blur-md px-10 py-8 border-e border-zinc-100/50">
+                <tr key={row.employee.id} className={cn(dataTableRow, "group hover:bg-muted/25 transition-all")}>
+                  <td className="sticky left-0 z-10 bg-background group-hover:bg-muted/40 backdrop-blur-md px-10 py-8 border-e border-border/50">
                     <div className="flex items-center gap-5">
-                       <div className="h-12 w-12 rounded-2xl bg-zinc-900 flex items-center justify-center text-white text-sm font-bold font-comfortaa">
+                       <div className="h-12 w-12 rounded-2xl bg-primary flex items-center justify-center text-primary-foreground text-sm font-bold font-comfortaa">
                           {row.employee.full_name.charAt(0)}
                        </div>
                        <div>
-                          <p className="font-bold text-zinc-900 text-base tracking-tight font-comfortaa">{row.employee.full_name}</p>
-                          <p className="text-[9px] font-bold text-zinc-300 uppercase tracking-widest mt-1">{row.employee.employee_code}</p>
+                          <p className="font-bold text-foreground text-base tracking-tight font-comfortaa">{row.employee.full_name}</p>
+                          <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mt-1">{row.employee.employee_code}</p>
                        </div>
                     </div>
                   </td>
@@ -254,8 +262,8 @@ export default function CampaignDetailPage() {
                       <td 
                         key={skill.id} 
                         className={cn(
-                          "px-4 py-8 text-center border-e border-zinc-100/50 transition-all",
-                          activeSkillId === skill.id && "bg-zinc-50/50"
+                          "px-4 py-8 text-center border-e border-border/50 transition-all",
+                          activeSkillId === skill.id && "bg-muted/30"
                         )}
                         onMouseEnter={() => setActiveSkillId(skill.id)}
                         onMouseLeave={() => setActiveSkillId(null)}
@@ -264,11 +272,11 @@ export default function CampaignDetailPage() {
                           <PopoverTrigger asChild>
                             <button className={cn(
                               "w-12 h-12 rounded-2xl font-bold font-comfortaa text-lg border transition-all flex items-center justify-center relative group/btn overflow-hidden shadow-sm",
-                              score !== null ? SCORE_COLORS[score] : "bg-white text-zinc-200 border-zinc-100 hover:border-zinc-300"
+                              score !== null ? SCORE_COLORS[score] : "bg-background text-muted-foreground/40 border-border hover:border-muted-foreground/40"
                             )}>
                               <AnimatePresence mode="wait">
                                 {isSaving ? (
-                                  <Loader2 className="h-5 w-5 animate-spin text-zinc-400" />
+                                  <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
                                 ) : (
                                   <motion.span 
                                     key={score}
@@ -281,7 +289,7 @@ export default function CampaignDetailPage() {
                                 )}
                               </AnimatePresence>
                               {score === null && !isSaving && (
-                                <div className="absolute inset-0 bg-zinc-900 opacity-0 group-hover/btn:opacity-[0.03] transition-opacity" />
+                                <div className="absolute inset-0 bg-foreground opacity-0 group-hover/btn:opacity-[0.03] transition-opacity" />
                               )}
                             </button>
                           </PopoverTrigger>
@@ -317,17 +325,17 @@ export default function CampaignDetailPage() {
                     );
                   })}
 
-                  <td className="px-10 py-8 text-center bg-zinc-50/20">
+                  <td className="px-10 py-8 text-center bg-muted/20">
                     <div className="inline-flex flex-col items-center">
-                       <span className="text-xl font-bold font-comfortaa text-zinc-900">{row.percentage ? `${row.percentage}%` : "—"}</span>
+                       <span className="text-xl font-bold font-comfortaa text-foreground">{row.percentage ? `${row.percentage}%` : "—"}</span>
                        {row.total_score !== null && (
-                         <span className="text-[8px] font-bold text-zinc-300 uppercase tracking-widest mt-1">
+                         <span className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest mt-1">
                            {row.total_score} / {row.max_score}
                          </span>
                        )}
                     </div>
                   </td>
-                  <td className="px-10 py-8 bg-zinc-50/20">{classBadge(row.class, t)}</td>
+                  <td className="px-10 py-8 bg-muted/20">{classBadge(row.class, t)}</td>
                 </tr>
               ))}
             </tbody>
