@@ -1,9 +1,12 @@
 import { useT } from "@/i18n";
+import { useLang } from "@/shared/contexts/LangContext";
 
 const isExport = typeof window !== "undefined" && window.location.pathname.endsWith("/allslides");
 
 export default function Slide15_NextSteps() {
   const t = useT();
+  const { lang } = useLang();
+  const isAr = lang === 'ar';
 
   const steps = [
     { num: "1", title: t("s15_step1_title"), desc: t("s15_step1_desc"), active: true },
@@ -22,15 +25,22 @@ export default function Slide15_NextSteps() {
       `}</style>
 
       <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, var(--slide-bg) 0%, #1E2028 100%)" }} />
-      <div className="absolute right-0 top-0 h-full" style={{ width: "0.4vw", background: "linear-gradient(180deg, transparent 0%, var(--slide-primary) 40%, var(--slide-primary) 60%, transparent 100%)" }} />
+      <div 
+        className="absolute top-0 h-full" 
+        style={{ 
+          [isAr ? 'left' : 'right']: 0,
+          width: "0.4vw", 
+          background: "linear-gradient(180deg, transparent 0%, var(--slide-primary) 40%, var(--slide-primary) 60%, transparent 100%)" 
+        }} 
+      />
 
-      <div className="absolute top-[7vh] left-[8vw] right-[6vw]">
-        <div className="next-h">
+      <div className={`absolute top-[7vh] ${isAr ? 'right-[8vw]' : 'left-[8vw]'} ${isAr ? 'left-[6vw]' : 'right-[6vw]'}`}>
+        <div className="next-h" style={{ textAlign: isAr ? 'right' : 'left' }}>
           <div className="font-body font-semibold mb-[1vh]" style={{ fontSize: "1.2vw", color: "var(--slide-primary)", letterSpacing: "0.2em" }}>{t("s15_title")}</div>
           <h2 className="font-display font-bold tracking-tight" style={{ fontSize: "4.5vw", lineHeight: 1, color: "var(--slide-text)" }}>{t("s15_subtitle")}</h2>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2.5vh 5vw", marginTop: "4vh" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2.5vh 5vw", marginTop: "4vh", direction: isAr ? 'rtl' : 'ltr' }}>
           {steps.map((step, i) => (
             <div 
               key={i} 
@@ -40,7 +50,8 @@ export default function Slide15_NextSteps() {
                 gap: "2vw", 
                 alignItems: "flex-start",
                 gridColumn: i === 4 ? "1 / -1" : "auto",
-                "--delay": `${0.2 + i * 0.15}s`
+                "--delay": `${0.2 + i * 0.15}s`,
+                textAlign: isAr ? 'right' : 'left'
               } as any}
             >
               <div style={{ 
@@ -57,15 +68,15 @@ export default function Slide15_NextSteps() {
                 <span className="font-display font-bold" style={{ fontSize: "1.5vw", color: step.active || step.green ? "var(--slide-bg)" : "var(--slide-primary)" }}>{step.num}</span>
               </div>
               <div>
-                <div className="font-display font-semibold" style={{ fontSize: "1.8vw", color: step.green ? "#10B981" : "var(--slide-text)", marginBottom: "0.5vh" }}>{step.title}</div>
-                <div className="font-body" style={{ fontSize: "1.3vw", color: "var(--slide-muted)", lineHeight: 1.5 }}>{step.desc}</div>
+                <div className="font-display font-semibold" style={{ fontSize: "1.8vw", color: step.green ? "#10B981" : "var(--slide-text)", marginBottom: "0.5vh" }}>{t(step.title)}</div>
+                <div className="font-body" style={{ fontSize: "1.3vw", color: "var(--slide-muted)", lineHeight: 1.5 }}>{t(step.desc)}</div>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="absolute bottom-[3vh] right-[6vw]">
+      <div className={`absolute bottom-[3vh] ${isAr ? 'left-[6vw]' : 'right-[6vw]'}`}>
         <div className="font-body" style={{ fontSize: "1.1vw", color: "var(--slide-muted)" }}>{t("s1_created_by")} <span style={{ color: "var(--slide-primary)" }}>yasserious.com</span></div>
       </div>
     </div>
