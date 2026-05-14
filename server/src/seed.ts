@@ -10,7 +10,7 @@ import {
   evaluationSummariesTable,
   trainingRecommendationsTable,
 } from "@hrm-development/db/schema";
-import { eq, count, and } from "drizzle-orm";
+import { eq, count, and } from "@hrm-development/db/drizzle";
 
 // ── FACTORIES ────────────────────────────────────────────────────────────────
 

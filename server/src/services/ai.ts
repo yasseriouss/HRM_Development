@@ -5,7 +5,7 @@ import {
   employeesTable, 
   evaluationSummariesTable 
 } from "@hrm-development/db/schema";
-import { sql } from "drizzle-orm";
+import { sql } from "@hrm-development/db/drizzle";
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 const MODEL = "google/gemini-2.0-flash-001";

@@ -9,7 +9,7 @@ import {
   evaluationSummariesTable,
   trainingRecommendationsTable,
 } from "@hrm-development/db/schema";
-import { eq, count, sql, desc, and } from "drizzle-orm";
+import { eq, count, sql, desc, and } from "@hrm-development/db/drizzle";
 import { requireAuth, requireRole } from "../lib/auth";
 
 const router = Router();
@@ -63,7 +63,7 @@ router.get("/metrics", requireAuth, requireRole("super_admin", "hr_coordinator",
         .where(and(eq(employeesTable.department_id, userDeptId), eq(employeesTable.is_active, true)));
       const ids = deptEmpIds.map((e: any) => e.id);
       if (ids.length > 0) {
-        const { inArray } = await import("drizzle-orm");
+        const { inArray } = await import("@hrm-development/db/drizzle");
         const [pt] = await db.select({ total: count() }).from(trainingRecommendationsTable)
           .where(and(inArray(trainingRecommendationsTable.employee_id, ids), eq(trainingRecommendationsTable.status, "Pending")));
         pendingTraining = Number(pt.total) || 0;

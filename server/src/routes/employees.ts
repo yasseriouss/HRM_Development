@@ -10,7 +10,7 @@ import {
   trainingRecommendationsTable,
   usersTable,
 } from "@hrm-development/db/schema";
-import { eq, and, ilike, sql, desc, count } from "drizzle-orm";
+import { eq, and, ilike, sql, desc, count } from "@hrm-development/db/drizzle";
 import { requireAuth, requireRole } from "../lib/auth";
 
 const router = Router();

@@ -8,7 +8,7 @@ import {
   campaignsTable,
   trainingRecommendationsTable,
 } from "@hrm-development/db/schema";
-import { eq, and } from "drizzle-orm";
+import { eq, and } from "@hrm-development/db/drizzle";
 import { requireAuth, requireRole } from "../lib/auth";
 
 const router = Router();
@@ -169,7 +169,7 @@ router.get("/", requireAuth, requireRole("super_admin", "hr_coordinator", "dept_
 
     // dept_head: auto-scope to employees in their own department
     if (role === "dept_head" && userDeptId) {
-      const { inArray } = await import("drizzle-orm");
+      const { inArray } = await import("@hrm-development/db/drizzle");
       const deptEmps = await db.select({ id: employeesTable.id }).from(employeesTable)
         .where(and(eq(employeesTable.department_id, userDeptId), eq(employeesTable.is_active, true)));
       const deptEmpIds = deptEmps.map((e) => e.id);

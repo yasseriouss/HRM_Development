@@ -12,8 +12,7 @@ import {
   skillsTable,
   employeesTable,
 } from "@hrm-development/db/schema";
-import { eq, and, inArray, or } from "drizzle-orm";
-import { alias } from "drizzle-orm/pg-core";
+import { eq, and, inArray, or, alias } from "@hrm-development/db/drizzle";
 import { requireAuth } from "../lib/auth";
 
 const router = Router();

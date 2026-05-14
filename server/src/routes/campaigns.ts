@@ -8,7 +8,7 @@ import {
   evaluationsTable,
   evaluationSummariesTable,
 } from "@hrm-development/db/schema";
-import { eq, and, count } from "drizzle-orm";
+import { eq, and, count } from "@hrm-development/db/drizzle";
 import { requireAuth, requireRole } from "../lib/auth";
 
 type CampaignStatus = "Draft" | "Active" | "Completed" | "Archived";

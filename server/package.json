@@ -17,7 +17,6 @@
     "@neondatabase/serverless": "^1.1.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2",
-    "drizzle-orm": "catalog:",
     "express": "^5",
     "pg": "^8.20.0",
     "pino": "^9",

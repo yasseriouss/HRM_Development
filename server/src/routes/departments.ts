@@ -8,7 +8,7 @@ import {
   evaluationSummariesTable,
   trainingRecommendationsTable,
 } from "@hrm-development/db/schema";
-import { eq, count, sql, and } from "drizzle-orm";
+import { eq, count, sql, and } from "@hrm-development/db/drizzle";
 import { requireAuth, requireRole } from "../lib/auth";
 
 const router = Router();
@@ -139,7 +139,7 @@ router.post("/bulk-delete", requireAuth, requireRole("super_admin"), async (req,
       return;
     }
 
-    const { inArray } = await import("drizzle-orm");
+    const { inArray } = await import("@hrm-development/db/drizzle");
 
     // Filter out departments with active employees
     const deptsWithEmployees = await db.select({ id: employeesTable.department_id })
@@ -208,7 +208,7 @@ router.get("/:id/stats", requireAuth, requireRole("super_admin", "hr_coordinator
 
     let pendingTraining = 0;
     if (employeeIds.length > 0) {
-      const { inArray } = await import("drizzle-orm");
+      const { inArray } = await import("@hrm-development/db/drizzle");
       const [pt] = await db.select({ total: count() }).from(trainingRecommendationsTable)
         .where(and(
           inArray(trainingRecommendationsTable.employee_id, employeeIds),

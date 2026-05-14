@@ -9,7 +9,7 @@ import {
   jobProfileScoresTable,
   departmentsTable
 } from "@hrm-development/db/schema";
-import { eq, and, ilike, sql, desc } from "drizzle-orm";
+import { eq, and, ilike, sql, desc } from "@hrm-development/db/drizzle";
 import { requireAuth, requireRole } from "../lib/auth";
 
 const router = Router();

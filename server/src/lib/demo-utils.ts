@@ -17,7 +17,7 @@ import {
   jobEvaluationFactorsTable,
   jobProfileScoresTable as jobEvaluationScoresTable,
 } from "@hrm-development/db/schema";
-import { eq, count, and, sql, not } from "drizzle-orm";
+import { eq, count, and, sql, not } from "@hrm-development/db/drizzle";
 import { seed } from "../seed";
 
 export async function resetDatabase() {

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { db } from "@hrm-development/db";
 import { skillsTable, departmentsTable, employeesTable } from "@hrm-development/db/schema";
-import { eq, and, count, sql } from "drizzle-orm";
+import { eq, and, count, sql } from "@hrm-development/db/drizzle";
 import { requireAuth, requireRole } from "../lib/auth";
 
 const router = Router();
@@ -46,7 +46,7 @@ router.get("/", requireAuth, requireRole("super_admin", "hr_coordinator", "dept_
     const query = db.select().from(skillsTable);
     
     if (factory_id) {
-      const { inArray } = await import("drizzle-orm");
+      const { inArray } = await import("@hrm-development/db/drizzle");
       const deptSubquery = db.select({ id: departmentsTable.id })
         .from(departmentsTable)
         .where(eq(departmentsTable.factory_id, factory_id));
