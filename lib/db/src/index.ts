@@ -40,7 +40,9 @@ function shouldUseNeonHttpDriver(url: string): boolean {
   }
   if (!isNeonHost) return false;
 
-  const onVercel = process.env.VERCEL === "1";
+  // Match `server/src/app.ts` (`isVercel`): production may expose `VERCEL_ENV` without `VERCEL=1`.
+  const onVercel =
+    process.env.VERCEL === "1" || process.env.VERCEL_ENV !== undefined;
   return onVercel;
 }
 

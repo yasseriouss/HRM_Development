@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { LogOut, Globe, Menu, X, ChevronRight, LayoutGrid, BarChart3, FileText, Presentation, Table, FlaskConical, ExternalLink, Shield, Cpu, Activity, User } from "lucide-react";
-import { clearAuthToken, clearAuthUser, getAuthUser } from "@shared/lib/auth";
+import { clearAuthToken, clearAuthUser, getAuthUser, SKIP_CLIENT_AUTH } from "@shared/lib/auth";
 import { Button } from "@shared/components/ui/button";
 import { useLang } from "@shared/contexts/LangContext";
 import { useState, useEffect, useRef, useLayoutEffect } from "react";
@@ -69,12 +69,14 @@ const SUITE_APPS: SuiteApp[] = [
 export function Layout({ children }: { children: React.ReactNode }) {
   const [location, setLocation] = useLocation();
   const user = getAuthUser();
-  const role: Role = (user?.role as Role) ?? "employee";
+  const role: Role = SKIP_CLIENT_AUTH ? "super_admin" : ((user?.role as Role) ?? "employee");
   const { lang, setLang, t } = useLang();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const isAr = lang === "ar";
   const headerRef = useRef<HTMLElement | null>(null);
   const [headerHeight, setHeaderHeight] = useState(72);
+
+  const isPresentation = location.startsWith("/interactive-presentation");
 
   useLayoutEffect(() => {
     const el = headerRef.current;
@@ -84,7 +86,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     const ro = new ResizeObserver(measure);
     ro.observe(el);
     return () => ro.disconnect();
-  }, []);
+  }, [isPresentation]);
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
@@ -110,7 +112,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const handleLogout = () => {
     clearAuthToken();
     clearAuthUser();
-    setLocation("/login");
+    setLocation(SKIP_CLIENT_AUTH ? "/" : "/login");
   };
 
   const isActive = (href: string) =>
@@ -171,27 +173,39 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <div className="flex-1 flex flex-col min-w-0 min-h-0 relative h-full">
         <header
           ref={headerRef}
-          className="sticky top-0 z-50 border-b border-muted/10 bg-background/90 backdrop-blur-md px-4 md:px-8 py-4 flex items-center justify-between gap-4"
+          className={
+            isPresentation
+              ? "sticky top-0 z-50 border-b border-muted/10 bg-background/95 backdrop-blur-md px-3 md:px-4 py-2 flex items-center justify-between gap-2 md:gap-3 min-h-0"
+              : "sticky top-0 z-50 border-b border-muted/10 bg-background/90 backdrop-blur-md px-4 md:px-8 py-4 flex items-center justify-between gap-4"
+          }
         >
-          <div className="flex items-center gap-4">
+          <div className={`flex items-center min-w-0 ${isPresentation ? "gap-2 md:gap-3" : "gap-4"}`}>
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setIsMobileMenuOpen(true)}
-              className="h-10 w-10 border border-muted/20 bg-background/50 hover:bg-primary/10 text-muted hover:text-primary rounded-2xl"
+              className={
+                isPresentation
+                  ? "h-8 w-8 shrink-0 border border-muted/20 bg-background/50 hover:bg-primary/10 text-muted hover:text-primary rounded-xl"
+                  : "h-10 w-10 border border-muted/20 bg-background/50 hover:bg-primary/10 text-muted hover:text-primary rounded-2xl"
+              }
             >
-              <Menu className="h-5 w-5" />
+              <Menu className={isPresentation ? "h-4 w-4" : "h-5 w-5"} />
             </Button>
 
             <img
               src={getBrandLogoUrl()}
               alt="HRM Unified"
-              className="h-9 w-auto max-w-[140px] object-contain opacity-90 shrink-0 hidden sm:block"
+              className={
+                isPresentation
+                  ? "h-6 w-auto max-w-[100px] object-contain opacity-90 shrink-0 hidden sm:block"
+                  : "h-9 w-auto max-w-[140px] object-contain opacity-90 shrink-0 hidden sm:block"
+              }
               width={140}
               height={36}
             />
 
-            {location !== "/" && (
+            {location !== "/" && !isPresentation && (
               <Button
                 variant="ghost"
                 size="sm"
@@ -203,25 +217,35 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </Button>
             )}
             
-            <div className="flex flex-col">
-              <h1 className={`text-xl font-headline font-bold text-foreground tracking-tight uppercase leading-none ${isAr ? 'font-tajawal' : ''}`}>
+            <div className="flex flex-col min-w-0">
+              <h1
+                className={`font-headline font-bold text-foreground tracking-tight uppercase leading-none truncate ${isAr ? "font-tajawal" : ""} ${
+                  isPresentation ? "text-xs md:text-sm" : "text-xl"
+                }`}
+              >
                 {SUITE_APPS.find(app => isActive(app.href))?.labelKey ? t(SUITE_APPS.find(app => isActive(app.href))!.labelKey as any) : "HRM UNIFIED"}
               </h1>
-              <span className="text-[8px] font-headline text-muted font-bold tracking-[0.3em] mt-1.5 leading-none uppercase">
-                {location === "/" ? "Enterprise Management Platform" : location.split('/')[1].replace('-', ' ')}
-              </span>
+              {!isPresentation && (
+                <span className="text-[8px] font-headline text-muted font-bold tracking-[0.3em] mt-1.5 leading-none uppercase">
+                  {location === "/" ? "Enterprise Management Platform" : location.split('/')[1].replace('-', ' ')}
+                </span>
+              )}
             </div>
           </div>
 
-          <div className="flex items-center gap-2 md:gap-4 shrink-0">
+          <div className={`flex items-center shrink-0 ${isPresentation ? "gap-1.5 md:gap-2" : "gap-2 md:gap-4"}`}>
             <div className="flex items-center gap-2">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setLang(lang === "en" ? "ar" : "en")}
-                className="h-10 px-3 border border-muted/10 bg-muted/5 hover:bg-muted/10 text-[10px] font-headline font-bold tracking-widest text-foreground hover:text-primary rounded-2xl transition-colors uppercase"
+                className={
+                  isPresentation
+                    ? "h-8 px-2 border border-muted/10 bg-muted/5 hover:bg-muted/10 text-[9px] font-headline font-bold tracking-widest text-foreground hover:text-primary rounded-xl transition-colors uppercase"
+                    : "h-10 px-3 border border-muted/10 bg-muted/5 hover:bg-muted/10 text-[10px] font-headline font-bold tracking-widest text-foreground hover:text-primary rounded-2xl transition-colors uppercase"
+                }
               >
-                <Globe className="h-3 w-3 me-2" />
+                <Globe className={`${isPresentation ? "h-2.5 w-2.5" : "h-3 w-3"} me-2`} />
                 {lang === "en" ? "AR" : "EN"}
               </Button>
 
@@ -231,10 +255,22 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="h-10 px-4 border border-primary/20 bg-primary/5 hover:bg-primary/10 text-[10px] font-headline font-bold tracking-widest text-primary rounded-2xl transition-all uppercase"
+                      title={isPresentation ? (t("common_profile" as any) || "Profile") : undefined}
+                      aria-label={isPresentation ? (t("common_profile" as any) || "Profile") : undefined}
+                      className={
+                        isPresentation
+                          ? "h-8 w-8 shrink-0 border border-primary/20 bg-primary/5 hover:bg-primary/10 text-primary rounded-xl p-0"
+                          : "h-10 px-4 border border-primary/20 bg-primary/5 hover:bg-primary/10 text-[10px] font-headline font-bold tracking-widest text-primary rounded-2xl transition-all uppercase"
+                      }
                     >
-                      <User className="h-3 w-3 me-2" />
-                      {t("common_profile" as any) || "PROFILE"}
+                      {isPresentation ? (
+                        <User className="h-4 w-4" />
+                      ) : (
+                        <>
+                          <User className="h-3 w-3 me-2" />
+                          {t("common_profile" as any) || "PROFILE"}
+                        </>
+                      )}
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-56 bg-background border-muted/10 rounded-2xl shadow-2xl p-2">
@@ -297,7 +333,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
           })()}
         </main>
 
-        <footer className="border-t border-muted/10 bg-background/90 py-4 px-6 md:px-10 hidden sm:block">
+        <footer
+          className={`border-t border-muted/10 bg-background/90 py-4 px-6 md:px-10 ${
+            isPresentation ? "hidden" : "hidden sm:block"
+          }`}
+        >
           <div className="flex items-center justify-between">
             <p className="text-[8px] font-mono text-muted tracking-widest uppercase">HRM UNIFIED // DEPLOYED: v2.4.0</p>
             <div className="flex items-center gap-4">

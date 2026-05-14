@@ -7,7 +7,7 @@ import { Toaster } from "@shared/components/ui/toaster";
 import { TooltipProvider } from "@shared/components/ui/tooltip";
 import { LangProvider } from "@shared/contexts/LangContext";
 import { FactoryProvider } from "@shared/contexts/FactoryContext";
-import { getAuthToken, getAuthUser } from "@shared/lib/auth";
+import { getAuthToken, getAuthUser, SKIP_CLIENT_AUTH } from "@shared/lib/auth";
 import { Layout } from "@shared/components/Layout";
 import { ErrorBoundary } from "@modules/skill-matrix/components/error-boundary";
 import type { ComponentType } from "react";
@@ -61,6 +61,10 @@ interface ProtectedRouteProps {
 }
 
 function ProtectedRoute({ component: Component, roles }: ProtectedRouteProps) {
+  if (SKIP_CLIENT_AUTH) {
+    return <Component />;
+  }
+
   const token = getAuthToken();
   const user = getAuthUser();
 
@@ -127,7 +131,10 @@ function AppRoutes() {
   }, [location]);
 
   if (location === "/login") {
-    return <DashboardLogin onLogin={() => window.location.href = "/"} />;
+    if (SKIP_CLIENT_AUTH) {
+      return <Redirect to="/" />;
+    }
+    return <DashboardLogin onLogin={() => (window.location.href = "/")} />;
   }
 
   /** Public deck — same slides as /interactive-presentation, no login (share link). */

@@ -1,5 +1,8 @@
 import type { UserWithDepartment } from "@hrm-development/api-client-react";
 
+/** Set to `false` to restore the login page and route guards. */
+export const SKIP_CLIENT_AUTH = true;
+
 export const getAuthToken = () =>localStorage.getItem("hrm_user_token");
 export const setAuthToken = (token: string) => localStorage.setItem("hrm_user_token", token);
 export const clearAuthToken = () => localStorage.removeItem("hrm_user_token");
@@ -15,7 +18,7 @@ export const clearAuthUser = () => localStorage.removeItem("hrm_user");
 export const logout = () => {
   clearAuthToken();
   clearAuthUser();
-  window.location.href = "/login";
+  window.location.href = SKIP_CLIENT_AUTH ? "/" : "/login";
 };
 
 export const getAuthHeaders = (): Record<string, string> => {

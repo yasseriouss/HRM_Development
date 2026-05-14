@@ -294,10 +294,10 @@ function SlideViewer() {
       const w = "innerWidth" in target ? (target as Window).innerWidth : (target as HTMLElement).clientWidth;
       const h = "innerHeight" in target ? (target as Window).innerHeight : (target as HTMLElement).clientHeight;
 
-      const padding = isFullscreen ? 0 : Math.max(24, Math.min(w * 0.08, h * 0.08));
-      /** Keep the deck above floating nav + safe area so controls never cover the iframe */
-      const bottomChrome = isFullscreen ? 0 : Math.max(72, Math.min(100, h * 0.12)) + 8;
-      const topChrome = isFullscreen ? 0 : Math.min(48, h * 0.08);
+      const padding = isFullscreen ? 0 : Math.max(16, Math.min(w * 0.06, h * 0.06));
+      /** Room for compact top branding + side arrows; bottom for nav + safe area */
+      const bottomChrome = isFullscreen ? 0 : Math.max(52, Math.min(80, h * 0.1)) + 6;
+      const topChrome = isFullscreen ? 0 : Math.min(20, h * 0.04);
       const availableW = w - padding;
       const availableH = Math.max(0, h - padding - bottomChrome - topChrome);
 
@@ -474,14 +474,12 @@ function SlideViewer() {
         </div>
       </div>
 
-      {/* Subtle Branding */}
-      <div className={`absolute top-[max(0.75rem,env(safe-area-inset-top,0px))] ${isAr ? 'right-3 sm:right-10' : 'left-3 sm:left-10'} z-50 max-w-[min(18rem,calc(100%-1rem))] opacity-20 pointer-events-none transition-opacity duration-1000`}>
-        <div className={`flex items-center gap-4 ${isAr ? 'flex-row-reverse' : 'flex-row'}`}>
-          <img src={getBrandLogoUrl()} alt="" className="h-8 w-auto max-w-[120px] object-contain opacity-80" width={120} height={32} />
-          <div className="font-headline font-black text-xs tracking-[0.3em] text-primary uppercase">
-            EDITORIAL PRESENTATION
-          </div>
-          <div className="h-px w-12 bg-primary/20" />
+      {/* Minimal corner mark — kept small so it does not compete with slide content or nav */}
+      <div
+        className={`absolute top-[max(0.35rem,env(safe-area-inset-top,0px))] z-20 max-w-[min(8rem,calc(100%-5rem))] opacity-40 pointer-events-none ${isAr ? "right-2 sm:right-3" : "left-2 sm:left-3"}`}
+      >
+        <div className={`flex items-center gap-1.5 ${isAr ? "flex-row-reverse" : "flex-row"}`}>
+          <img src={getBrandLogoUrl()} alt="" className="h-5 w-auto max-w-[72px] object-contain" width={72} height={20} />
         </div>
       </div>
     </div>
