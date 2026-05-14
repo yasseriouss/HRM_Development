@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { useListCampaigns, useListDepartments } from "@hrm-development/api-client-react";
 import type { Campaign } from "@hrm-development/api-client-react";

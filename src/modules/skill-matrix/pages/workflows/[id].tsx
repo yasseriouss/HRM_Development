@@ -42,7 +42,7 @@ const STEP_STATUS: Record<string, { color: string; icon: any }> = {
 };
 
 export default function WorkflowDetailPage() {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const [, setLocation] = useLocation();
   const t = useT();
   const queryClient = useQueryClient();

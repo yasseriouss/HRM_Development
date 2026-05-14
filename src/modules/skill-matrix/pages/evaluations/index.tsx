@@ -205,7 +205,7 @@ export default function ResultsPage() {
              <div className="w-12 h-12 bg-zinc-900 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-zinc-200">
                 <LayoutPanelLeft className="h-6 w-6" />
              </div>
-             <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-zinc-400">{t("label_analytics_hub")}</span>
+             <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-zinc-400">{t("label_analytics_hub" as any)}</span>
           </div>
           <h1 className="text-6xl lg:text-8xl font-bold font-comfortaa text-zinc-900 tracking-tighter leading-none">
             {t("evaluations_title")}
@@ -238,7 +238,7 @@ export default function ResultsPage() {
         <CardContent className="p-8 flex flex-col sm:flex-row items-center gap-10">
           <div className="flex items-center gap-6 text-zinc-400">
              <Target className="h-6 w-6" />
-             <p className="text-[11px] font-bold tracking-widest uppercase whitespace-nowrap">{t("label_select_mission")}</p>
+             <p className="text-[11px] font-bold tracking-widest uppercase whitespace-nowrap">{t("label_select_mission" as any)}</p>
           </div>
           <div className="flex-1 w-full">
             {isLoading ? (
@@ -246,11 +246,11 @@ export default function ResultsPage() {
             ) : (
               <Select value={selectedCampaignId} onValueChange={setSelectedCampaignId}>
                 <SelectTrigger className="h-16 bg-zinc-50 border-transparent rounded-3xl font-bold text-[12px] tracking-widest text-zinc-900 uppercase px-8">
-                  <SelectValue placeholder={t("select_campaign_placeholder")} />
+                  <SelectValue placeholder={t("select_campaign_placeholder" as any)} />
                 </SelectTrigger>
                 <SelectContent className="bg-white border-zinc-100 rounded-3xl">
                   <SelectItem value="all" className="font-bold text-[11px] tracking-widest uppercase text-zinc-400">
-                     {t("all_missions")}
+                     {t("all_missions" as any)}
                   </SelectItem>
                   {activeCampaigns.map((c) => (
                     <SelectItem key={c.id} value={c.id} className="font-bold text-[11px] tracking-widest uppercase py-4">
@@ -267,7 +267,7 @@ export default function ResultsPage() {
           </div>
           <Link href="/skill-matrix/campaigns">
              <Button variant="ghost" className="h-16 px-8 rounded-3xl font-bold text-[10px] tracking-widest uppercase text-zinc-400 hover:text-zinc-900 hover:bg-zinc-50 transition-all">
-                {t("action_manage_missions")} <ChevronRight className="ms-2 h-4 w-4" />
+                {t("action_manage_missions" as any)} <ChevronRight className="ms-2 h-4 w-4" />
              </Button>
           </Link>
         </CardContent>

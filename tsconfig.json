@@ -33,10 +33,5 @@
     }
   },
   "include": ["src", "api", "index.ts", "server/src"],
-  "exclude": ["node_modules", "dist"],
-  "references": [
-    { "path": "./lib/db" },
-    { "path": "./lib/api-client-react" },
-    { "path": "./lib/api-zod" }
-  ]
+  "exclude": ["node_modules", "dist"]
 }

@@ -24,9 +24,10 @@
     "customConditions": ["workspace"],
     "outDir": "dist",
     "paths": {
-      "@hrm-development/db": ["../../lib/db/src/index.ts"],
-      "@hrm-development/db/schema": ["../../lib/db/src/schema/index.ts"],
-      "@hrm-development/api-zod": ["../../lib/api-zod/src/index.ts"]
+      "@hrm-development/db": ["../lib/db/src/index.ts"],
+      "@hrm-development/db/drizzle": ["../lib/db/src/drizzle.ts"],
+      "@hrm-development/db/schema": ["../lib/db/src/schema/index.ts"],
+      "@hrm-development/api-zod": ["../lib/api-zod/src/index.ts"]
     }
   },
   "include": ["src"]

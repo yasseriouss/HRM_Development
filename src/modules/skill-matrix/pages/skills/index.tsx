@@ -395,7 +395,7 @@ export default function SkillsPage() {
                         </div>
                         <div className="space-y-1">
                           <p className="font-bold text-foreground text-lg tracking-tight group-hover:translate-x-1 transition-transform font-comfortaa">
-                            {isRtl ? (sk.name_ar || sk.name) : sk.name}
+                            {isRtl ? ((sk as { name_ar?: string }).name_ar ?? sk.name) : sk.name}
                           </p>
                           {sk.description && (
                             <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest max-w-xs truncate">{sk.description}</p>

@@ -1,18 +1,7 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "noEmit": true,
-    "baseUrl": ".",
-    "paths": {
-      "@hrm-development/db": ["../lib/db/src/index.ts"],
-      "@hrm-development/db/drizzle": ["../lib/db/src/drizzle.ts"],
-      "@hrm-development/db/schema": ["../lib/db/src/schema/index.ts"],
-      "@hrm-development/api-zod": ["../lib/api-zod/src/index.ts"]
-    }
+    "noEmit": true
   },
-  "include": [
-    "src",
-    "../lib/db/src",
-    "../lib/api-zod/src"
-  ]
+  "include": ["src", "../lib/db/src", "../lib/api-zod/src"]
 }
