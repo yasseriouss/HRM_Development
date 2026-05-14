@@ -32,9 +32,13 @@ export default function Slide04_Architecture() {
       <div className={`absolute top-[8vh] ${isAr ? 'right-[8vw]' : 'left-[8vw]'} arch-anim-1`} style={{ textAlign: isAr ? 'right' : 'left' }}>
         <div className="font-body font-semibold mb-[1.5vh]" style={{ fontSize: "1.2vw", color: "var(--slide-primary)", letterSpacing: "0.2em" }}>{t("s4_title")}</div>
         <h2 className="font-display font-bold tracking-tight" style={{ fontSize: "4.5vw", lineHeight: 1, color: "var(--slide-text)" }}>
-          {isAr ? t("s4_subtitle") : (
+          {isAr ? (
+            t("s4_subtitle")
+          ) : (
             <>
-              BUILT FOR<br />PRODUCTION SCALE
+              {t("s4_subtitle").split(" ").slice(0, 2).join(" ")}
+              <br />
+              {t("s4_subtitle").split(" ").slice(2).join(" ")}
             </>
           )}
         </h2>

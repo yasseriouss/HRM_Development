@@ -25,8 +25,6 @@ export const FactoryContext = createContext<FactoryContextType>({
 });
 
 export function FactoryProvider({ children }: { children: ReactNode }) {
-  const headers = getAuthHeaders();
-  
   const [activeFactoryId, setActiveFactoryIdState] = useState<string | null>(() => {
     return localStorage.getItem("activeFactoryId");
   });
@@ -34,9 +32,10 @@ export function FactoryProvider({ children }: { children: ReactNode }) {
   const { data: factories = [], isLoading } = useQuery<Factory[]>({
     queryKey: ["factories-list"],
     queryFn: async () => {
-      const res = await fetch("/api/factories", { headers });
+      const res = await fetch("/api/factories", { headers: getAuthHeaders() });
       if (!res.ok) return [];
-      return res.json();
+      const body: unknown = await res.json().catch(() => null);
+      return Array.isArray(body) ? (body as Factory[]) : [];
     },
   });
 

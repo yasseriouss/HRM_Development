@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { useListDepartments } from "@hrm-development/api-client-react";
@@ -75,8 +75,25 @@ export default function DepartmentsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [factories, setFactories] = useState<Factory[]>([]);
 
-  useMemo(() => {
-    fetch("/api/factories", { headers }).then(res => res.json()).then(setFactories);
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      try {
+        const res = await fetch("/api/factories", { headers: getAuthHeaders() });
+        const body: unknown = await res.json().catch(() => null);
+        if (cancelled) return;
+        if (!res.ok || !Array.isArray(body)) {
+          setFactories([]);
+          return;
+        }
+        setFactories(body as Factory[]);
+      } catch {
+        if (!cancelled) setFactories([]);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const filteredDepts = useMemo(() => {

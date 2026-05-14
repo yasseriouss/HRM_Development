@@ -283,13 +283,16 @@ input[type="range"],
 }
 
 /* Slide viewer-specific tweaks: cleaner edges, no paper texture inside iframes */
+/* Slide viewer: Tajawal for Arabic in both stacked export and single-slide stage */
 .slide,
 .slide * {
   font-family: "Comfortaa", "Tajawal", system-ui, sans-serif;
 }
 
 [dir="rtl"] .slide,
-[dir="rtl"] .slide * {
+[dir="rtl"] .slide *,
+[dir="rtl"] .slide-stage,
+[dir="rtl"] .slide-stage * {
   font-family: "Tajawal", "Comfortaa", sans-serif !important;
 }
 

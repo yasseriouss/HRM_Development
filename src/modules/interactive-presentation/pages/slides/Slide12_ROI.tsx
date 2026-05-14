@@ -8,6 +8,7 @@ export default function Slide12_ROI() {
   const t = useT();
   const { lang } = useLang();
   const isAr = lang === 'ar';
+  const chartTickFont = isAr ? "Tajawal, sans-serif" : "Source Sans 3, sans-serif";
 
   const roiData = [
     { name: t("s12_label_cost"), value: -11, label: "EGP 11K" },
@@ -74,8 +75,8 @@ export default function Slide12_ROI() {
         <div style={{ height: "32vh" }}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={roiData} margin={{ top: 5, right: 10, left: 10, bottom: 5 }} barSize={60}>
-              <XAxis dataKey="name" tick={{ fill: "var(--slide-muted)", fontSize: "1.2vw", fontFamily: "Source Sans 3" }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fill: "var(--slide-muted)", fontSize: "1.1vw", fontFamily: "Source Sans 3" }} axisLine={false} tickLine={false} />
+              <XAxis dataKey="name" tick={{ fill: "var(--slide-muted)", fontSize: "1.2vw", fontFamily: chartTickFont }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fill: "var(--slide-muted)", fontSize: "1.1vw", fontFamily: chartTickFont }} axisLine={false} tickLine={false} />
               <ReferenceLine y={0} stroke="var(--slide-muted)" strokeWidth={1} />
               <Tooltip contentStyle={{ background: "var(--slide-accent)", border: "1px solid var(--slide-muted)", borderRadius: "8px", color: "var(--slide-text)" }} cursor={{ fill: "rgba(245,240,232,0.04)" }} />
               <Bar dataKey="value" radius={[4, 4, 0, 0]}>

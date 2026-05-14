@@ -10,6 +10,7 @@ export default function Slide09_ExecDashboard() {
   const t = useT();
   const { lang } = useLang();
   const isAr = lang === 'ar';
+  const chartTickFont = isAr ? "Tajawal, sans-serif" : "Source Sans 3, sans-serif";
 
   const deptData = [
     { name: t("s9_dept_assembly"), score: 84 },
@@ -69,8 +70,8 @@ export default function Slide09_ExecDashboard() {
         <div style={{ height: "44vh" }}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={deptData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }} barSize={40}>
-              <XAxis dataKey="name" tick={{ fill: "var(--slide-muted)", fontSize: "0.9vw", fontFamily: "Source Sans 3" }} axisLine={false} tickLine={false} />
-              <YAxis domain={[50, 100]} tick={{ fill: "var(--slide-muted)", fontSize: "1.1vw", fontFamily: "Source Sans 3" }} axisLine={false} tickLine={false} />
+              <XAxis dataKey="name" tick={{ fill: "var(--slide-muted)", fontSize: "0.9vw", fontFamily: chartTickFont }} axisLine={false} tickLine={false} />
+              <YAxis domain={[50, 100]} tick={{ fill: "var(--slide-muted)", fontSize: "1.1vw", fontFamily: chartTickFont }} axisLine={false} tickLine={false} />
               <Tooltip
                 contentStyle={{ background: "var(--slide-accent)", border: "1px solid var(--slide-muted)", borderRadius: "8px", color: "var(--slide-text)" }}
                 cursor={{ fill: "rgba(245,240,232,0.04)" }}

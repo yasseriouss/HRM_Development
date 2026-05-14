@@ -20,21 +20,28 @@ export function isDatabaseConfigured(): boolean {
 }
 
 /**
- * Neon serverless HTTP (`neon()`) only works with Neon-hosted databases.
- * Local Postgres, RDS, Docker `postgres`, etc. need the `pg` TCP pool.
+ * Neon serverless HTTP (`neon()`) is ideal on Vercel serverless (short-lived, many cold starts).
+ * For normal Node (local `pnpm dev`, long-lived servers), the `pg` TCP driver is more reliable:
+ * the HTTP driver uses `fetch` + JS TLS and can fail with corporate proxies or strict cert chains
+ * (`fetch failed` / UNABLE_TO_VERIFY_LEAF_SIGNATURE) where `pg` succeeds.
  *
- * Override: `HRM_DB_DRIVER=neon` | `HRM_DB_DRIVER=postgres`
+ * Override: `HRM_DB_DRIVER=neon` (force HTTP) | `HRM_DB_DRIVER=postgres` (force TCP)
  */
 function shouldUseNeonHttpDriver(url: string): boolean {
   const driver = process.env.HRM_DB_DRIVER?.toLowerCase();
   if (driver === "postgres" || driver === "pg") return false;
   if (driver === "neon") return true;
+
+  let isNeonHost = false;
   try {
-    const host = new URL(url).hostname.toLowerCase();
-    return host.includes("neon.tech");
+    isNeonHost = new URL(url).hostname.toLowerCase().includes("neon.tech");
   } catch {
     return false;
   }
+  if (!isNeonHost) return false;
+
+  const onVercel = process.env.VERCEL === "1" || process.env.VERCEL_ENV !== undefined;
+  return onVercel;
 }
 
 /**
@@ -53,6 +60,17 @@ function normalizeNeonHttpConnectionString(urlStr: string): string {
     if (!first.startsWith("ep-") || first.includes("-pooler")) return urlStr;
     labels[0] = `${first}-pooler`;
     u.hostname = labels.join(".");
+    return u.toString();
+  } catch {
+    return urlStr;
+  }
+}
+
+/** Neon HTTP driver uses `fetch`; `channel_binding=require` breaks some clients. */
+function sanitizeNeonHttpConnectionString(urlStr: string): string {
+  try {
+    const u = new URL(urlStr);
+    u.searchParams.delete("channel_binding");
     return u.toString();
   } catch {
     return urlStr;
@@ -87,7 +105,7 @@ export const db = (() => {
     return missingDbProxy;
   }
   if (shouldUseNeonHttpDriver(databaseUrl)) {
-    const neonUrl = normalizeNeonHttpConnectionString(databaseUrl);
+    const neonUrl = sanitizeNeonHttpConnectionString(normalizeNeonHttpConnectionString(databaseUrl));
     sql = neon(neonUrl);
     return drizzleNeon(sql, { schema });
   }

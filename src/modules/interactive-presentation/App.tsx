@@ -136,7 +136,7 @@ function SlideEditor() {
       {activeSlide && (
         // Keyed on slide id so navigating triggers a clean remount and
         // re-plays each slide's entrance animations.
-        <div key={activeSlide.id} className="slide-stage">
+        <div key={activeSlide.id} className="slide slide-stage">
           <activeSlide.Component />
         </div>
       )}
@@ -263,6 +263,7 @@ function SlideViewer() {
       
       <div className="slide-frame-container relative z-10" style={{ width: dims.width, height: dims.height }}>
         <iframe
+          key={lang}
           ref={iframeRef}
           src={`${base}/slide${firstPosition}`}
           className="w-full h-full border-none shadow-[0_40px_100px_-20px_rgba(0,0,0,0.15)] rounded-3xl overflow-hidden"
