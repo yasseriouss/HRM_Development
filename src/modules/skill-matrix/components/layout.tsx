@@ -1,10 +1,11 @@
 import { Link, useLocation } from "wouter";
-import { LogOut, Globe, Menu, X, ChevronRight, LayoutGrid, BarChart3, FileText, Presentation, Table, FlaskConical, ExternalLink, Shield, Cpu, Activity } from "lucide-react";
+import { LogOut, Globe, Menu, X, ChevronRight, LayoutGrid, BarChart3, FileText, Presentation, Table, FlaskConical, ExternalLink, Shield } from "lucide-react";
 import { clearAuthToken, clearAuthUser, getAuthUser } from "@modules/skill-matrix/lib/auth";
 import { Button } from "@shared/components/ui/button";
 import { useLang } from "@shared/contexts/LangContext";
 import { useT } from "@modules/skill-matrix/i18n";
 import { NotificationBell } from "./notification-bell";
+import { getBrandLogoUrl } from "@shared/lib/brand";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -185,7 +186,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </DropdownMenu>
 
             <div className="flex items-center gap-4">
-              <img src={`${import.meta.env.BASE_URL}logo.png`} alt="System Logo" className="h-8 w-auto object-contain" />
+              <img src={getBrandLogoUrl()} alt="HRM Unified" className="h-8 w-auto object-contain" />
               <div className="flex flex-col">
                 <h1 className={`text-2xl font-headline font-black text-foreground tracking-tighter uppercase leading-none ${isAr ? 'font-tajawal' : ''}`}>HRM DEV</h1>
                 <span className="text-[8px] font-mono text-primary/60 font-black tracking-[0.5em] mt-1.5 leading-none uppercase">{t("label_command_center")}</span>
@@ -306,10 +307,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="absolute inset-0 bg-primary/5 opacity-30 pointer-events-none" />
         <div className="max-w-[1600px] mx-auto flex flex-col md:flex-row items-center justify-between gap-10 relative z-10">
           <div className="flex items-center gap-8">
-            <div className="h-14 w-14 border border-primary/10 bg-background flex items-center justify-center relative group rounded-xl shadow-sm">
-               <Activity className="h-6 w-6 text-primary/30 group-hover:text-primary transition-colors animate-pulse" />
-               <div className="absolute inset-0 border border-primary/20 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl" />
-            </div>
+            <img
+              src={getBrandLogoUrl()}
+              alt="HRM Unified"
+              className="h-12 w-auto max-w-[160px] object-contain opacity-90"
+              width={160}
+              height={48}
+            />
             <div className="flex flex-col">
               <p className="text-[11px] font-headline font-black text-foreground tracking-[0.4em] uppercase">{t("label_system_operational")}</p>
               <div className="flex items-center gap-4 mt-2">
@@ -332,8 +336,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </span>
             </a>
             
-            <div className="h-12 w-12 border border-primary/10 bg-background/50 flex items-center justify-center hover:border-primary/50 transition-colors duration-500 rounded-xl shadow-sm">
-              <Cpu className="h-5 w-5 text-primary/30 hover:text-primary transition-colors" />
+            <div className="h-12 w-12 border border-primary/10 bg-background/50 flex items-center justify-center hover:border-primary/50 transition-colors duration-500 rounded-xl shadow-sm overflow-hidden p-1">
+              <img src={getBrandLogoUrl()} alt="" className="h-full w-full object-contain" />
             </div>
           </div>
         </div>

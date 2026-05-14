@@ -19,6 +19,7 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "generate:excel": "node scripts/generate-excel.mjs",
+    "db:pull": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/db-pull-remote-to-local.ps1",
     "clean": "rimraf dist node_modules/.vite .vite *.tsbuildinfo"
   },
   "dependencies": {

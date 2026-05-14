@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { login, setToken, setUser } from "@modules/dashboard/lib/api";
 import { useLang } from "@shared/contexts/LangContext";
-import { Globe, Shield, Cpu, Activity, Lock } from "lucide-react";
+import { Globe, Shield, Activity, Lock } from "lucide-react";
 import { Button } from "@shared/components/ui/button";
+import { getBrandLogoUrl } from "@shared/lib/brand";
 
 interface LoginProps {
   onLogin: () => void;
@@ -60,8 +61,14 @@ export default function Login({ onLogin }: LoginProps) {
 
       <div className="w-full max-w-md relative z-10">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center p-5 bg-primary/5 border border-primary/10 mb-6 relative group rounded-2xl">
-            <Cpu className="h-10 w-10 text-primary" />
+          <div className="inline-flex items-center justify-center p-4 bg-primary/5 border border-primary/10 mb-6 relative group rounded-2xl">
+            <img
+              src={getBrandLogoUrl()}
+              alt="HRM Unified"
+              className="h-14 w-auto max-w-[200px] object-contain"
+              width={200}
+              height={56}
+            />
             <div className="absolute -inset-2 border border-primary/5 group-hover:border-primary/20 transition-colors rounded-3xl" />
           </div>
           <h1 className="text-4xl md:text-5xl font-headline font-bold text-foreground tracking-tight uppercase mb-2">HRM UNIFIED</h1>

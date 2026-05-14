@@ -15,6 +15,7 @@ import {
 } from "@shared/components/ui/dropdown-menu";
 import { Sidebar } from "./Sidebar";
 import { ArrowLeft } from "lucide-react";
+import { getBrandLogoUrl } from "@shared/lib/brand";
 
 interface SuiteApp {
   id: string;
@@ -181,6 +182,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
             >
               <Menu className="h-5 w-5" />
             </Button>
+
+            <img
+              src={getBrandLogoUrl()}
+              alt="HRM Unified"
+              className="h-9 w-auto max-w-[140px] object-contain opacity-90 shrink-0 hidden sm:block"
+              width={140}
+              height={36}
+            />
 
             {location !== "/" && (
               <Button

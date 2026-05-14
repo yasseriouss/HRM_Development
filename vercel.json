@@ -22,6 +22,8 @@
     { "source": "/spreadsheet/:path*", "destination": "/index.html" },
     { "source": "/docs/:path*", "destination": "/index.html" },
     { "source": "/interactive-presentation/:path*", "destination": "/index.html" },
+    { "source": "/presentation", "destination": "/index.html" },
+    { "source": "/presentation/:path*", "destination": "/index.html" },
     { "source": "/my-profile/:path*", "destination": "/index.html" },
     { "source": "/login", "destination": "/index.html" }
   ],

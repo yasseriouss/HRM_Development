@@ -58,6 +58,32 @@ This guide ensures you can get the HRM Unified platform running from zero in und
    pnpm --filter @hrm-development/api-server run seed
    ```
 
+4b. **Copy a remote database into local Docker (full data):**
+
+   When you want a **clone** of your hosted DB (e.g. Neon) on the machine that runs Docker:
+
+   1. Start local Postgres: `docker compose up -d postgres` (see `docker-compose.yml`: user `hrm`, password `password123`, DB `hrm_skill_matrix`).
+   2. Set **`REMOTE_DATABASE_URL`** to your Neon (hosted) URI, **or** put that URI in **`server/.env`** as `DATABASE_URL` for this one command, **or** pass **`-RemoteUrl`** to the script.
+
+   **Windows (PowerShell), from repo root:**
+
+   ```powershell
+   pnpm db:pull
+   # or: .\scripts\db-pull-remote-to-local.ps1 -RemoteUrl "postgresql://USER:PASS@HOST/DB?sslmode=require"
+   ```
+
+   **macOS / Linux:**
+
+   ```bash
+   chmod +x scripts/db-pull-remote-to-local.sh
+   export REMOTE_DATABASE_URL="postgresql://USER:PASS@HOST/DB?sslmode=require"   # optional if server/.env has DATABASE_URL
+   ./scripts/db-pull-remote-to-local.sh
+   ```
+
+   Then point **`server/.env`** at local:
+
+   `DATABASE_URL=postgresql://hrm:password123@127.0.0.1:5432/hrm_skill_matrix?sslmode=disable`
+
 5. **Start Development Servers:**
 
    From the repo root (recommended — starts Vite + API together):
@@ -77,6 +103,7 @@ This guide ensures you can get the HRM Unified platform running from zero in und
 
 - **Frontend:** [http://localhost:8081](http://localhost:8081)
 - **Backend API:** [http://localhost:8080/api](http://localhost:8080/api)
+- **Public presentation (no login):** [http://localhost:8081/presentation](http://localhost:8081/presentation) — same interactive deck as `/interactive-presentation`, without authentication.
 
 ## Troubleshooting
 

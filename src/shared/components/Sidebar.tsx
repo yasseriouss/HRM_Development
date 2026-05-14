@@ -27,6 +27,7 @@ import { useLang } from "@shared/contexts/LangContext";
 import { getAuthUser, clearAuthToken, clearAuthUser } from "@shared/lib/auth";
 import { Button } from "./ui/button";
 import { FactorySwitcher } from "./FactorySwitcher";
+import { getBrandLogoUrl } from "@shared/lib/brand";
 
 interface SidebarProps {
   collapsed: boolean;
@@ -64,11 +65,15 @@ export function Sidebar({ setCollapsed }: { setCollapsed?: (v: boolean) => void 
       
       <div className="h-24 flex items-center px-8 border-b border-muted/5 bg-surface/50 justify-between">
         <div className="flex items-center gap-5 overflow-hidden">
-          <div className="shrink-0 w-11 h-11 bg-primary/5 border border-primary/10 flex items-center justify-center relative group rounded-2xl">
-            <Layers className="w-5 h-5 text-primary" />
-          </div>
-          <div className="flex flex-col whitespace-nowrap">
-            <span className="text-base font-headline font-black tracking-tight uppercase leading-none text-foreground">HRM Platform</span>
+          <img
+            src={getBrandLogoUrl()}
+            alt="HRM Unified"
+            className="h-11 w-auto max-w-[160px] object-contain shrink-0"
+            width={160}
+            height={44}
+          />
+          <div className="flex flex-col whitespace-nowrap min-w-0">
+            <span className="text-base font-headline font-black tracking-tight uppercase leading-none text-foreground truncate">HRM Platform</span>
             <span className="text-[9px] font-body-default text-muted font-bold tracking-[0.2em] mt-2 uppercase opacity-40">Enterprise Edition</span>
           </div>
         </div>

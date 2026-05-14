@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import docContentEn from "./docs-content.html?raw";
 import docContentAr from "./docs-content-ar.html?raw";
 import { useLang } from "@shared/contexts/LangContext";
+import { getBrandLogoUrl } from "@shared/lib/brand";
 
 interface NavItem { id: string; labelKey: string; }
 interface NavGroup { id: string; labelKey: string; items: NavItem[]; }
@@ -185,9 +186,13 @@ export default function DocsModule() {
       <aside id="docs-sidebar" className={`${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 fixed md:sticky top-0 left-0 w-80 h-full bg-surface border-r border-muted/10 flex flex-col z-40 transition-transform duration-300`}>
         <div className="p-8 border-b border-muted/5 bg-surface/50 backdrop-blur-md">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 bg-primary/10 text-primary rounded-xl flex items-center justify-center font-bold font-headline text-lg shadow-sm border border-primary/5">
-              HZ
-            </div>
+            <img
+              src={getBrandLogoUrl()}
+              alt="HRM Unified"
+              className="h-10 w-auto max-w-[140px] object-contain shrink-0"
+              width={140}
+              height={40}
+            />
             <div>
               <div className="font-headline font-bold text-sm text-foreground uppercase tracking-tight leading-none">{t("docs_app_title")}</div>
               <div className="text-[10px] text-muted font-medium mt-1 uppercase tracking-widest leading-none opacity-70">{t("docs_app_subtitle")}</div>

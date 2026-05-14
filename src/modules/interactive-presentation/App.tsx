@@ -19,6 +19,7 @@ import { useLang } from "@shared/contexts/LangContext";
 import { slides } from "./slideLoader";
 import { Maximize2, Minimize2, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { getBrandLogoUrl } from "@/shared/lib/brand";
 
 
 function getSlideIndex(pathname: string): number {
@@ -357,6 +358,7 @@ function SlideViewer() {
       {/* Subtle Branding */}
       <div className={`absolute top-10 ${isAr ? 'right-10' : 'left-10'} z-50 opacity-20 pointer-events-none transition-opacity duration-1000`}>
         <div className={`flex items-center gap-4 ${isAr ? 'flex-row-reverse' : 'flex-row'}`}>
+          <img src={getBrandLogoUrl()} alt="" className="h-8 w-auto max-w-[120px] object-contain opacity-80" width={120} height={32} />
           <div className="font-headline font-black text-xs tracking-[0.3em] text-primary uppercase">
             EDITORIAL PRESENTATION
           </div>

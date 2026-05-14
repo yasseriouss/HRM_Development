@@ -1,5 +1,6 @@
 import { useT } from "@/i18n";
 import { useLang } from "@/shared/contexts/LangContext";
+import { getBrandLogoUrl } from "@/shared/lib/brand";
 
 const base = import.meta.env.BASE_URL;
 
@@ -23,8 +24,20 @@ export default function Slide01_Title() {
         }}
       />
 
-      <div 
-        className={`absolute top-[50%] ${isAr ? 'right-[8vw]' : 'left-[8vw]'}`} 
+      <div
+        className={`absolute top-[4vh] ${isAr ? 'left-[4vw]' : 'right-[4vw]'} z-10`}
+      >
+        <img
+          src={getBrandLogoUrl()}
+          alt=""
+          className="h-[min(10vh,120px)] w-auto max-w-[min(28vw,320px)] object-contain drop-shadow-md"
+          width={320}
+          height={120}
+        />
+      </div>
+
+      <div
+        className={`absolute top-[50%] ${isAr ? 'right-[8vw]' : 'left-[8vw]'}`}
         style={{ transform: "translateY(-50%)", textAlign: isAr ? 'right' : 'left' }}
       >
         <div

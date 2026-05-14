@@ -114,6 +114,7 @@ if (!isVercel) {
   app.get(/^\/login/, serveIndex);
   app.get(/^\/docs/, serveIndex);
   app.get(/^\/interactive-presentation/, serveIndex);
+  app.get(/^\/presentation/, serveIndex);
 } else {
   logger.info("Running on Vercel — Express only handles /api/* and /healthz. Static assets served by Vercel CDN.");
 }

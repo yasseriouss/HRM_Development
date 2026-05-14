@@ -1,5 +1,6 @@
 import { useT } from "@/i18n";
 import { useLang } from "@/shared/contexts/LangContext";
+import { getBrandLogoUrl } from "@/shared/lib/brand";
 
 const base = import.meta.env.BASE_URL;
 const isExport = typeof window !== "undefined" && window.location.pathname.endsWith("/allslides");
@@ -37,6 +38,16 @@ export default function Slide16_Credits() {
         className="absolute inset-0"
         style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", direction: isAr ? 'rtl' : 'ltr' }}
       >
+        <div className="cred-0" style={{ marginBottom: "3vh" }}>
+          <img
+            src={getBrandLogoUrl()}
+            alt=""
+            className="mx-auto h-[min(12vh,100px)] w-auto max-w-[40vw] object-contain opacity-90"
+            width={280}
+            height={100}
+          />
+        </div>
+
         <div className="cred-line" style={{ height: "0.4vh", background: "var(--slide-primary)", marginBottom: "4vh", width: "6vw" }} />
 
         <div className="cred-1">

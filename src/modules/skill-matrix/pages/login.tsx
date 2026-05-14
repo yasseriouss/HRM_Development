@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
-import { Shield, Lock, User, Globe, Cpu, AlertCircle, Zap, ShieldCheck } from "lucide-react";
+import { Shield, Lock, User, Globe, Zap } from "lucide-react";
 import { useLogin } from "@hrm-development/api-client-react";
 import { setAuthToken, setAuthUser } from "@modules/skill-matrix/lib/auth";
 import { Button } from "@shared/components/ui/button";
+import { getBrandLogoUrl } from "@shared/lib/brand";
 import { Input } from "@shared/components/ui/input";
 import { Label } from "@shared/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@shared/components/ui/card";
@@ -70,8 +71,14 @@ export default function Login() {
       >
         <div className="text-center space-y-8">
           <div className="relative inline-block">
-            <div className="w-24 h-24 bg-surface border border-muted/20 rounded-3xl flex items-center justify-center relative shadow-xl shadow-primary/5">
-              <ShieldCheck className="h-12 w-12 text-primary" />
+            <div className="w-24 h-24 bg-surface border border-muted/20 rounded-3xl flex items-center justify-center relative shadow-xl shadow-primary/5 p-3">
+              <img
+                src={getBrandLogoUrl()}
+                alt="HRM Unified"
+                className="max-h-full max-w-full object-contain"
+                width={160}
+                height={80}
+              />
               <div className="absolute -inset-3 border border-primary/10 rounded-4xl animate-[pulse_3s_infinite]" />
             </div>
           </div>

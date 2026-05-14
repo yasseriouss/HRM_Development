@@ -118,7 +118,8 @@ function AppRoutes() {
   // Tag the document body when a slide route is active so the global
   // paper-texture overlay is hidden (slides have their own dark background).
   useEffect(() => {
-    const inSlides = location.startsWith("/interactive-presentation");
+    const inSlides =
+      location.startsWith("/interactive-presentation") || location.startsWith("/presentation");
     document.body.classList.toggle("slides-active", inSlides);
     return () => {
       document.body.classList.remove("slides-active");
@@ -127,6 +128,17 @@ function AppRoutes() {
 
   if (location === "/login") {
     return <DashboardLogin onLogin={() => window.location.href = "/"} />;
+  }
+
+  /** Public deck — same slides as /interactive-presentation, no login (share link). */
+  if (location.startsWith("/presentation")) {
+    return (
+      <ErrorBoundary>
+        <WouterRouter base="/presentation">
+          <InteractivePresentationApp />
+        </WouterRouter>
+      </ErrorBoundary>
+    );
   }
 
   return (
