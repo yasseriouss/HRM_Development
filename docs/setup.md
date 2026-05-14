@@ -34,6 +34,22 @@ This guide ensures you can get the HRM Unified platform running from zero in und
 
    Use a **Neon** connection string for hosted preview/production, or **any Postgres** URL for local Docker — the app picks the `pg` TCP driver automatically when the host is not `*.neon.tech`.
 
+3b. **Apply the database schema (first run or after schema changes):**
+
+   `drizzle-kit` reads `DATABASE_URL` from the environment (it does not load `server/.env` by itself). From the repo root, after `server/.env` exists:
+
+   ```bash
+   # Unix / macOS (bash): export from .env then push
+   set -a && source server/.env && set +a && pnpm --filter @hrm-development/db run push
+   ```
+
+   On **Windows PowerShell**:
+
+   ```powershell
+   $env:DATABASE_URL = (Get-Content server\.env | Where-Object { $_ -match '^DATABASE_URL=' }) -replace '^DATABASE_URL=',''
+   pnpm --filter @hrm-development/db run push
+   ```
+
 4. **Database Seeding (Optional):**
 
    To populate the system with demo users and data:

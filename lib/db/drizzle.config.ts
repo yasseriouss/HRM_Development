@@ -5,7 +5,22 @@ if (!process.env.DATABASE_URL) {
 }
 
 export default defineConfig({
-  schema: "./src/schema/index.ts",
+  // List table modules explicitly: drizzle-kit resolves CJS `require()` and
+  // cannot follow `./foo.js` re-exports from `index.ts` while sources are `.ts`.
+  schema: [
+    "./src/schema/factories.ts",
+    "./src/schema/users.ts",
+    "./src/schema/departments.ts",
+    "./src/schema/employees.ts",
+    "./src/schema/skills.ts",
+    "./src/schema/campaigns.ts",
+    "./src/schema/evaluations.ts",
+    "./src/schema/evaluation_summaries.ts",
+    "./src/schema/training.ts",
+    "./src/schema/workflows.ts",
+    "./src/schema/sessions.ts",
+    "./src/schema/job_evaluation.ts",
+  ],
   dialect: "postgresql",
   dbCredentials: {
     url: process.env.DATABASE_URL,
