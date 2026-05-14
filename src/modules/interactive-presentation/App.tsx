@@ -14,7 +14,6 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useLocation } from "wouter";
-import { useT } from "@/i18n";
 import { useLang } from "@shared/contexts/LangContext";
 import { slides } from "./slideLoader";
 import { Maximize2, Minimize2, ChevronLeft, ChevronRight } from "lucide-react";
@@ -134,7 +133,40 @@ function SlideEditor() {
     };
   }, [currentIndex, navigate]);
 
+  useEffect(() => {
+    if (currentIndex < 0) return;
+    window.parent.postMessage(
+      {
+        type: "presentationSlideIndex",
+        index: currentIndex,
+        total: slides.length,
+        position: slides[currentIndex].position,
+      },
+      "*",
+    );
+  }, [currentIndex]);
+
+  const goPrev = useCallback(() => {
+    if (currentIndex <= 0) return;
+    if (navigationDisabledRef.current) {
+      window.parent.postMessage({ type: "retreatSlide" }, "*");
+      return;
+    }
+    navigate(`/slide${slides[currentIndex - 1].position}`);
+  }, [currentIndex, navigate]);
+
+  const goNext = useCallback(() => {
+    if (currentIndex < 0 || currentIndex >= slides.length - 1) return;
+    if (navigationDisabledRef.current) {
+      window.parent.postMessage({ type: "advanceSlide" }, "*");
+      return;
+    }
+    navigate(`/slide${slides[currentIndex + 1].position}`);
+  }, [currentIndex, navigate]);
+
   const activeSlide = currentIndex >= 0 ? slides[currentIndex] : null;
+  const canPrev = currentIndex > 0;
+  const canNext = currentIndex >= 0 && currentIndex < slides.length - 1;
 
   return (
     <div className="select-none relative">
@@ -144,6 +176,40 @@ function SlideEditor() {
         <div key={activeSlide.id} className="slide slide-stage">
           <activeSlide.Component />
         </div>
+      )}
+      {activeSlide && (
+        <>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            aria-label="Previous slide"
+            disabled={!canPrev}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              goPrev();
+            }}
+            className="slide-nav-arrow fixed z-[200] left-[max(0.5rem,env(safe-area-inset-left,0px))] top-1/2 -translate-y-1/2 h-12 w-12 sm:h-14 sm:w-14 rounded-full border border-primary/15 bg-background/85 text-primary shadow-[0_8px_32px_-8px_rgba(0,0,0,0.2)] backdrop-blur-md hover:bg-primary/10 disabled:opacity-25 disabled:hover:bg-background/85 pointer-events-auto"
+          >
+            <ChevronLeft className="h-6 w-6 sm:h-7 sm:w-7" strokeWidth={2} />
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            aria-label="Next slide"
+            disabled={!canNext}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              goNext();
+            }}
+            className="slide-nav-arrow fixed z-[200] right-[max(0.5rem,env(safe-area-inset-right,0px))] top-1/2 -translate-y-1/2 h-12 w-12 sm:h-14 sm:w-14 rounded-full border border-primary/15 bg-background/85 text-primary shadow-[0_8px_32px_-8px_rgba(0,0,0,0.2)] backdrop-blur-md hover:bg-primary/10 disabled:opacity-25 disabled:hover:bg-background/85 pointer-events-auto"
+          >
+            <ChevronRight className="h-6 w-6 sm:h-7 sm:w-7" strokeWidth={2} />
+          </Button>
+        </>
       )}
     </div>
   );
@@ -173,16 +239,20 @@ function AllSlides() {
 
 // This component is used for the deployed view at `/`
 function SlideViewer() {
-  const [location] = useLocation();
   const { lang } = useLang();
   const isAr = lang === 'ar';
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [deckIndex, setDeckIndex] = useState(0);
   const [dims, setDims] = useState(() => ({
     width: Math.min(window.innerWidth, window.innerHeight * (16 / 9)),
     height: Math.min(window.innerHeight, window.innerWidth * (9 / 16)),
   }));
+
+  const sendNavDelta = useCallback((delta: number) => {
+    iframeRef.current?.contentWindow?.postMessage({ type: "presentationNavRelative", delta }, "*");
+  }, []);
 
   const toggleFullscreen = useCallback(() => {
     if (!containerRef.current) return;
@@ -205,6 +275,13 @@ function SlideViewer() {
     const onMessage = (event: MessageEvent) => {
       if (event.data?.type === "slideViewerToggleFullscreen") {
         toggleFullscreen();
+      }
+      if (
+        event.source === iframeRef.current?.contentWindow &&
+        event.data?.type === "presentationSlideIndex" &&
+        typeof event.data.index === "number"
+      ) {
+        setDeckIndex(event.data.index);
       }
     };
     window.addEventListener("message", onMessage);
@@ -244,9 +321,11 @@ function SlideViewer() {
       if (event.key === "f" || event.key === "F") toggleFullscreen();
       if (event.key !== "ArrowLeft" && event.key !== "ArrowRight" && event.key !== " ") return;
       if (event.key === " ") event.preventDefault();
-      iframeRef.current?.contentWindow?.dispatchEvent(
-        new KeyboardEvent("keydown", { key: event.key, code: event.code, bubbles: true }),
-      );
+      const delta =
+        event.key === "ArrowLeft" ? -1 : event.key === "ArrowRight" || event.key === " " ? 1 : 0;
+      if (delta !== 0) {
+        iframeRef.current?.contentWindow?.postMessage({ type: "presentationNavRelative", delta }, "*");
+      }
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
@@ -309,36 +388,73 @@ function SlideViewer() {
           src={`${base}/slide${firstPosition}`}
           className={`pointer-events-auto absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border-none overflow-hidden ${isFullscreen ? "rounded-none shadow-none" : "rounded-3xl shadow-[0_40px_100px_-20px_rgba(0,0,0,0.12)]"}`}
           style={{ width: dims.width, height: dims.height }}
-          onLoad={() => iframeRef.current?.focus()}
+          onLoad={() => {
+            setDeckIndex(0);
+            iframeRef.current?.focus();
+          }}
           title="Presentation slides — double-click the slide to toggle fullscreen; Esc exits fullscreen"
         />
       </div>
 
+      {/* Side arrows — always visible so touch devices and first-time viewers can navigate */}
+      <div className="pointer-events-none absolute inset-0 z-30 flex items-center justify-between gap-2 px-1 sm:px-2">
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          disabled={deckIndex <= 0}
+          aria-label="Previous slide"
+          onClick={(e) => {
+            e.stopPropagation();
+            sendNavDelta(-1);
+          }}
+          className="pointer-events-auto h-11 w-11 shrink-0 rounded-full fs-toggle-btn text-primary shadow-md hover:bg-primary/10 disabled:pointer-events-none disabled:opacity-30 sm:h-14 sm:w-14"
+        >
+          <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6" strokeWidth={2} />
+        </Button>
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          disabled={deckIndex >= slides.length - 1}
+          aria-label="Next slide"
+          onClick={(e) => {
+            e.stopPropagation();
+            sendNavDelta(1);
+          }}
+          className="pointer-events-auto h-11 w-11 shrink-0 rounded-full fs-toggle-btn text-primary shadow-md hover:bg-primary/10 disabled:pointer-events-none disabled:opacity-30 sm:h-14 sm:w-14"
+        >
+          <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6" strokeWidth={2} />
+        </Button>
+      </div>
+
       {/* Floating Controls Overlay - Moved outside frame to prevent overlap */}
-      <div className="absolute bottom-[max(0.75rem,env(safe-area-inset-bottom,0px))] left-1/2 -translate-x-1/2 z-50 flex max-w-[calc(100%-1rem)] items-center gap-3 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0 pointer-events-none [&_button]:pointer-events-auto">
+      <div className="absolute bottom-[max(0.75rem,env(safe-area-inset-bottom,0px))] left-1/2 -translate-x-1/2 z-50 flex max-w-[calc(100%-1rem)] items-center gap-3 opacity-85 transition-opacity duration-300 hover:opacity-100 focus-within:opacity-100 sm:opacity-0 sm:group-hover:opacity-100 sm:focus-within:opacity-100">
         <div className="flex fs-toggle-btn p-2 rounded-2xl">
           <Button
             variant="ghost"
             size="icon"
             onClick={(e) => {
               e.stopPropagation();
-              iframeRef.current?.contentWindow?.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowLeft" }));
+              sendNavDelta(-1);
             }}
-            className="rounded-xl h-10 w-10 hover:bg-primary/10 text-primary transition-colors"
+            disabled={deckIndex <= 0}
+            className="rounded-xl h-10 w-10 hover:bg-primary/10 text-primary transition-colors disabled:opacity-30"
           >
             <ChevronLeft className="h-5 w-5" />
           </Button>
           <div className="px-2 flex items-center justify-center font-headline font-bold text-xs text-primary/60 min-w-12">
-            {slides.findIndex(s => String(location).includes(s.position.toString())) + 1} / {slides.length}
+            {deckIndex + 1} / {slides.length}
           </div>
           <Button
             variant="ghost"
             size="icon"
             onClick={(e) => {
               e.stopPropagation();
-              iframeRef.current?.contentWindow?.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight" }));
+              sendNavDelta(1);
             }}
-            className="rounded-xl h-10 w-10 hover:bg-primary/10 text-primary transition-colors"
+            disabled={deckIndex >= slides.length - 1}
+            className="rounded-xl h-10 w-10 hover:bg-primary/10 text-primary transition-colors disabled:opacity-30"
           >
             <ChevronRight className="h-5 w-5" />
           </Button>
@@ -400,12 +516,21 @@ export default function App() {
         slides.some((s) => s.position === event.data.position)
       ) {
         navigate(`/slide${event.data.position}`);
+        return;
+      }
+      if (event.data?.type === "presentationNavRelative" && typeof event.data.delta === "number") {
+        if (event.source !== window.parent && event.source !== window) return;
+        const idx = getSlideIndex(location);
+        if (idx < 0) return;
+        const next = idx + event.data.delta;
+        if (next < 0 || next >= slides.length) return;
+        navigate(`/slide${slides[next].position}`);
       }
     };
 
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);
-  }, [navigate]);
+  }, [navigate, location]);
 
   if (location === "/") return <SlideViewer />;
   if (location === "/allslides") return <AllSlides />;

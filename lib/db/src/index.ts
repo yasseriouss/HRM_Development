@@ -40,7 +40,7 @@ function shouldUseNeonHttpDriver(url: string): boolean {
   }
   if (!isNeonHost) return false;
 
-  const onVercel = process.env.VERCEL === "1" || process.env.VERCEL_ENV !== undefined;
+  const onVercel = process.env.VERCEL === "1";
   return onVercel;
 }
 
