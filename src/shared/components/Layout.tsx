@@ -3,7 +3,7 @@ import { LogOut, Globe, Menu, X, ChevronRight, LayoutGrid, BarChart3, FileText, 
 import { clearAuthToken, clearAuthUser, getAuthUser } from "@shared/lib/auth";
 import { Button } from "@shared/components/ui/button";
 import { useLang } from "@shared/contexts/LangContext";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   DropdownMenu,
@@ -72,6 +72,18 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const { lang, setLang, t } = useLang();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const isAr = lang === "ar";
+  const headerRef = useRef<HTMLElement | null>(null);
+  const [headerHeight, setHeaderHeight] = useState(72);
+
+  useLayoutEffect(() => {
+    const el = headerRef.current;
+    if (!el) return;
+    const measure = () => setHeaderHeight(el.offsetHeight);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
@@ -109,33 +121,57 @@ export function Layout({ children }: { children: React.ReactNode }) {
       {/* Desktop Sidebar - Removed in favor of Burger Menu */}
 
 
-      {/* Mobile Sidebar Overlay */}
+      {/* Nav drawer: anchored below header, slides in from the side; drag horizontally to dismiss */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <>
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-md z-40"
+              className="fixed inset-x-0 bottom-0 bg-black/60 backdrop-blur-md z-40"
+              style={{ top: headerHeight }}
             />
-            <motion.div 
-              initial={{ x: isAr ? '100%' : '-100%' }}
+            <motion.div
+              initial={{ x: isAr ? "100%" : "-100%" }}
               animate={{ x: 0 }}
-              exit={{ x: isAr ? '100%' : '-100%' }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed inset-y-0 z-50 h-full"
-              style={{ [isAr ? 'right' : 'left']: 0, width: '280px' }}
+              exit={{ x: isAr ? "100%" : "-100%" }}
+              transition={{ type: "spring", damping: 28, stiffness: 260 }}
+              className="fixed bottom-0 z-[45] w-72 max-w-[min(280px,85vw)] shadow-2xl border border-muted/10 border-b-0 rounded-b-2xl overflow-hidden bg-background"
+              style={{
+                top: headerHeight,
+                ...(isAr ? { right: 0 } : { left: 0 }),
+              }}
             >
-              <Sidebar setCollapsed={() => setIsMobileMenuOpen(false)} />
+              <motion.div
+                className="h-full w-full max-h-full"
+                drag="x"
+                dragDirectionLock
+                dragConstraints={
+                  isAr
+                    ? { left: 0, right: 220 }
+                    : { left: -220, right: 0 }
+                }
+                dragElastic={0.12}
+                onDragEnd={(_, { offset, velocity }) => {
+                  const distOk = isAr ? offset.x > 56 : offset.x < -56;
+                  const velOk = isAr ? velocity.x > 420 : velocity.x < -420;
+                  if (distOk || velOk) setIsMobileMenuOpen(false);
+                }}
+              >
+                <Sidebar setCollapsed={() => setIsMobileMenuOpen(false)} />
+              </motion.div>
             </motion.div>
           </>
         )}
       </AnimatePresence>
 
       <div className="flex-1 flex flex-col min-w-0 min-h-0 relative h-full">
-        <header className="sticky top-0 z-40 border-b border-muted/10 bg-background/90 backdrop-blur-md px-4 md:px-8 py-4 flex items-center justify-between gap-4">
+        <header
+          ref={headerRef}
+          className="sticky top-0 z-50 border-b border-muted/10 bg-background/90 backdrop-blur-md px-4 md:px-8 py-4 flex items-center justify-between gap-4"
+        >
           <div className="flex items-center gap-4">
             <Button
               variant="ghost"
