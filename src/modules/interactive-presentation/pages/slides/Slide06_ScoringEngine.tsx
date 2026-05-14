@@ -23,7 +23,10 @@ export default function Slide06_ScoringEngine() {
         style={{ width: "0.4vw", background: "linear-gradient(180deg, transparent 0%, var(--slide-primary) 40%, var(--slide-primary) 60%, transparent 100%)" }}
       />
 
-      <div className={`absolute top-[8vh] ${isAr ? 'right-[8vw]' : 'left-[8vw]'} score-h`} style={{ textAlign: isAr ? 'right' : 'left' }}>
+      <div
+        className={`absolute top-[8vh] ${isAr ? 'right-[8vw]' : 'left-[8vw]'} score-h`}
+        style={{ textAlign: isAr ? 'right' : 'left', maxWidth: 'min(42vw, calc(100vw - 36vw))', boxSizing: 'border-box' }}
+      >
         <div className="font-body font-semibold mb-[1vh]" style={{ fontSize: "1.2vw", color: "var(--slide-primary)", letterSpacing: "0.2em" }}>{t("s6_title")}</div>
         <h2 className="font-display font-bold tracking-tight" style={{ fontSize: "4.5vw", lineHeight: 1, color: "var(--slide-text)" }}>
           {isAr ? (
@@ -38,13 +41,28 @@ export default function Slide06_ScoringEngine() {
         </h2>
       </div>
 
-      <div className={`absolute top-[8vh] ${isAr ? 'left-[8vw]' : 'right-[8vw]'} score-result`} style={{ textAlign: "center" }}>
+      <div
+        className={`absolute top-[8vh] ${isAr ? 'left-[8vw]' : 'right-[8vw]'} score-result`}
+        style={{ textAlign: "center", maxWidth: "min(30vw, calc(100vw - 52vw))", boxSizing: "border-box" }}
+      >
         <div className="font-display font-bold" style={{ fontSize: "7vw", color: "var(--slide-primary)", lineHeight: 1 }}>87.5</div>
         <div className="font-body" style={{ fontSize: "1.4vw", color: "var(--slide-muted)" }}>{t("s6_sample_score")}</div>
         <div className="font-display font-bold mt-[1vh]" style={{ fontSize: "2.5vw", color: "var(--slide-success)" }}>{t("s6_class_a")}</div>
       </div>
 
-      <div className={`absolute top-[27vh] ${isAr ? 'right-[8vw]' : 'left-[8vw]'} score-formula`} style={{ background: "rgba(212,150,10,0.08)", border: "0.15vw solid rgba(212,150,10,0.3)", borderRadius: "1vw", padding: "3vh 4vw", maxWidth: "52vw", textAlign: isAr ? 'right' : 'left', direction: isAr ? 'rtl' : 'ltr' }}>
+      <div
+        className={`absolute top-[27vh] ${isAr ? 'right-[8vw]' : 'left-[8vw]'} score-formula`}
+        style={{
+          background: "rgba(212,150,10,0.08)",
+          border: "0.15vw solid rgba(212,150,10,0.3)",
+          borderRadius: "1vw",
+          padding: "3vh 4vw",
+          maxWidth: "min(52vw, calc(100vw - 16vw))",
+          textAlign: isAr ? 'right' : 'left',
+          direction: isAr ? 'rtl' : 'ltr',
+          boxSizing: "border-box",
+        }}
+      >
         <div className="font-body mb-[1.5vh]" style={{ fontSize: "1.3vw", color: "var(--slide-muted)", letterSpacing: "0.1em" }}>{t("s6_formula_label")}</div>
         <div className="font-display font-bold" style={{ fontSize: isAr ? "1.85vw" : "2.2vw", color: "var(--slide-text)", lineHeight: 1.45 }}>
           {isAr ? (
@@ -63,7 +81,19 @@ export default function Slide06_ScoringEngine() {
         </div>
       </div>
 
-      <div className={`absolute bottom-[14vh] ${isAr ? 'right-[8vw]' : 'left-[8vw]'} score-ex`} style={{ display: "flex", gap: "2.5vw", alignItems: "flex-end", flexDirection: isAr ? 'row-reverse' : 'row' }}>
+      <div
+        className={`absolute bottom-[14vh] ${isAr ? 'right-[8vw]' : 'left-[8vw]'} ${isAr ? 'left-[6vw]' : 'right-[6vw]'} score-ex`}
+        style={{
+          display: "flex",
+          gap: "2.5vw",
+          alignItems: "flex-end",
+          flexDirection: isAr ? 'row-reverse' : 'row',
+          flexWrap: "wrap",
+          rowGap: "2vh",
+          minWidth: 0,
+          boxSizing: "border-box",
+        }}
+      >
         <div style={{ background: "var(--slide-glass-bg)", border: "0.15vw solid var(--slide-glass-border)", borderRadius: "0.8vw", padding: "2vh 2.5vw", minWidth: "18vw", textAlign: isAr ? 'right' : 'left' }}>
           <div className="font-body mb-[1vh]" style={{ fontSize: "1.1vw", color: "var(--slide-muted)" }}>{t("s6_skill1")}</div>
           <div className="font-display font-bold" style={{ fontSize: "2vw", color: "var(--slide-primary)" }}>3 / 4</div>

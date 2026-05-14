@@ -216,10 +216,13 @@ function SlideViewer() {
       const target = containerRef.current || window;
       const w = "innerWidth" in target ? (target as Window).innerWidth : (target as HTMLElement).clientWidth;
       const h = "innerHeight" in target ? (target as Window).innerHeight : (target as HTMLElement).clientHeight;
-      
-      const padding = isFullscreen ? 0 : Math.max(40, Math.min(w * 0.1, h * 0.1));
+
+      const padding = isFullscreen ? 0 : Math.max(24, Math.min(w * 0.08, h * 0.08));
+      /** Keep the deck above floating nav + safe area so controls never cover the iframe */
+      const bottomChrome = isFullscreen ? 0 : Math.max(72, Math.min(100, h * 0.12)) + 8;
+      const topChrome = isFullscreen ? 0 : Math.min(48, h * 0.08);
       const availableW = w - padding;
-      const availableH = h - padding;
+      const availableH = Math.max(0, h - padding - bottomChrome - topChrome);
 
       setDims({
         width: Math.min(availableW, availableH * (16 / 9)),
@@ -255,7 +258,7 @@ function SlideViewer() {
   return (
     <div
       ref={containerRef}
-      className="slide-viewer w-full h-full min-h-[500px] overflow-hidden bg-background flex items-center justify-center relative group"
+      className="slide-viewer w-full h-full min-h-0 overflow-hidden bg-background flex items-center justify-center relative group"
       onClick={(e) => {
         if (e.target === e.currentTarget && !document.fullscreenElement) {
           void containerRef.current?.requestFullscreen().catch((err: Error) => {
@@ -312,7 +315,7 @@ function SlideViewer() {
       </div>
 
       {/* Floating Controls Overlay - Moved outside frame to prevent overlap */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+      <div className="absolute bottom-[max(0.75rem,env(safe-area-inset-bottom,0px))] left-1/2 -translate-x-1/2 z-50 flex max-w-[calc(100%-1rem)] items-center gap-3 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0 pointer-events-none [&_button]:pointer-events-auto">
         <div className="flex fs-toggle-btn p-2 rounded-2xl">
           <Button
             variant="ghost"
@@ -356,7 +359,7 @@ function SlideViewer() {
       </div>
 
       {/* Subtle Branding */}
-      <div className={`absolute top-10 ${isAr ? 'right-10' : 'left-10'} z-50 opacity-20 pointer-events-none transition-opacity duration-1000`}>
+      <div className={`absolute top-[max(0.75rem,env(safe-area-inset-top,0px))] ${isAr ? 'right-3 sm:right-10' : 'left-3 sm:left-10'} z-50 max-w-[min(18rem,calc(100%-1rem))] opacity-20 pointer-events-none transition-opacity duration-1000`}>
         <div className={`flex items-center gap-4 ${isAr ? 'flex-row-reverse' : 'flex-row'}`}>
           <img src={getBrandLogoUrl()} alt="" className="h-8 w-auto max-w-[120px] object-contain opacity-80" width={120} height={32} />
           <div className="font-headline font-black text-xs tracking-[0.3em] text-primary uppercase">

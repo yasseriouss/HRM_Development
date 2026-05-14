@@ -70,7 +70,10 @@ export default function Slide12_ROI() {
         </div>
       </div>
 
-      <div className={`absolute bottom-[10vh] ${isAr ? 'right-[8vw]' : 'left-[8vw]'} ${isAr ? 'left-[6vw]' : 'right-[6vw]'} roi-chart`} style={{ height: "40vh", direction: 'ltr' }}>
+      <div
+        className={`absolute bottom-[10vh] ${isAr ? 'right-[8vw]' : 'left-[8vw]'} ${isAr ? 'left-[6vw]' : 'right-[6vw]'} roi-chart`}
+        style={{ height: "40vh", direction: "ltr", minWidth: 0 }}
+      >
         <div className="font-body mb-[1.5vh]" style={{ fontSize: "1.2vw", color: "var(--slide-muted)", textAlign: isAr ? 'right' : 'left' }}>{t("s12_chart_title")}</div>
         <div style={{ height: "32vh" }}>
           <ResponsiveContainer width="100%" height="100%">

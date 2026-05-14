@@ -65,9 +65,12 @@ export default function Slide09_ExecDashboard() {
         </div>
       </div>
 
-      <div className={`absolute top-[26vh] ${isAr ? 'right-[8vw]' : 'left-[8vw]'} left-[8vw] right-[6vw] exec-chart`} style={{ height: "52vh", direction: 'ltr' }}>
+      <div
+        className={`absolute top-[26vh] exec-chart ${isAr ? "right-[8vw] left-[6vw]" : "left-[8vw] right-[6vw]"}`}
+        style={{ height: "52vh", direction: "ltr", minWidth: 0 }}
+      >
         <div className="font-body mb-[1.5vh]" style={{ fontSize: "1.2vw", color: "var(--slide-muted)", textAlign: isAr ? 'right' : 'left' }}>{t("s9_chart_title")}</div>
-        <div style={{ height: "44vh" }}>
+        <div className="min-h-0" style={{ height: "44vh" }}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={deptData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }} barSize={40}>
               <XAxis dataKey="name" tick={{ fill: "var(--slide-muted)", fontSize: "0.9vw", fontFamily: chartTickFont }} axisLine={false} tickLine={false} />

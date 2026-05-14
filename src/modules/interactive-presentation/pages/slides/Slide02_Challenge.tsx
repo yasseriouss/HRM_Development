@@ -38,7 +38,7 @@ export default function Slide02_Challenge() {
         </p>
       </div>
 
-      <div className={`absolute top-[10vh] ${isAr ? 'left-[5vw]' : 'right-[5vw]'}`} style={{ width: "50vw", direction: isAr ? 'rtl' : 'ltr' }}>
+      <div className={`absolute top-[10vh] ${isAr ? 'left-[5vw]' : 'right-[5vw]'}`} style={{ width: "min(50vw, calc(100vw - 42vw - 11vw))", minWidth: 0, direction: isAr ? 'rtl' : 'ltr' }}>
         <div style={{ display: "flex", flexDirection: "column", gap: "2.5vh" }}>
           <div
             style={{
