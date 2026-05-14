@@ -64,18 +64,41 @@
 
     --radius: 0.75rem;
 
-    /* Slide Variables — Fixed Dark Editorial Pitch Deck Palette
-       (Independent of light/dark theme to preserve presentation identity) */
-    --slide-bg: #1A1C22;
-    --slide-text: #F5F0E8;
-    --slide-primary: #D4960A;
-    --slide-muted: #8B909A;
-    --slide-accent: #242830;
-    --slide-surface: #1F2128;
-    --slide-grad-end: #0F1116;
-    --slide-success: #10B981;
-    --slide-warning: #EAB308;
-    --slide-danger: #EF4444;
+    /* Slide Variables — Light editorial pitch deck (shared by /interactive-presentation) */
+    --slide-bg: #faf9f6;
+    --slide-text: #14161c;
+    --slide-primary: #b87a08;
+    --slide-muted: #5c6370;
+    --slide-accent: #f0ebe3;
+    --slide-surface: #ffffff;
+    --slide-grad-end: #e4dfd4;
+    --slide-success: #059669;
+    --slide-warning: #ca8a04;
+    --slide-danger: #dc2626;
+    /* Translucent UI on slides (replaces former rgba(245,240,232,…) / dark glass) */
+    --slide-glass-bg: color-mix(in srgb, var(--slide-text) 5%, var(--slide-bg));
+    --slide-glass-bg-02: color-mix(in srgb, var(--slide-text) 2.5%, var(--slide-bg));
+    --slide-glass-bg-03: color-mix(in srgb, var(--slide-text) 3.5%, var(--slide-bg));
+    --slide-glass-border: color-mix(in srgb, var(--slide-text) 11%, transparent);
+    --slide-glass-border-strong: color-mix(in srgb, var(--slide-text) 14%, transparent);
+    --slide-glass-border-08: color-mix(in srgb, var(--slide-text) 9%, transparent);
+    --slide-grid-row: color-mix(in srgb, var(--slide-text) 7%, transparent);
+    --slide-watermark: color-mix(in srgb, var(--slide-text) 14%, transparent);
+    --slide-pillar-bg: color-mix(in srgb, var(--slide-surface) 88%, var(--slide-text));
+    --slide-false-color: color-mix(in srgb, var(--slide-muted) 55%, var(--slide-text));
+    --slide-hero-scrim: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--slide-bg) 88%, var(--slide-text)) 0%,
+      color-mix(in srgb, var(--slide-bg) 45%, transparent) 50%,
+      color-mix(in srgb, var(--slide-bg) 82%, var(--slide-text)) 100%
+    );
+    --slide-radial-vignette: radial-gradient(
+      ellipse at center,
+      color-mix(in srgb, var(--slide-bg) 45%, transparent) 0%,
+      color-mix(in srgb, var(--slide-bg) 94%, var(--slide-text)) 65%
+    );
+    --slide-chart-cursor: color-mix(in srgb, var(--slide-text) 6%, transparent);
+    --slide-connector: color-mix(in srgb, var(--slide-muted) 42%, transparent);
   }
 
   .dark {
@@ -97,17 +120,40 @@
     --surface: oklch(20% 0.008 70);
     --ring: oklch(64% 0.13 28);
 
-    /* Slides stay locked to the editorial dark palette in dark mode too */
-    --slide-bg: #1A1C22;
-    --slide-text: #F5F0E8;
-    --slide-primary: #D4960A;
-    --slide-muted: #8B909A;
-    --slide-accent: #242830;
-    --slide-surface: #1F2128;
-    --slide-grad-end: #0F1116;
-    --slide-success: #10B981;
-    --slide-warning: #EAB308;
-    --slide-danger: #EF4444;
+    /* Slides use the same light deck in app dark mode for a consistent pitch */
+    --slide-bg: #faf9f6;
+    --slide-text: #14161c;
+    --slide-primary: #b87a08;
+    --slide-muted: #5c6370;
+    --slide-accent: #f0ebe3;
+    --slide-surface: #ffffff;
+    --slide-grad-end: #e4dfd4;
+    --slide-success: #059669;
+    --slide-warning: #ca8a04;
+    --slide-danger: #dc2626;
+    --slide-glass-bg: color-mix(in srgb, var(--slide-text) 5%, var(--slide-bg));
+    --slide-glass-bg-02: color-mix(in srgb, var(--slide-text) 2.5%, var(--slide-bg));
+    --slide-glass-bg-03: color-mix(in srgb, var(--slide-text) 3.5%, var(--slide-bg));
+    --slide-glass-border: color-mix(in srgb, var(--slide-text) 11%, transparent);
+    --slide-glass-border-strong: color-mix(in srgb, var(--slide-text) 14%, transparent);
+    --slide-glass-border-08: color-mix(in srgb, var(--slide-text) 9%, transparent);
+    --slide-grid-row: color-mix(in srgb, var(--slide-text) 7%, transparent);
+    --slide-watermark: color-mix(in srgb, var(--slide-text) 14%, transparent);
+    --slide-pillar-bg: color-mix(in srgb, var(--slide-surface) 88%, var(--slide-text));
+    --slide-false-color: color-mix(in srgb, var(--slide-muted) 55%, var(--slide-text));
+    --slide-hero-scrim: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--slide-bg) 88%, var(--slide-text)) 0%,
+      color-mix(in srgb, var(--slide-bg) 45%, transparent) 50%,
+      color-mix(in srgb, var(--slide-bg) 82%, var(--slide-text)) 100%
+    );
+    --slide-radial-vignette: radial-gradient(
+      ellipse at center,
+      color-mix(in srgb, var(--slide-bg) 45%, transparent) 0%,
+      color-mix(in srgb, var(--slide-bg) 94%, var(--slide-text)) 65%
+    );
+    --slide-chart-cursor: color-mix(in srgb, var(--slide-text) 6%, transparent);
+    --slide-connector: color-mix(in srgb, var(--slide-muted) 42%, transparent);
   }
 
   * {

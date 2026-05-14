@@ -10,12 +10,12 @@ export default function Slide14_Metrics() {
 
   const metrics = [
     { value: "100%", desc: t("s14_m1_desc"), bg: "rgba(212,150,10,0.07)", border: "rgba(212,150,10,0.25)", color: "var(--slide-primary)" },
-    { value: "+15%", desc: t("s14_m2_desc"), bg: "rgba(16,185,129,0.06)", border: "rgba(16,185,129,0.2)", color: "#10B981" },
-    { value: "10h+", desc: t("s14_m3_desc"), bg: "rgba(245,240,232,0.04)", border: "rgba(245,240,232,0.1)", color: "var(--slide-text)" },
+    { value: "+15%", desc: t("s14_m2_desc"), bg: "rgba(16,185,129,0.06)", border: "rgba(16,185,129,0.2)", color: "var(--slide-success)" },
+    { value: "10h+", desc: t("s14_m3_desc"), bg: "var(--slide-glass-bg)", border: "var(--slide-glass-border)", color: "var(--slide-text)" },
     { value: "80%", desc: t("s14_m4_desc"), bg: "rgba(212,150,10,0.07)", border: "rgba(212,150,10,0.25)", color: "var(--slide-primary)" },
-    { value: "3", desc: t("s14_m5_desc"), bg: "rgba(245,240,232,0.04)", border: "rgba(245,240,232,0.1)", color: "var(--slide-text)" },
-    { value: "9/9", desc: t("s14_m6_desc"), bg: "rgba(16,185,129,0.06)", border: "rgba(16,185,129,0.2)", color: "#10B981" },
-    { value: "0", desc: t("s14_m7_desc"), bg: "rgba(245,240,232,0.04)", border: "rgba(245,240,232,0.1)", color: "var(--slide-text)" },
+    { value: "3", desc: t("s14_m5_desc"), bg: "var(--slide-glass-bg)", border: "var(--slide-glass-border)", color: "var(--slide-text)" },
+    { value: "9/9", desc: t("s14_m6_desc"), bg: "rgba(16,185,129,0.06)", border: "rgba(16,185,129,0.2)", color: "var(--slide-success)" },
+    { value: "0", desc: t("s14_m7_desc"), bg: "var(--slide-glass-bg)", border: "var(--slide-glass-border)", color: "var(--slide-text)" },
     { value: "65+", desc: t("s14_m8_desc"), bg: "rgba(212,150,10,0.07)", border: "rgba(212,150,10,0.25)", color: "var(--slide-primary)" },
   ];
 
@@ -27,7 +27,7 @@ export default function Slide14_Metrics() {
         .met-grid { animation: ${isExport ? "none" : "metIn 0.5s ease 0.3s both"}; }
       `}</style>
 
-      <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, var(--slide-bg) 0%, #1D1F2C 100%)" }} />
+      <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, var(--slide-bg) 0%, var(--slide-grad-end) 100%)" }} />
       <div 
         className="absolute top-0 h-full" 
         style={{ 

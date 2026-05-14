@@ -19,7 +19,7 @@ export default function Slide04_Architecture() {
         .arch-anim-5 { animation: ${isExport ? "none" : "fadeUp 0.5s ease 0.7s both"}; }
       `}</style>
 
-      <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, var(--slide-bg) 0%, #1E2230 100%)" }} />
+      <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, var(--slide-bg) 0%, var(--slide-grad-end) 100%)" }} />
       <div 
         className="absolute top-0 h-full" 
         style={{ 
@@ -62,23 +62,23 @@ export default function Slide04_Architecture() {
           <div style={{ flex: 1, height: "0.15vw", background: "rgba(212,150,10,0.3)" }} />
         </div>
 
-        <div className="arch-anim-3" style={{ background: "rgba(245,240,232,0.04)", border: isAr ? "none" : "0.15vw solid rgba(245,240,232,0.12)", borderRight: isAr ? "0.15vw solid rgba(245,240,232,0.12)" : "none", borderLeft: isAr ? "none" : "0.15vw solid rgba(245,240,232,0.12)", borderRadius: "0.8vw", padding: "2.2vh 3vw", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div className="arch-anim-3" style={{ background: "var(--slide-glass-bg)", border: isAr ? "none" : "0.15vw solid var(--slide-glass-border-strong)", borderRight: isAr ? "0.15vw solid var(--slide-glass-border-strong)" : "none", borderLeft: isAr ? "none" : "0.15vw solid var(--slide-glass-border-strong)", borderRadius: "0.8vw", padding: "2.2vh 3vw", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div style={{ textAlign: isAr ? 'right' : 'left' }}>
             <div className="font-display font-bold" style={{ fontSize: "2vw", color: "var(--slide-text)", marginBottom: "0.4vh" }}>{t("s4_backend")}</div>
             <div className="font-body" style={{ fontSize: "1.3vw", color: "var(--slide-muted)" }}>Express.js + Node.js + RBAC Middleware + JWT Auth</div>
           </div>
-          <div className="font-display font-bold" style={{ fontSize: "3.5vw", color: "rgba(245,240,232,0.1)" }}>API</div>
+          <div className="font-display font-bold" style={{ fontSize: "3.5vw", color: "var(--slide-watermark)" }}>API</div>
         </div>
 
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1vw" }}>
-          <div style={{ flex: 1, height: "0.15vw", background: "rgba(90,96,112,0.4)" }} />
+          <div style={{ flex: 1, height: "0.15vw", background: "var(--slide-connector)" }} />
           <div className="font-body" style={{ fontSize: "1.2vw", color: "var(--slide-muted)" }}>Drizzle ORM</div>
-          <div style={{ flex: 1, height: "0.15vw", background: "rgba(90,96,112,0.4)" }} />
+          <div style={{ flex: 1, height: "0.15vw", background: "var(--slide-connector)" }} />
         </div>
 
         <div className="arch-anim-4" style={{ background: "rgba(16,185,129,0.06)", border: isAr ? "none" : "0.15vw solid rgba(16,185,129,0.25)", borderRight: isAr ? "0.15vw solid rgba(16,185,129,0.25)" : "none", borderLeft: isAr ? "none" : "0.15vw solid rgba(16,185,129,0.25)", borderRadius: "0.8vw", padding: "2.2vh 3vw", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div style={{ textAlign: isAr ? 'right' : 'left' }}>
-            <div className="font-display font-bold" style={{ fontSize: "2vw", color: "#10B981", marginBottom: "0.4vh" }}>{t("s4_security")}</div>
+            <div className="font-display font-bold" style={{ fontSize: "2vw", color: "var(--slide-success)", marginBottom: "0.4vh" }}>{t("s4_security")}</div>
             <div className="font-body" style={{ fontSize: "1.3vw", color: "var(--slide-muted)" }}>PostgreSQL — 9 tables, relational schema, audit logging</div>
           </div>
           <div className="font-display font-bold" style={{ fontSize: "3.5vw", color: "rgba(16,185,129,0.15)" }}>DB</div>

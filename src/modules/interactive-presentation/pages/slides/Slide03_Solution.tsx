@@ -9,7 +9,7 @@ export default function Slide03_Solution() {
   return (
     <div
       className="relative w-screen h-screen overflow-hidden"
-      style={{ background: "linear-gradient(160deg, var(--slide-bg) 0%, #1E2028 100%)" }}
+      style={{ background: "linear-gradient(160deg, var(--slide-bg) 0%, var(--slide-grad-end) 100%)" }}
     >
       <div
         className="absolute"
@@ -71,7 +71,7 @@ export default function Slide03_Solution() {
 
         <div
           style={{
-            background: "rgba(36,40,48,0.8)",
+            background: "var(--slide-pillar-bg)",
             border: "0.15vw solid var(--slide-muted)",
             borderRadius: "0.8vw",
             padding: "3vh 2.5vw",
@@ -89,7 +89,7 @@ export default function Slide03_Solution() {
 
         <div
           style={{
-            background: "rgba(36,40,48,0.8)",
+            background: "var(--slide-pillar-bg)",
             border: "0.15vw solid var(--slide-muted)",
             borderRadius: "0.8vw",
             padding: "3vh 2.5vw",
@@ -107,7 +107,7 @@ export default function Slide03_Solution() {
 
         <div
           style={{
-            background: "rgba(36,40,48,0.8)",
+            background: "var(--slide-pillar-bg)",
             border: "0.15vw solid var(--slide-muted)",
             borderRadius: "0.8vw",
             padding: "3vh 2.5vw",

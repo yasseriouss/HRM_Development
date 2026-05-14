@@ -19,7 +19,7 @@ export default function Slide10_Training() {
         .train-flow { animation: ${isExport ? "none" : "trainIn 0.5s ease 0.7s both"}; }
       `}</style>
 
-      <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, var(--slide-bg) 0%, #1E2028 100%)" }} />
+      <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, var(--slide-bg) 0%, var(--slide-grad-end) 100%)" }} />
       <div 
         className="absolute top-0 h-full" 
         style={{ 
@@ -45,21 +45,21 @@ export default function Slide10_Training() {
 
       <div className={`absolute top-[7vh] ${isAr ? 'left-[6vw]' : 'right-[6vw]'}`} style={{ width: "44vw", display: "flex", flexDirection: "column", gap: "2.5vh", direction: isAr ? 'rtl' : 'ltr' }}>
         <div className="train-a" style={{ background: "rgba(16,185,129,0.08)", border: "0.15vw solid rgba(16,185,129,0.3)", borderRadius: "0.8vw", padding: "2.5vh 3vw", display: "flex", gap: "2.5vw", alignItems: "center" }}>
-          <div className="font-display font-bold" style={{ fontSize: "5vw", color: "#10B981", lineHeight: 1, minWidth: "5vw", textAlign: "center" }}>A</div>
+          <div className="font-display font-bold" style={{ fontSize: "5vw", color: "var(--slide-success)", lineHeight: 1, minWidth: "5vw", textAlign: "center" }}>A</div>
           <div style={{ textAlign: isAr ? 'right' : 'left' }}>
             <div className="font-display font-semibold" style={{ fontSize: "1.8vw", color: "var(--slide-text)", marginBottom: "0.5vh" }}>{t("s10_tier_a_title")}</div>
             <div className="font-body" style={{ fontSize: "1.3vw", color: "var(--slide-muted)" }}>{t("s10_tier_a_desc")}</div>
           </div>
         </div>
         <div className="train-b" style={{ background: "rgba(234,179,8,0.08)", border: "0.15vw solid rgba(234,179,8,0.3)", borderRadius: "0.8vw", padding: "2.5vh 3vw", display: "flex", gap: "2.5vw", alignItems: "center" }}>
-          <div className="font-display font-bold" style={{ fontSize: "5vw", color: "#EAB308", lineHeight: 1, minWidth: "5vw", textAlign: "center" }}>B</div>
+          <div className="font-display font-bold" style={{ fontSize: "5vw", color: "var(--slide-warning)", lineHeight: 1, minWidth: "5vw", textAlign: "center" }}>B</div>
           <div style={{ textAlign: isAr ? 'right' : 'left' }}>
             <div className="font-display font-semibold" style={{ fontSize: "1.8vw", color: "var(--slide-text)", marginBottom: "0.5vh" }}>{t("s10_tier_b_title")}</div>
             <div className="font-body" style={{ fontSize: "1.3vw", color: "var(--slide-muted)" }}>{t("s10_tier_b_desc")}</div>
           </div>
         </div>
         <div className="train-c" style={{ background: "rgba(239,68,68,0.08)", border: "0.15vw solid rgba(239,68,68,0.3)", borderRadius: "0.8vw", padding: "2.5vh 3vw", display: "flex", gap: "2.5vw", alignItems: "center" }}>
-          <div className="font-display font-bold" style={{ fontSize: "5vw", color: "#EF4444", lineHeight: 1, minWidth: "5vw", textAlign: "center" }}>C</div>
+          <div className="font-display font-bold" style={{ fontSize: "5vw", color: "var(--slide-danger)", lineHeight: 1, minWidth: "5vw", textAlign: "center" }}>C</div>
           <div style={{ textAlign: isAr ? 'right' : 'left' }}>
             <div className="font-display font-semibold" style={{ fontSize: "1.8vw", color: "var(--slide-text)", marginBottom: "0.5vh" }}>{t("s10_tier_c_title")}</div>
             <div className="font-body" style={{ fontSize: "1.3vw", color: "var(--slide-muted)" }}>{t("s10_tier_c_desc")}</div>
@@ -68,15 +68,15 @@ export default function Slide10_Training() {
       </div>
 
       <div className={`absolute bottom-[10vh] ${isAr ? 'right-[8vw]' : 'left-[8vw]'} train-flow`} style={{ display: "flex", gap: "1.5vw", alignItems: "center", flexDirection: isAr ? 'row-reverse' : 'row' }}>
-        <div style={{ background: "rgba(245,240,232,0.04)", borderRadius: "0.5vw", padding: "1vh 2vw" }}>
+        <div style={{ background: "var(--slide-glass-bg)", borderRadius: "0.5vw", padding: "1vh 2vw" }}>
           <div className="font-body" style={{ fontSize: "1.2vw", color: "var(--slide-muted)" }}>{t("s10_flow1")}</div>
         </div>
         <div style={{ color: "var(--slide-primary)", fontSize: "1.5vw" }}>{isAr ? "←" : "→"}</div>
-        <div style={{ background: "rgba(245,240,232,0.04)", borderRadius: "0.5vw", padding: "1vh 2vw" }}>
+        <div style={{ background: "var(--slide-glass-bg)", borderRadius: "0.5vw", padding: "1vh 2vw" }}>
           <div className="font-body" style={{ fontSize: "1.2vw", color: "var(--slide-muted)" }}>{t("s10_flow2")}</div>
         </div>
         <div style={{ color: "var(--slide-primary)", fontSize: "1.5vw" }}>{isAr ? "←" : "→"}</div>
-        <div style={{ background: "rgba(245,240,232,0.04)", borderRadius: "0.5vw", padding: "1vh 2vw" }}>
+        <div style={{ background: "var(--slide-glass-bg)", borderRadius: "0.5vw", padding: "1vh 2vw" }}>
           <div className="font-body" style={{ fontSize: "1.2vw", color: "var(--slide-muted)" }}>{t("s10_flow3")}</div>
         </div>
         <div style={{ color: "var(--slide-primary)", fontSize: "1.5vw" }}>{isAr ? "←" : "→"}</div>

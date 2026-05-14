@@ -17,7 +17,7 @@ export default function Slide13_Migration() {
         .mig-stats { animation: ${isExport ? "none" : "migIn 0.5s ease 0.5s both"}; }
       `}</style>
 
-      <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, var(--slide-bg) 0%, #1E2028 100%)" }} />
+      <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, var(--slide-bg) 0%, var(--slide-grad-end) 100%)" }} />
       <div 
         className="absolute top-0 h-full" 
         style={{ 
@@ -47,7 +47,7 @@ export default function Slide13_Migration() {
             <div className="font-display font-bold" style={{ fontSize: "3vw", color: "var(--slide-primary)" }}>146+</div>
             <div className="font-body" style={{ fontSize: "1.2vw", color: "var(--slide-muted)" }}>{t("s13_metric_emp")}</div>
           </div>
-          <div style={{ background: "rgba(245,240,232,0.04)", border: "0.15vw solid rgba(245,240,232,0.08)", borderRadius: "0.8vw", padding: "2vh 3vw", textAlign: "center" }}>
+          <div style={{ background: "var(--slide-glass-bg)", border: "0.15vw solid var(--slide-glass-border-08)", borderRadius: "0.8vw", padding: "2vh 3vw", textAlign: "center" }}>
             <div className="font-display font-bold" style={{ fontSize: "3vw", color: "var(--slide-text)" }}>2021–</div>
             <div className="font-body" style={{ fontSize: "1.2vw", color: "var(--slide-muted)" }}>{t("s13_metric_hist")}</div>
           </div>
@@ -64,8 +64,8 @@ export default function Slide13_Migration() {
             { num: "05", title: t("s13_step5_title"), desc: t("s13_step5_desc") },
           ].map((step, i) => (
             <div key={i} style={{ display: "flex", alignItems: "center", flex: 1 }}>
-              <div style={{ flex: 1, background: i === 4 ? "rgba(16,185,129,0.08)" : "rgba(245,240,232,0.04)", border: `0.15vw solid ${i === 4 ? "rgba(16,185,129,0.3)" : "rgba(245,240,232,0.08)"}`, borderRadius: "0.8vw", padding: "3vh 2vw", textAlign: isAr ? 'right' : 'left' }}>
-                <div className="font-display font-bold" style={{ fontSize: "2.5vw", color: i === 4 ? "#10B981" : "#3A3F4A", marginBottom: "0.8vh" }}>{step.num}</div>
+              <div style={{ flex: 1, background: i === 4 ? "rgba(16,185,129,0.08)" : "var(--slide-glass-bg)", border: `0.15vw solid ${i === 4 ? "rgba(16,185,129,0.3)" : "var(--slide-glass-border-08)"}`, borderRadius: "0.8vw", padding: "3vh 2vw", textAlign: isAr ? 'right' : 'left' }}>
+                <div className="font-display font-bold" style={{ fontSize: "2.5vw", color: i === 4 ? "var(--slide-success)" : "var(--slide-false-color)", marginBottom: "0.8vh" }}>{step.num}</div>
                 <div className="font-display font-semibold" style={{ fontSize: "1.5vw", color: "var(--slide-text)", marginBottom: "0.8vh" }}>{step.title}</div>
                 <div className="font-body" style={{ fontSize: "1.15vw", color: "var(--slide-muted)", lineHeight: 1.4 }}>{step.desc}</div>
               </div>

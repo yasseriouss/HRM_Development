@@ -24,7 +24,7 @@ export default function Slide15_NextSteps() {
         .next-step { animation: ${isExport ? "none" : "nextIn 0.4s ease var(--delay) both"}; }
       `}</style>
 
-      <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, var(--slide-bg) 0%, #1E2028 100%)" }} />
+      <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, var(--slide-bg) 0%, var(--slide-grad-end) 100%)" }} />
       <div 
         className="absolute top-0 h-full" 
         style={{ 
@@ -55,7 +55,7 @@ export default function Slide15_NextSteps() {
               } as any}
             >
               <div style={{ 
-                background: step.green ? "#10B981" : (step.active ? "var(--slide-primary)" : "rgba(212,150,10,0.2)"), 
+                background: step.green ? "var(--slide-success)" : (step.active ? "var(--slide-primary)" : "rgba(212,150,10,0.2)"), 
                 border: step.active || step.green ? "none" : "0.15vw solid var(--slide-primary)",
                 borderRadius: "50%", 
                 width: "3vw", 
@@ -68,7 +68,7 @@ export default function Slide15_NextSteps() {
                 <span className="font-display font-bold" style={{ fontSize: "1.5vw", color: step.active || step.green ? "var(--slide-bg)" : "var(--slide-primary)" }}>{step.num}</span>
               </div>
               <div>
-                <div className="font-display font-semibold" style={{ fontSize: "1.8vw", color: step.green ? "#10B981" : "var(--slide-text)", marginBottom: "0.5vh" }}>{step.title}</div>
+                <div className="font-display font-semibold" style={{ fontSize: "1.8vw", color: step.green ? "var(--slide-success)" : "var(--slide-text)", marginBottom: "0.5vh" }}>{step.title}</div>
                 <div className="font-body" style={{ fontSize: "1.3vw", color: "var(--slide-muted)", lineHeight: 1.5 }}>{step.desc}</div>
               </div>
             </div>

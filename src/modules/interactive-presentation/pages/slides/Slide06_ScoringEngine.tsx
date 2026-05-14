@@ -17,7 +17,7 @@ export default function Slide06_ScoringEngine() {
         .score-result { animation: ${isExport ? "none" : "scoreIn 0.5s ease 0.7s both"}; }
       `}</style>
 
-      <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, var(--slide-bg) 0%, #1E2028 100%)" }} />
+      <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, var(--slide-bg) 0%, var(--slide-grad-end) 100%)" }} />
       <div
         className={`absolute top-0 h-full ${isAr ? "left-0" : "right-0"}`}
         style={{ width: "0.4vw", background: "linear-gradient(180deg, transparent 0%, var(--slide-primary) 40%, var(--slide-primary) 60%, transparent 100%)" }}
@@ -41,7 +41,7 @@ export default function Slide06_ScoringEngine() {
       <div className={`absolute top-[8vh] ${isAr ? 'left-[8vw]' : 'right-[8vw]'} score-result`} style={{ textAlign: "center" }}>
         <div className="font-display font-bold" style={{ fontSize: "7vw", color: "var(--slide-primary)", lineHeight: 1 }}>87.5</div>
         <div className="font-body" style={{ fontSize: "1.4vw", color: "var(--slide-muted)" }}>{t("s6_sample_score")}</div>
-        <div className="font-display font-bold mt-[1vh]" style={{ fontSize: "2.5vw", color: "#10B981" }}>{t("s6_class_a")}</div>
+        <div className="font-display font-bold mt-[1vh]" style={{ fontSize: "2.5vw", color: "var(--slide-success)" }}>{t("s6_class_a")}</div>
       </div>
 
       <div className={`absolute top-[27vh] ${isAr ? 'right-[8vw]' : 'left-[8vw]'} score-formula`} style={{ background: "rgba(212,150,10,0.08)", border: "0.15vw solid rgba(212,150,10,0.3)", borderRadius: "1vw", padding: "3vh 4vw", maxWidth: "52vw", textAlign: isAr ? 'right' : 'left', direction: isAr ? 'rtl' : 'ltr' }}>
@@ -64,25 +64,25 @@ export default function Slide06_ScoringEngine() {
       </div>
 
       <div className={`absolute bottom-[14vh] ${isAr ? 'right-[8vw]' : 'left-[8vw]'} score-ex`} style={{ display: "flex", gap: "2.5vw", alignItems: "flex-end", flexDirection: isAr ? 'row-reverse' : 'row' }}>
-        <div style={{ background: "rgba(245,240,232,0.04)", border: "0.15vw solid rgba(245,240,232,0.1)", borderRadius: "0.8vw", padding: "2vh 2.5vw", minWidth: "18vw", textAlign: isAr ? 'right' : 'left' }}>
+        <div style={{ background: "var(--slide-glass-bg)", border: "0.15vw solid var(--slide-glass-border)", borderRadius: "0.8vw", padding: "2vh 2.5vw", minWidth: "18vw", textAlign: isAr ? 'right' : 'left' }}>
           <div className="font-body mb-[1vh]" style={{ fontSize: "1.1vw", color: "var(--slide-muted)" }}>{t("s6_skill1")}</div>
           <div className="font-display font-bold" style={{ fontSize: "2vw", color: "var(--slide-primary)" }}>3 / 4</div>
           <div className="font-body" style={{ fontSize: "1.2vw", color: "var(--slide-muted)" }}>{t("s6_skill1_w")}</div>
         </div>
-        <div style={{ background: "rgba(245,240,232,0.04)", border: "0.15vw solid rgba(245,240,232,0.1)", borderRadius: "0.8vw", padding: "2vh 2.5vw", minWidth: "18vw", textAlign: isAr ? 'right' : 'left' }}>
+        <div style={{ background: "var(--slide-glass-bg)", border: "0.15vw solid var(--slide-glass-border)", borderRadius: "0.8vw", padding: "2vh 2.5vw", minWidth: "18vw", textAlign: isAr ? 'right' : 'left' }}>
           <div className="font-body mb-[1vh]" style={{ fontSize: "1.1vw", color: "var(--slide-muted)" }}>{t("s6_skill2")}</div>
           <div className="font-display font-bold" style={{ fontSize: "2vw", color: "var(--slide-primary)" }}>4 / 4</div>
           <div className="font-body" style={{ fontSize: "1.2vw", color: "var(--slide-muted)" }}>{t("s6_skill2_w")}</div>
         </div>
-        <div style={{ background: "rgba(245,240,232,0.04)", border: "0.15vw solid rgba(245,240,232,0.1)", borderRadius: "0.8vw", padding: "2vh 2.5vw", minWidth: "18vw", textAlign: isAr ? 'right' : 'left' }}>
+        <div style={{ background: "var(--slide-glass-bg)", border: "0.15vw solid var(--slide-glass-border)", borderRadius: "0.8vw", padding: "2vh 2.5vw", minWidth: "18vw", textAlign: isAr ? 'right' : 'left' }}>
           <div className="font-body mb-[1vh]" style={{ fontSize: "1.1vw", color: "var(--slide-muted)" }}>{t("s6_skill3")}</div>
           <div className="font-display font-bold" style={{ fontSize: "2vw", color: "var(--slide-primary)" }}>3 / 4</div>
           <div className="font-body" style={{ fontSize: "1.2vw", color: "var(--slide-muted)" }}>{t("s6_skill3_w")}</div>
         </div>
         <div style={{ fontSize: "2.5vw", color: "var(--slide-muted)", marginBottom: "2vh" }}>{isAr ? "←" : "→"}</div>
         <div style={{ background: "rgba(16,185,129,0.08)", border: "0.15vw solid rgba(16,185,129,0.3)", borderRadius: "0.8vw", padding: "2vh 2.5vw", minWidth: "14vw", textAlign: "center" }}>
-          <div className="font-body mb-[0.5vh]" style={{ fontSize: "1.1vw", color: "#10B981" }}>{t("s6_final_score")}</div>
-          <div className="font-display font-bold" style={{ fontSize: "2.8vw", color: "#10B981" }}>87.5%</div>
+          <div className="font-body mb-[0.5vh]" style={{ fontSize: "1.1vw", color: "var(--slide-success)" }}>{t("s6_final_score")}</div>
+          <div className="font-display font-bold" style={{ fontSize: "2.8vw", color: "var(--slide-success)" }}>87.5%</div>
         </div>
       </div>
 

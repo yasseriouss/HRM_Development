@@ -16,7 +16,7 @@ export default function Slide08_DeptDashboard() {
         .dept-c { animation: ${isExport ? "none" : "deptIn 0.5s ease 0.3s both"}; }
       `}</style>
 
-      <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, var(--slide-bg) 0%, #1C1F2A 100%)" }} />
+      <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, var(--slide-bg) 0%, var(--slide-grad-end) 100%)" }} />
       <div 
         className="absolute top-0 h-full" 
         style={{ 
@@ -43,25 +43,25 @@ export default function Slide08_DeptDashboard() {
       <div className={`absolute top-[7vh] ${isAr ? 'left-[6vw]' : 'right-[6vw]'} dept-c`} style={{ width: "50vw", display: "flex", flexDirection: "column", gap: "2vh", direction: isAr ? 'rtl' : 'ltr' }}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1.5vw" }}>
           <div style={{ background: "rgba(16,185,129,0.08)", border: "0.15vw solid rgba(16,185,129,0.25)", borderRadius: "0.8vw", padding: "2vh 2vw", textAlign: "center" }}>
-            <div className="font-display font-bold" style={{ fontSize: "3.5vw", color: "#10B981" }}>68%</div>
+            <div className="font-display font-bold" style={{ fontSize: "3.5vw", color: "var(--slide-success)" }}>68%</div>
             <div className="font-body" style={{ fontSize: "1.2vw", color: "var(--slide-muted)" }}>{t("s8_metric_a")}</div>
           </div>
           <div style={{ background: "rgba(234,179,8,0.08)", border: "0.15vw solid rgba(234,179,8,0.25)", borderRadius: "0.8vw", padding: "2vh 2vw", textAlign: "center" }}>
-            <div className="font-display font-bold" style={{ fontSize: "3.5vw", color: "#EAB308" }}>24%</div>
+            <div className="font-display font-bold" style={{ fontSize: "3.5vw", color: "var(--slide-warning)" }}>24%</div>
             <div className="font-body" style={{ fontSize: "1.2vw", color: "var(--slide-muted)" }}>{t("s8_metric_b")}</div>
           </div>
           <div style={{ background: "rgba(239,68,68,0.08)", border: "0.15vw solid rgba(239,68,68,0.25)", borderRadius: "0.8vw", padding: "2vh 2vw", textAlign: "center" }}>
-            <div className="font-display font-bold" style={{ fontSize: "3.5vw", color: "#EF4444" }}>8%</div>
+            <div className="font-display font-bold" style={{ fontSize: "3.5vw", color: "var(--slide-danger)" }}>8%</div>
             <div className="font-body" style={{ fontSize: "1.2vw", color: "var(--slide-muted)" }}>{t("s8_metric_c")}</div>
           </div>
         </div>
 
-        <div style={{ background: "rgba(245,240,232,0.03)", border: "0.15vw solid rgba(245,240,232,0.08)", borderRadius: "0.8vw", padding: "2vh 2.5vw" }}>
+        <div style={{ background: "var(--slide-glass-bg-03)", border: "0.15vw solid var(--slide-glass-border-08)", borderRadius: "0.8vw", padding: "2vh 2.5vw" }}>
           <div className="font-body mb-[1.5vh]" style={{ fontSize: "1.2vw", color: "var(--slide-muted)", textAlign: isAr ? 'right' : 'left' }}>{t("s8_heat_map")}</div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "0.8vh" }}>
             {[
-              [t("s8_skill_cnc"), "#10B981"], [t("s8_skill_weld"), "#10B981"], [t("s8_skill_assembly"), "#EAB308"], [t("s8_skill_qc"), "#10B981"], [t("s8_skill_safety"), "#10B981"],
-              [t("s8_skill_paint"), "#EF4444"], [t("s8_skill_finish"), "#EAB308"], [t("s8_skill_pack"), "#10B981"], [t("s8_skill_lift"), "#EAB308"], [t("s8_skill_maint"), "#10B981"],
+              [t("s8_skill_cnc"), "var(--slide-success)"], [t("s8_skill_weld"), "var(--slide-success)"], [t("s8_skill_assembly"), "var(--slide-warning)"], [t("s8_skill_qc"), "var(--slide-success)"], [t("s8_skill_safety"), "var(--slide-success)"],
+              [t("s8_skill_paint"), "var(--slide-danger)"], [t("s8_skill_finish"), "var(--slide-warning)"], [t("s8_skill_pack"), "var(--slide-success)"], [t("s8_skill_lift"), "var(--slide-warning)"], [t("s8_skill_maint"), "var(--slide-success)"],
             ].map(([label, color], i) => (
               <div key={i} style={{ background: color + "20", border: `0.12vw solid ${color}50`, borderRadius: "0.4vw", padding: "0.8vh 0.5vw", textAlign: "center" }}>
                 <div className="font-body" style={{ fontSize: "1.1vw", color: color }}>{label}</div>
@@ -70,7 +70,7 @@ export default function Slide08_DeptDashboard() {
           </div>
         </div>
 
-        <div style={{ background: "rgba(245,240,232,0.03)", border: "0.15vw solid rgba(245,240,232,0.08)", borderRadius: "0.8vw", padding: "1.8vh 2.5vw" }}>
+        <div style={{ background: "var(--slide-glass-bg-03)", border: "0.15vw solid var(--slide-glass-border-08)", borderRadius: "0.8vw", padding: "1.8vh 2.5vw" }}>
           <div className="font-body mb-[1vh]" style={{ fontSize: "1.2vw", color: "var(--slide-muted)", textAlign: isAr ? 'right' : 'left' }}>{t("s8_pending_title")}</div>
           <div style={{ display: "flex", gap: "2vw", alignItems: 'center' }}>
             <div>

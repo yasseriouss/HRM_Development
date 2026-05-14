@@ -4,12 +4,21 @@ import { usersTable, departmentsTable, userSessionsTable } from "@hrm-developmen
 import { eq } from "drizzle-orm";
 import { getUserFromToken } from "../lib/auth";
 import { randomUUID } from "crypto";
+import { logger } from "../lib/logger";
 
 const router = Router();
 
+/** Show DB/auth error `message` in JSON (Vercel is usually production and hides it otherwise). */
+function shouldExposeAuthErrorMessage(): boolean {
+  return (
+    process.env.NODE_ENV !== "production" ||
+    process.env.HRM_EXPOSE_AUTH_ERRORS === "1"
+  );
+}
+
 function sendAuthDbError(res: Response, err: unknown, logLabel: string) {
   const message = err instanceof Error ? err.message : String(err);
-  console.error(logLabel, err);
+  logger.error({ err, logLabel }, logLabel);
   if (
     message.includes("DATABASE_URL is missing") ||
     message.includes("Database access attempted but DATABASE_URL")
@@ -21,7 +30,7 @@ function sendAuthDbError(res: Response, err: unknown, logLabel: string) {
     });
     return;
   }
-  const expose = process.env.NODE_ENV !== "production";
+  const expose = shouldExposeAuthErrorMessage();
   res.status(500).json({
     error: "Internal Server Error",
     ...(expose && message ? { message } : {}),
@@ -40,7 +49,10 @@ router.post("/login", async (req, res) => {
       return;
     }
 
-    const { email, password } = req.body;
+    const raw = req.body;
+    const body = raw && typeof raw === "object" && !Array.isArray(raw) ? (raw as Record<string, unknown>) : {};
+    const email = typeof body.email === "string" ? body.email.trim() : "";
+    const password = typeof body.password === "string" ? body.password : "";
     if (!email || !password) {
       res.status(400).json({ error: "Bad Request", message: "email and password required" });
       return;

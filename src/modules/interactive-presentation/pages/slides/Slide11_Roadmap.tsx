@@ -17,7 +17,7 @@ export default function Slide11_Roadmap() {
         .road-weeks { animation: ${isExport ? "none" : "roadIn 0.5s ease 0.55s both"}; }
       `}</style>
 
-      <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, var(--slide-bg) 0%, #1C1F28 100%)" }} />
+      <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, var(--slide-bg) 0%, var(--slide-grad-end) 100%)" }} />
       <div 
         className="absolute top-0 h-full" 
         style={{ 
@@ -49,8 +49,8 @@ export default function Slide11_Roadmap() {
             { phase: "06", title: t("s11_p6_title"), weeks: `${t("s11_wk")} 6–7`, desc: t("s11_p6_desc") },
             { phase: "07", title: t("s11_p7_title"), weeks: `${t("s11_wk")} 7–8`, desc: t("s11_p7_desc") },
           ].map((item, i) => (
-            <div key={i} style={{ background: i === 6 ? "rgba(212,150,10,0.1)" : "rgba(245,240,232,0.04)", border: `0.15vw solid ${i === 6 ? "rgba(212,150,10,0.4)" : "rgba(245,240,232,0.08)"}`, borderRadius: "0.8vw", padding: "2.5vh 1.5vw", textAlign: isAr ? 'right' : 'left' }}>
-              <div className="font-display font-bold" style={{ fontSize: "2.5vw", color: i === 6 ? "var(--slide-primary)" : "#3A3F4A", marginBottom: "0.5vh" }}>{item.phase}</div>
+            <div key={i} style={{ background: i === 6 ? "rgba(212,150,10,0.1)" : "var(--slide-glass-bg)", border: `0.15vw solid ${i === 6 ? "rgba(212,150,10,0.4)" : "var(--slide-glass-border-08)"}`, borderRadius: "0.8vw", padding: "2.5vh 1.5vw", textAlign: isAr ? 'right' : 'left' }}>
+              <div className="font-display font-bold" style={{ fontSize: "2.5vw", color: i === 6 ? "var(--slide-primary)" : "var(--slide-false-color)", marginBottom: "0.5vh" }}>{item.phase}</div>
               <div className="font-display font-semibold" style={{ fontSize: "1.5vw", color: "var(--slide-text)", marginBottom: "0.5vh" }}>{item.title}</div>
               <div className="font-body" style={{ fontSize: "1.1vw", color: "var(--slide-primary)", marginBottom: "0.8vh" }}>{item.weeks}</div>
               <div className="font-body" style={{ fontSize: "1.1vw", color: "var(--slide-muted)", lineHeight: 1.4 }}>{item.desc}</div>
@@ -68,8 +68,8 @@ export default function Slide11_Roadmap() {
             </div>
           ))}
           <div style={{ position: "absolute", [isAr ? 'right' : 'left']: "100%", transform: `translateX(${isAr ? '50%' : '-50%'})`, textAlign: "center" }}>
-            <div style={{ width: "0.4vw", height: "1.5vh", background: "#10B981", margin: "0 auto -0.4vh" }} />
-            <div className="font-body" style={{ fontSize: "1.1vw", color: "#10B981", marginTop: "0.5vh" }}>{t("s11_live")}</div>
+            <div style={{ width: "0.4vw", height: "1.5vh", background: "var(--slide-success)", margin: "0 auto -0.4vh" }} />
+            <div className="font-body" style={{ fontSize: "1.1vw", color: "var(--slide-success)", marginTop: "0.5vh" }}>{t("s11_live")}</div>
           </div>
         </div>
       </div>

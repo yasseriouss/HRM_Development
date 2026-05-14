@@ -15,7 +15,7 @@ export default function Slide07_RBAC() {
         .rbac-t { animation: ${isExport ? "none" : "rbacIn 0.5s ease 0.3s both"}; }
       `}</style>
 
-      <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, var(--slide-bg) 0%, #1D1F2A 100%)" }} />
+      <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, var(--slide-bg) 0%, var(--slide-grad-end) 100%)" }} />
       <div 
         className="absolute top-0 h-full" 
         style={{ 
@@ -40,7 +40,7 @@ export default function Slide07_RBAC() {
       </div>
 
       <div className={`absolute top-[7vh] ${isAr ? 'left-[6vw]' : 'right-[6vw]'} rbac-t`} style={{ width: "52vw", direction: isAr ? 'rtl' : 'ltr' }}>
-        <div style={{ background: "rgba(245,240,232,0.03)", border: "0.15vw solid rgba(245,240,232,0.1)", borderRadius: "0.8vw", overflow: "hidden" }}>
+        <div style={{ background: "var(--slide-glass-bg-03)", border: "0.15vw solid var(--slide-glass-border)", borderRadius: "0.8vw", overflow: "hidden" }}>
           <div style={{ display: "grid", gridTemplateColumns: isAr ? "1.8fr 1fr 1fr 1fr 1fr" : "1.8fr 1fr 1fr 1fr 1fr", background: "rgba(212,150,10,0.12)", borderBottom: "0.15vw solid rgba(212,150,10,0.25)" }}>
             <div className="font-body font-semibold" style={{ fontSize: "1.2vw", color: "var(--slide-primary)", padding: "1.5vh 1.5vw", textAlign: isAr ? 'right' : 'left' }}>{t("s7_header_perm")}</div>
             <div className="font-body font-semibold" style={{ fontSize: "1.1vw", color: "var(--slide-text)", padding: "1.5vh 1vw", textAlign: "center" }}>{t("s7_role_admin")}</div>
@@ -58,11 +58,11 @@ export default function Slide07_RBAC() {
             [t("s7_p7"), true, false, true, false],
             [t("s7_p8"), true, true, true, false],
           ].map((row, i) => (
-            <div key={i} style={{ display: "grid", gridTemplateColumns: "1.8fr 1fr 1fr 1fr 1fr", borderBottom: i < 7 ? "0.1vw solid rgba(245,240,232,0.06)" : "none", background: i % 2 === 0 ? "transparent" : "rgba(245,240,232,0.02)" }}>
+            <div key={i} style={{ display: "grid", gridTemplateColumns: "1.8fr 1fr 1fr 1fr 1fr", borderBottom: i < 7 ? "0.1vw solid var(--slide-grid-row)" : "none", background: i % 2 === 0 ? "transparent" : "var(--slide-glass-bg-02)" }}>
               <div className="font-body" style={{ fontSize: "1.25vw", color: "var(--slide-muted)", padding: "1.3vh 1.5vw", textAlign: isAr ? 'right' : 'left' }}>{row[0]}</div>
               {[row[1], row[2], row[3], row[4]].map((val, j) => (
                 <div key={j} style={{ padding: "1.3vh 1vw", textAlign: "center", fontSize: "1.5vw" }}>
-                  {val ? <span style={{ color: "#10B981" }}>&#10003;</span> : <span style={{ color: "#3A3F4A" }}>&#10005;</span>}
+                  {val ? <span style={{ color: "var(--slide-success)" }}>&#10003;</span> : <span style={{ color: "var(--slide-false-color)" }}>&#10005;</span>}
                 </div>
               ))}
             </div>

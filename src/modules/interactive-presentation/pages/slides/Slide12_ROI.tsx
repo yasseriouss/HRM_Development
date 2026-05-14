@@ -26,7 +26,7 @@ export default function Slide12_ROI() {
         .roi-chart { animation: ${isExport ? "none" : "roiIn 0.5s ease 0.5s both"}; }
       `}</style>
 
-      <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, var(--slide-bg) 0%, #1E2030 100%)" }} />
+      <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, var(--slide-bg) 0%, var(--slide-grad-end) 100%)" }} />
       <div 
         className="absolute top-0 h-full" 
         style={{ 
@@ -54,16 +54,16 @@ export default function Slide12_ROI() {
             <div className="font-body" style={{ fontSize: "1.2vw", color: "var(--slide-muted)" }}>{t("s12_metric_inv")}</div>
           </div>
           <div style={{ background: "rgba(16,185,129,0.08)", border: "0.15vw solid rgba(16,185,129,0.25)", borderRadius: "0.8vw", padding: "2vh 3vw", textAlign: "center" }}>
-            <div className="font-display font-bold tabular-num" style={{ fontSize: "3.5vw", color: "#10B981" }}>EGP&nbsp;72K+</div>
+            <div className="font-display font-bold tabular-num" style={{ fontSize: "3.5vw", color: "var(--slide-success)" }}>EGP&nbsp;72K+</div>
             <div className="font-body" style={{ fontSize: "1.2vw", color: "var(--slide-muted)" }}>{t("s12_metric_ret")}</div>
           </div>
         </div>
         <div style={{ display: "flex", gap: "2vw" }}>
-          <div style={{ background: "rgba(245,240,232,0.04)", border: "0.15vw solid rgba(245,240,232,0.1)", borderRadius: "0.8vw", padding: "1.8vh 2.5vw", textAlign: "center", flex: 1 }}>
+          <div style={{ background: "var(--slide-glass-bg)", border: "0.15vw solid var(--slide-glass-border)", borderRadius: "0.8vw", padding: "1.8vh 2.5vw", textAlign: "center", flex: 1 }}>
             <div className="font-display font-bold" style={{ fontSize: "2.8vw", color: "var(--slide-text)" }}>5–6</div>
             <div className="font-body" style={{ fontSize: "1.2vw", color: "var(--slide-muted)" }}>{t("s12_metric_pay")}</div>
           </div>
-          <div style={{ background: "rgba(245,240,232,0.04)", border: "0.15vw solid rgba(245,240,232,0.1)", borderRadius: "0.8vw", padding: "1.8vh 2.5vw", textAlign: "center", flex: 1 }}>
+          <div style={{ background: "var(--slide-glass-bg)", border: "0.15vw solid var(--slide-glass-border)", borderRadius: "0.8vw", padding: "1.8vh 2.5vw", textAlign: "center", flex: 1 }}>
             <div className="font-display font-bold" style={{ fontSize: "2.8vw", color: "var(--slide-text)" }}>10+</div>
             <div className="font-body" style={{ fontSize: "1.2vw", color: "var(--slide-muted)" }}>{t("s12_metric_sav")}</div>
           </div>
@@ -78,10 +78,10 @@ export default function Slide12_ROI() {
               <XAxis dataKey="name" tick={{ fill: "var(--slide-muted)", fontSize: "1.2vw", fontFamily: chartTickFont }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fill: "var(--slide-muted)", fontSize: "1.1vw", fontFamily: chartTickFont }} axisLine={false} tickLine={false} />
               <ReferenceLine y={0} stroke="var(--slide-muted)" strokeWidth={1} />
-              <Tooltip contentStyle={{ background: "var(--slide-accent)", border: "1px solid var(--slide-muted)", borderRadius: "8px", color: "var(--slide-text)" }} cursor={{ fill: "rgba(245,240,232,0.04)" }} />
+              <Tooltip contentStyle={{ background: "var(--slide-accent)", border: "1px solid var(--slide-muted)", borderRadius: "8px", color: "var(--slide-text)" }} cursor={{ fill: "var(--slide-glass-bg)" }} />
               <Bar dataKey="value" radius={[4, 4, 0, 0]}>
                 {roiData.map((entry, index) => (
-                  <Cell key={index} fill={entry.value < 0 ? "#EF4444" : "#10B981"} fillOpacity={0.85} />
+                  <Cell key={index} fill={entry.value < 0 ? "var(--slide-danger)" : "var(--slide-success)"} fillOpacity={0.85} />
                 ))}
               </Bar>
             </BarChart>

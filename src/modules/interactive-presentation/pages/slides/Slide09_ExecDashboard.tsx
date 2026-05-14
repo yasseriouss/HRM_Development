@@ -4,7 +4,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 
 
 const isExport = typeof window !== "undefined" && window.location.pathname.endsWith("/allslides");
 
-const COLORS = ["#10B981", "#10B981", "#EAB308", "#10B981", "#EAB308", "#10B981", "#EAB308", "#10B981", "#EAB308"];
+const COLORS = ["var(--slide-success)", "var(--slide-success)", "var(--slide-warning)", "var(--slide-success)", "var(--slide-warning)", "var(--slide-success)", "var(--slide-warning)", "var(--slide-success)", "var(--slide-warning)"];
 
 export default function Slide09_ExecDashboard() {
   const t = useT();
@@ -33,7 +33,7 @@ export default function Slide09_ExecDashboard() {
         .exec-chart { animation: ${isExport ? "none" : "execIn 0.5s ease 0.5s both"}; }
       `}</style>
 
-      <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, var(--slide-bg) 0%, #1C1E2A 100%)" }} />
+      <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, var(--slide-bg) 0%, var(--slide-grad-end) 100%)" }} />
       <div 
         className="absolute top-0 h-full" 
         style={{ 
@@ -60,7 +60,7 @@ export default function Slide09_ExecDashboard() {
           <div className="font-body" style={{ fontSize: "1.2vw", color: "var(--slide-muted)" }}>{t("s9_metric_avg")}</div>
         </div>
         <div style={{ background: "rgba(16,185,129,0.07)", border: "0.15vw solid rgba(16,185,129,0.2)", borderRadius: "0.8vw", padding: "2vh 2.5vw", textAlign: "center" }}>
-          <div className="font-display font-bold" style={{ fontSize: "3.5vw", color: "#10B981" }}>+12%</div>
+          <div className="font-display font-bold" style={{ fontSize: "3.5vw", color: "var(--slide-success)" }}>+12%</div>
           <div className="font-body" style={{ fontSize: "1.2vw", color: "var(--slide-muted)" }}>{t("s9_metric_vs")}</div>
         </div>
       </div>
@@ -74,7 +74,7 @@ export default function Slide09_ExecDashboard() {
               <YAxis domain={[50, 100]} tick={{ fill: "var(--slide-muted)", fontSize: "1.1vw", fontFamily: chartTickFont }} axisLine={false} tickLine={false} />
               <Tooltip
                 contentStyle={{ background: "var(--slide-accent)", border: "1px solid var(--slide-muted)", borderRadius: "8px", color: "var(--slide-text)" }}
-                cursor={{ fill: "rgba(245,240,232,0.04)" }}
+                cursor={{ fill: "var(--slide-glass-bg)" }}
               />
               <Bar dataKey="score" radius={[4, 4, 0, 0]}>
                 {deptData.map((_, index) => (

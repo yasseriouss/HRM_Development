@@ -21,7 +21,7 @@ export default function Slide05_Features() {
         .feat-6 { animation: ${isExport ? "none" : "featFadeUp 0.4s ease 0.7s both"}; }
       `}</style>
 
-      <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, var(--slide-bg) 60%, #1C1E28 100%)" }} />
+      <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, var(--slide-bg) 60%, var(--slide-grad-end) 100%)" }} />
       <div 
         className="absolute top-0 h-full" 
         style={{ 
@@ -41,15 +41,15 @@ export default function Slide05_Features() {
           <div className="font-display font-bold mb-[1vh]" style={{ fontSize: "1.8vw", color: "var(--slide-primary)" }}>{t("s5_f1_title")}</div>
           <div className="font-body" style={{ fontSize: "1.35vw", color: "var(--slide-muted)", lineHeight: 1.5 }}>{t("s5_f1_desc")}</div>
         </div>
-        <div className="feat-2" style={{ background: "rgba(245,240,232,0.04)", border: "0.15vw solid rgba(245,240,232,0.1)", borderRadius: "0.8vw", padding: "2.5vh 2.5vw", textAlign: isAr ? 'right' : 'left' }}>
+        <div className="feat-2" style={{ background: "var(--slide-glass-bg)", border: "0.15vw solid var(--slide-glass-border)", borderRadius: "0.8vw", padding: "2.5vh 2.5vw", textAlign: isAr ? 'right' : 'left' }}>
           <div className="font-display font-bold mb-[1vh]" style={{ fontSize: "1.8vw", color: "var(--slide-text)" }}>{t("s5_f2_title")}</div>
           <div className="font-body" style={{ fontSize: "1.35vw", color: "var(--slide-muted)", lineHeight: 1.5 }}>{t("s5_f2_desc")}</div>
         </div>
         <div className="feat-3" style={{ background: "rgba(16,185,129,0.06)", border: "0.15vw solid rgba(16,185,129,0.2)", borderRadius: "0.8vw", padding: "2.5vh 2.5vw", textAlign: isAr ? 'right' : 'left' }}>
-          <div className="font-display font-bold mb-[1vh]" style={{ fontSize: "1.8vw", color: "#10B981" }}>{t("s5_f3_title")}</div>
+          <div className="font-display font-bold mb-[1vh]" style={{ fontSize: "1.8vw", color: "var(--slide-success)" }}>{t("s5_f3_title")}</div>
           <div className="font-body" style={{ fontSize: "1.35vw", color: "var(--slide-muted)", lineHeight: 1.5 }}>{t("s5_f3_desc")}</div>
         </div>
-        <div className="feat-4" style={{ background: "rgba(245,240,232,0.04)", border: "0.15vw solid rgba(245,240,232,0.1)", borderRadius: "0.8vw", padding: "2.5vh 2.5vw", textAlign: isAr ? 'right' : 'left' }}>
+        <div className="feat-4" style={{ background: "var(--slide-glass-bg)", border: "0.15vw solid var(--slide-glass-border)", borderRadius: "0.8vw", padding: "2.5vh 2.5vw", textAlign: isAr ? 'right' : 'left' }}>
           <div className="font-display font-bold mb-[1vh]" style={{ fontSize: "1.8vw", color: "var(--slide-text)" }}>{t("s5_f4_title")}</div>
           <div className="font-body" style={{ fontSize: "1.35vw", color: "var(--slide-muted)", lineHeight: 1.5 }}>{t("s5_f4_desc")}</div>
         </div>
@@ -57,7 +57,7 @@ export default function Slide05_Features() {
           <div className="font-display font-bold mb-[1vh]" style={{ fontSize: "1.8vw", color: "var(--slide-primary)" }}>{t("s5_f5_title")}</div>
           <div className="font-body" style={{ fontSize: "1.35vw", color: "var(--slide-muted)", lineHeight: 1.5 }}>{t("s5_f5_desc")}</div>
         </div>
-        <div className="feat-6" style={{ background: "rgba(245,240,232,0.04)", border: "0.15vw solid rgba(245,240,232,0.1)", borderRadius: "0.8vw", padding: "2.5vh 2.5vw", textAlign: isAr ? 'right' : 'left' }}>
+        <div className="feat-6" style={{ background: "var(--slide-glass-bg)", border: "0.15vw solid var(--slide-glass-border)", borderRadius: "0.8vw", padding: "2.5vh 2.5vw", textAlign: isAr ? 'right' : 'left' }}>
           <div className="font-display font-bold mb-[1vh]" style={{ fontSize: "1.8vw", color: "var(--slide-text)" }}>{t("s5_f6_title")}</div>
           <div className="font-body" style={{ fontSize: "1.35vw", color: "var(--slide-muted)", lineHeight: 1.5 }}>{t("s5_f6_desc")}</div>
         </div>

@@ -12,9 +12,8 @@
  * check" if this file has been hand-edited and needs repair.
  */
 
-import { useEffect, useRef, useState, useContext } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useLocation } from "wouter";
-import { useTheme } from "next-themes";
 import { useT } from "@/i18n";
 import { useLang } from "@shared/contexts/LangContext";
 import { slides } from "./slideLoader";
@@ -75,6 +74,11 @@ function SlideEditor() {
       }
       if (event.button !== 0 || event.metaKey || event.ctrlKey) return;
       if (isInteractive(event.target)) return;
+
+      if (event.detail === 2) {
+        window.parent.postMessage({ type: "slideViewerToggleFullscreen" }, "*");
+        return;
+      }
 
       if (navigationDisabledRef.current) {
         window.parent.postMessage({ type: "advanceSlide" }, "*");
@@ -150,7 +154,7 @@ function SlideEditor() {
 // banner above for context.
 function AllSlides() {
   return (
-    <div className="bg-black">
+    <div className="bg-[var(--slide-bg)]">
       {slides.map((slide) => (
         <div
           key={slide.id}
@@ -179,22 +183,32 @@ function SlideViewer() {
     height: Math.min(window.innerHeight, window.innerWidth * (9 / 16)),
   }));
 
-  const toggleFullscreen = () => {
+  const toggleFullscreen = useCallback(() => {
     if (!containerRef.current) return;
     if (!document.fullscreenElement) {
-      containerRef.current.requestFullscreen().catch(err => {
+      containerRef.current.requestFullscreen().catch((err: Error) => {
         console.error(`Error attempting to enable full-screen mode: ${err.message}`);
       });
     } else {
-      document.exitFullscreen();
+      void document.exitFullscreen();
     }
-  };
+  }, []);
 
   useEffect(() => {
     const handleFsChange = () => setIsFullscreen(!!document.fullscreenElement);
     document.addEventListener("fullscreenchange", handleFsChange);
     return () => document.removeEventListener("fullscreenchange", handleFsChange);
   }, []);
+
+  useEffect(() => {
+    const onMessage = (event: MessageEvent) => {
+      if (event.data?.type === "slideViewerToggleFullscreen") {
+        toggleFullscreen();
+      }
+    };
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, [toggleFullscreen]);
 
   useEffect(() => {
     const update = () => {
@@ -218,7 +232,12 @@ function SlideViewer() {
 
   useEffect(() => {
     const onKeyDown = (event: globalThis.KeyboardEvent) => {
-      if (event.key === "f") toggleFullscreen();
+      if (event.key === "Escape" && document.fullscreenElement === containerRef.current) {
+        event.preventDefault();
+        void document.exitFullscreen();
+        return;
+      }
+      if (event.key === "f" || event.key === "F") toggleFullscreen();
       if (event.key !== "ArrowLeft" && event.key !== "ArrowRight" && event.key !== " ") return;
       if (event.key === " ") event.preventDefault();
       iframeRef.current?.contentWindow?.dispatchEvent(
@@ -227,7 +246,7 @@ function SlideViewer() {
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, []);
+  }, [toggleFullscreen]);
 
   const base = import.meta.env.BASE_URL.replace(/\/$/, "");
   const firstPosition = slides.length > 0 ? slides[0].position : 1;
@@ -236,7 +255,14 @@ function SlideViewer() {
     <div
       ref={containerRef}
       className="slide-viewer w-full h-full min-h-[500px] overflow-hidden bg-background flex items-center justify-center relative group"
-      onClick={() => iframeRef.current?.focus()}
+      onClick={(e) => {
+        if (e.target === e.currentTarget && !document.fullscreenElement) {
+          void containerRef.current?.requestFullscreen().catch((err: Error) => {
+            console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+          });
+        }
+        iframeRef.current?.focus();
+      }}
     >
       <style dangerouslySetInnerHTML={{ __html: `
         .slide-viewer {
@@ -261,14 +287,26 @@ function SlideViewer() {
         }
       `}} />
       
-      <div className="slide-frame-container relative z-10" style={{ width: dims.width, height: dims.height }}>
+      <div
+        className="slide-frame-container relative z-10 shrink-0 p-3"
+        style={{ width: dims.width + 24, height: dims.height + 24 }}
+        onClick={(e) => {
+          if (e.target !== e.currentTarget) return;
+          if (!document.fullscreenElement) {
+            void containerRef.current?.requestFullscreen().catch((err: Error) => {
+              console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+            });
+          }
+        }}
+      >
         <iframe
           key={lang}
           ref={iframeRef}
           src={`${base}/slide${firstPosition}`}
-          className="w-full h-full border-none shadow-[0_40px_100px_-20px_rgba(0,0,0,0.15)] rounded-3xl overflow-hidden"
+          className={`pointer-events-auto absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border-none overflow-hidden ${isFullscreen ? "rounded-none shadow-none" : "rounded-3xl shadow-[0_40px_100px_-20px_rgba(0,0,0,0.12)]"}`}
+          style={{ width: dims.width, height: dims.height }}
           onLoad={() => iframeRef.current?.focus()}
-          title="Slide viewer"
+          title="Presentation slides — double-click the slide to toggle fullscreen; Esc exits fullscreen"
         />
       </div>
 
@@ -278,8 +316,9 @@ function SlideViewer() {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => {
-               iframeRef.current?.contentWindow?.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowLeft" }));
+            onClick={(e) => {
+              e.stopPropagation();
+              iframeRef.current?.contentWindow?.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowLeft" }));
             }}
             className="rounded-xl h-10 w-10 hover:bg-primary/10 text-primary transition-colors"
           >
@@ -291,8 +330,9 @@ function SlideViewer() {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => {
-               iframeRef.current?.contentWindow?.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight" }));
+            onClick={(e) => {
+              e.stopPropagation();
+              iframeRef.current?.contentWindow?.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight" }));
             }}
             className="rounded-xl h-10 w-10 hover:bg-primary/10 text-primary transition-colors"
           >
@@ -302,9 +342,12 @@ function SlideViewer() {
           <Button
             variant="ghost"
             size="icon"
-            onClick={toggleFullscreen}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleFullscreen();
+            }}
             className="rounded-xl h-10 w-10 hover:bg-primary/10 text-primary transition-colors"
-            title={isFullscreen ? "Exit Fullscreen (F)" : "Enter Fullscreen (F)"}
+            title={isFullscreen ? "Exit fullscreen (Esc)" : "Enter fullscreen (click deck or double-click slide, Esc to exit)"}
           >
             {isFullscreen ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
           </Button>

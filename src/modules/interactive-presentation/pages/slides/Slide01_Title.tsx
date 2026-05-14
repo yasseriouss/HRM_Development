@@ -19,7 +19,7 @@ export default function Slide01_Title() {
       <div
         className="absolute inset-0"
         style={{
-          background: "linear-gradient(135deg, rgba(26,28,34,0.95) 0%, rgba(26,28,34,0.6) 50%, rgba(26,28,34,0.85) 100%)"
+          background: "var(--slide-hero-scrim)",
         }}
       />
 

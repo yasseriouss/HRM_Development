@@ -30,7 +30,7 @@ export default function Slide16_Credits() {
       />
       <div
         className="absolute inset-0"
-        style={{ background: "radial-gradient(ellipse at center, rgba(26,28,34,0.5) 0%, rgba(26,28,34,0.96) 65%)" }}
+        style={{ background: "var(--slide-radial-vignette)" }}
       />
 
       <div
