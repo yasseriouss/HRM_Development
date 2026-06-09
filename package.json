@@ -22,6 +22,8 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "generate:excel": "node scripts/generate-excel.mjs",
+    "deploy:vercel": "pnpm run build && vercel --prod",
+    "deploy:vercel:dry": "pnpm run build && vercel",
     "db:pull": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/db-pull-remote-to-local.ps1",
     "clean": "rimraf dist node_modules/.vite .vite *.tsbuildinfo"
   },
