@@ -12,8 +12,6 @@
     "seed": "pnpm run seed:build && node --env-file=.env ./dist/seed.mjs"
   },
   "dependencies": {
-    "@hrm-development/api-zod": "workspace:*",
-    "@hrm-development/db": "workspace:*",
     "@neondatabase/serverless": "^1.1.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2",
@@ -27,7 +25,6 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/node": "catalog:",
-    "@vitejs/plugin-react": "catalog:",
     "esbuild": "^0.27.3",
     "esbuild-plugin-pino": "^2.3.3",
     "pino-pretty": "^13",

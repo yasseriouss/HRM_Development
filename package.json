@@ -4,11 +4,14 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": "22.x"
+    "node": ">=22.0.0"
   },
   "scripts": {
     "dev": "pnpm --parallel --filter hrm-development --filter @hrm-development/api-server run /^dev:/",
     "dev:client": "vite --host 0.0.0.0",
+    "dev:watch": "pnpm --parallel --filter hrm-development run /^dev:watch:/",
+    "dev:watch:build": "vite build --watch",
+    "dev:watch:serve": "vite preview --host 0.0.0.0",
     "dev:server": "pnpm --filter @hrm-development/api-server run dev",
     "build": "vite build",
     "vercel-build": "vite build",
@@ -62,6 +65,7 @@
     "cors": "^2.8.5",
     "date-fns": "^3.6.0",
     "drizzle-orm": "catalog:",
+    "drizzle-zod": "^0.7.1",
     "embla-carousel-react": "^8.6.0",
     "exceljs": "^4.4.0",
     "express": "^5.0.0",
