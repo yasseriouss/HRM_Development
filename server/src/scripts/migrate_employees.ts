@@ -1,8 +1,8 @@
 import fs from "fs";
 import path from "path";
-import { db } from "../../../lib/db/src/index";
-import { employeesTable, departmentsTable, factoriesTable } from "../../../lib/db/src/schema";
-import { eq, and } from "@hrm-development/db/drizzle";
+import { db } from "../db";
+import { employeesTable, departmentsTable, factoriesTable } from "../db/schema";
+import { eq, and } from "../db/drizzle";
 
 const WOOD_FACTORY_ID = "f0a1b2c3-d4e5-4f6a-8b9c-0d1e2f3a4b5c";
 

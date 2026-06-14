@@ -1,6 +1,6 @@
-import { db } from "@hrm-development/db";
-import { usersTable, userSessionsTable } from "@hrm-development/db/schema";
-import { eq } from "@hrm-development/db/drizzle";
+import { db } from "../db";
+import { usersTable, userSessionsTable } from "../db/schema";
+import { eq } from "../db/drizzle";
 import type { Request, Response, NextFunction } from "express";
 
 export async function getUserFromToken(token: string) {

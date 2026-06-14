@@ -1,10 +1,13 @@
 import { Router } from "express";
-import { db } from "@hrm-development/db";
-import { skillsTable, departmentsTable, employeesTable } from "@hrm-development/db/schema";
-import { eq, and, count, sql } from "@hrm-development/db/drizzle";
+import { db } from "../db";
+import { skillsTable, departmentsTable, employeesTable } from "../db/schema";
+import { eq, and, count, sql } from "../db/drizzle";
 import { requireAuth, requireRole } from "../lib/auth";
+import { validateUuid } from "../lib/validate";
 
 const router = Router();
+
+router.param("id", validateUuid);
 
 async function withDepartment(skill: typeof skillsTable.$inferSelect) {
   const [dept] = await db.select().from(departmentsTable).where(eq(departmentsTable.id, skill.department_id)).limit(1);
@@ -46,7 +49,7 @@ router.get("/", requireAuth, requireRole("super_admin", "hr_coordinator", "dept_
     const query = db.select().from(skillsTable);
     
     if (factory_id) {
-      const { inArray } = await import("@hrm-development/db/drizzle");
+      const { inArray } = await import("../db/drizzle");
       const deptSubquery = db.select({ id: departmentsTable.id })
         .from(departmentsTable)
         .where(eq(departmentsTable.factory_id, factory_id));

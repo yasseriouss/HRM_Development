@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { useListSkills, useListDepartments } from "@hrm-development/api-client-react";
+import { useListSkills, useListDepartments } from "../../../../api";
 import { getAuthHeaders, getAuthUser } from "@modules/skill-matrix/lib/auth";
 import { Card, CardContent } from "@shared/components/ui/card";
 import { Badge } from "@shared/components/ui/badge";

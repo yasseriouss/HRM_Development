@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, LabelList } from "recharts";
-import { DEPT_PERFORMANCE } from "@modules/dashboard/data/demo";
+import { useQuery } from "@tanstack/react-query";
+import { fetchDepartmentPerformance } from "@modules/dashboard/lib/api";
 import { SectionHeader } from "./OverviewSection";
 import { useT } from "@modules/dashboard/i18n";
 import { motion } from "framer-motion";
 import { ArrowUpDown, ChevronDown, ChevronUp } from "lucide-react";
 import { cn } from "@shared/utils/cn";
+import { Skeleton } from "@shared/components/ui/skeleton";
 import {
   dataTableBase,
   dataTableBody,
@@ -34,9 +36,48 @@ export default function DeptSection() {
   const [sortKey, setSortKey] = useState<SortKey>("avgPct");
   const [sortDir, setSortDir] = useState<1 | -1>(-1);
 
-  const sorted = [...DEPT_PERFORMANCE].sort((a, b) => (a[sortKey] - b[sortKey]) * sortDir);
+  const { data: rawDeptData, isLoading, error } = useQuery({
+    queryKey: ["dashboard-dept-performance"],
+    queryFn: fetchDepartmentPerformance,
+  });
 
-  const barData = [...DEPT_PERFORMANCE].sort((a, b) => b.avgPct - a.avgPct).map((d) => ({
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <div className="mb-8">
+          <Skeleton className="h-10 w-48 rounded-xl bg-zinc-200/50" />
+          <Skeleton className="h-4 w-96 rounded-lg bg-zinc-100/50 mt-2" />
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <Skeleton className="h-[440px] rounded-4xl bg-zinc-200/50" />
+          <Skeleton className="h-[440px] rounded-4xl bg-zinc-200/50" />
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !rawDeptData) {
+    return (
+      <div className="p-8 rounded-4xl border border-red-100 bg-red-50 text-red-700 font-sans">
+        <p className="font-bold">Error loading department performance</p>
+        <p className="text-sm mt-1">{error instanceof Error ? error.message : "Please check your network connection."}</p>
+      </div>
+    );
+  }
+
+  const mappedData = rawDeptData.map((d) => ({
+    id: d.department_id,
+    name: d.department_name,
+    employees: d.employee_count,
+    avgPct: d.average_percentage,
+    classA: d.class_a_count,
+    classB: d.class_b_count,
+    classC: d.class_c_count,
+  }));
+
+  const sorted = [...mappedData].sort((a, b) => (a[sortKey] - b[sortKey]) * sortDir);
+
+  const barData = [...mappedData].sort((a, b) => b.avgPct - a.avgPct).map((d) => ({
     name: d.name.length > 10 ? d.name.slice(0, 9) + "…" : d.name,
     fullName: d.name,
     avg: d.avgPct,

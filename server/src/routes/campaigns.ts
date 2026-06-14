@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { db } from "@hrm-development/db";
+import { db } from "../db";
 import {
   campaignsTable,
   departmentsTable,
@@ -7,14 +7,17 @@ import {
   skillsTable,
   evaluationsTable,
   evaluationSummariesTable,
-} from "@hrm-development/db/schema";
-import { eq, and, count } from "@hrm-development/db/drizzle";
+} from "../db/schema";
+import { eq, and, count } from "../db/drizzle";
 import { requireAuth, requireRole } from "../lib/auth";
+import { validateUuid } from "../lib/validate";
 
 type CampaignStatus = "Draft" | "Active" | "Completed" | "Archived";
 const VALID_CAMPAIGN_STATUSES: CampaignStatus[] = ["Draft", "Active", "Completed", "Archived"];
 
 const router = Router();
+
+router.param("id", validateUuid);
 
 async function formatCampaign(c: typeof campaignsTable.$inferSelect) {
   let department = null;

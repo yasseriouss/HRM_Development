@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { db, factoriesTable } from "@hrm-development/db";
+import { db, factoriesTable } from "../db";
 
 const router = Router();
 

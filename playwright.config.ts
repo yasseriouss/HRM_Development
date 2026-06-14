@@ -1,21 +1,41 @@
 import { defineConfig, devices } from '@playwright/test';
-import path from 'path';
 
 export default defineConfig({
   testDir: './tests/e2e',
-  fullyParallel: true,
+  timeout: 60_000,
+  fullyParallel: false,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
-  reporter: 'html',
+  retries: 1,
+  workers: 1,
+  reporter: 'list',
   use: {
     baseURL: 'http://localhost:8081',
     trace: 'on-first-retry',
+    locale: 'en-US',
+    actionTimeout: 30_000,
+    navigationTimeout: 60_000,
   },
+  webServer: [
+    {
+      command: 'pnpm run dev:server',
+      url: 'http://localhost:8080/healthz',
+      reuseExistingServer: true,
+      timeout: 60_000,
+    },
+    {
+      command: 'pnpm vite preview --port 8081 --strictPort',
+      url: 'http://localhost:8081',
+      reuseExistingServer: true,
+      timeout: 60_000,
+    },
+  ],
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: { 
+        ...devices['Desktop Chrome'],
+        channel: 'chrome',
+      },
     },
   ],
 });

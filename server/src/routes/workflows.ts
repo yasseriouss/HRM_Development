@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { db } from "@hrm-development/db";
+import { db } from "../db";
 import {
   workflowInstancesTable,
   workflowAssignmentsTable,
@@ -11,11 +11,15 @@ import {
   campaignsTable,
   skillsTable,
   employeesTable,
-} from "@hrm-development/db/schema";
-import { eq, and, inArray, or, alias } from "@hrm-development/db/drizzle";
+} from "../db/schema";
+import { eq, and, inArray, or, alias } from "../db/drizzle";
 import { requireAuth } from "../lib/auth";
+import { validateUuid } from "../lib/validate";
 
 const router = Router();
+
+router.param("id", validateUuid);
+router.param("stepId", validateUuid);
 
 async function createNotification(
   userId: string,

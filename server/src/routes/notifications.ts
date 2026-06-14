@@ -1,10 +1,13 @@
 import { Router } from "express";
-import { db } from "@hrm-development/db";
-import { workflowNotificationsTable } from "@hrm-development/db/schema";
-import { eq, and, desc } from "@hrm-development/db/drizzle";
+import { db } from "../db";
+import { workflowNotificationsTable } from "../db/schema";
+import { eq, and, desc } from "../db/drizzle";
 import { requireAuth } from "../lib/auth";
+import { validateUuid } from "../lib/validate";
 
 const router = Router();
+
+router.param("id", validateUuid);
 
 // GET /notifications — get notifications for current user
 router.get("/", requireAuth, async (req, res) => {

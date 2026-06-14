@@ -1,4 +1,4 @@
-import { db } from "@hrm-development/db";
+import { db } from "./db";
 import {
   factoriesTable,
   departmentsTable,
@@ -9,8 +9,8 @@ import {
   evaluationsTable,
   evaluationSummariesTable,
   trainingRecommendationsTable,
-} from "@hrm-development/db/schema";
-import { eq, count, and } from "@hrm-development/db/drizzle";
+} from "./db/schema";
+import { eq, count, and } from "./db/drizzle";
 
 // ── FACTORIES ────────────────────────────────────────────────────────────────
 
@@ -49,6 +49,7 @@ export const USERS_DEF = [
   // WOODWORKING FACTORY STAFF
   { id: "1c2b3ac7-96cb-4cee-a9c3-2dcbdca99d7e", email: "hr@hrm-dev.com",          role: "hr_coordinator", password: "hr123",    factory_id: "f0a1b2c3-d4e5-4f6a-8b9c-0d1e2f3a4b5c", department_id: null,                                    production_role: null         },
   { id: "bc467dbf-6e48-4ff3-9761-f2dbf34b99cb", email: "dept_head@hrm-dev.com",   role: "dept_head",      password: "head123",  factory_id: "f0a1b2c3-d4e5-4f6a-8b9c-0d1e2f3a4b5c", department_id: "dec521d4-19b7-41b3-b9d1-9f40ef3567f8", production_role: "supervisor" },
+  { id: "e3a2b3c4-5678-40ab-bdef-1234567890ab",  email: "employee@hrm-dev.com",    role: "employee",       password: "emp123",   factory_id: "f0a1b2c3-d4e5-4f6a-8b9c-0d1e2f3a4b5c", department_id: "dec521d4-19b7-41b3-b9d1-9f40ef3567f8", production_role: "technician" },
   
   // METAL FACTORY STAFF
   { id: "e1a2b3c4-5678-40ab-bdef-1234567890ab",    email: "hr_metal@hrm-dev.com",    role: "hr_coordinator", password: "hr123",    factory_id: "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d", department_id: null,                                    production_role: null         },
@@ -309,9 +310,14 @@ export async function seed() {
       description: dept.description,
     }).onConflictDoNothing();
 
-    // Update factory_id if record already exists
+    // Update department details if record already exists
     await db.update(departmentsTable)
-      .set({ factory_id: dept.factory_id })
+      .set({ 
+        factory_id: dept.factory_id,
+        name: dept.name,
+        code: dept.code,
+        description: dept.description
+      })
       .where(eq(departmentsTable.id, dept.id));
   }
 
@@ -528,4 +534,16 @@ async function seedCampaignsAndEvaluations() {
 }
 
 // To run the seed, call the seed() function explicitly from a script or route.
+if (process.argv[1]?.endsWith("seed.mjs") || process.argv[1]?.endsWith("seed.ts") || import.meta.url === `file://${process.argv[1]}`) {
+  console.log("Executing seed script...");
+  seed()
+    .then(() => {
+      console.log("Database seeded successfully.");
+      process.exit(0);
+    })
+    .catch((err) => {
+      console.error("Database seed failed:", err);
+      process.exit(1);
+    });
+}
 

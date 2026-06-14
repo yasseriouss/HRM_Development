@@ -14,7 +14,7 @@ test.describe('End-to-End Evaluation Flow', () => {
     
     // Verify Dashboard load - Title should be "Analytics Dashboard" (from dash_login_title)
     // or fallback to "HRM UNIFIED"
-    await expect(page.locator('h1')).toContainText('Analytics Dashboard');
+    await expect(page.locator('h1').filter({ hasText: 'Analytics Dashboard' })).toBeVisible({ timeout: 30_000 });
 
     // Navigate to Skill Matrix Hub
     await page.goto('/skill-matrix');
@@ -29,7 +29,7 @@ test.describe('End-to-End Evaluation Flow', () => {
     await page.fill('input[type="password"]', 'head123');
     await page.click('button:has-text("Sign in")');
 
-    await expect(page.locator('h1')).toContainText('Analytics Dashboard');
+    await expect(page.locator('h1').filter({ hasText: 'Analytics Dashboard' })).toBeVisible({ timeout: 30_000 });
   });
 
   test('Employee login', async ({ page }) => {
@@ -38,6 +38,6 @@ test.describe('End-to-End Evaluation Flow', () => {
     await page.fill('input[type="password"]', 'emp123');
     await page.click('button:has-text("Sign in")');
 
-    await expect(page.locator('h1')).toContainText('Analytics Dashboard');
+    await expect(page.locator('h1').filter({ hasText: 'Analytics Dashboard' })).toBeVisible({ timeout: 30_000 });
   });
 });

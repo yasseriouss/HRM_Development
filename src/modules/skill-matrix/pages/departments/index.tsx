@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
-import { useListDepartments } from "@hrm-development/api-client-react";
+import { useListDepartments } from "../../../../api";
 import { getAuthHeaders, getAuthUser } from "@modules/skill-matrix/lib/auth";
 import { Card, CardContent } from "@shared/components/ui/card";
 import { Button } from "@shared/components/ui/button";

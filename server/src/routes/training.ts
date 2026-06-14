@@ -1,10 +1,13 @@
 import { Router } from "express";
-import { db } from "@hrm-development/db";
-import { trainingRecommendationsTable, employeesTable, skillsTable, usersTable } from "@hrm-development/db/schema";
-import { eq, and } from "@hrm-development/db/drizzle";
+import { db } from "../db";
+import { trainingRecommendationsTable, employeesTable, skillsTable, usersTable } from "../db/schema";
+import { eq, and } from "../db/drizzle";
 import { requireAuth, requireRole } from "../lib/auth";
+import { validateUuid } from "../lib/validate";
 
 const router = Router();
+
+router.param("id", validateUuid);
 
 async function formatTraining(t: typeof trainingRecommendationsTable.$inferSelect) {
   const [emp] = await db.select({ full_name: employeesTable.full_name }).from(employeesTable).where(eq(employeesTable.id, t.employee_id)).limit(1);
@@ -46,7 +49,7 @@ router.get("/", requireAuth, async (req, res) => {
       conditions.push(eq(trainingRecommendationsTable.employee_id, selfEmp.id));
     } else if (role === "dept_head" && userDeptId) {
       // Dept head sees recs for employees in their department
-      const { inArray } = await import("@hrm-development/db/drizzle");
+      const { inArray } = await import("../db/drizzle");
       const deptEmps = await db.select({ id: employeesTable.id }).from(employeesTable)
         .where(and(eq(employeesTable.department_id, userDeptId), eq(employeesTable.is_active, true)));
       const deptEmpIds = deptEmps.map((e) => e.id);

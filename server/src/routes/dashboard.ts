@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { db } from "@hrm-development/db";
+import { db } from "../db";
 import {
   employeesTable,
   departmentsTable,
@@ -8,8 +8,8 @@ import {
   evaluationsTable,
   evaluationSummariesTable,
   trainingRecommendationsTable,
-} from "@hrm-development/db/schema";
-import { eq, count, sql, desc, and } from "@hrm-development/db/drizzle";
+} from "../db/schema";
+import { eq, count, sql, desc, and } from "../db/drizzle";
 import { requireAuth, requireRole } from "../lib/auth";
 
 const router = Router();
@@ -57,21 +57,38 @@ router.get("/metrics", requireAuth, requireRole("super_admin", "hr_coordinator",
     const [completedCampaigns] = await db.select({ total: count() }).from(campaignsTable).where(completedCondition);
 
     let pendingTraining = 0;
+    let inProgressTraining = 0;
+    let completedTraining = 0;
     if (role === "dept_head" && userDeptId) {
       const deptEmpIds = await db.select({ id: employeesTable.id })
         .from(employeesTable)
         .where(and(eq(employeesTable.department_id, userDeptId), eq(employeesTable.is_active, true)));
       const ids = deptEmpIds.map((e: any) => e.id);
       if (ids.length > 0) {
-        const { inArray } = await import("@hrm-development/db/drizzle");
-        const [pt] = await db.select({ total: count() }).from(trainingRecommendationsTable)
-          .where(and(inArray(trainingRecommendationsTable.employee_id, ids), eq(trainingRecommendationsTable.status, "Pending")));
-        pendingTraining = Number(pt.total) || 0;
+        const { inArray } = await import("../db/drizzle");
+        const [pt] = await db
+          .select({
+            pending: count(sql`CASE WHEN ${trainingRecommendationsTable.status} = 'Pending' THEN 1 END`),
+            inProgress: count(sql`CASE WHEN ${trainingRecommendationsTable.status} = 'In Progress' THEN 1 END`),
+            completed: count(sql`CASE WHEN ${trainingRecommendationsTable.status} = 'Completed' THEN 1 END`),
+          })
+          .from(trainingRecommendationsTable)
+          .where(inArray(trainingRecommendationsTable.employee_id, ids));
+        pendingTraining = Number(pt?.pending) || 0;
+        inProgressTraining = Number(pt?.inProgress) || 0;
+        completedTraining = Number(pt?.completed) || 0;
       }
     } else {
-      const [pt] = await db.select({ total: count() }).from(trainingRecommendationsTable)
-        .where(eq(trainingRecommendationsTable.status, "Pending"));
-      pendingTraining = Number(pt.total) || 0;
+      const [pt] = await db
+        .select({
+          pending: count(sql`CASE WHEN ${trainingRecommendationsTable.status} = 'Pending' THEN 1 END`),
+          inProgress: count(sql`CASE WHEN ${trainingRecommendationsTable.status} = 'In Progress' THEN 1 END`),
+          completed: count(sql`CASE WHEN ${trainingRecommendationsTable.status} = 'Completed' THEN 1 END`),
+        })
+        .from(trainingRecommendationsTable);
+      pendingTraining = Number(pt?.pending) || 0;
+      inProgressTraining = Number(pt?.inProgress) || 0;
+      completedTraining = Number(pt?.completed) || 0;
     }
 
     const avgCondition = role === "dept_head" && userDeptId
@@ -105,6 +122,8 @@ router.get("/metrics", requireAuth, requireRole("super_admin", "hr_coordinator",
       completed_campaigns: Number(completedCampaigns.total) || 0,
       total_skills: Number(skillCount.total) || 0,
       pending_training: pendingTraining,
+      in_progress_training: inProgressTraining,
+      completed_training: completedTraining,
     });
   } catch (err) {
     console.error("Dashboard metrics error:", err);

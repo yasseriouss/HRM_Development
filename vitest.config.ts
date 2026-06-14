@@ -1,5 +1,4 @@
 import { defineConfig } from "vitest/config";
-import path from "path";
 
 export default defineConfig({
   test: {
@@ -8,10 +7,5 @@ export default defineConfig({
     setupFiles: ["./tests/setup.ts"],
     include: ["tests/**/*.test.ts", "tests/**/*.test.tsx"],
     css: false,
-  },
-  resolve: {
-    alias: {
-      "@hrm-development/db": path.resolve(__dirname, "lib/db/src"),
-    },
   },
 });

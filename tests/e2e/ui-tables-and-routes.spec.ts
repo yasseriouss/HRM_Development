@@ -17,7 +17,7 @@ test.describe("Unified tables & navigation", () => {
     await expect(comparison).toBeVisible({ timeout: 30_000 });
 
     await page.getByRole("link", { name: "Assembly", exact: true }).first().click();
-    await expect(page).toHaveURL(/\/skill-matrix\/departments\/d1/);
+    await expect(page).toHaveURL(/\/skill-matrix\/departments\/[a-f0-9-]{36}/);
   });
 
   test("employees list uses unified table shell", async ({ page }) => {

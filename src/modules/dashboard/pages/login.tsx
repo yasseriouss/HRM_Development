@@ -9,15 +9,6 @@ interface LoginProps {
   onLogin: () => void;
 }
 
-const CornerMarks = ({ color = "primary" }: { color?: string }) => (
-  <>
-    <div className={`absolute top-2 left-2 w-1.5 h-1.5 rounded-full bg-${color}/20`} />
-    <div className={`absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-${color}/20`} />
-    <div className={`absolute bottom-2 left-2 w-1.5 h-1.5 rounded-full bg-${color}/20`} />
-    <div className={`absolute bottom-2 right-2 w-1.5 h-1.5 rounded-full bg-${color}/20`} />
-  </>
-);
-
 export default function Login({ onLogin }: LoginProps) {
   const { t, lang, setLang } = useLang();
   const [email, setEmail] = useState("super_admin@hrm-dev.com");

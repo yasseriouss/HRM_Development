@@ -35,14 +35,6 @@ import {
   Pie
 } from "recharts";
 
-const CornerMarks = ({ color = "primary" }: { color?: string }) => (
-  <>
-    <div className={`absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.2)]`} />
-    <div className={`absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.2)]`} />
-    <div className={`absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.2)]`} />
-    <div className={`absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-${color}/60 shadow-[0_0_10px_rgba(var(--primary),0.2)]`} />
-  </>);
-
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -62,10 +54,10 @@ const itemVariants = {
 };
 
 const categoryData = [
-  { name: "Skills", value: 350, color: "#D4AF37" },
-  { name: "Responsibility", value: 350, color: "#A0A0A0" },
-  { name: "Effort", value: 200, color: "#4A4A4A" },
-  { name: "Conditions", value: 100, color: "#1A1A1A" }
+  { name: "Skills", value: 350, color: "oklch(64% 0.13 28)" },
+  { name: "Responsibility", value: 350, color: "oklch(50% 0.018 50)" },
+  { name: "Effort", value: 200, color: "oklch(40% 0.018 50)" },
+  { name: "Conditions", value: 100, color: "oklch(30% 0.018 50)" }
 ];
 
 const gradeData = [
@@ -87,55 +79,50 @@ export default function JobEvaluationGuide() {
 
   return (
     <motion.div 
-      className="space-y-10 pb-24 font-sans text-white"
+      className="space-y-10 pb-24 font-sans text-foreground"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
-      {/* Header Section - Industrial Focus */}
-      <motion.div variants={itemVariants} className="relative p-12 bg-[#0A0A0A] border-2 border-primary/20 overflow-hidden shadow-2xl">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5" />
+      {/* Header Section - Editorial Focus */}
+      <motion.div variants={itemVariants} className="relative p-12 bg-surface/50 border border-muted/10 rounded-3xl overflow-hidden shadow-sm">
         <div className="relative z-10 flex flex-col md:flex-row items-center gap-12">
-          <div className="p-6 bg-zinc-900 border-2 border-primary/20 shrink-0 shadow-[0_0_20px_rgba(var(--primary),0.1)] relative overflow-hidden">
-            <div className="absolute inset-0 bg-primary/5 animate-pulse" />
+          <div className="p-6 bg-background border border-muted/10 rounded-2xl shrink-0 shadow-sm relative overflow-hidden">
             <Scaling className="h-12 w-12 text-primary relative z-10" />
           </div>
           <div className="space-y-4">
             <div className="flex items-center gap-4">
-               <Activity className="h-4 w-4 text-primary animate-pulse shadow-[0_0_10px_rgba(var(--primary),0.5)]" />
-               <span className="font-headline font-black tracking-[0.5em] text-[10px] text-primary/60 uppercase">{t("je_methodology_core")}</span>
+               <Activity className="h-4 w-4 text-primary shadow-[0_0_10px_rgba(var(--primary),0.5)]" />
+               <span className="font-headline font-bold tracking-[0.3em] text-[10px] text-muted uppercase">{t("je_methodology_core")}</span>
             </div>
-            <h1 className="text-5xl md:text-7xl font-headline font-black tracking-tighter text-white uppercase leading-none text-shimmer">{t("je_guide_title")}
+            <h1 className="text-5xl md:text-7xl font-headline font-bold tracking-tighter text-foreground uppercase leading-none">{t("je_guide_title")}
             </h1>
-            <p className="text-zinc-500 font-medium border-s-2 border-primary/20 ps-6 text-[11px] uppercase tracking-widest max-w-xl leading-relaxed">{t("je_guide_subtitle")}
+            <p className="text-muted font-medium border-s-2 border-primary/20 ps-6 text-[11px] uppercase tracking-widest max-w-xl leading-relaxed">{t("je_guide_subtitle")}
             </p>
           </div>
         </div>
-        <CornerMarks />
       </motion.div>
 
       {/* Pillar Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">{[
-          { icon: BrainCircuit, title: t("je_cat_skills"), value: "35%", color: "primary" },
-          { icon: ShieldCheck, title: t("je_cat_responsibility"), value: "35%", color: "zinc-400" },
-          { icon: Zap, title: t("je_cat_effort"), value: "20%", color: "amber-400" },
-          { icon: BarChart3, title: t("je_cat_conditions"), value: "10%", color: "rose-400" }
+          { icon: BrainCircuit, title: t("je_cat_skills"), value: "35%", color: "text-primary" },
+          { icon: ShieldCheck, title: t("je_cat_responsibility"), value: "35%", color: "text-muted" },
+          { icon: Zap, title: t("je_cat_effort"), value: "20%", color: "text-accent" },
+          { icon: BarChart3, title: t("je_cat_conditions"), value: "10%", color: "text-muted" }
         ].map((stat, i) => (
           <motion.div key={i} variants={itemVariants}>
-            <Card className={`bg-[#0D0D0D] border border-zinc-900 rounded-none relative group hover:border-primary/30 transition-all duration-500 shadow-xl overflow-hidden`}>
+            <Card className="relative group hover:border-primary/20 transition-all duration-500 shadow-sm overflow-hidden">
               <CardContent className="p-8">
                 <div className="flex items-center justify-between">
                   <div className="space-y-2">
-                    <p className="text-[9px] font-headline font-black tracking-[0.3em] text-zinc-600 uppercase">{stat.title}</p>
-                    <h3 className={`text-4xl font-mono font-black text-white tracking-tighter`}>{stat.value}</h3>
+                    <p className="text-[9px] font-headline font-bold tracking-[0.3em] text-muted uppercase">{stat.title}</p>
+                    <h3 className="text-4xl font-headline font-bold text-foreground tracking-tighter">{stat.value}</h3>
                   </div>
-                  <div className={`p-4 bg-zinc-900 border border-zinc-800 group-hover:border-current transition-all duration-500 relative overflow-hidden text-${stat.color}`}>
-                     <stat.icon className={`h-6 w-6 relative z-10`} />
-                     <div className="absolute inset-0 bg-white/5 -translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
+                  <div className={cn("p-4 bg-background border border-muted/10 rounded-2xl group-hover:border-primary/20 transition-all duration-500", stat.color)}>
+                     <stat.icon className="h-6 w-6" />
                   </div>
                 </div>
               </CardContent>
-              <CornerMarks />
             </Card>
           </motion.div>
         ))}
@@ -146,61 +133,60 @@ export default function JobEvaluationGuide() {
         
         {/* Factor Table */}
         <motion.div variants={itemVariants} className="lg:col-span-2">
-          <Card className="h-full bg-[#0A0A0A] border border-zinc-800 rounded-none relative overflow-hidden">
-            <CardHeader className="p-8 border-b border-zinc-900">
-              <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
+          <Card className="h-full border border-muted/10 rounded-3xl relative overflow-hidden">
+            <CardHeader className="p-8 border-b border-muted/5 bg-background/30">
+              <CardTitle className="font-headline font-bold text-xl text-foreground uppercase tracking-tight flex items-center gap-3">
                 <Layers className="h-5 w-5 text-primary" />{t("je_weight_title")}
               </CardTitle>
             </CardHeader>
             <CardContent className="p-0">
-              <div className={cn("overflow-x-auto border border-zinc-900 bg-[#0A0A0A]", dataTableScroll)}>
+              <div className={cn("overflow-x-auto border-b border-muted/5", dataTableScroll)}>
                 <table className={dataTableBase}>
                   <thead>
-                    <tr className="bg-white/5 border-b border-zinc-900 text-start">
-                      <th className="px-8 py-5 font-headline font-black text-[10px] tracking-[0.3em] text-zinc-500 uppercase text-start">{t("je_col_pillar")}</th>
-                      <th className="px-8 py-5 font-headline font-black text-[10px] tracking-[0.3em] text-zinc-500 uppercase text-start">{t("je_col_vectors")}</th>
-                      <th className="px-8 py-5 text-center font-headline font-black text-[10px] tracking-[0.3em] text-zinc-500 uppercase">{t("je_col_weight")}</th>
-                      <th className="px-8 py-5 text-center font-headline font-black text-[10px] tracking-[0.3em] text-zinc-500 uppercase">{t("je_col_max_pts")}</th>
+                    <tr className="bg-muted/5 border-b border-muted/10 text-start">
+                      <th className="px-8 py-5 font-headline font-bold text-[10px] tracking-[0.2em] text-muted uppercase text-start">{t("je_col_pillar")}</th>
+                      <th className="px-8 py-5 font-headline font-bold text-[10px] tracking-[0.2em] text-muted uppercase text-start">{t("je_col_vectors")}</th>
+                      <th className="px-8 py-5 text-center font-headline font-bold text-[10px] tracking-[0.2em] text-muted uppercase">{t("je_col_weight")}</th>
+                      <th className="px-8 py-5 text-center font-headline font-bold text-[10px] tracking-[0.2em] text-muted uppercase">{t("je_col_max_pts")}</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-900">{[
+                  <tbody className="divide-y divide-muted/5">{[
                       { cat: t("je_cat_skills"), factors: t("je_f_education") + ", " + t("je_f_experience") + ", " + t("je_f_knowledge"), weight: "35%", points: 350 },
                       { cat: t("je_cat_responsibility"), factors: t("je_f_compliance") + ", " + t("je_f_supervisory") + ", " + t("je_f_decision"), weight: "35%", points: 350 },
                       { cat: t("je_cat_effort"), factors: t("je_f_mental") + ", " + t("je_f_physical"), weight: "20%", points: 200 },
                       { cat: t("je_cat_conditions"), factors: t("je_f_hazards") + ", " + t("je_f_schedule") + ", " + t("je_f_environment") + ", " + t("je_f_travel"), weight: "10%", points: 100 }
                     ].map((row, i) => (
-                      <tr key={i} className="group hover:bg-white/2 border-l-2 border-transparent hover:border-primary transition-all duration-300">
+                      <tr key={i} className="group hover:bg-muted/5 border-l-2 border-transparent hover:border-primary transition-all duration-300">
                         <td className="px-8 py-6">
-                           <span className="font-headline font-black text-sm text-white uppercase tracking-tight group-hover:text-primary transition-colors duration-300">{row.cat}</span>
+                           <span className="font-headline font-bold text-sm text-foreground uppercase tracking-tight group-hover:text-primary transition-colors duration-300">{row.cat}</span>
                         </td>
                         <td className="px-8 py-6">
-                           <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-[0.2em] leading-relaxed block max-w-[200px] group-hover:text-zinc-400 transition-colors">{row.factors}</span>
+                           <span className="text-[10px] font-headline text-muted uppercase tracking-widest leading-relaxed block max-w-[200px] group-hover:text-foreground transition-colors">{row.factors}</span>
                         </td>
                         <td className="px-8 py-6 text-center">
-                           <Badge variant="outline" className="rounded-none border-zinc-800 bg-zinc-900/50 font-mono text-[9px] font-black text-zinc-500 px-3 py-1 uppercase tracking-widest">{row.weight}</Badge>
+                           <Badge variant="outline" className="rounded-full border-muted/20 bg-background font-headline text-[9px] font-bold text-muted px-3 py-1 uppercase tracking-widest">{row.weight}</Badge>
                         </td>
                         <td className="px-8 py-6 text-center">
-                           <span className="font-mono font-black text-white text-xl tracking-tighter">{row.points}</span>
+                           <span className="font-headline font-bold text-foreground text-xl tracking-tighter">{row.points}</span>
                         </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-              <div className="p-6 bg-primary/2 border-t border-zinc-900 flex items-center justify-between">
-                <span className="font-headline font-black text-[10px] text-zinc-600 uppercase tracking-[0.2em]">{t("je_total_pts")}</span>
-                <span className="text-primary font-mono font-black text-xl tracking-tighter">1000.00 {t("je_points_value")}</span>
+              <div className="p-6 bg-background/50 flex items-center justify-between">
+                <span className="font-headline font-bold text-[10px] text-muted uppercase tracking-[0.2em]">{t("je_total_pts")}</span>
+                <span className="text-primary font-headline font-bold text-xl tracking-tighter">1000.00 {t("je_points_value")}</span>
               </div>
             </CardContent>
-            <CornerMarks />
           </Card>
         </motion.div>
 
         {/* Allocation Pie Chart */}
         <motion.div variants={itemVariants}>
-          <Card className="h-full bg-[#0A0A0A] border border-zinc-800 rounded-none relative overflow-hidden">
-            <CardHeader className="p-8 border-b border-zinc-900">
-              <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
+          <Card className="h-full border border-muted/10 rounded-3xl relative overflow-hidden">
+            <CardHeader className="p-8 border-b border-muted/5 bg-background/30">
+              <CardTitle className="font-headline font-bold text-xl text-foreground uppercase tracking-tight flex items-center gap-3">
                 <Target className="h-5 w-5 text-primary" />{t("je_weight_title")}
               </CardTitle>
             </CardHeader>
@@ -221,32 +207,31 @@ export default function JobEvaluationGuide() {
                       ))}
                     </Pie>
                     <Tooltip 
-                      contentStyle={{ backgroundColor: '#0A0A0A', border: '1px solid #D4AF37', borderRadius: '0px', color: '#FFF', fontSize: '10px' }} 
+                      contentStyle={{ backgroundColor: 'oklch(99% 0.008 70)', border: '1px solid oklch(90% 0.014 70)', borderRadius: '12px', color: 'oklch(22% 0.02 50)', fontSize: '10px', fontFamily: 'Comfortaa' }} 
                     />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
               <div className="w-full mt-10 space-y-3">
                  {categoryData.map((cat, i) => (
-                   <div key={i} className="flex items-center justify-between text-[10px] font-headline font-black text-zinc-500 uppercase tracking-widest">
+                   <div key={i} className="flex items-center justify-between text-[10px] font-headline font-bold text-muted uppercase tracking-widest">
                       <div className="flex items-center gap-3">
-                         <div className="h-2 w-2" style={{ backgroundColor: cat.color }} />
+                         <div className="h-2 w-2 rounded-full" style={{ backgroundColor: cat.color }} />
                          <span>{t(("je_cat_" + cat.name.toLowerCase()) as any)}</span>
                       </div>
-                      <span className="font-mono text-white">{cat.value} PTS</span>
+                      <span className="font-headline text-foreground">{cat.value} PTS</span>
                    </div>
                  ))}
               </div>
             </CardContent>
-            <CornerMarks />
           </Card>
         </motion.div>
 
         {/* Grading Scale Module */}
         <motion.div variants={itemVariants} className="lg:col-span-3">
-          <Card className="bg-[#0A0A0A] border border-zinc-800 rounded-none relative overflow-hidden">
-            <CardHeader className="p-8 border-b border-zinc-900">
-              <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
+          <Card className="border border-muted/10 rounded-3xl relative overflow-hidden">
+            <CardHeader className="p-8 border-b border-muted/5 bg-background/30">
+              <CardTitle className="font-headline font-bold text-xl text-foreground uppercase tracking-tight flex items-center gap-3">
                 <Scaling className="h-5 w-5 text-primary" />{t("je_grading_title")}
               </CardTitle>
             </CardHeader>
@@ -254,16 +239,16 @@ export default function JobEvaluationGuide() {
               <div className="h-[300px] mb-12">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={gradeData}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#1A1A1A" />
-                    <XAxis dataKey="grade" stroke="#444" fontSize={10} fontStyle="italic" />
-                    <YAxis stroke="#444" fontSize={10} />
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="oklch(90% 0.014 70)" />
+                    <XAxis dataKey="grade" stroke="oklch(50% 0.018 50)" fontSize={10} />
+                    <YAxis stroke="oklch(50% 0.018 50)" fontSize={10} />
                     <Tooltip 
-                      cursor={{fill: 'rgba(212,175,55,0.05)'}}
-                      contentStyle={{ backgroundColor: '#0A0A0A', border: '1px solid #D4AF37', borderRadius: '0px', color: '#FFF', fontSize: '10px' }}
+                      cursor={{fill: 'oklch(64% 0.13 28 / 0.05)'}}
+                      contentStyle={{ backgroundColor: 'oklch(99% 0.008 70)', border: '1px solid oklch(90% 0.014 70)', borderRadius: '12px', color: 'oklch(22% 0.02 50)', fontSize: '10px', fontFamily: 'Comfortaa' }}
                     />
-                    <Bar dataKey="max" radius={[0, 0, 0, 0]}>
+                    <Bar dataKey="max" radius={[4, 4, 0, 0]}>
                       {gradeData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={index > 5 ? '#D4AF37' : '#333'} />
+                        <Cell key={`cell-${index}`} fill={index > 5 ? 'oklch(64% 0.13 28)' : 'oklch(90% 0.014 70)'} />
                       ))}
                     </Bar>
                   </BarChart>
@@ -272,21 +257,21 @@ export default function JobEvaluationGuide() {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                 {[gradeData.slice(0, 5), gradeData.slice(5)].map((subset, idx) => (
-                  <div key={idx} className={cn("border border-zinc-900 bg-black/40 p-1", dataTableScroll)}>
+                  <div key={idx} className={cn("border border-muted/10 bg-background/50 rounded-2xl overflow-hidden", dataTableScroll)}>
                     <table className={dataTableBase}>
                       <thead>
-                        <tr className="bg-zinc-900/80 font-headline font-black text-[9px] uppercase tracking-widest text-zinc-500">
+                        <tr className="bg-muted/5 font-headline font-bold text-[9px] uppercase tracking-widest text-muted">
                           <th className="px-6 py-4">{t("je_col_range")}</th>
                           <th className="px-6 py-4">{t("je_col_tier")}</th>
                           <th className="px-6 py-4">{t("je_col_designation")}</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-zinc-900">
+                      <tbody className="divide-y divide-muted/5">
                         {subset.map((row, i) => (
-                          <tr key={i} className="hover:bg-primary/3 transition-colors">
-                            <td className="px-6 py-4 font-mono text-xs text-zinc-400">{row.min} - {row.max}</td>
-                            <td className="px-6 py-4 font-mono font-black text-primary text-sm">{row.grade}</td>
-                            <td className="px-6 py-4 text-[10px] font-headline font-black text-zinc-500 uppercase tracking-widest">{t(("je_grade_" + row.category) as any)}</td>
+                          <tr key={i} className="hover:bg-primary/5 transition-colors">
+                            <td className="px-6 py-4 font-headline text-xs text-muted">{row.min} - {row.max}</td>
+                            <td className="px-6 py-4 font-headline font-bold text-primary text-sm">{row.grade}</td>
+                            <td className="px-6 py-4 text-[10px] font-headline font-bold text-muted uppercase tracking-widest">{t(("je_grade_" + row.category) as any)}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -295,16 +280,15 @@ export default function JobEvaluationGuide() {
                 ))}
               </div>
             </CardContent>
-            <CornerMarks />
           </Card>
         </motion.div>
 
         {/* Operational Intelligence */}
         <motion.div variants={itemVariants} className="lg:col-span-3">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-             <Card className="bg-primary/3 border-primary/20 rounded-none relative overflow-hidden group">
-                <CardHeader className="p-8 border-b border-primary/10">
-                  <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
+             <Card className="bg-primary/5 border-primary/10 rounded-3xl relative overflow-hidden group">
+                <CardHeader className="p-8 border-b border-primary/5 bg-transparent">
+                  <CardTitle className="font-headline font-bold text-xl text-foreground uppercase tracking-tight flex items-center gap-3">
                     <Settings2 className="h-5 w-5 text-primary" />{t("je_gov_title")}
                   </CardTitle>
                 </CardHeader>
@@ -317,19 +301,18 @@ export default function JobEvaluationGuide() {
                     <div key={i} className="flex gap-4">
                       <div className="mt-1"><CheckCircle2 className="h-4 w-4 text-primary" /></div>
                       <div>
-                        <p className="font-headline font-black text-xs text-white uppercase tracking-widest">{item.t}</p>
-                        <p className="text-[11px] font-sans font-medium text-zinc-500 leading-relaxed mt-2">{item.d}</p>
+                        <p className="font-headline font-bold text-xs text-foreground uppercase tracking-widest">{item.t}</p>
+                        <p className="text-[11px] font-sans font-medium text-muted leading-relaxed mt-2">{item.d}</p>
                       </div>
                     </div>
                   ))}
                 </CardContent>
-                <CornerMarks />
              </Card>
 
-             <Card className="bg-[#0D0D0D] border-zinc-800 rounded-none relative overflow-hidden">
-                <CardHeader className="p-8 border-b border-zinc-900">
-                  <CardTitle className="font-headline font-black text-xl text-white uppercase tracking-tighter flex items-center gap-3">
-                    <Cpu className="h-5 w-5 text-zinc-400" />{t("je_rubric_title")}
+             <Card className="border-muted/10 rounded-3xl relative overflow-hidden">
+                <CardHeader className="p-8 border-b border-muted/5 bg-background/30">
+                  <CardTitle className="font-headline font-bold text-xl text-foreground uppercase tracking-tight flex items-center gap-3">
+                    <Cpu className="h-5 w-5 text-muted" />{t("je_rubric_title")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-8 space-y-4">
@@ -340,33 +323,31 @@ export default function JobEvaluationGuide() {
                     { l: 4 },
                     { l: 5 }
                   ].map((level) => (
-                    <div key={level.l} className="flex items-center justify-between p-4 bg-zinc-900/50 border border-zinc-800 group hover:border-primary/30 transition-all">
-                      <div className="h-10 w-10 flex items-center justify-center bg-black border border-zinc-800 font-mono font-black text-xs text-primary group-hover:border-primary transition-colors">
+                    <div key={level.l} className="flex items-center justify-between p-4 bg-background border border-muted/10 rounded-2xl group hover:border-primary/20 transition-all">
+                      <div className="h-10 w-10 flex items-center justify-center bg-surface border border-muted/10 rounded-xl font-headline font-bold text-xs text-primary group-hover:border-primary/30 transition-colors">
                         L{level.l}
                       </div>
                       <div className="text-end">
-                        <p className="font-headline font-black text-[10px] text-white uppercase tracking-widest">{t(("je_rubric_l" + level.l) as any)}</p>
-                        <p className="font-mono text-[8px] text-zinc-600 uppercase tracking-tighter mt-1">{t(("je_rubric_l" + level.l + "_desc") as any)}</p>
+                        <p className="font-headline font-bold text-[10px] text-foreground uppercase tracking-widest">{t(("je_rubric_l" + level.l) as any)}</p>
+                        <p className="font-headline text-[8px] text-muted uppercase tracking-widest mt-1">{t(("je_rubric_l" + level.l + "_desc") as any)}</p>
                       </div>
                     </div>
                   ))}
                 </CardContent>
-                <CornerMarks color="zinc" />
              </Card>
           </div>
         </motion.div>
       </div>
 
       {/* Telemetry Footer */}
-      <div className="p-10 border-2 border-primary/20 bg-primary/3 relative overflow-hidden group">
-         <Terminal className="absolute -right-6 -top-6 h-32 w-32 text-primary opacity-5 group-hover:opacity-10 transition-all duration-1000" />
+      <div className="p-10 border border-muted/10 bg-surface/50 rounded-3xl relative overflow-hidden group shadow-sm">
          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
             <div className="space-y-2">
-               <p className="font-headline font-black text-sm text-primary uppercase tracking-[0.3em]">{t("je_guide_sync")}</p>
-               <p className="text-[10px] font-mono text-zinc-600 leading-relaxed uppercase tracking-widest">{t("label_doc_ref")} // {t("label_security_active")} // {t("label_auth_only")}
+               <p className="font-headline font-bold text-sm text-primary uppercase tracking-[0.2em]">{t("je_guide_sync")}</p>
+               <p className="text-[10px] font-headline text-muted leading-relaxed uppercase tracking-widest">{t("label_doc_ref")} // {t("label_security_active")} // {t("label_auth_only")}
                </p>
             </div>
-            <div className="flex items-center gap-6 font-mono text-[9px] text-zinc-500 uppercase tracking-widest">
+            <div className="flex items-center gap-6 font-headline text-[9px] text-muted uppercase tracking-widest">
                <span>{t("je_stat_latency")}::5MS</span>
                <span>{t("label_revision")}::94.2.0</span>
             </div>

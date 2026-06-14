@@ -24,22 +24,12 @@ interface TaskItem {
   };
 }
 
-const CornerMarks = ({ color = "primary" }: { color?: string }) => (
-  <>
-    <div className={`absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
-    <div className={`absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
-    <div className={`absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
-    <div className={`absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-${color}/60 shadow-[0_0_8px_rgba(var(--primary),0.2)]`} />
-  </>);
-
 const STEP_ICONS: Record<string, React.ReactNode> = {
-  pending: <Circle className="h-4 w-4 text-zinc-700" />,
+  pending: <Circle className="h-4 w-4 text-muted" />,
   in_progress: <Clock className="h-4 w-4 text-blue-500 animate-pulse" />,
   submitted: <Send className="h-4 w-4 text-amber-500" />,
   approved: <CheckCircle2 className="h-4 w-4 text-emerald-500" />,
 };
-
-// LEVEL_LABELS moved inside component
 
 const LEVEL_DESC: Record<string, string>= {
   manager: "Execute final mission certification.",
@@ -49,17 +39,17 @@ const LEVEL_DESC: Record<string, string>= {
 };
 
 const LEVEL_BADGE: Record<string, string>= {
-  manager: "border-purple-500/40 bg-purple-500/5 text-purple-400 shadow-[0_0_10px_rgba(168,85,247,0.1)]",
-  engineer: "border-blue-500/40 bg-blue-500/5 text-blue-400 shadow-[0_0_10px_rgba(59,130,246,0.1)]",
-  supervisor: "border-amber-500/40 bg-amber-500/5 text-amber-400 shadow-[0_0_10px_rgba(245,158,11,0.1)]",
-  peer_eval: "border-emerald-500/40 bg-emerald-500/5 text-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.1)]",
+  manager: "border-purple-500/20 bg-purple-500/5 text-purple-600 shadow-sm",
+  engineer: "border-blue-500/20 bg-blue-500/5 text-blue-600 shadow-sm",
+  supervisor: "border-amber-500/20 bg-amber-500/5 text-amber-600 shadow-sm",
+  peer_eval: "border-emerald-500/20 bg-emerald-500/5 text-emerald-600 shadow-sm",
 };
 
 const STATUS_BADGE: Record<string, string>= {
-  pending: "border-zinc-800 bg-zinc-900/50 text-zinc-600",
-  in_progress: "border-blue-500/40 bg-blue-500/5 text-blue-400 shadow-[0_0_10px_rgba(59,130,246,0.1)]",
-  submitted: "border-amber-500/40 bg-amber-500/5 text-amber-400 shadow-[0_0_10px_rgba(245,158,11,0.1)]",
-  approved: "border-emerald-500/40 bg-emerald-500/5 text-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.1)]",
+  pending: "border-muted/20 bg-background text-muted shadow-sm",
+  in_progress: "border-blue-500/20 bg-blue-500/5 text-blue-600 shadow-sm",
+  submitted: "border-amber-500/20 bg-amber-500/5 text-amber-600 shadow-sm",
+  approved: "border-emerald-500/20 bg-emerald-500/5 text-emerald-600 shadow-sm",
 };
 
 export default function MyTasksPage() {
@@ -91,34 +81,32 @@ export default function MyTasksPage() {
   const completed = tasks?.filter((t) => t.status === "approved") ?? [];
 
   return (
-    <div className="space-y-10 pb-24 font-sans text-white">
+    <div className="space-y-10 pb-24 font-sans text-foreground">
       {/* Header */}
-      <div className="relative p-10 bg-[#0A0A0A] border-2 border-primary/20 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
+      <div className="relative p-10 bg-surface/50 border border-muted/10 rounded-3xl overflow-hidden shadow-sm">
         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="space-y-3">
             <div className="flex items-center gap-3">
               <ClipboardCheck className="h-4 w-4 text-primary" />
-              <span className="font-headline font-black tracking-[0.4em] text-[9px] text-primary uppercase">{t("label_task_sync")}</span>
+              <span className="font-headline font-bold tracking-[0.2em] text-[10px] text-primary uppercase">{t("label_task_sync")}</span>
             </div>
-            <h2 className="text-5xl font-headline font-black tracking-tighter text-white uppercase leading-none">{t("nav_tasks")}
+            <h2 className="text-5xl font-headline font-bold tracking-tighter text-foreground uppercase leading-none">{t("nav_tasks")}
             </h2>
-            <p className="text-secondary/40 font-medium border-s-2 border-primary/20 ps-4 uppercase tracking-widest text-xs">{t("tasks_subtitle_desc")}</p>
+            <p className="text-muted font-medium border-s-2 border-primary/20 ps-4 uppercase tracking-widest text-xs">{t("tasks_subtitle_desc")}</p>
           </div>
           
           <div className="flex gap-4">
-            <div className="p-6 bg-white/5 border border-white/10 text-center min-w-[140px]">
-              <p className="text-[9px] font-headline font-black text-secondary/40 tracking-widest uppercase">{t("label_pending_que")}</p>
-              <p className="text-3xl font-mono font-black text-primary mt-1">{pending.length}</p>
+            <div className="p-6 bg-background border border-muted/10 rounded-2xl text-center min-w-[140px] shadow-sm">
+              <p className="text-[9px] font-headline font-bold text-muted tracking-widest uppercase">{t("label_pending_que")}</p>
+              <p className="text-3xl font-headline font-bold text-primary mt-1">{pending.length}</p>
             </div>
           </div>
         </div>
-        <CornerMarks />
       </div>
 
       {isLoading ? (
         <div className="space-y-4">{Array.from({ length: 3 }).map((_, i) => (
-            <Skeleton key={i} className="h-24 w-full bg-zinc-900 rounded-none" />
+            <Skeleton key={i} className="h-24 w-full bg-muted/10 rounded-2xl" />
           ))}
         </div>
       ) : (
@@ -126,9 +114,9 @@ export default function MyTasksPage() {
           {pending.length > 0 && (
             <div className="space-y-6">
                <div className="flex items-center gap-4">
-                 <div className="h-px flex-1 bg-linear-to-r from-transparent via-zinc-800 to-transparent" />
-                 <h3 className="font-headline font-black text-[10px] text-zinc-500 uppercase tracking-[0.4em]">{t("label_active_que")}</h3>
-                 <div className="h-px flex-1 bg-linear-to-r from-transparent via-zinc-800 to-transparent" />
+                 <div className="h-px flex-1 bg-gradient-to-r from-transparent via-muted/20 to-transparent" />
+                 <h3 className="font-headline font-bold text-[10px] text-muted uppercase tracking-[0.2em]">{t("label_active_que")}</h3>
+                 <div className="h-px flex-1 bg-gradient-to-r from-transparent via-muted/20 to-transparent" />
                </div>
                
               <div className="grid gap-4">
@@ -140,49 +128,46 @@ export default function MyTasksPage() {
                     whileHover={{ scale: 1.002, x: 5 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <Card className="bg-[#0D0D0D] border border-zinc-900 rounded-none relative overflow-hidden group hover:border-primary/40 transition-all duration-500 shadow-2xl">
+                    <Card className="relative overflow-hidden group hover:border-primary/20 transition-all duration-500 shadow-md border-muted/10">
                       <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity duration-500">
-                        <Zap className="h-16 w-16 text-white" />
+                        <Zap className="h-16 w-16 text-foreground" />
                       </div>
                       <CardContent className="p-10">
                         <div className="flex flex-col md:flex-row items-center gap-10">
                           <div className="shrink-0">
-                            <div className="w-14 h-14 bg-zinc-900 border border-zinc-800 flex items-center justify-center relative shadow-inner">
+                            <div className="w-14 h-14 bg-background border border-muted/20 rounded-2xl flex items-center justify-center relative shadow-sm">
                                {STEP_ICONS[task.status]}
-                               <CornerMarks color="primary" />
                             </div>
                           </div>
                           
                           <div className="flex-1 space-y-4 text-center md:text-start">
                             <div className="flex flex-wrap justify-center md:justify-start gap-4 items-center">
-                              <Badge variant="outline" className={`rounded-none font-mono text-[8px] font-black tracking-[0.2em] uppercase px-3 py-1 ${LEVEL_BADGE[task.level] || ''}`}>{LEVEL_LABELS[task.level] || task.level}
+                              <Badge variant="outline" className={`rounded-full font-headline text-[9px] font-bold tracking-widest uppercase px-3 py-1 ${LEVEL_BADGE[task.level] || ''}`}>{LEVEL_LABELS[task.level] || task.level}
                               </Badge>
-                              <Badge variant="outline" className={`rounded-none font-mono text-[8px] font-black tracking-[0.2em] uppercase px-3 py-1 ${STATUS_BADGE[task.status] || ''}`}>{task.status.replace("_", " ")}
+                              <Badge variant="outline" className={`rounded-full font-headline text-[9px] font-bold tracking-widest uppercase px-3 py-1 ${STATUS_BADGE[task.status] || ''}`}>{task.status.replace("_", " ")}
                               </Badge>
                             </div>
                             
                             <div className="space-y-2">
-                               <h4 className="text-2xl font-headline font-black text-white uppercase group-hover:text-primary transition-colors duration-300 tracking-tighter leading-none">
+                               <h4 className="text-2xl font-headline font-bold text-foreground uppercase group-hover:text-primary transition-colors duration-300 tracking-tight leading-none">
                                  {task.workflow.title}
                                </h4>
-                               <p className="font-mono text-[9px] text-zinc-600 uppercase tracking-[0.2em] flex items-center justify-center md:justify-start gap-3">
-                                 <Activity className="h-3 w-3 text-primary/40" />
+                               <p className="font-headline text-[9px] text-muted uppercase tracking-widest flex items-center justify-center md:justify-start gap-3">
+                                 <Activity className="h-3 w-3 text-primary/60" />
                                  <span>{task.workflow.department?.name || "GLOBAL UNIT"}</span>
-                                 <span className="text-zinc-800">//</span>
-                                 <span className="text-zinc-500 italic">{LEVEL_DESC_T[task.level]}</span>
+                                 <span className="text-muted/40">//</span>
+                                 <span className="italic">{LEVEL_DESC_T[task.level]}</span>
                                </p>
                             </div>
                           </div>
 
                           <Link href={`/workflows/${task.workflow.id}`}>
-                            <Button className="rounded-none bg-primary text-primary-foreground font-headline font-black text-[10px] tracking-widest uppercase py-6 px-10 h-auto shadow-[0_10px_30px_rgba(var(--primary),0.2)] group-hover:shadow-primary/30 transition-all duration-300 relative overflow-hidden">
-                              <div className="absolute inset-0 bg-white/10 -translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
-                              <span className="relative z-10 flex items-center gap-2">{t("action_execute_action")} <ArrowRight className="h-4 w-4" /></span>
+                            <Button className="rounded-full bg-primary text-primary-foreground font-headline font-bold text-[10px] tracking-widest uppercase py-6 px-10 h-auto shadow-lg shadow-primary/20 hover:-translate-y-0.5 transition-all duration-300">
+                              <span className="flex items-center gap-2">{t("action_execute_action")} <ArrowRight className="h-4 w-4" /></span>
                             </Button>
                           </Link>
                         </div>
                       </CardContent>
-                      <CornerMarks />
                     </Card>
                   </motion.div>
                 ))}
@@ -193,29 +178,29 @@ export default function MyTasksPage() {
           {completed.length > 0 && (
             <div className="space-y-6 pt-10">
                <div className="flex items-center gap-4">
-                 <div className="h-px flex-1 bg-linear-to-r from-transparent via-zinc-800 to-transparent" />
-                 <h3 className="font-headline font-black text-[10px] text-zinc-700 uppercase tracking-[0.4em]">{t("label_archived_log")}</h3>
-                 <div className="h-px flex-1 bg-linear-to-r from-transparent via-zinc-800 to-transparent" />
+                 <div className="h-px flex-1 bg-gradient-to-r from-transparent via-muted/20 to-transparent" />
+                 <h3 className="font-headline font-bold text-[10px] text-muted uppercase tracking-[0.2em]">{t("label_archived_log")}</h3>
+                 <div className="h-px flex-1 bg-gradient-to-r from-transparent via-muted/20 to-transparent" />
                </div>
 
-              <div className="grid gap-4 opacity-40">
+              <div className="grid gap-4 opacity-70">
                 {completed.map((task) => (
-                  <Card key={task.id} className="bg-[#0D0D0D] border border-zinc-900 rounded-none overflow-hidden hover:opacity-100 transition-opacity">
+                  <Card key={task.id} className="overflow-hidden hover:opacity-100 transition-opacity border-muted/10 bg-background/50 shadow-sm">
                     <CardContent className="p-6">
                       <div className="flex items-center gap-6">
-                        <CheckCircle2 className="h-6 w-6 text-emerald-900 shrink-0" />
+                        <CheckCircle2 className="h-6 w-6 text-emerald-600 shrink-0" />
                         <div className="flex-1 space-y-1">
                           <div className="flex items-center gap-3">
-                            <Badge variant="outline" className={`rounded-none font-mono text-[8px] font-black tracking-widest uppercase px-2 py-0.5 border-zinc-800 text-zinc-600`}>{LEVEL_LABELS[task.level] || task.level}
+                            <Badge variant="outline" className={`rounded-full font-headline text-[9px] font-bold tracking-widest uppercase px-3 py-0.5 border-muted/20 bg-background text-muted`}>{LEVEL_LABELS[task.level] || task.level}
                             </Badge>
-                            <h5 className="font-headline font-black text-sm text-zinc-400 uppercase tracking-tight">{task.workflow.title}</h5>
+                            <h5 className="font-headline font-bold text-sm text-foreground uppercase tracking-tight">{task.workflow.title}</h5>
                           </div>{task.approved_at && (
-                            <p className="font-mono text-[9px] text-zinc-700 uppercase tracking-widest">CERTIFIED AT::{new Date(task.approved_at).toLocaleDateString()}
+                            <p className="font-headline text-[9px] text-muted uppercase tracking-widest">CERTIFIED AT::{new Date(task.approved_at).toLocaleDateString()}
                             </p>
                           )}
                         </div>
                         <Link href={`/workflows/${task.workflow.id}`}>
-                          <Button variant="ghost" className="rounded-none border border-zinc-900 text-zinc-500 font-headline font-black text-[9px] tracking-widest uppercase h-auto py-3 px-6">{t("action_view_log")}</Button>
+                          <Button variant="ghost" className="rounded-full border border-muted/20 text-muted font-headline font-bold text-[9px] tracking-widest uppercase h-auto py-3 px-6 hover:bg-muted/5">{t("action_view_log")}</Button>
                         </Link>
                       </div>
                     </CardContent>
@@ -226,12 +211,11 @@ export default function MyTasksPage() {
           )}
 
           {!pending.length && !completed.length && (
-            <div className="py-32 text-center border-2 border-dashed border-zinc-900 bg-[#0A0A0A] relative group overflow-hidden">
-               <ShieldCheck className="absolute -right-4 -top-4 h-32 w-32 text-emerald-500 opacity-5" />
-               <LayoutList className="h-12 w-12 text-zinc-800 mx-auto mb-6" />
-               <h4 className="font-headline font-black text-xl text-zinc-600 uppercase tracking-tighter">{t("label_all_queues_clear")}</h4>
-               <p className="font-mono text-[10px] text-zinc-700 uppercase tracking-[0.3em] mt-2">{t("label_no_actions_required")}</p>
-               <CornerMarks />
+            <div className="py-32 text-center border border-dashed border-muted/20 bg-surface/50 rounded-3xl relative group overflow-hidden shadow-sm">
+               <ShieldCheck className="absolute -right-4 -top-4 h-32 w-32 text-emerald-500/20" />
+               <LayoutList className="h-12 w-12 text-muted mx-auto mb-6" />
+               <h4 className="font-headline font-bold text-xl text-foreground uppercase tracking-tight">{t("label_all_queues_clear")}</h4>
+               <p className="font-headline text-[10px] text-muted uppercase tracking-widest mt-2">{t("label_no_actions_required")}</p>
             </div>
           )}
         </>

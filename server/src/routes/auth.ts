@@ -1,7 +1,7 @@
 import { Router, type Response } from "express";
-import { db, isDatabaseConfigured } from "@hrm-development/db";
-import { usersTable, departmentsTable, userSessionsTable } from "@hrm-development/db/schema";
-import { eq } from "@hrm-development/db/drizzle";
+import { db, isDatabaseConfigured } from "../db";
+import { usersTable, departmentsTable, userSessionsTable } from "../db/schema";
+import { eq } from "../db/drizzle";
 import { getUserFromToken } from "../lib/auth";
 import { randomUUID } from "crypto";
 import { logger } from "../lib/logger";

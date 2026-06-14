@@ -1,5 +1,5 @@
 import { useParams, Link } from "wouter";
-import { useGetEmployeeProfile } from "@hrm-development/api-client-react";
+import { useGetEmployeeProfile } from "../../../../api";
 import { getAuthHeaders } from "@modules/skill-matrix/lib/auth";
 import { useT } from "@modules/skill-matrix/i18n";
 import { Button } from "@shared/components/ui/button";

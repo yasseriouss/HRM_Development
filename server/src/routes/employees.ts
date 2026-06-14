@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { db } from "@hrm-development/db";
+import { db } from "../db";
 import {
   employeesTable,
   departmentsTable,
@@ -9,11 +9,14 @@ import {
   evaluationsTable,
   trainingRecommendationsTable,
   usersTable,
-} from "@hrm-development/db/schema";
-import { eq, and, ilike, sql, desc, count } from "@hrm-development/db/drizzle";
+} from "../db/schema";
+import { eq, and, ilike, sql, desc, count } from "../db/drizzle";
 import { requireAuth, requireRole } from "../lib/auth";
+import { validateUuid } from "../lib/validate";
 
 const router = Router();
+
+router.param("id", validateUuid);
 
 async function withDepartment(emp: typeof employeesTable.$inferSelect) {
   let department = null;

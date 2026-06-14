@@ -4,13 +4,13 @@ import {
   useListTrainingRecommendations,
   useListEmployees,
   useListSkills,
-} from "@hrm-development/api-client-react";
+} from "../../../../api";
 import type {
   TrainingRecommendation,
   ListTrainingRecommendationsStatus,
   Employee,
   Skill,
-} from "@hrm-development/api-client-react";
+} from "../../../../api";
 import { getAuthHeaders, getAuthUser } from "@modules/skill-matrix/lib/auth";
 import { Card, CardContent } from "@shared/components/ui/card";
 import { Badge } from "@shared/components/ui/badge";

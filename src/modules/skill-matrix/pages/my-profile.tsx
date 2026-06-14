@@ -1,10 +1,10 @@
-import { useGetMyProfile } from "@hrm-development/api-client-react";
+import { useGetMyProfile } from "../../../api";
 import { getAuthHeaders } from "@modules/skill-matrix/lib/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@shared/components/ui/card";
 import { Badge } from "@shared/components/ui/badge";
 import { Skeleton } from "@shared/components/ui/skeleton";
 import { Briefcase, CalendarDays, Building2, Target, Zap, ShieldCheck, History, GraduationCap, ChevronRight, Fingerprint } from "lucide-react";
-import type { EvaluationSummary } from "@hrm-development/api-client-react";
+import type { EvaluationSummary } from "../../../api";
 import { useT } from "@modules/skill-matrix/i18n";
 import { motion } from "framer-motion";
 import { cn } from "@shared/utils/cn";

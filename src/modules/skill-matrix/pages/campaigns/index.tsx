@@ -1,8 +1,8 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { useListCampaigns, useListDepartments } from "@hrm-development/api-client-react";
-import type { Campaign } from "@hrm-development/api-client-react";
+import { useListCampaigns, useListDepartments } from "../../../../api";
+import type { Campaign } from "../../../../api";
 import { getAuthHeaders, getAuthUser } from "@modules/skill-matrix/lib/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@shared/components/ui/card";
 import { Badge } from "@shared/components/ui/badge";

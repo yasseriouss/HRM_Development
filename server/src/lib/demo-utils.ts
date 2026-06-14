@@ -1,4 +1,4 @@
-import { db } from "@hrm-development/db";
+import { db } from "../db";
 import {
   departmentsTable,
   usersTable,
@@ -16,8 +16,8 @@ import {
   jobProfilesTable as jobEvaluationProfilesTable,
   jobEvaluationFactorsTable,
   jobProfileScoresTable as jobEvaluationScoresTable,
-} from "@hrm-development/db/schema";
-import { eq, count, and, sql, not } from "@hrm-development/db/drizzle";
+} from "../db/schema";
+import { eq, count, and, sql, not } from "../db/drizzle";
 import { seed } from "../seed";
 
 export async function resetDatabase() {

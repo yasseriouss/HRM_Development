@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { db } from "@hrm-development/db";
+import { db } from "../db";
 import {
   departmentsTable,
   employeesTable,
@@ -7,11 +7,14 @@ import {
   campaignsTable,
   evaluationSummariesTable,
   trainingRecommendationsTable,
-} from "@hrm-development/db/schema";
-import { eq, count, sql, and } from "@hrm-development/db/drizzle";
+} from "../db/schema";
+import { eq, count, sql, and } from "../db/drizzle";
 import { requireAuth, requireRole } from "../lib/auth";
+import { validateUuid } from "../lib/validate";
 
 const router = Router();
+
+router.param("id", validateUuid);
 
 async function formatDepartment(dept: typeof departmentsTable.$inferSelect, includeCount = true) {
   let employee_count = 0;
@@ -139,7 +142,7 @@ router.post("/bulk-delete", requireAuth, requireRole("super_admin"), async (req,
       return;
     }
 
-    const { inArray } = await import("@hrm-development/db/drizzle");
+    const { inArray } = await import("../db/drizzle");
 
     // Filter out departments with active employees
     const deptsWithEmployees = await db.select({ id: employeesTable.department_id })
@@ -208,7 +211,7 @@ router.get("/:id/stats", requireAuth, requireRole("super_admin", "hr_coordinator
 
     let pendingTraining = 0;
     if (employeeIds.length > 0) {
-      const { inArray } = await import("@hrm-development/db/drizzle");
+      const { inArray } = await import("../db/drizzle");
       const [pt] = await db.select({ total: count() }).from(trainingRecommendationsTable)
         .where(and(
           inArray(trainingRecommendationsTable.employee_id, employeeIds),

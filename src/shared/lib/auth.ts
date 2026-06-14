@@ -1,7 +1,7 @@
-import type { UserWithDepartment } from "@hrm-development/api-client-react";
+import type { UserWithDepartment } from "../../api";
 
 /** Set to `false` to restore the login page and route guards. */
-export const SKIP_CLIENT_AUTH = true;
+export const SKIP_CLIENT_AUTH = false;
 
 export const getAuthToken = () =>localStorage.getItem("hrm_user_token");
 export const setAuthToken = (token: string) => localStorage.setItem("hrm_user_token", token);

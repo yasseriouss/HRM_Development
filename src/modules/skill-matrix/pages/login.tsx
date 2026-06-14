@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
 import { Shield, Lock, User, Globe, Zap } from "lucide-react";
-import { useLogin } from "@hrm-development/api-client-react";
+import { useLogin } from "../../../api";
 import { setAuthToken, setAuthUser } from "@modules/skill-matrix/lib/auth";
 import { Button } from "@shared/components/ui/button";
 import { getBrandLogoUrl } from "@shared/lib/brand";

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams, Link } from "wouter";
 import { motion } from "framer-motion";
-import { useGetDepartment, useListEmployees } from "@hrm-development/api-client-react";
+import { useGetDepartment, useListEmployees } from "../../../../api";
 import { getAuthHeaders } from "@modules/skill-matrix/lib/auth";
 import { Card, CardContent } from "@shared/components/ui/card";
 import { Button } from "@shared/components/ui/button";

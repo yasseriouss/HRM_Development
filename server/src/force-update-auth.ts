@@ -1,6 +1,6 @@
-import { db } from "@hrm-development/db";
-import { usersTable } from "@hrm-development/db/schema";
-import { eq } from "@hrm-development/db/drizzle";
+import { db } from "./db";
+import { usersTable } from "./db/schema";
+import { eq } from "./db/drizzle";
 
 const USERS_DEF = [
   { email: "super_admin@hrm-dev.com", password: "admin123" },

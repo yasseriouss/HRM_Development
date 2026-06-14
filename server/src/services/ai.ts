@@ -1,11 +1,11 @@
-import { db } from "@hrm-development/db";
+import { db } from "../db";
 import { 
   skillsTable, 
   departmentsTable, 
   employeesTable, 
   evaluationSummariesTable 
-} from "@hrm-development/db/schema";
-import { sql } from "@hrm-development/db/drizzle";
+} from "../db/schema";
+import { sql } from "../db/drizzle";
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 const MODEL = "google/gemini-2.0-flash-001";

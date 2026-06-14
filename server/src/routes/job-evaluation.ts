@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { db } from "@hrm-development/db";
+import { db } from "../db";
 import { 
   jobProfilesTable, 
   jobEvaluationFactorsTable, 
@@ -8,8 +8,8 @@ import {
   jobGradesTable,
   jobProfileScoresTable,
   departmentsTable
-} from "@hrm-development/db/schema";
-import { eq, and, ilike, sql, desc } from "@hrm-development/db/drizzle";
+} from "../db/schema";
+import { eq, and, ilike, sql, desc } from "../db/drizzle";
 import { requireAuth, requireRole } from "../lib/auth";
 
 const router = Router();

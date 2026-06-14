@@ -10,10 +10,10 @@ import { useToast } from "@shared/hooks/use-toast";
 type Role = "super_admin" | "dept_head" | "hr_coordinator" | "employee";
 
 const roleBadgeClass: Record<Role, string>= {
-  super_admin: "bg-amber-500/20 text-amber-500 border-amber-500/30",
-  dept_head: "bg-blue-500/20 text-blue-500 border-blue-500/30",
-  hr_coordinator: "bg-emerald-500/20 text-emerald-500 border-emerald-500/30",
-  employee: "bg-zinc-500/20 text-zinc-400 border-zinc-500/30",
+  super_admin: "bg-amber-500/10 text-amber-600 border-amber-500/20",
+  dept_head: "bg-blue-500/10 text-blue-600 border-blue-500/20",
+  hr_coordinator: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
+  employee: "bg-muted/10 text-muted border-muted/20",
 };
 
 export default function SettingsPage() {
@@ -77,18 +77,13 @@ export default function SettingsPage() {
   return (
     <div className="space-y-8 max-w-4xl animate-in fade-in duration-700">
       {/* Header */}
-      <div className="relative p-6 border border-zinc-800 bg-[#0A0A0A] overflow-hidden">
-        <div className="absolute top-0 left-0 w-2 h-2 border-t-2 border-s-2 border-zinc-600" />
-        <div className="absolute top-0 right-0 w-2 h-2 border-t-2 border-e-2 border-zinc-600" />
-        <div className="absolute bottom-0 left-0 w-2 h-2 border-b-2 border-s-2 border-zinc-600" />
-        <div className="absolute bottom-0 right-0 w-2 h-2 border-b-2 border-e-2 border-zinc-600" />
-        
+      <div className="relative p-8 border border-muted/10 bg-surface/50 overflow-hidden rounded-3xl shadow-sm">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h2 className="text-4xl font-black tracking-tighter uppercase italic text-white flex items-center gap-3">
-              <Cpu className="h-8 w-8 text-amber-500" />{t("settings_title")}
+            <h2 className="text-4xl font-headline font-bold tracking-tight uppercase text-foreground flex items-center gap-3">
+              <Cpu className="h-8 w-8 text-primary" />{t("settings_title")}
             </h2>
-            <p className="text-zinc-500 font-mono text-sm mt-1 uppercase tracking-widest">SYSTEM CONFIG // WORKSTATION PARAMETERS
+            <p className="text-muted font-headline font-bold text-sm mt-2 uppercase tracking-widest">SYSTEM CONFIG // WORKSTATION PARAMETERS
             </p>
           </div>
         </div>
@@ -96,34 +91,34 @@ export default function SettingsPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Account Section */}
-        <Card className="bg-[#0D0D0D] border-zinc-800 rounded-none relative overflow-hidden group">
-          <div className="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-20 transition-opacity">
-            <User className="h-12 w-12 text-white" />
+        <Card className="relative overflow-hidden group border-muted/10 shadow-sm">
+          <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+            <User className="h-12 w-12 text-foreground" />
           </div>
-          <CardHeader className="border-b border-zinc-900 pb-4">
-            <CardTitle className="text-sm font-mono uppercase tracking-widest text-zinc-400 flex items-center gap-2">
-              <TerminalIcon className="h-4 w-4 text-amber-500" />{t("settings_account")}
+          <CardHeader className="border-b border-muted/5 pb-4 bg-background/30">
+            <CardTitle className="text-sm font-headline font-bold uppercase tracking-widest text-muted flex items-center gap-2">
+              <TerminalIcon className="h-4 w-4 text-primary" />{t("settings_account")}
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-6 space-y-6">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-zinc-900 border border-zinc-800 flex items-center justify-center text-3xl font-black text-white shadow-[0_0_15px_rgba(255,255,255,0.05)]">{user?.full_name?.charAt(0) ?? "?"}
+              <div className="w-16 h-16 bg-muted/5 border border-muted/10 rounded-2xl flex items-center justify-center text-3xl font-headline font-bold text-foreground shadow-sm">{user?.full_name?.charAt(0) ?? "?"}
               </div>
               <div>
-                <p className="font-bold text-xl text-white tracking-tight">{user?.full_name}</p>
-                <p className="text-xs font-mono text-zinc-500 uppercase">{user?.email}</p>
+                <p className="font-headline font-bold text-xl text-foreground tracking-tight">{user?.full_name}</p>
+                <p className="text-xs font-headline text-muted uppercase tracking-widest">{user?.email}</p>
               </div>
             </div>
             
-            <div className="space-y-3 pt-4 border-t border-zinc-900">
+            <div className="space-y-3 pt-4 border-t border-muted/5">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-mono text-zinc-500 uppercase">{t("settings_role")}</span>
-                <Badge variant="outline" className={roleBadgeClass[role]}>{t(roleLabelKey[role])}</Badge>
+                <span className="text-xs font-headline font-bold text-muted uppercase tracking-widest">{t("settings_role")}</span>
+                <Badge variant="outline" className={cn("rounded-full font-headline font-bold tracking-widest uppercase", roleBadgeClass[role])}>{t(roleLabelKey[role])}</Badge>
               </div>
               {user?.department && (
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono text-zinc-500 uppercase">{t("settings_department")}</span>
-                  <span className="text-sm font-bold text-zinc-300">{user.department.name}</span>
+                  <span className="text-xs font-headline font-bold text-muted uppercase tracking-widest">{t("settings_department")}</span>
+                  <span className="text-sm font-headline font-bold text-foreground uppercase tracking-tight">{user.department.name}</span>
                 </div>
               )}
             </div>
@@ -131,17 +126,17 @@ export default function SettingsPage() {
         </Card>
 
         {/* Permissions Section */}
-        <Card className="bg-[#0D0D0D] border-zinc-800 rounded-none relative overflow-hidden">
-          <CardHeader className="border-b border-zinc-900 pb-4">
-            <CardTitle className="text-sm font-mono uppercase tracking-widest text-zinc-400 flex items-center gap-2">
-              <Shield className="h-4 w-4 text-amber-500" />{t("settings_role_permissions")}
+        <Card className="relative overflow-hidden border-muted/10 shadow-sm">
+          <CardHeader className="border-b border-muted/5 pb-4 bg-background/30">
+            <CardTitle className="text-sm font-headline font-bold uppercase tracking-widest text-muted flex items-center gap-2">
+              <Shield className="h-4 w-4 text-primary" />{t("settings_role_permissions")}
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-6">
             <ul className="space-y-3">
               {(rolePermissionKeys[role] ?? []).map((key) => (
-                <li key={key} className="flex items-start gap-3 text-xs font-mono text-zinc-400 group">
-                  <div className="mt-1 h-1.5 w-1.5 bg-amber-500/40 group-hover:bg-amber-500 transition-colors" />
+                <li key={key} className="flex items-start gap-3 text-xs font-headline font-bold text-muted group tracking-wide uppercase">
+                  <div className="mt-1 h-1.5 w-1.5 rounded-full bg-primary/40 group-hover:bg-primary transition-colors" />
                   {t(key)}
                 </li>
               ))}
@@ -150,19 +145,19 @@ export default function SettingsPage() {
         </Card>
       </div>{/* Demo Mode Section (Super Admin Only) */}
       {role === "super_admin" && (
-        <Card className="bg-[#0D0D0D] border-red-900/30 rounded-none relative overflow-hidden border-2 shadow-[0_0_30px_rgba(220,38,38,0.05)]">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-red-600/5 rotate-45 translate-x-16 -translate-y-16" />
-          <CardHeader className="border-b border-red-900/20 pb-4">
-            <CardTitle className="text-sm font-mono uppercase tracking-widest text-red-500 flex items-center gap-2">
+        <Card className="relative overflow-hidden border border-destructive/20 shadow-sm bg-destructive/5">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-destructive/10 rotate-45 translate-x-16 -translate-y-16 rounded-3xl" />
+          <CardHeader className="border-b border-destructive/10 pb-4 bg-transparent">
+            <CardTitle className="text-sm font-headline font-bold uppercase tracking-widest text-destructive flex items-center gap-2">
               <Database className="h-4 w-4" />{t("settings_demo_mode")}
             </CardTitle>
-            <CardDescription className="text-zinc-500 text-xs uppercase font-mono mt-1">{t("settings_demo_mode_desc")}
+            <CardDescription className="text-destructive/70 text-xs uppercase font-headline font-bold tracking-widest mt-1">{t("settings_demo_mode_desc")}
             </CardDescription>
           </CardHeader>
           <CardContent className="pt-6 space-y-6">
-            <div className="p-4 bg-red-950/20 border border-red-900/30 flex gap-4 items-start">
-              <AlertTriangle className="h-5 w-5 text-red-500 flex-shrink-0 mt-0.5" />
-              <p className="text-xs font-mono text-red-400 leading-relaxed uppercase">{t("settings_demo_warning")}
+            <div className="p-4 bg-background rounded-2xl border border-destructive/20 flex gap-4 items-start shadow-sm">
+              <AlertTriangle className="h-5 w-5 text-destructive flex-shrink-0 mt-0.5" />
+              <p className="text-xs font-headline font-bold text-destructive/80 leading-relaxed uppercase tracking-wide">{t("settings_demo_warning")}
               </p>
             </div>
             
@@ -170,14 +165,14 @@ export default function SettingsPage() {
               <Button 
                 onClick={handleSeed}
                 disabled={isSeeding || isResetting}
-                className="flex-1 bg-zinc-900 hover:bg-zinc-800 text-white border border-zinc-800 rounded-none font-mono uppercase text-xs tracking-widest h-12"
+                className="flex-1 bg-foreground hover:bg-foreground/90 text-background rounded-full font-headline font-bold uppercase text-[10px] tracking-widest h-12 shadow-sm"
               >{isSeeding ? t("settings_demo_seeding") : t("settings_seed_demo")}
               </Button>
               <Button 
                 variant="destructive"
                 onClick={handleReset}
                 disabled={isSeeding || isResetting}
-                className="flex-1 rounded-none font-mono uppercase text-xs tracking-widest h-12 border border-red-600/50"
+                className="flex-1 rounded-full font-headline font-bold uppercase text-[10px] tracking-widest h-12 shadow-sm"
               >
                 <Trash2 className="me-2 h-4 w-4" />{isResetting ? t("settings_demo_resetting") : t("settings_reset_system")}
               </Button>
@@ -187,10 +182,10 @@ export default function SettingsPage() {
       )}
 
       {/* System Information Section */}
-      <Card className="bg-[#0D0D0D] border-zinc-800 rounded-none">
-        <CardHeader className="border-b border-zinc-900 pb-4">
-          <CardTitle className="text-sm font-mono uppercase tracking-widest text-zinc-400 flex items-center gap-2">
-            <TerminalIcon className="h-4 w-4 text-zinc-600" />{t("settings_system_info")}
+      <Card className="border-muted/10 shadow-sm">
+        <CardHeader className="border-b border-muted/5 pb-4 bg-background/30">
+          <CardTitle className="text-sm font-headline font-bold uppercase tracking-widest text-muted flex items-center gap-2">
+            <TerminalIcon className="h-4 w-4 text-muted" />{t("settings_system_info")}
           </CardTitle>
         </CardHeader>
         <CardContent className="pt-6 grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-4">{[
@@ -199,14 +194,14 @@ export default function SettingsPage() {
             { label: t("settings_skill_scale"), value: t("settings_skill_scale_value") },
             { label: t("settings_classification"), value: t("settings_classification_value") },
           ].map((item, i) => (
-            <div key={i} className="flex justify-between items-center py-2 border-b border-zinc-900 last:border-0 sm:last:border-b">
-              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">{item.label}</span>
-              <span className="text-xs font-mono text-zinc-300 uppercase">{item.value}</span>
+            <div key={i} className="flex justify-between items-center py-2 border-b border-muted/5 last:border-0 sm:last:border-b">
+              <span className="text-[10px] font-headline font-bold text-muted uppercase tracking-widest">{item.label}</span>
+              <span className="text-xs font-headline font-bold text-foreground uppercase tracking-tight">{item.value}</span>
             </div>
           ))}
           <div className="flex justify-between items-center py-2 sm:col-span-2">
-            <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">{t("settings_built_by")}</span>
-            <a href="https://yasserious.com" target="_blank" rel="noopener noreferrer" className="text-xs font-mono text-amber-500 hover:text-amber-400 transition-colors uppercase underline decoration-amber-500/30 underline-offset-4">
+            <span className="text-[10px] font-headline font-bold text-muted uppercase tracking-widest">{t("settings_built_by")}</span>
+            <a href="https://yasserious.com" target="_blank" rel="noopener noreferrer" className="text-xs font-headline font-bold text-primary hover:text-primary/80 transition-colors uppercase underline decoration-primary/30 underline-offset-4 tracking-widest">
               yasserious.com
             </a>
           </div>

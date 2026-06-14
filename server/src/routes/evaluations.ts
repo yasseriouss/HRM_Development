@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { db } from "@hrm-development/db";
+import { db } from "../db";
 import {
   evaluationsTable,
   evaluationSummariesTable,
@@ -7,11 +7,15 @@ import {
   skillsTable,
   campaignsTable,
   trainingRecommendationsTable,
-} from "@hrm-development/db/schema";
-import { eq, and } from "@hrm-development/db/drizzle";
+} from "../db/schema";
+import { eq, and } from "../db/drizzle";
 import { requireAuth, requireRole } from "../lib/auth";
+import { validateUuid } from "../lib/validate";
 
 const router = Router();
+
+router.param("campaign_id", validateUuid);
+router.param("employee_id", validateUuid);
 
 function calculateSummary(skillScores: Array<{ skill_id: string; score: number; weight: number }>) {
   let totalScore = 0;
@@ -169,7 +173,7 @@ router.get("/", requireAuth, requireRole("super_admin", "hr_coordinator", "dept_
 
     // dept_head: auto-scope to employees in their own department
     if (role === "dept_head" && userDeptId) {
-      const { inArray } = await import("@hrm-development/db/drizzle");
+      const { inArray } = await import("../db/drizzle");
       const deptEmps = await db.select({ id: employeesTable.id }).from(employeesTable)
         .where(and(eq(employeesTable.department_id, userDeptId), eq(employeesTable.is_active, true)));
       const deptEmpIds = deptEmps.map((e) => e.id);

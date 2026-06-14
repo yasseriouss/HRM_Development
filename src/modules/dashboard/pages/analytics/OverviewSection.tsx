@@ -2,11 +2,13 @@ import {
   PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend,
   BarChart, Bar, XAxis, YAxis, CartesianGrid,
 } from "recharts";
-import { OVERVIEW_METRICS } from "@modules/dashboard/data/demo";
+import { useQuery } from "@tanstack/react-query";
+import { fetchDashboardMetrics } from "@modules/dashboard/lib/api";
 import { useT } from "@modules/dashboard/i18n";
 import { motion } from "framer-motion";
 import { TrendingUp, Users, Layout, Zap } from "lucide-react";
 import { cn } from "@shared/utils/cn";
+import { Skeleton } from "@shared/components/ui/skeleton";
 
 const CLR = { A: "#10B981", B: "#F59E0B", C: "#EF4444" };
 
@@ -43,8 +45,6 @@ function SectionHeader({ title, desc }: { title: string; desc: string }) {
 
 export { SectionHeader };
 
-const m = OVERVIEW_METRICS;
-
 function GaugeChart({ pct, label }: { pct: number; label: string }) {
   const r = 60;
   const cx = 80, cy = 80;
@@ -77,15 +77,50 @@ function GaugeChart({ pct, label }: { pct: number; label: string }) {
 export default function OverviewSection() {
   const t = useT();
 
+  const { data: metrics, isLoading, error } = useQuery({
+    queryKey: ["dashboard-metrics"],
+    queryFn: fetchDashboardMetrics,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <div className="mb-8">
+          <Skeleton className="h-10 w-48 rounded-xl bg-zinc-200/50" />
+          <Skeleton className="h-4 w-96 rounded-lg bg-zinc-100/50 mt-2" />
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <Skeleton key={i} className="h-32 rounded-4xl bg-zinc-200/50" />
+          ))}
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <Skeleton className="h-[440px] rounded-4xl bg-zinc-200/50" />
+          <Skeleton className="h-[440px] rounded-4xl bg-zinc-200/50" />
+          <Skeleton className="h-[440px] rounded-4xl bg-zinc-200/50" />
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !metrics) {
+    return (
+      <div className="p-8 rounded-4xl border border-red-100 bg-red-50 text-red-700 font-sans">
+        <p className="font-bold">Error loading dashboard metrics</p>
+        <p className="text-sm mt-1">{error instanceof Error ? error.message : "Please check your network connection."}</p>
+      </div>
+    );
+  }
+
   const classDonut = [
-    { name: "Class A", value: m.classA, pct: +((m.classA / m.totalEmployees) * 100).toFixed(1) },
-    { name: "Class B", value: m.classB, pct: +((m.classB / m.totalEmployees) * 100).toFixed(1) },
-    { name: "Class C", value: m.classC, pct: +((m.classC / m.totalEmployees) * 100).toFixed(1) },
+    { name: "Class A", value: metrics.class_a_count, pct: metrics.class_a_percentage },
+    { name: "Class B", value: metrics.class_b_count, pct: metrics.class_b_percentage },
+    { name: "Class C", value: metrics.class_c_count, pct: metrics.class_c_percentage },
   ];
 
   const campaignBar = [
-    { status: t('dash_chart_campaign_status').split(" ")[0], count: m.activeCampaigns },
-    { status: t('dash_completed'), count: m.completedCampaigns },
+    { status: t('dash_chart_campaign_status').split(" ")[0], count: metrics.active_campaigns },
+    { status: t('dash_completed'), count: metrics.completed_campaigns },
   ];
 
   return (
@@ -93,10 +128,10 @@ export default function OverviewSection() {
       <SectionHeader title={t('dash_section_overview_title')} desc={t('dash_section_overview_desc')} />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-        <KpiCard label={t('dash_kpi_total_employees')} value={m.totalEmployees} sub={t('dash_kpi_active_staff')} icon={Users} color="bg-zinc-900 text-white" />
-        <KpiCard label={t('dash_kpi_departments')} value={m.totalDepartments} sub={t('dash_kpi_wood_units')} icon={Layout} />
-        <KpiCard label={t('dash_kpi_skills_tracked')} value={m.totalSkills} sub={t('dash_kpi_across_all_depts')} icon={Zap} />
-        <KpiCard label={t('dash_kpi_avg_score')} value={`${m.avgSkillPct}%`} sub={t('dash_kpi_company_wide')} icon={TrendingUp} color="bg-green-50 text-green-600" />
+        <KpiCard label={t('dash_kpi_total_employees')} value={metrics.total_employees} sub={t('dash_kpi_active_staff')} icon={Users} color="bg-zinc-900 text-white" />
+        <KpiCard label={t('dash_kpi_departments')} value={metrics.total_departments} sub={t('dash_kpi_wood_units')} icon={Layout} />
+        <KpiCard label={t('dash_kpi_skills_tracked')} value={metrics.total_skills} sub={t('dash_kpi_across_all_depts')} icon={Zap} />
+        <KpiCard label={t('dash_kpi_avg_score')} value={`${metrics.average_skill_percentage}%`} sub={t('dash_kpi_company_wide')} icon={TrendingUp} color="bg-green-50 text-green-600" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -152,7 +187,7 @@ export default function OverviewSection() {
           </div>
           
           <div className="w-full max-w-[240px]">
-            <GaugeChart pct={m.avgSkillPct} label={t('dash_chart_company_avg')} />
+            <GaugeChart pct={metrics.average_skill_percentage} label={t('dash_chart_company_avg')} />
           </div>
 
           <div className="w-full grid grid-cols-3 gap-3 mt-8">
@@ -202,9 +237,9 @@ export default function OverviewSection() {
 
           <div className="mt-8 space-y-4">
             {[
-              { label: t('dash_pending_training'), val: m.pendingTraining, color: "#EF4444" },
-              { label: "In Progress", val: m.inProgressTraining, color: "#F59E0B" },
-              { label: t('dash_completed'), val: m.completedTraining, color: "#10B981" },
+              { label: t('dash_pending_training'), val: metrics.pending_training, color: "#EF4444" },
+              { label: "In Progress", val: (metrics as any).in_progress_training || 0, color: "#F59E0B" },
+              { label: t('dash_completed'), val: (metrics as any).completed_training || 0, color: "#10B981" },
             ].map((s, i) => (
               <div key={i} className="flex items-center justify-between p-3 rounded-2xl bg-zinc-50 border border-zinc-100">
                 <div className="flex items-center gap-3">
